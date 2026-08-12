@@ -176,7 +176,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
     <div class="base-row"><span class="bl">工伤保险<span class="rng" id="rngIJ"></span></span><div style="display:flex;align-items:center"><input type="number" id="ijBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
     <div class="base-row"><span class="bl">住房公积金<span class="rng" id="rngHF"></span></span><div style="display:flex;align-items:center"><input type="number" id="hfBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
     <div class="sld"><label>公积金比例<span class="h">0 或 5~12%</span></label><input type="range" id="hfRate" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateV">5%</span></div>
-    <div id="ltcWrap"><label class="chk"><input type="checkbox" id="ltcOn" onchange="calc()">长期护理险（第六险，个人0.125%）<span class="h">征求意见稿</span></label></div>
+    <div id="ltcWrap"><label class="chk"><input type="checkbox" id="ltcOn" onchange="calc()">长期护理险（第六险）<span class="h" id="ltcRate"></span></label></div>
     <div class="nt" id="baseNote"></div>
   </div>
 
@@ -276,27 +276,27 @@ function CI(name,med,mat,hf,pPensionMin,opt){
     inj:{min:2520,max:44265,comp:.002},hf:hf},opt||{});
 }
 var CITIES={
-  sz:CI("深圳",{min:6727,max:33633,comp:.06,emp:.02},{min:6727,max:33633,comp:.005},{min:2520,max:48471},4775,{hukou:true,ltc:true,tiers:[{name:"一档",comp:.06,emp:.02},{name:"二档",comp:.015,emp:.005}]}),
+  sz:CI("深圳",{min:6727,max:33633,comp:.06,emp:.02},{min:6727,max:33633,comp:.005},{min:2520,max:48471},4775,{hukou:true,ltc:{emp:.00125,comp:.00125},tiers:[{name:"一档",comp:.06,emp:.02},{name:"二档",comp:.015,emp:.005}]}),
   gz:CI("广州",{min:6234,max:31170,comp:.06,emp:.02},null,{min:2500,max:41697},5510),
-  dg:CI("东莞",{min:4775,max:27549,comp:.05,emp:.02},{min:4775,max:27549,comp:.007},{min:2080,max:27391},4775,{tiers:[{name:"统账(有个账)",comp:.05,emp:.02},{name:"统账(无个账)",comp:.045,emp:.005},{name:"单建统筹",comp:.0245,emp:.005}]}),
-  fs:CI("佛山",{min:4669,max:9660,comp:.045,emp:.02},{min:4669,max:9660,comp:.01},{min:2080,max:31395}),
-  zh:CI("珠海",{min:4775,max:27549,comp:.06,emp:.015},null,{min:2080,max:36279}),
-  hz:CI("惠州",{min:4463,max:22315,comp:.056,emp:.02},null,{min:1850,max:34290}),
+  dg:CI("东莞",{min:4775,max:27549,comp:.05,emp:.02},{min:4775,max:27549,comp:.007},{min:2080,max:27391},4775,{ltc:{emp:.0015,comp:.0015},tiers:[{name:"统账(有个账)",comp:.05,emp:.02},{name:"统账(无个账)",comp:.045,emp:.005},{name:"单建统筹",comp:.0245,emp:.005}]}),
+  fs:CI("佛山",{min:4669,max:9660,comp:.045,emp:.02},{min:4669,max:9660,comp:.01},{min:2080,max:31395},4775,{tiers:[{name:"统账结合",comp:.045,emp:.02},{name:"单建统筹",comp:.045,emp:0}]}),
+  zh:CI("珠海",{min:4775,max:27549,comp:.06,emp:.015},null,{min:2080,max:36279},4775,{ltc:{emp:.0015,comp:.0015},tiers:[{name:"一档(统账)",comp:.06,emp:.015},{name:"二档(单建)",comp:.03,emp:0}],note:"一档单位费率含生育0.5%"}),
+  hz:CI("惠州",{min:4463,max:22315,comp:.056,emp:.02},null,{min:1850,max:34290},4775,{tiers:[{name:"统账结合",comp:.056,emp:.02},{name:"单建统筹",comp:.04,emp:0}],note:"两档单位费率均含生育0.5%"}),
   jm:CI("江门",{min:4280,max:21399,comp:.06,emp:.02},null,{min:1850,max:27628}),
-  zs:CI("中山",{min:4250,max:21250,comp:.058,emp:.02},null,{min:2080,max:29430}),
-  st:CI("汕头",{min:3953,max:19764,comp:.07,emp:.02},null,{min:1850,max:27698}),
-  sg:CI("韶关",{min:4915,max:24573,comp:.055,emp:.02},null,{min:1750,max:29283}),
-  zj:CI("湛江",{min:4543,max:22717,comp:.062,emp:.02},null,{min:1850,max:29640},4775,{note:"医保单位费率6.2%为第三方参考值"}),
-  zq:CI("肇庆",{min:4520,max:22599,comp:.063,emp:.02},null,{min:1850,max:28220},4775,{note:"医保单位费率6.3%为历史办法数据，2026实际值待确认"}),
+  zs:CI("中山",{min:4250,max:21250,comp:.058,emp:.02},null,{min:2080,max:29430},4775,{tiers:[{name:"统账结合",comp:.058,emp:.02},{name:"单建统筹",comp:.033,emp:.007}]}),
+  st:CI("汕头",{min:3953,max:19764,comp:.07,emp:.02},null,{min:1850,max:27698},4775,{tiers:[{name:"统账结合",comp:.07,emp:.02},{name:"单建统筹",comp:.06,emp:0}]}),
+  sg:CI("韶关",{min:4915,max:24573,comp:.055,emp:.02},{min:4915,max:24573,comp:.009},{min:1750,max:29283},4775,{note:"生育险0.9%单独缴(单位)；灵活就业可选统账7.5%/单建5%"}),
+  zj:CI("湛江",{min:4543,max:22717,comp:.067,emp:.02},null,{min:1850,max:29640},4775,{tiers:[{name:"统账结合",comp:.067,emp:.02},{name:"单建统筹",comp:.062,emp:0}]}),
+  zq:CI("肇庆",{min:4520,max:22599,comp:.055,emp:.02},{min:4520,max:22599,comp:.008},{min:1850,max:28220}),
   mm:CI("茂名",{min:4489,max:22446,comp:.07,emp:.02},null,{min:1750,max:26100},4775,{note:"公积金基数为2025年度，2026年度通知未检索到"}),
-  mz:CI("梅州",{min:4313,max:21567,comp:.055,emp:.02},null,{min:1750,max:26315}),
-  sw:CI("汕尾",{min:4585,max:22923,comp:.06,emp:.02},null,{min:1750,max:27849}),
-  hy:CI("河源",{min:4288,max:21441,comp:.08,emp:.02},null,{min:1750,max:25470},4775,{note:"医保单位费率8%为第三方参考值，官方未公布"}),
+  mz:CI("梅州",{min:4313,max:21567,comp:.055,emp:.02},null,{min:1750,max:26315},4775,{tiers:[{name:"企业单位",comp:.055,emp:.02},{name:"机关事业单位",comp:.065,emp:.02}],note:"长护险2025.7已实施(从医保费划转不额外负担)"}),
+  sw:CI("汕尾",{min:4585,max:22923,comp:.06,emp:.02},null,{min:1750,max:27849},4775,{tiers:[{name:"统账结合",comp:.06,emp:.02},{name:"单建统筹",comp:.048,emp:0}],note:"单建统筹个人费率官方未拆分,按0计"}),
+  hy:CI("河源",{min:4288,max:21441,comp:.05,emp:.02},null,{min:1750,max:25470},4775,{note:"机关事业单位单位费率6%；单建统筹5%(灵活就业)"}),
   yj:CI("阳江",{min:4120,max:20598,comp:.05,emp:.02},{min:4120,max:20598,comp:.01},{min:1750,max:28356}),
-  qy:CI("清远",{min:4157,max:20787,comp:.065,emp:.02},null,{min:1750,max:27593}),
-  cz:CI("潮州",{min:3763,max:18816,comp:.064,emp:.02},null,{min:1750,max:26043}),
+  qy:CI("清远",{min:4157,max:20787,comp:.065,emp:.02},{min:4157,max:20787,comp:.01},{min:1750,max:27593},4775,{ltc:{emp:.0015,comp:.0015},note:"长护险拟2026.7实施(0.3%各半)"}),
+  cz:CI("潮州",{min:3763,max:18816,comp:.074,emp:.02},null,{min:1750,max:26043},4775,{tiers:[{name:"综合医保(其他单位)",comp:.074,emp:.02},{name:"综合医保(财政拨款)",comp:.069,emp:.02},{name:"住院医保(单建)",comp:.045,emp:.005}]}),
   jy:CI("揭阳",{min:3727,max:18636,comp:.06,emp:.02},null,{min:1750,max:24618}),
-  yf:CI("云浮",{min:4556,max:22782,comp:.055,emp:.02},null,{min:1750,max:27642})
+  yf:CI("云浮",{min:4556,max:22782,comp:.06,emp:.02},{min:4556,max:22782,comp:.01},{min:1750,max:27642})
 };
 var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,lastHFBase=2520;
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
@@ -327,6 +327,7 @@ function selectCity(k){
   $("histCity").textContent=CITY.name;
   $("hkRow").style.display=CITY.hukou?"":"none";
   $("ltcWrap").style.display=CITY.ltc?"":"none";
+  $("ltcRate").textContent=CITY.ltc?"个人"+(CITY.ltc.emp*100).toFixed(2)+"% · "+(CITY.ltc.comp*100).toFixed(2)+"%":"";
   if(!CITY.hukou)hk=0;
   renderMedBtns();
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf;
@@ -385,10 +386,10 @@ function calc(){
   var mtB=MT.min?cl(gv("mtBase"),MT.min,MT.max):0;
   var ijB=cl(gv("ijBase"),IJ.min,IJ.max);
   var hB=cl(gv("hfBase"),HF.min,HF.max);
-  var pE=pB*P.emp,mE=mB*md.emp,uE=uB*U.emp,ltcE=ltc?pB*.00125:0;
+  var pE=pB*P.emp,mE=mB*md.emp,uE=uB*U.emp,ltcE=ltc?pB*CITY.ltc.emp:0;
   var siE=pE+mE+uE+ltcE;
   var pComp=CITY.hukou?(hk===1?P.comp+.01:P.comp):P.comp;
-  var siC=pB*pComp+mB*md.comp+uB*U.comp+mtB*MT.comp+ijB*IJ.comp+(ltc?pB*.00125:0);
+  var siC=pB*pComp+mB*md.comp+uB*U.comp+mtB*MT.comp+ijB*IJ.comp+(ltc?pB*CITY.ltc.comp:0);
   var hfE=hB*hfD,hfC=hB*hfD;
   var childA=$("childOn").checked?cl(gv("childAmt"),0,10000):0;
   var eduA=$("eduOn").checked?cl(gv("eduAmt"),0,400):0;
@@ -420,10 +421,10 @@ function calc(){
   h+='<div class="c"><div class="st gr">社保缴费明细（'+CITY.name+(CITY.hukou?(hk===1?' · 深户':' · 非深户'):'')+'）</div>';
   h+='<div class="grid4"><span>险种</span><span style="text-align:right">基数</span><span style="text-align:right">个人%</span><span style="text-align:right">个人金额</span></div>';
   var rows=[["养老保险",pB,P.emp,pE],[ml,mB,md.emp,mE],["失业保险",uB,U.emp,uE]];
-  if(ltc)rows.push(["长期护理险",pB,.00125,ltcE]);
+  if(ltc)rows.push(["长期护理险",pB,CITY.ltc.emp,ltcE]);
   rows.forEach(function(r){h+='<div class="grid4r"><span style="color:#6b7280">'+r[0]+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fm(r[1])+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+(r[2]*100).toFixed(r[2]<0.01?3:1)+'%</span><span style="text-align:right;font-variant-numeric:tabular-nums">'+fm(r[3])+'</span></div>';});
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">个人社保合计</label><span class="v b" style="color:#059669">'+fm(siE)+' 元</span></div>';
-  h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+(pComp*100).toFixed(0)+'%+医疗'+(md.comp*100).toFixed(1)+'%+失业0.8%+工伤0.2%+生育'+(MT.comp*100).toFixed(1)+'%'+(ltc?'+长护0.125%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
+  h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+(pComp*100).toFixed(0)+'%+医疗'+(md.comp*100).toFixed(1)+'%+失业0.8%+工伤0.2%+生育'+(MT.comp*100).toFixed(1)+'%'+(ltc?'+长护'+(CITY.ltc.comp*100).toFixed(2)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
   h+='<div class="c"><div class="st sk">住房公积金'+(hfR===0?'（未缴存）':'')+'</div>';
   h+='<div class="r"><label>基数 '+fm(hB)+' × '+hfR+'%</label><span class="v"></span></div>';
   h+='<div class="r"><label>个人缴存</label><span class="v" style="color:#0284c7">'+fm(hfE)+'</span></div>';
@@ -566,7 +567,7 @@ function calcHist(){
     var uB=cl(r.ub,U.min,U.max);
     var hB=cl(r.hfb,HF.min,HF.max);
     var rate=normHF(r.rate)/100;
-    r.pi=pB*P.emp;r.mi=mB*md.emp;r.ui=uB*U.emp;r.li=ltc?pB*.00125:0;
+    r.pi=pB*P.emp;r.mi=mB*md.emp;r.ui=uB*U.emp;r.li=ltc?pB*CITY.ltc.emp:0;
     r.si=r.pi+r.mi+r.ui+r.li;
     r.hf=hB*rate;
     var mDed=r.si+r.hf+5000+currentSpT;
