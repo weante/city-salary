@@ -273,11 +273,11 @@ function CI(name,med,mat,hf,pPensionMin,opt){
     pension:{min:pPensionMin||4775,max:27549,comp:.16,emp:.08},
     med:med,unemp:{min:2520,max:44265,comp:.008,emp:.002},
     mat:mat||{min:med.min,max:med.max,comp:0},
-    inj:{min:2520,max:44265,comp:.002},hf:hf},opt||{});
+    inj:{min:2520,max:44265,comp:.002},hf:hf,rent:1100},opt||{});
 }
 var CITIES={
-  sz:CI("深圳",{min:6727,max:33633,comp:.06,emp:.02},{min:6727,max:33633,comp:.005},{min:2520,max:48471},4775,{hukou:true,ltc:{emp:.00125,comp:.00125},tiers:[{name:"一档",comp:.06,emp:.02},{name:"二档",comp:.015,emp:.005}]}),
-  gz:CI("广州",{min:6234,max:31170,comp:.06,emp:.02},null,{min:2500,max:41697},5510),
+  sz:CI("深圳",{min:6727,max:33633,comp:.06,emp:.02},{min:6727,max:33633,comp:.005},{min:2520,max:48471},4775,{hukou:true,rent:1500,ltc:{emp:.00125,comp:.00125},tiers:[{name:"一档",comp:.06,emp:.02},{name:"二档",comp:.015,emp:.005}]}),
+  gz:CI("广州",{min:6234,max:31170,comp:.06,emp:.02},null,{min:2500,max:41697},5510,{rent:1500}),
   dg:CI("东莞",{min:4775,max:27549,comp:.05,emp:.02},{min:4775,max:27549,comp:.007},{min:2080,max:27391},4775,{ltc:{emp:.0015,comp:.0015},tiers:[{name:"医疗保险-统账(有个账)",comp:.05,emp:.02},{name:"医疗保险-统账(无个账)",comp:.045,emp:.005},{name:"医疗保险-单建统筹",comp:.0245,emp:.005}]}),
   fs:CI("佛山",{min:4669,max:9660,comp:.045,emp:.02},{min:4669,max:9660,comp:.01},{min:2080,max:31395},4775,{tiers:[{name:"统账结合",comp:.045,emp:.02},{name:"单建统筹",comp:.045,emp:0}]}),
   zh:CI("珠海",{min:4775,max:27549,comp:.06,emp:.015},null,{min:2080,max:36279},4775,{ltc:{emp:.0015,comp:.0015},tiers:[{name:"一档(统账)",comp:.06,emp:.015},{name:"二档(单建)",comp:.03,emp:0}],note:"一档单位费率含生育0.5%"}),
@@ -290,13 +290,13 @@ var CITIES={
   zq:CI("肇庆",{min:4520,max:22599,comp:.055,emp:.02},{min:4520,max:22599,comp:.008},{min:1850,max:28220}),
   mm:CI("茂名",{min:4489,max:22446,comp:.07,emp:.02},null,{min:1750,max:26100},4775,{note:"2026年度公积金基数通知已发布但未见具体数字,暂用2025年度",warn:true}),
   mz:CI("梅州",{min:4313,max:21567,comp:.055,emp:.02},null,{min:1750,max:26315},4775,{tiers:[{name:"企业单位",comp:.055,emp:.02},{name:"机关事业单位",comp:.065,emp:.02}],note:"长护险2025.7已实施(从医保费划转不额外负担)"}),
-  sw:CI("汕尾",{min:4585,max:22923,comp:.06,emp:.02},null,{min:1750,max:27849},4775,{tiers:[{name:"统账结合",comp:.06,emp:.02},{name:"单建统筹",comp:.048,emp:0}],note:"单建统筹总费率4.8%(官方未拆分个人比例,按0计)"}),
-  hy:CI("河源",{min:4288,max:21441,comp:.05,emp:.02},null,{min:1750,max:25470},4775,{note:"机关事业单位单位费率6%；单建统筹5%(灵活就业)"}),
+  sw:CI("汕尾",{min:4585,max:22923,comp:.06,emp:.02},null,{min:1750,max:27849},4775,{rent:800,tiers:[{name:"统账结合",comp:.06,emp:.02},{name:"单建统筹",comp:.048,emp:0}],note:"单建统筹总费率4.8%(官方未拆分个人比例,按0计)"}),
+  hy:CI("河源",{min:4288,max:21441,comp:.05,emp:.02},null,{min:1750,max:25470},4775,{rent:800,note:"机关事业单位单位费率6%；单建统筹5%(灵活就业)"}),
   yj:CI("阳江",{min:4120,max:20598,comp:.05,emp:.02},{min:4120,max:20598,comp:.01},{min:1750,max:28356}),
   qy:CI("清远",{min:4157,max:20787,comp:.065,emp:.02},{min:4157,max:20787,comp:.01},{min:1750,max:27593},4775,{ltc:{emp:.0015,comp:.0015},note:"长护险拟2026.7实施(0.3%各半)"}),
   cz:CI("潮州",{min:3763,max:18816,comp:.074,emp:.02},null,{min:1750,max:26043},4775,{tiers:[{name:"综合医保(其他单位)",comp:.074,emp:.02},{name:"综合医保(财政拨款)",comp:.069,emp:.02},{name:"住院医保(单建)",comp:.045,emp:.005}]}),
   jy:CI("揭阳",{min:3727,max:18636,comp:.06,emp:.02},null,{min:1750,max:24618}),
-  yf:CI("云浮",{min:4556,max:22782,comp:.06,emp:.02},{min:4556,max:22782,comp:.01},{min:1750,max:27642})
+  yf:CI("云浮",{min:4556,max:22782,comp:.06,emp:.02},{min:4556,max:22782,comp:.01},{min:1750,max:27642},4775,{rent:800})
 };
 var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,lastHFBase=2520;
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
@@ -331,6 +331,12 @@ function selectCity(k){
   $("ltcRate").textContent=CITY.ltc?"个人"+fmtPct(CITY.ltc.emp)+"% · "+fmtPct(CITY.ltc.comp)+"%":"";
   if(!CITY.hukou)hk=0;
   renderMedBtns();
+  if(houseMode===1){
+    $("houseLabel").textContent="住房租金("+CITY.name+")";
+    $("houseHint").textContent=CITY.rent+"元/月(当地标准)";
+    $("houseAmt").max=CITY.rent;
+    if(gv("houseAmt")>CITY.rent)$("houseAmt").value=CITY.rent;
+  }
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf;
   $("pBase").value=P.min;$("mBase").value=M.min||P.min;$("uBase").value=U.min;$("mtBase").value=MT.min||M.min||P.min;$("ijBase").value=IJ.min;$("hfBase").value=HF.min;
   lastHFBase=HF.min;
@@ -357,7 +363,21 @@ function renderMedBtns(){
 function setHk(v){if(!CITY||!CITY.hukou)return;hk=v;$("hk0").className=v===0?"a":"";$("hk1").className=v===1?"a":"";if(hk===1)med=1;renderMedBtns();calc()}
 function setMed(v){if(!CITY)return;var ts=CITY.tiers||[];if(v<1||v>ts.length)return;if(CITY.hukou&&hk===1&&v!==1)return;med=v;renderMedBtns();calc()}
 function setChild(v){childMode=v;$("cg0").className=v===0?"a":"";$("cg1").className=v===1?"a":"";$("childLabel").textContent=v===0?"子女教育":"3岁以下婴幼儿照护";calc()}
-function setHouse(v){houseMode=v;$("hg0").className=v===0?"a":"";$("hg1").className=v===1?"a":"";$("houseLabel").textContent=v===0?"住房贷款利息":"住房租金(深圳)";$("houseHint").textContent=v===0?"1000元/月 · 最长240个月":"1500元/月(深圳)";$("houseAmt").max=v===0?1000:1500;if(gv("houseAmt")>parseInt($("houseAmt").max))$("houseAmt").value=$("houseAmt").max;calc()}
+function setHouse(v){
+  houseMode=v;
+  $("hg0").className=v===0?"a":"";$("hg1").className=v===1?"a":"";
+  if(v===0){
+    $("houseLabel").textContent="住房贷款利息";
+    $("houseHint").textContent="1000元/月 · 最长240个月";
+    $("houseAmt").max=1000;
+  }else{
+    $("houseLabel").textContent="住房租金("+CITY.name+")";
+    $("houseHint").textContent=CITY.rent+"元/月(当地标准)";
+    $("houseAmt").max=CITY.rent;
+    if(gv("houseAmt")>CITY.rent)$("houseAmt").value=CITY.rent;
+  }
+  calc();
+}
 function setAllBase(mode){
   var sal=gv("salary");
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf;
@@ -365,9 +385,30 @@ function setAllBase(mode){
   for(var k in map)$(k).value=mode==="min"?map[k]:sal;
   calc();
 }
-function onChildToggle(){var on=$("childOn").checked;$("childAmt").disabled=!on;$("dedChild").className=on?"ded":"ded off";if(!on)$("childAmt").value=0;calc()}
-function onHouseToggle(){var on=$("houseOn").checked;$("houseAmt").disabled=!on;$("dedHouse").className=on?"ded":"ded off";if(!on)$("houseAmt").value=0;calc()}
-function onDedToggle(key){var on=$(key+"On").checked;$(key+"Amt").disabled=!on;$("ded"+key.charAt(0).toUpperCase()+key.slice(1)).className=on?"ded":"ded off";if(!on)$(key+"Amt").value=0;calc()}
+function onChildToggle(){
+  var on=$("childOn").checked;
+  $("childAmt").disabled=!on;
+  $("dedChild").className=on?"ded":"ded off";
+  if(!on){$("childAmt").value=0;}
+  else if(gv("childAmt")<=0){$("childAmt").value=2000;}
+  calc();
+}
+function onHouseToggle(){
+  var on=$("houseOn").checked;
+  $("houseAmt").disabled=!on;
+  $("dedHouse").className=on?"ded":"ded off";
+  if(!on){$("houseAmt").value=0;}
+  else if(gv("houseAmt")<=0){$("houseAmt").value=houseMode===0?1000:CITY.rent;}
+  calc();
+}
+function onDedToggle(key){
+  var on=$(key+"On").checked;
+  $(key+"Amt").disabled=!on;
+  $("ded"+key.charAt(0).toUpperCase()+key.slice(1)).className=on?"ded":"ded off";
+  if(!on){$(key+"Amt").value=0;}
+  else if(key==="elderly"&&gv("elderlyAmt")<=0){$(key+"Amt").value=1500;}
+  calc();
+}
 
 function calc(){
   if(!CITY)return;
@@ -394,7 +435,7 @@ function calc(){
   var hfE=hB*hfD,hfC=hB*hfD;
   var childA=$("childOn").checked?cl(gv("childAmt"),0,10000):0;
   var eduA=$("eduOn").checked?cl(gv("eduAmt"),0,400):0;
-  var houseA=$("houseOn").checked?cl(gv("houseAmt"),0,houseMode===0?1000:1500):0;
+  var houseA=$("houseOn").checked?cl(gv("houseAmt"),0,houseMode===0?1000:CITY.rent):0;
   var elderlyA=$("elderlyOn").checked?cl(gv("elderlyAmt"),0,3000):0;
   var medicalA=$("medicalOn").checked?cl(gv("medicalAmt"),0,6667):0;
   var spT=childA+eduA+houseA+elderlyA+medicalA;
