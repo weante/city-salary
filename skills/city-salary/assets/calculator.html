@@ -304,6 +304,7 @@ var BBR=[[3000,.03,0],[12000,.10,210],[25000,.20,1410],[35000,.25,2660],[55000,.
 var TRAPS=[[36000,2309.10],[144000,13199.20],[300000,13749.25],[420000,19249.30],[660000,30249.35],[960000,87999.45]];
 function cl(v,a,b){return Math.max(a,Math.min(b,v))}
 function normHF(v){v=parseFloat(v)||0;if(v<=0)return 0;if(v<5)return 0;return cl(v,5,12)}
+function fmtPct(r){var p=r*100;if(Math.abs(p-Math.round(p))<1e-9)return String(Math.round(p));if(Math.abs(p*100-Math.round(p*100))<1e-9)return p.toFixed(2);return p.toFixed(3)}
 function fm(n){return n.toLocaleString("zh-CN",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function tx(t){if(t<=0)return{t:0,r:0,d:0};for(var i=0;i<BR.length;i++)if(t<=BR[i][0])return{t:t*BR[i][1]-BR[i][2],r:BR[i][1],d:BR[i][2]};return{t:t*.45-181920,r:.45,d:181920}}
 function btx(b){if(b<=0)return{t:0,r:0,d:0,m:0};var m=b/12;for(var i=0;i<BBR.length;i++)if(m<=BBR[i][0])return{t:b*BBR[i][1]-BBR[i][2],r:BBR[i][1],d:BBR[i][2],m:m};return{t:b*.45-15160,r:.45,d:15160,m:m}}
@@ -327,7 +328,7 @@ function selectCity(k){
   $("histCity").textContent=CITY.name;
   $("hkRow").style.display=CITY.hukou?"":"none";
   $("ltcWrap").style.display=CITY.ltc?"":"none";
-  $("ltcRate").textContent=CITY.ltc?"个人"+(CITY.ltc.emp*100).toFixed(2)+"% · "+(CITY.ltc.comp*100).toFixed(2)+"%":"";
+  $("ltcRate").textContent=CITY.ltc?"个人"+fmtPct(CITY.ltc.emp)+"% · "+fmtPct(CITY.ltc.comp)+"%":"";
   if(!CITY.hukou)hk=0;
   renderMedBtns();
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf;
@@ -422,9 +423,9 @@ function calc(){
   h+='<div class="grid4"><span>险种</span><span style="text-align:right">基数</span><span style="text-align:right">个人%</span><span style="text-align:right">个人金额</span></div>';
   var rows=[["养老保险",pB,P.emp,pE],[ml,mB,md.emp,mE],["失业保险",uB,U.emp,uE]];
   if(ltc)rows.push(["长期护理险",pB,CITY.ltc.emp,ltcE]);
-  rows.forEach(function(r){h+='<div class="grid4r"><span style="color:#6b7280">'+r[0]+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fm(r[1])+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+(r[2]*100).toFixed(r[2]<0.01?3:1)+'%</span><span style="text-align:right;font-variant-numeric:tabular-nums">'+fm(r[3])+'</span></div>';});
+  rows.forEach(function(r){h+='<div class="grid4r"><span style="color:#6b7280">'+r[0]+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fm(r[1])+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fmtPct(r[2])+'%</span><span style="text-align:right;font-variant-numeric:tabular-nums">'+fm(r[3])+'</span></div>';});
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">个人社保合计</label><span class="v b" style="color:#059669">'+fm(siE)+' 元</span></div>';
-  h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+(pComp*100).toFixed(0)+'%+医疗'+(md.comp*100).toFixed(1)+'%+失业0.8%+工伤0.2%+生育'+(MT.comp*100).toFixed(1)+'%'+(ltc?'+长护'+(CITY.ltc.comp*100).toFixed(2)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
+  h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+fmtPct(pComp)+'%+医疗'+fmtPct(md.comp)+'%+失业0.8%+工伤0.2%+生育'+fmtPct(MT.comp)+'%'+(ltc?'+长护'+fmtPct(CITY.ltc.comp)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
   h+='<div class="c"><div class="st sk">住房公积金'+(hfR===0?'（未缴存）':'')+'</div>';
   h+='<div class="r"><label>基数 '+fm(hB)+' × '+hfR+'%</label><span class="v"></span></div>';
   h+='<div class="r"><label>个人缴存</label><span class="v" style="color:#0284c7">'+fm(hfE)+'</span></div>';
