@@ -288,9 +288,9 @@ var CITIES={
   sg:CI("韶关",{min:4915,max:24573,comp:.055,emp:.02},{min:4915,max:24573,comp:.009},{min:1750,max:29283},4775,{note:"生育险0.9%单独缴(单位)；灵活就业可选统账7.5%/单建5%"}),
   zj:CI("湛江",{min:4543,max:22717,comp:.067,emp:.02},null,{min:1850,max:29640},4775,{tiers:[{name:"统账结合",comp:.067,emp:.02},{name:"单建统筹",comp:.062,emp:0}]}),
   zq:CI("肇庆",{min:4520,max:22599,comp:.055,emp:.02},{min:4520,max:22599,comp:.008},{min:1850,max:28220}),
-  mm:CI("茂名",{min:4489,max:22446,comp:.07,emp:.02},null,{min:1750,max:26100},4775,{note:"公积金基数为2025年度，2026年度通知未检索到"}),
+  mm:CI("茂名",{min:4489,max:22446,comp:.07,emp:.02},null,{min:1750,max:26100},4775,{note:"2026年度公积金基数通知已发布但未见具体数字,暂用2025年度",warn:true}),
   mz:CI("梅州",{min:4313,max:21567,comp:.055,emp:.02},null,{min:1750,max:26315},4775,{tiers:[{name:"企业单位",comp:.055,emp:.02},{name:"机关事业单位",comp:.065,emp:.02}],note:"长护险2025.7已实施(从医保费划转不额外负担)"}),
-  sw:CI("汕尾",{min:4585,max:22923,comp:.06,emp:.02},null,{min:1750,max:27849},4775,{tiers:[{name:"统账结合",comp:.06,emp:.02},{name:"单建统筹",comp:.048,emp:0}],note:"单建统筹个人费率官方未拆分,按0计"}),
+  sw:CI("汕尾",{min:4585,max:22923,comp:.06,emp:.02},null,{min:1750,max:27849},4775,{tiers:[{name:"统账结合",comp:.06,emp:.02},{name:"单建统筹",comp:.048,emp:0}],note:"单建统筹总费率4.8%(官方未拆分个人比例,按0计)"}),
   hy:CI("河源",{min:4288,max:21441,comp:.05,emp:.02},null,{min:1750,max:25470},4775,{note:"机关事业单位单位费率6%；单建统筹5%(灵活就业)"}),
   yj:CI("阳江",{min:4120,max:20598,comp:.05,emp:.02},{min:4120,max:20598,comp:.01},{min:1750,max:28356}),
   qy:CI("清远",{min:4157,max:20787,comp:.065,emp:.02},{min:4157,max:20787,comp:.01},{min:1750,max:27593},4775,{ltc:{emp:.0015,comp:.0015},note:"长护险拟2026.7实施(0.3%各半)"}),
@@ -315,7 +315,7 @@ function gv(i){return parseFloat($(i).value)||0}
   var h="";
   for(var k in CITIES){
     var c=CITIES[k];
-    h+='<div class="city-card'+(c.note?' warn':'')+'" onclick="selectCity(\''+k+'\')"><div class="cn">'+c.name+'</div><div class="cd">'+(c.note?'部分数据待确认':'可计算')+'</div></div>';
+    h+='<div class="city-card'+(c.warn?' warn':'')+'" onclick="selectCity(\''+k+'\')"><div class="cn">'+c.name+'</div><div class="cd">'+(c.warn?'数据待确认':'可计算')+'</div></div>';
   }
   $("cityGrid").innerHTML=h;
 })();
