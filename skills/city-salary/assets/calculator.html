@@ -278,7 +278,7 @@ function CI(name,med,mat,hf,pPensionMin,opt){
 var CITIES={
   sz:CI("深圳",{min:6727,max:33633,comp:.06,emp:.02},{min:6727,max:33633,comp:.005},{min:2520,max:48471},4775,{hukou:true,ltc:{emp:.00125,comp:.00125},tiers:[{name:"一档",comp:.06,emp:.02},{name:"二档",comp:.015,emp:.005}]}),
   gz:CI("广州",{min:6234,max:31170,comp:.06,emp:.02},null,{min:2500,max:41697},5510),
-  dg:CI("东莞",{min:4775,max:27549,comp:.05,emp:.02},{min:4775,max:27549,comp:.007},{min:2080,max:27391},4775,{ltc:{emp:.0015,comp:.0015},tiers:[{name:"统账(有个账)",comp:.05,emp:.02},{name:"统账(无个账)",comp:.045,emp:.005},{name:"单建统筹",comp:.0245,emp:.005}]}),
+  dg:CI("东莞",{min:4775,max:27549,comp:.05,emp:.02},{min:4775,max:27549,comp:.007},{min:2080,max:27391},4775,{ltc:{emp:.0015,comp:.0015},tiers:[{name:"医疗保险-统账(有个账)",comp:.05,emp:.02},{name:"医疗保险-统账(无个账)",comp:.045,emp:.005},{name:"医疗保险-单建统筹",comp:.0245,emp:.005}]}),
   fs:CI("佛山",{min:4669,max:9660,comp:.045,emp:.02},{min:4669,max:9660,comp:.01},{min:2080,max:31395},4775,{tiers:[{name:"统账结合",comp:.045,emp:.02},{name:"单建统筹",comp:.045,emp:0}]}),
   zh:CI("珠海",{min:4775,max:27549,comp:.06,emp:.015},null,{min:2080,max:36279},4775,{ltc:{emp:.0015,comp:.0015},tiers:[{name:"一档(统账)",comp:.06,emp:.015},{name:"二档(单建)",comp:.03,emp:0}],note:"一档单位费率含生育0.5%"}),
   hz:CI("惠州",{min:4463,max:22315,comp:.056,emp:.02},null,{min:1850,max:34290},4775,{tiers:[{name:"统账结合",comp:.056,emp:.02},{name:"单建统筹",comp:.04,emp:0}],note:"两档单位费率均含生育0.5%"}),
