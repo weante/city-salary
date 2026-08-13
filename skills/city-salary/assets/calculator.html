@@ -285,19 +285,25 @@ var CITIES={
   jm:CI("江门",{min:4280,max:21399,comp:.06,emp:.02},null,{min:1850,max:27628}),
   zs:CI("中山",{min:4250,max:21250,comp:.058,emp:.02},null,{min:2080,max:29430},4775,{tiers:[{name:"统账结合",comp:.058,emp:.02},{name:"单建统筹",comp:.033,emp:.007}]}),
   st:CI("汕头",{min:3953,max:19764,comp:.07,emp:.02},null,{min:1850,max:27698},4775,{tiers:[{name:"统账结合",comp:.07,emp:.02},{name:"单建统筹",comp:.06,emp:0}]}),
-  sg:CI("韶关",{min:4915,max:24573,comp:.055,emp:.02},{min:4915,max:24573,comp:.009},{min:1750,max:29283},4775,{note:"生育险0.9%单独缴(单位)；灵活就业可选统账7.5%/单建5%"}),
+  sg:CI("韶关",{min:4901,max:24504,comp:.055,emp:.02},{min:4901,max:24504,comp:.009},{min:1750,max:29283},4775,{rent:800,note:"生育险0.9%单独缴(单位)；灵活就业可选统账7.5%/单建5%"}),
   zj:CI("湛江",{min:4543,max:22717,comp:.067,emp:.02},null,{min:1850,max:29640},4775,{tiers:[{name:"统账结合",comp:.067,emp:.02},{name:"单建统筹",comp:.062,emp:0}]}),
   zq:CI("肇庆",{min:4520,max:22599,comp:.055,emp:.02},{min:4520,max:22599,comp:.008},{min:1850,max:28220}),
-  mm:CI("茂名",{min:4489,max:22446,comp:.07,emp:.02},null,{min:1750,max:26100},4775,{note:"2026年度公积金基数通知已发布但未见具体数字,暂用2025年度",warn:true}),
+  mm:CI("茂名",{min:4359,max:21795,comp:.07,emp:.02},null,{min:1750,max:27468},4775),
   mz:CI("梅州",{min:4313,max:21567,comp:.055,emp:.02},null,{min:1750,max:26315},4775,{tiers:[{name:"企业单位",comp:.055,emp:.02},{name:"机关事业单位",comp:.065,emp:.02}],note:"长护险2025.7已实施(从医保费划转不额外负担)"}),
   sw:CI("汕尾",{min:4585,max:22923,comp:.06,emp:.02},null,{min:1750,max:27849},4775,{rent:800,tiers:[{name:"统账结合",comp:.06,emp:.02},{name:"单建统筹",comp:.048,emp:0}],note:"单建统筹总费率4.8%(官方未拆分个人比例,按0计)"}),
   hy:CI("河源",{min:4288,max:21441,comp:.05,emp:.02},null,{min:1750,max:25470},4775,{rent:800,note:"机关事业单位单位费率6%；单建统筹5%(灵活就业)"}),
   yj:CI("阳江",{min:4120,max:20598,comp:.05,emp:.02},{min:4120,max:20598,comp:.01},{min:1750,max:28356}),
-  qy:CI("清远",{min:4157,max:20787,comp:.065,emp:.02},{min:4157,max:20787,comp:.01},{min:1750,max:27593},4775,{ltc:{emp:.0015,comp:.0015},note:"长护险拟2026.7实施(0.3%各半)"}),
+  qy:CI("清远",{min:4157,max:20787,comp:.065,emp:.02},{min:4157,max:20787,comp:.008},{min:1750,max:27593},4775,{ltc:{emp:.0015,comp:.0015},note:"长护险拟2026.7实施(0.3%各半)"}),
   cz:CI("潮州",{min:3763,max:18816,comp:.074,emp:.02},null,{min:1750,max:26043},4775,{tiers:[{name:"综合医保(其他单位)",comp:.074,emp:.02},{name:"综合医保(财政拨款)",comp:.069,emp:.02},{name:"住院医保(单建)",comp:.045,emp:.005}]}),
   jy:CI("揭阳",{min:3727,max:18636,comp:.06,emp:.02},null,{min:1750,max:24618}),
-  yf:CI("云浮",{min:4556,max:22782,comp:.06,emp:.02},{min:4556,max:22782,comp:.01},{min:1750,max:27642},4775,{rent:800})
+  yf:CI("云浮",{min:4541,max:22704,comp:.06,emp:.02},{min:4541,max:22704,comp:.01},{min:1750,max:27642},4775,{rent:800})
 };
+/* 失业保险缴费基数上下限：各市独立（下限=本市最低工资标准，上限=本市上年度在岗职工月平均工资×3）
+   已公布上限：深圳44265/广州39579/珠海34926/佛山28770/东莞24681/惠州26520/江门25599/中山27282/
+   韶关27672/湛江26904/肇庆28220(2026社保年度)/茂名26079/阳江26565/清远21507；
+   汕头/梅州/汕尾/河源/潮州/揭阳/云浮 上限未检索到各市通知，暂沿用44265（待核实） */
+var UNEMP={sz:[2520,44265],gz:[2500,39579],zh:[2080,34926],fs:[2080,28770],dg:[2080,24681],hz:[1850,26520],jm:[1850,25599],zs:[2080,27282],st:[1850,44265],sg:[1750,27672],zj:[1850,26904],zq:[1850,28220],mm:[1750,26079],mz:[1750,44265],sw:[1750,44265],hy:[1750,44265],yj:[1750,26565],qy:[1750,21507],cz:[1750,44265],jy:[1750,44265],yf:[1750,44265]};
+for(var k in UNEMP){CITIES[k].unemp.min=UNEMP[k][0];CITIES[k].unemp.max=UNEMP[k][1];}
 var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,lastHFBase=2520;
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
 var BBR=[[3000,.03,0],[12000,.10,210],[25000,.20,1410],[35000,.25,2660],[55000,.30,4410],[80000,.35,7160],[1/0,.45,15160]];
@@ -350,6 +356,7 @@ function renderMedBtns(){
   var ts=CITY.tiers||[];
   if(ts.length<2){$("medRow").style.display="none";med=1;return;}
   $("medRow").style.display="";
+  if(med<1||med>ts.length)med=1;
   var locked=CITY.hukou&&hk===1;
   $("medNote").textContent=locked?"深户仅限一档":"";
   var h="";
@@ -419,7 +426,7 @@ function calc(){
   if(gv("hfBase")>0)lastHFBase=gv("hfBase");
   if(hfR===0){$("hfBase").value=0;$("hfBase").disabled=true;}
   else{$("hfBase").disabled=false;if(gv("hfBase")<=0)$("hfBase").value=lastHFBase>0?lastHFBase:HF.min;}
-  var md=ts.length>=2?ts[med-1]:M;
+  var md=ts.length>=2?(ts[med-1]||M):M;
   var ml=ts.length>=2?md.name:"医疗保险";
   var ltc=CITY.ltc&&$("ltcOn").checked;
   var pB=cl(gv("pBase"),P.min,P.max);
@@ -598,7 +605,7 @@ function toggleAllHist(on){
 }
 function calcHist(){
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf,ts=CITY.tiers||[];
-  var md=ts.length>=2?ts[med-1]:M;
+  var md=ts.length>=2?(ts[med-1]||M):M;
   var ltc=CITY.ltc&&$("ltcOn").checked;
   var cumIncome=0,cumDed=0,prevTax=0,totSal=0,totSi=0,totHf=0,totTax=0,totNet=0;
   histRows.forEach(function(r){
