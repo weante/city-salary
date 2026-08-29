@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>广东工资计算器 · 社保公积金个税</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg,#f8fafc);color:var(--text,#1f2937);font-size:13px;line-height:1.5}
@@ -136,7 +142,8 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 .city-card.warn{outline:1px dashed #f59e0b}
 .city-card.warn .cd{color:#f59e0b}
 </style>
-
+</head>
+<body>
 <div class="w">
 <h1>广东工资计算器</h1>
 <div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（2025-2026年度 · 每年7月15日更新基数）</div>
@@ -330,6 +337,7 @@ function selectCity(k){
   $("ltcWrap").style.display=CITY.ltc?"":"none";
   $("ltcRate").textContent=CITY.ltc?"个人"+fmtPct(CITY.ltc.emp)+"% · "+fmtPct(CITY.ltc.comp)+"%":"";
   if(!CITY.hukou)hk=0;
+  $("hk0").className=hk===0?"a":"";$("hk1").className=hk===1?"a":"";
   renderMedBtns();
   if(houseMode===1){
     $("houseLabel").textContent="住房租金("+CITY.name+")";
@@ -349,6 +357,7 @@ function selectCity(k){
 function renderMedBtns(){
   var ts=CITY.tiers||[];
   if(ts.length<2){$("medRow").style.display="none";med=1;return;}
+  if(med>ts.length)med=ts.length;
   $("medRow").style.display="";
   var locked=CITY.hukou&&hk===1;
   $("medNote").textContent=locked?"深户仅限一档":"";
@@ -777,3 +786,5 @@ function exportPDF(){
 var now=new Date();
 $("month").value=now.getMonth()+1;
 </script>
+</body>
+</html>
