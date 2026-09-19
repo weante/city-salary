@@ -83,6 +83,34 @@ for (const key in CITIES) {
 }
 if (!missing) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市的基数与名称在 AGENTS.md / SKILL.md 中均可检索到`);
 
+/* ---------- C. 文档陈旧表述 lint ----------
+   教训来自一次真实漂移：时效机制改成双检查点后，README/SKILL/AGENTS 都改了，
+   docs/ 下的安装文档漏改，残留"每年 7 月 15 日后"的单检查点表述长达一个版本。
+   机制类措辞改版时，这里跟着加对应的 lint 模式。 */
+console.log('\nC. 文档陈旧表述');
+const MD_FILES = ['README.md', 'SKILL.md', 'AGENTS.md']
+  .concat(fs.existsSync(path.join(ROOT, 'docs'))
+    ? fs.readdirSync(path.join(ROOT, 'docs')).filter(f => f.endsWith('.md')).map(f => 'docs/' + f)
+    : []);
+const STALE_PATTERNS = [
+  [/7\s*月\s*15\s*日后/, '单一检查点表述"7月15日后"（双检查点机制下应为：1月(医保)/7月(养老公积金)/限期费率到期）'],
+  [/广东省\s*21\s*个?\s*地级市(?!.*北京)/, '城市清单未包含京沪'],
+];
+let staleHits = 0;
+for (const f of MD_FILES) {
+  let content;
+  try { content = read(f); } catch (e) { continue; }
+  for (const [re, why] of STALE_PATTERNS) {
+    const m = content.match(re);
+    if (m) {
+      const line = content.slice(0, m.index).split('\n').length;
+      console.log(`  ✗ ${f}:${line} 残留 ${why}`);
+      staleHits++; fail++;
+    }
+  }
+}
+if (!staleHits) console.log(`  ✓ ${MD_FILES.length} 份文档无陈旧表述`);
+
 /* ---------- 汇总 ---------- */
 console.log('\n' + '='.repeat(58));
 if (fail) {

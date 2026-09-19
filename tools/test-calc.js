@@ -49,8 +49,21 @@ function loadCalculator() {
   api._check = (k, v) => { document.getElementById(k).checked = v; };
   api._text = (k) => document.getElementById(k).textContent;
   api._html = (k) => document.getElementById(k).innerHTML;
-  /* 从渲染出的 HTML 里取某个数字（千分位会被去掉） */
-  api._grab = (re) => { const x = api._html('res').match(re); return x ? parseFloat(x[1].replace(/,/g, '')) : null; };
+  /* 按 id 从渲染结果里取数字。只依赖 id（稳定契约），不依赖内联样式；
+     桩不做 DOM 解析，所以从 HTML 字符串里定位——找不到就抛出带 id 的明确错误，
+     而不是像过去那样返回 null 让断言以"实际=null"的形式含糊失败。 */
+  const renderRoots = () => api._html('res') + api._html('bonusResult') + api._html('histSum') + api._html('histTable');
+  api._cell = (id) => {
+    const m = renderRoots().match(new RegExp('id="' + id + '"[^>]*>([^<]*)<'));
+    if (!m) throw new Error(`渲染结果中找不到 id=${id} 的输出节点`);
+    return m[1];
+  };
+  api._num = (id) => parseFloat(api._cell(id).replace(/[^\d.\-]/g, ''));
+  api._has = (id) => new RegExp('id="' + id + '"').test(renderRoots());
+  /* 桩元素属性（可见性/类名等），用于断言交互状态而非文本 */
+  api._style = (id) => document.getElementById(id).style.display;
+  api._class = (id) => document.getElementById(id).className;
+  api._checked = (id) => document.getElementById(id).checked;
   return api;
 }
 
@@ -136,10 +149,10 @@ function runCase(city, opt) {
   }, opt || {}));
   A.calc();
   return {
-    si: A._grab(/个人社保合计<\/label><span class="v b" style="color:#059669">([\d,.]+)/),
-    tax: A._grab(/月应扣个税<\/label><span class="v b" style="color:#e11d48">([\d,.]+)/),
-    net: A._grab(/class="bg">([\d,.]+)<span>元/),
-    hf: A._grab(/个人缴存<\/label><span class="v" style="color:#0284c7">([\d,.]+)/),
+    si: A._num('resSI'),
+    tax: A._num('resTax'),
+    net: A._num('resNet'),
+    hf: A._num('resHF'),
   };
 }
 
@@ -154,7 +167,7 @@ function runCase(city, opt) {
   const cumTx = Math.max(0, 7500 * mW - mDed * mW);
   const tax = Math.max(0, Math.max(0, officialTx(cumTx)) - Math.max(0, officialTx(Math.max(0, 7500 * (mW - 1) - mDed * (mW - 1)))));
   const net = 7500 - si - hf - tax;
-  const got = { si: A._grab(/个人社保合计<\/label><span class="v b" style="color:#059669">([\d,.]+)/), tax: A._grab(/月应扣个税<\/label><span class="v b" style="color:#e11d48">([\d,.]+)/), net: A._grab(/class="bg">([\d,.]+)<span>元/) };
+  const got = { si: A._num('resSI'), tax: A._num('resTax'), net: A._num('resNet') };
   console.log(`  深圳 7500/基数6750/公积金5%/赡养老人1500`);
   console.log(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)})`);
   console.log(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
@@ -173,7 +186,7 @@ function runCase(city, opt) {
   const mDed = si + hf + 5000 + 1500, mW = 7;
   const cum = (n) => Math.max(0, Math.max(0, officialTx(Math.max(0, 20000 * n - mDed * n))));
   const tax = cum(mW) - cum(mW - 1), net = 20000 - si - hf - tax;
-  const got = { si: A._grab(/个人社保合计<\/label><span class="v b" style="color:#059669">([\d,.]+)/), tax: A._grab(/月应扣个税<\/label><span class="v b" style="color:#e11d48">([\d,.]+)/), net: A._grab(/class="bg">([\d,.]+)<span>元/) };
+  const got = { si: A._num('resSI'), tax: A._num('resTax'), net: A._num('resNet') };
   console.log(`  北京 20000/基数20000/公积金12%/赡养老人1500（医保个人含大额互助3元）`);
   console.log(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)}，其中医保 ${fmt(mE)}=400+3)`);
   console.log(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
@@ -190,7 +203,7 @@ function runCase(city, opt) {
   const mDed = si + hf + 5000, mW = 7;
   const cum = (n) => Math.max(0, Math.max(0, officialTx(Math.max(0, 30000 * n - mDed * n))));
   const tax = cum(mW) - cum(mW - 1), net = 30000 - si - hf - tax;
-  const got = { si: A._grab(/个人社保合计<\/label><span class="v b" style="color:#059669">([\d,.]+)/), tax: A._grab(/月应扣个税<\/label><span class="v b" style="color:#e11d48">([\d,.]+)/), net: A._grab(/class="bg">([\d,.]+)<span>元/) };
+  const got = { si: A._num('resSI'), tax: A._num('resTax'), net: A._num('resNet') };
   console.log(`  上海 30000/基数30000/公积金7%（无专项附加）`);
   console.log(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)})`);
   console.log(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
@@ -209,31 +222,39 @@ section('4. 基数上下限夹取');
   A.selectCity('gz');
   A._setMany({ salary: 60000, month: 12, startMonth: 1, pBase: 60000, mBase: 60000, uBase: 60000, hfBase: 60000 });
   A.calc();
-  const rows = [...A._html('res').matchAll(/color:#6b7280;font-variant-numeric:tabular-nums">([\d,.]+)<\/span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">([\d.]+)%/g)]
-    .map(x => [parseFloat(x[1].replace(/,/g, '')), x[2]]);
-  ok('广州·养老基数夹取到上限', rows[0][0], 27549);
-  ok('广州·医疗基数夹取到上限', rows[1][0], 31170);
-  ok('广州·失业基数夹取到上限', rows[2][0], 44265);
-  console.log(`  广州 输入60000 → 养老${rows[0][0]} / 医疗${rows[1][0]} / 失业${rows[2][0]}`);
+  const rows = [A._num('ob0'), A._num('ob1'), A._num('ob2')];
+  ok('广州·养老基数夹取到上限', rows[0], 27549);
+  ok('广州·医疗基数夹取到上限', rows[1], 31170);
+  ok('广州·失业基数夹取到上限', rows[2], 44265);
+  console.log(`  广州 输入60000 → 养老${rows[0]} / 医疗${rows[1]} / 失业${rows[2]}`);
 
   /* 北京 输入低于下限 → 夹取到 7270；高于上限 → 36348 */
   A.selectCity('bj');
   A._setMany({ salary: 100000, pBase: 1000, mBase: 1000, uBase: 1000, hfBase: 100000, month: 12, startMonth: 1 });
   A.calc();
-  const bjRows = [...A._html('res').matchAll(/color:#6b7280;font-variant-numeric:tabular-nums">([\d,.]+)<\/span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">([\d.]+)%/g)]
-    .map(x => [parseFloat(x[1].replace(/,/g, '')), x[2]]);
-  ok('北京·养老基数夹取到下限', bjRows[0][0], 7270);
-  ok('北京·医疗基数夹取到下限', bjRows[1][0], 7270);
-  console.log(`  北京 输入1000 → 养老${bjRows[0][0]} / 医疗${bjRows[1][0]}（下限7270）`);
+  const bjRows = [A._num('ob0'), A._num('ob1')];
+  ok('北京·养老基数夹取到下限', bjRows[0], 7270);
+  ok('北京·医疗基数夹取到下限', bjRows[1], 7270);
+  console.log(`  北京 输入1000 → 养老${bjRows[0]} / 医疗${bjRows[1]}（下限7270）`);
+
+  /* F4：北京医保个人含 3 元大额互助，明细行须标注，否则"2%×基数≠金额"看起来像算错 */
+  const medRowLabel = A._html('res').match(/grid4r"><span style="color:#6b7280">([^<]+)<\/span><span id="ob1"/);
+  ok('北京·医疗行标注"含3元互助"', medRowLabel ? medRowLabel[1] : null, '医疗保险(含3元互助)');
+  console.log(`  北京·医疗行险种名：「${medRowLabel ? medRowLabel[1] : '未找到'}」`);
+
+  /* F5：生育并入医保的城市应隐藏生育基数输入行 */
+  ok('北京·生育基数行已隐藏', A._style('mtRow'), 'none');
+  A.selectCity('sz');  /* 深圳单独缴生育险，应显示 */
+  ok('深圳·生育基数行可见', A._style('mtRow'), '');
+  A.selectCity('bj');
 
   /* 上海 输入低于下限 → 7546 */
   A.selectCity('sh');
   A._setMany({ salary: 100000, pBase: 100, mBase: 100, uBase: 100, hfBase: 100, month: 12, startMonth: 1 });
   A.calc();
-  const shRows = [...A._html('res').matchAll(/color:#6b7280;font-variant-numeric:tabular-nums">([\d,.]+)<\/span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">([\d.]+)%/g)]
-    .map(x => [parseFloat(x[1].replace(/,/g, '')), x[2]]);
-  ok('上海·养老基数夹取到下限', shRows[0][0], 7546);
-  console.log(`  上海 输入100 → 养老${shRows[0][0]}（下限7546）`);
+  const shRows = [A._num('ob0')];
+  ok('上海·养老基数夹取到下限', shRows[0], 7546);
+  console.log(`  上海 输入100 → 养老${shRows[0]}（下限7546）`);
 
   /* 公积金基数用另一套区间：北京 2540~36348、上海 2740~37731 */
   A.selectCity('bj'); A._setMany({ hfBase: 100, salary: 20000 }); A.calc();
@@ -262,25 +283,45 @@ ok('上海·输入12%被归一到7%',
 section('6. D1 大病医疗只进年度汇算');
 (function medicalCase() {
   A.selectCity('sz');
-  A._setMany({ salary: 40000, month: 7, startMonth: 1, pBase: 40000, mBase: 40000, uBase: 40000, mtBase: 40000, ijBase: 40000, hfBase: 40000, hfRate: 5, bonus: 0, healthIns: 0, persPen: 0, annuity: 0 });
+  /* 基数取 27000：低于深圳养老上限 27549，避免夹取干扰独立复算 */
+  A._setMany({ salary: 40000, month: 7, startMonth: 1, pBase: 27000, mBase: 27000, uBase: 27000, mtBase: 27000, ijBase: 27000, hfBase: 27000, hfRate: 5, bonus: 0, healthIns: 0, persPen: 0, annuity: 0 });
   A._check('medicalOn', false); A._check('childOn', false); A._check('eduOn', false);
   A._check('houseOn', false); A._check('elderlyOn', false);
   A.calc();
-  const taxBefore = A._grab(/月应扣个税<\/label><span class="v b" style="color:#e11d48">([\d,.]+)/);
+  const taxBefore = A._num('resTax');
+  const annualBefore = A._num('resATax');
 
   A._check('medicalOn', true); A._set('medicalAmt', 6667); A.calc();
-  const taxAfter = A._grab(/月应扣个税<\/label><span class="v b" style="color:#e11d48">([\d,.]+)/);
+  const taxAfter = A._num('resTax');
+  const annualAfter = A._num('resATax');
   const spTotText = A._text('spTot');
 
   ok('填入大病医疗后当月个税不变', taxAfter, taxBefore);
   ok('大病医疗未计入月度专项附加合计', /^0\.00 元\/月/.test(spTotText) || spTotText.indexOf('0.00 元/月') === 0, true);
   ok('提示文案说明仅年度汇算扣除', spTotText.indexOf('仅年度汇算扣除') > -1, true);
+  ok('年度税因大病医疗而下降', annualAfter < annualBefore, true);
+  ok('年度预估段带口径说明', /口径说明/.test(A._html('res')), true);
   console.log(`  大病医疗 6667 填入前后当月个税：${fmt(taxBefore)} → ${fmt(taxAfter)}（应相等）`);
-  console.log(`  专项附加合计栏：「${spTotText}」`);
+  console.log(`  年度预估税：${fmt(annualBefore)} → ${fmt(annualAfter)}（降 ${fmt(annualBefore - annualAfter)}）`);
 
-  /* 年度预估里应能看到大病医疗在起作用 */
-  const annualDedLine = /含大病医疗/.test(A._html('res'));
-  ok('年度预估段标注大病医疗', annualDedLine, true);
+  /* F8 回归：年度大病医疗 = min(月均×12, 80000)，不随就业月数折算。
+     1月入职时 aM=12，"×12"与"×aM"结果相同（仅差封顶4元），所以真正的判别用例是年中入职。 */
+  const siE0 = 27000 * (0.08 + 0.02 + 0.002), hfE0 = 27000 * 0.05;
+  const mDed0 = siE0 + hfE0 + 5000;
+  const medAnnual = Math.min(6667 * 12, 80000);
+  ok('年度大病医疗封顶 80000（6667×12=80004）', medAnnual, 80000);
+  ok('1月入职：年度税 = 独立复算（扣全年80000）',
+    annualAfter, Math.max(0, officialTx(Math.max(0, 40000 * 12 - mDed0 * 12 - medAnnual))), 0.02);
+
+  /* 7月入职（就业6个月）：若错误地按就业月数折算，扣除只有40002，年度税会偏高 */
+  A._setMany({ startMonth: 7, month: 12 });
+  A.calc();
+  const aM6 = 6;
+  const expect6 = Math.max(0, officialTx(Math.max(0, 40000 * aM6 - mDed0 * aM6 - medAnnual)));
+  const wrong6 = Math.max(0, officialTx(Math.max(0, 40000 * aM6 - mDed0 * aM6 - 6667 * aM6)));
+  ok('7月入职：大病医疗仍按全年80000扣（不随就业月数折算）', A._num('resATax'), expect6, 0.02);
+  ok('7月入职：与"按就业月数折算"的错误结果确有差异', Math.abs(expect6 - wrong6) > 1, true);
+  console.log(`  7月入职：正确年度税=${fmt(expect6)}，若按就业月数折算会得到=${fmt(wrong6)}（差 ${fmt(wrong6 - expect6)}）`);
 })();
 
 /* =========================================================
@@ -291,14 +332,14 @@ section('7. D2 补充扣除的现金流');
   A.selectCity('bj');
   A._setMany({ salary: 30000, month: 7, startMonth: 1, pBase: 30000, mBase: 30000, uBase: 30000, mtBase: 30000, ijBase: 30000, hfBase: 30000, hfRate: 12, healthIns: 0, persPen: 0, annuity: 0 });
   A._check('medicalOn', false); A.calc();
-  const net0 = A._grab(/class="bg">([\d,.]+)<span>元/);
-  const tax0 = A._grab(/月应扣个税<\/label><span class="v b" style="color:#e11d48">([\d,.]+)/);
+  const net0 = A._num('resNet');
+  const tax0 = A._num('resTax');
 
   /* 个人养老金 1000 + 税优健康险 200 + 企业年金 4%（按养老缴费基数30000 → 1200） */
   A._setMany({ persPen: 1000, healthIns: 200, annuity: 4 });
   A.calc();
-  const net1 = A._grab(/class="bg">([\d,.]+)<span>元/);
-  const tax1 = A._grab(/月应扣个税<\/label><span class="v b" style="color:#e11d48">([\d,.]+)/);
+  const net1 = A._num('resNet');
+  const tax1 = A._num('resTax');
 
   /* 企业年金按"缴费工资基数"（此处取养老缴费基数30000）而非月薪 */
   const anAmt = 30000 * 0.04, cash = 1000 + 200 + anAmt;
@@ -386,6 +427,28 @@ section('9. 历史明细页');
   const drop = netNoSupp - rows2[0].net;
   ok('历史页实发确实下降了', drop > 900 && drop <= 1000, true);
   console.log(`  历史页首月实发：${fmt(netNoSupp)} → ${fmt(rows2[0].net)}（少 ${fmt(drop)}，个人养老金1000 − 省税）`);
+
+  /* F6：补充扣除>0 时应出现第 5 个汇总框，且渲染出来的数字四则运算闭合 */
+  const sumHtml = A._html('histSum');
+  eq('汇总框数量 = 5（含补充扣除）', (sumHtml.match(/class="sum-box"/g) || []).length, 5);
+  eq('汇总区 grid 用 c5 类（而非内联样式，避免盖掉移动端媒体查询）', A._class('histSum'), 'sum-grid c5');
+  const sSal = A._num('sumSal'), sSI = A._num('sumSI'), sTax = A._num('sumTax'),
+        sSupp = A._num('sumSupp'), sNet = A._num('sumNet');
+  ok('汇总框闭合：税前−五险一金−个税−补充扣除 = 实发', sSal - sSI - sTax - sSupp, sNet, 0.02);
+  console.log(`  汇总框：${fmt(sSal)} − ${fmt(sSI)} − ${fmt(sTax)} − ${fmt(sSupp)} = ${fmt(sNet)} ✓`);
+
+  /* 补充扣除为 0 时回到 4 框，且同样闭合 */
+  A._set('persPen', 0); A.calc(); A.buildHistory();
+  const sumHtml0 = A._html('histSum');
+  eq('无补充扣除时汇总框数量 = 4', (sumHtml0.match(/class="sum-box"/g) || []).length, 4);
+  eq('无补充扣除时 grid 类不含 c5', A._class('histSum'), 'sum-grid');
+  ok('无补充扣除时也闭合', A._num('sumSal') - A._num('sumSI') - A._num('sumTax'), A._num('sumNet'), 0.02);
+
+  /* F5：北京生育并入医保，历史表不应出现"生育基数"列；深圳单独缴生育险，应有该列 */
+  ok('北京·历史表无生育基数列', /生育基数/.test(A._html('histTable')), false);
+  A.selectCity('sz'); A.calc(); A.buildHistory();
+  ok('深圳·历史表有生育基数列', /生育基数/.test(A._html('histTable')), true);
+  console.log('  历史表生育基数列：北京无 / 深圳有 ✓');
 })();
 
 /* =========================================================

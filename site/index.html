@@ -106,7 +106,8 @@ table.hist td input{width:72px;padding:2px 4px;text-align:right;border:1px solid
 table.hist td input:focus{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.12)}
 table.hist tr:hover td{background:#f8fafc}
 .sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-@media(max-width:720px){.sum-grid{grid-template-columns:repeat(2,1fr)}}
+.sum-grid.c5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:720px){.sum-grid,.sum-grid.c5{grid-template-columns:repeat(2,1fr)}}
 .sum-box{background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:8px;text-align:center}
 .sum-box .sl{font-size:10px;color:#9ca3af}
 .sum-box .sv{font-size:15px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums}
@@ -179,7 +180,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
     <div class="base-row"><span class="bl">养老保险<span class="rng" id="rngP"></span></span><div style="display:flex;align-items:center"><input type="number" id="pBase" value="4775" min="0" step="100"><span class="u">元</span></div></div>
     <div class="base-row"><span class="bl">医疗保险<span class="rng" id="rngM"></span></span><div style="display:flex;align-items:center"><input type="number" id="mBase" value="6727" min="0" step="100"><span class="u">元</span></div></div>
     <div class="base-row"><span class="bl">失业保险<span class="rng" id="rngU"></span></span><div style="display:flex;align-items:center"><input type="number" id="uBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
-    <div class="base-row"><span class="bl">生育保险<span class="rng" id="rngMT"></span></span><div style="display:flex;align-items:center"><input type="number" id="mtBase" value="6727" min="0" step="100"><span class="u">元</span></div></div>
+    <div class="base-row" id="mtRow"><span class="bl">生育保险<span class="rng" id="rngMT"></span></span><div style="display:flex;align-items:center"><input type="number" id="mtBase" value="6727" min="0" step="100"><span class="u">元</span></div></div>
     <div class="base-row"><span class="bl">工伤保险<span class="rng" id="rngIJ"></span></span><div style="display:flex;align-items:center"><input type="number" id="ijBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
     <div class="base-row"><span class="bl">住房公积金<span class="rng" id="rngHF"></span></span><div style="display:flex;align-items:center"><input type="number" id="hfBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
     <div class="sld"><label>公积金比例<span class="h" id="hfRateHint">0 或 5~12%</span></label><input type="range" id="hfRate" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateV">5%</span></div>
@@ -246,7 +247,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 <div id="page1" style="display:none">
   <div class="c">
     <div class="tbl-title"><span class="st bl" style="margin:0;border:none;padding:0">逐月工资与五险一金（<span id="histCity"></span>）</span><span class="tt" id="rangeLabel"></span></div>
-    <div class="nt" style="margin-bottom:6px">每月工资、五险基数、公积金基数、公积金比例均可独立调整（默认继承第一页数值）。个税按累计预扣预缴从首月起累计，当前月之后为预测月份（蓝色）。</div>
+    <div class="nt" style="margin-bottom:6px">每月工资、五险基数、公积金基数、公积金比例均可独立调整（默认继承第一页数值）。个税按累计预扣预缴从首月起累计，当前月之后为预测月份（蓝色）。<b>本页累计个税为月度预扣口径</b>，不含仅年度汇算可扣的大病医疗（对比见第一页"年度预估"）。</div>
     <div class="tbl-wrap">
       <table class="hist" id="histTable"></table>
     </div>
@@ -368,6 +369,8 @@ function selectCity(k){
     if(gv("houseAmt")>CITY.rent)$("houseAmt").value=CITY.rent;
   }
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf;
+  /* 生育并入医保的城市（mat.comp=0）隐藏生育基数输入框：该输入不影响任何计算 */
+  $("mtRow").style.display=MT.comp>0?"":"none";
   $("pBase").value=P.min;$("mBase").value=M.min||P.min;$("uBase").value=U.min;$("mtBase").value=MT.min||M.min||P.min;$("ijBase").value=IJ.min;$("hfBase").value=HF.min;
   lastHFBase=HF.min;
   $("rngP").textContent=P.min+"~"+P.max;$("rngM").textContent=(M.min||"-")+"~"+(M.max||"-");
@@ -377,7 +380,7 @@ function selectCity(k){
     (CITY.region==="广东"?'养老/失业/工伤按广东省统一标准，医保/公积金按当地标准':'五险按当地统一基数区间，医保/公积金按当地标准')+
     '（'+(CITY.note||"官方数据")+'）<br>公积金 5%-'+CITY.hfRateMax+'%'+
     (CITY.medFixEmp>0?' · 医保个人另缴大额医疗互助 '+fm(CITY.medFixEmp)+' 元/月':'')+
-    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 每年1月(医保)/7月(养老公积金)需重新核查';
+    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
   calc();
 }
 function renderMedBtns(){
@@ -476,7 +479,8 @@ function calc(){
   /* 大病医疗按规定只能在年度汇算清缴时据实扣除，不进月度预扣预缴 */
   var medicalA=$("medicalOn").checked?cl(gv("medicalAmt"),0,6667):0;
   var spT=childA+eduA+houseA+elderlyA;      /* 可用于月度预扣的专项附加 */
-  var spTAnnual=spT+medicalA;               /* 年度汇算再加计大病医疗 */
+  /* 大病医疗为年度汇算项：按全年12个月计、限额80000/年，不随就业月数折算（税法年度限额与入职月份无关） */
+  var medicalAnnual=Math.min(medicalA*12,80000);
   currentSpT=spT;
   $("spTot").textContent=fm(spT)+" 元/月"+(medicalA>0?"（另有大病医疗 "+fm(medicalA)+" 元/月，仅年度汇算扣除）":"");
   /* 补充扣除：既减少应纳税所得额（月度预扣即可享受），又是个人实际支出的现金 */
@@ -493,7 +497,7 @@ function calc(){
   var curT=Math.max(0,cumT-Math.max(0,tx(pTx).t));
   var net=sal-siE-hfE-curT-suppCash;
   var ratio=sal>0?net/sal*100:0,totD=siE+hfE+curT+suppCash;
-  var aI=sal*aM,aDed=(siE+hfE+5000+spTAnnual+suppM)*aM,aTx=Math.max(0,aI-aDed);
+  var aI=sal*aM,aDed=(siE+hfE+5000+spT+suppM)*aM+medicalAnnual,aTx=Math.max(0,aI-aDed);
   var aT=Math.max(0,tx(aTx).t),aNet=aI-(siE+hfE)*aM-suppCash*aM-aT;
   var suppSave=Math.max(0,tx(Math.max(0,aTx+suppM*aM)).t-aT);
   var bonus=gv("bonus"),bi=btx(bonus),bonusNet=bonus-bi.t;
@@ -501,19 +505,20 @@ function calc(){
   if(bonus>0){for(var i=0;i<TRAPS.length;i++){var lo=TRAPS[i][0];var netLo=lo-btx(lo).t;if(bonus>lo&&bonusNet<netLo){trapDetail="⚠ 奖金 "+fm(bonus)+" 税后 "+fm(bonusNet)+"，反而低于 "+fm(lo)+" 的税后 "+fm(netLo)+"，少拿 "+fm(netLo-bonusNet)+" 元！建议将超出部分以福利形式发放。";break;}}}
   $("baseNote").innerHTML="养老 "+fm(P.min)+"~"+fm(P.max)+" · "+ml+" "+fm(M.min)+"~"+fm(M.max)+" · 失业 "+fm(U.min)+"~"+fm(U.max)+"<br>公积金 "+fm(HF.min)+"~"+fm(HF.max)+" · 基数每年7月15日调整";
   var h="";
-  h+='<div class="hero"><div class="tp"><div><div class="lb">税后实发（'+CITY.name+' · '+mo+'月）</div><div class="bg">'+fm(net)+'<span>元</span></div></div><div style="text-align:right"><div class="lb">实发比例</div><div class="pc">'+ratio.toFixed(1)+'%</div></div></div>';
+  h+='<div class="hero"><div class="tp"><div><div class="lb">税后实发（'+CITY.name+' · '+mo+'月）</div><div class="bg"><span id="resNet">'+fm(net)+'</span><span>元</span></div></div><div style="text-align:right"><div class="lb">实发比例</div><div class="pc">'+ratio.toFixed(1)+'%</div></div></div>';
   h+='<div class="cd"><div class="mn"><div class="ml">五险一金(个人)</div><div class="mv">'+fm(siE+hfE)+'</div></div><div class="mn"><div class="ml">个人所得税</div><div class="mv">'+fm(curT)+'</div></div><div class="mn"><div class="ml">扣除合计</div><div class="mv">'+fm(totD)+'</div></div></div>';
   h+='<div class="ex">本年度已就业 '+mW+' 个月（'+startM+'月入职）</div></div>';
   h+='<div class="c"><div class="st gr">社保缴费明细（'+CITY.name+(CITY.hukou?(hk===1?' · 深户':' · 非深户'):'')+'）</div>';
   h+='<div class="grid4"><span>险种</span><span style="text-align:right">基数</span><span style="text-align:right">个人%</span><span style="text-align:right">个人金额</span></div>';
-  var rows=[["养老保险",pB,P.emp,pE],[ml,mB,md.emp,mE],["失业保险",uB,U.emp,uE]];
+  var medLabel=medFix>0?ml+"(含"+medFix+"元互助)":ml;
+  var rows=[["养老保险",pB,P.emp,pE],[medLabel,mB,md.emp,mE],["失业保险",uB,U.emp,uE]];
   if(ltc)rows.push(["长期护理险",pB,CITY.ltc.emp,ltcE]);
-  rows.forEach(function(r){h+='<div class="grid4r"><span style="color:#6b7280">'+r[0]+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fm(r[1])+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fmtPct(r[2])+'%</span><span style="text-align:right;font-variant-numeric:tabular-nums">'+fm(r[3])+'</span></div>';});
-  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">个人社保合计</label><span class="v b" style="color:#059669">'+fm(siE)+' 元</span></div>';
+  rows.forEach(function(r,i){h+='<div class="grid4r"><span style="color:#6b7280">'+r[0]+'</span><span id="ob'+i+'" style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fm(r[1])+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fmtPct(r[2])+'%</span><span style="text-align:right;font-variant-numeric:tabular-nums">'+fm(r[3])+'</span></div>';});
+  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">个人社保合计</label><span class="v b" id="resSI" style="color:#059669">'+fm(siE)+' 元</span></div>';
   h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+fmtPct(pComp)+'%+医疗'+fmtPct(md.comp)+'%+失业'+fmtPct(U.comp)+'%+工伤'+fmtPct(IJ.comp)+'%'+(MT.comp>0?'+生育'+fmtPct(MT.comp)+'%':'，生育并入医保')+(ltc?'+长护'+fmtPct(CITY.ltc.comp)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
   h+='<div class="c"><div class="st sk">住房公积金'+(hfR===0?'（未缴存）':'')+'</div>';
   h+='<div class="r"><label>基数 '+fm(hB)+' × '+hfR+'%</label><span class="v"></span></div>';
-  h+='<div class="r"><label>个人缴存</label><span class="v" style="color:#0284c7">'+fm(hfE)+'</span></div>';
+  h+='<div class="r"><label>个人缴存</label><span class="v" id="resHF" style="color:#0284c7">'+fm(hfE)+'</span></div>';
   h+='<div class="r"><label>单位缴存</label><span class="v" style="color:#9ca3af">'+fm(hfC)+'</span></div>';
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">公积金入账合计</label><span class="v b" style="color:#0284c7">'+fm(hfE+hfC)+' 元</span></div></div>';
   h+='<div class="c"><div class="st ro">个税 · 累计预扣预缴（已就业'+mW+'个月）</div>';
@@ -524,21 +529,23 @@ function calc(){
   if(suppM>0)h+='<div class="r ind"><label>− 补充扣除（年金/个人养老金/税优险）</label><span class="v">'+fm(suppM*mW)+'</span></div>';
   h+='<div class="sp"></div><div class="r"><label style="font-weight:600;color:#1f2937">累计应纳税所得额</label><span class="v b">'+fm(cumTx)+'</span></div>';
   h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">税率 '+(ci.r*100).toFixed(0)+'% / 速算 '+fm(ci.d)+'</label><span style="font-size:11px;color:#9ca3af;font-variant-numeric:tabular-nums">累计税 '+fm(cumT)+'</span></div>';
-  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">'+mo+'月应扣个税</label><span class="v b" style="color:#e11d48">'+fm(curT)+' 元</span></div></div>';
+  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">'+mo+'月应扣个税</label><span class="v b" id="resTax" style="color:#e11d48">'+fm(curT)+' 元</span></div></div>';
   h+='<div class="c"><div class="st vi">年度预估（本年度就业'+aM+'个月 · '+startM+'月入职）</div>';
   h+='<div class="r"><label>本年度税前收入</label><span class="v">'+fm(aI)+'</span></div>';
   h+='<div class="r ind"><label>− 五险一金（个人）</label><span class="v">'+fm((siE+hfE)*aM)+'</span></div>';
   h+='<div class="r ind"><label>− 免征额 5000×'+aM+'</label><span class="v">'+fm(5000*aM)+'</span></div>';
-  h+='<div class="r ind"><label>− 专项附加扣除</label><span class="v">'+fm(spTAnnual*aM)+'</span></div>';
-  if(medicalA>0)h+='<div class="r ind"><label style="font-size:10px;color:#9ca3af">含大病医疗 '+fm(medicalA)+'/月（汇算清缴）</label><span class="v"></span></div>';
+  h+='<div class="r ind"><label>− 专项附加扣除</label><span class="v">'+fm(spT*aM)+'</span></div>';
+  if(medicalA>0)h+='<div class="r ind"><label>− 大病医疗（全年 · 限额80000）</label><span class="v" style="color:#0d9488">'+fm(medicalAnnual)+'</span></div>';
   if(hi>0)h+='<div class="r ind"><label>− 税优健康险</label><span class="v" style="color:#0d9488">'+fm(hi*aM)+'</span></div>';
   if(pp>0)h+='<div class="r ind"><label>− 个人养老金</label><span class="v" style="color:#0d9488">'+fm(pp*aM)+'</span></div>';
   if(anAmt>0)h+='<div class="r ind"><label>− 企业年金(个人'+gv("annuity")+'%)</label><span class="v" style="color:#0d9488">'+fm(anAmt*aM)+'</span></div>';
   h+='<div class="sp"></div>';
   h+='<div class="r"><label style="font-weight:600">年度应纳税所得额</label><span class="v b">'+fm(aTx)+'</span></div>';
   h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">补充扣除年度节税约</label><span style="font-size:11px;color:#0d9488;font-variant-numeric:tabular-nums">'+fm(suppSave)+'</span></div>';
-  h+='<div class="r"><label>年度个人所得税</label><span class="v" style="color:#e11d48">'+fm(aT)+'</span></div>';
-  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">本年度税后收入（至12月）</label><span class="v b" style="color:#7c3aed">'+fm(aNet)+' 元</span></div></div>';
+  h+='<div class="r"><label>年度个人所得税</label><span class="v" id="resATax" style="color:#e11d48">'+fm(aT)+'</span></div>';
+  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">本年度税后收入（至12月）</label><span class="v b" style="color:#7c3aed">'+fm(aNet)+' 元</span></div>';
+  if(medicalA>0)h+='<div class="nt">口径说明：大病医疗仅在年度汇算清缴时扣除，本段为汇算后口径；历史页"累计个税"为月度预扣口径，两者差额≈大病医疗的扣除效果。</div>';
+  h+='</div>';
   var bh='';
   if(bonus>0){
     bh+='<div class="r"><label>奖金金额</label><span class="v b">'+fm(bonus)+'</span></div>';
@@ -555,7 +562,7 @@ function calc(){
   h+='<div class="dk"><div class="dt">工资条汇总（'+CITY.name+' · '+mo+'月）</div>';
   h+='<div class="dr"><span class="dl">税前工资</span><span class="dv" style="font-weight:500">'+fm(sal)+'</span></div>';
   h+='<div class="dr"><span class="dl">− 养老保险</span><span class="dv" style="color:#34d399">'+fm(pE)+'</span></div>';
-  h+='<div class="dr"><span class="dl">− '+ml+'</span><span class="dv" style="color:#34d399">'+fm(mE)+'</span></div>';
+  h+='<div class="dr"><span class="dl">− '+medLabel+'</span><span class="dv" style="color:#34d399">'+fm(mE)+'</span></div>';
   h+='<div class="dr"><span class="dl">− 失业保险</span><span class="dv" style="color:#34d399">'+fm(uE)+'</span></div>';
   if(ltc)h+='<div class="dr"><span class="dl">− 长期护理险</span><span class="dv" style="color:#34d399">'+fm(ltcE)+'</span></div>';
   h+='<div class="dr"><span class="dl">− 住房公积金</span><span class="dv" style="color:#38bdf8">'+fm(hfE)+'</span></div>';
@@ -600,7 +607,9 @@ function buildHistory(){
   renderLegend();
 }
 function renderHistTable(){
-  var h='<tr><th style="width:30px"><input type="checkbox" id="histAll" checked onchange="toggleAllHist(this.checked)" title="全选/全不选"></th><th>月份</th><th>税前工资</th><th>养老基数</th><th>医疗基数</th><th>失业基数</th><th>生育基数</th><th>工伤基数</th><th>公积金基数</th><th>公积金比例</th><th>五险(个人)</th><th>公积金</th><th>个税</th><th>实发工资</th></tr>';
+  /* 生育并入医保的城市（mat.comp=0）不显示生育基数列 */
+  var mtCol=CITY.mat.comp>0;
+  var h='<tr><th style="width:30px"><input type="checkbox" id="histAll" checked onchange="toggleAllHist(this.checked)" title="全选/全不选"></th><th>月份</th><th>税前工资</th><th>养老基数</th><th>医疗基数</th><th>失业基数</th>'+(mtCol?'<th>生育基数</th>':'')+'<th>工伤基数</th><th>公积金基数</th><th>公积金比例</th><th>五险(个人)</th><th>公积金</th><th>个税</th><th>实发工资</th></tr>';
   histRows.forEach(function(r,idx){
     var on=r.on!==false;
     var bg=r.future?"#eff6ff":"";
@@ -611,7 +620,7 @@ function renderHistTable(){
     h+='<td><input type="number" value="'+r.pb+'" min="0" step="100" data-i="'+idx+'" data-f="pb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" value="'+r.mb+'" min="0" step="100" data-i="'+idx+'" data-f="mb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" value="'+r.ub+'" min="0" step="100" data-i="'+idx+'" data-f="ub"'+(on?'':' disabled')+'></td>';
-    h+='<td><input type="number" value="'+r.mtb+'" min="0" step="100" data-i="'+idx+'" data-f="mtb"'+(on?'':' disabled')+'></td>';
+    if(mtCol)h+='<td><input type="number" value="'+r.mtb+'" min="0" step="100" data-i="'+idx+'" data-f="mtb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" value="'+r.ijb+'" min="0" step="100" data-i="'+idx+'" data-f="ijb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" value="'+r.hfb+'" min="0" step="100" data-i="'+idx+'" data-f="hfb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" value="'+r.rate+'" min="0" max="'+CITY.hfRateMax+'" step="1" data-i="'+idx+'" data-f="rate" style="width:46px"'+(on?'':' disabled')+'></td>';
@@ -649,7 +658,7 @@ function calcHist(){
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf,ts=CITY.tiers||[];
   var md=ts.length>=2?ts[med-1]:M;
   var ltc=CITY.ltc&&$("ltcOn").checked;
-  var cumIncome=0,cumDed=0,prevTax=0,totSal=0,totSi=0,totHf=0,totTax=0,totNet=0;
+  var cumIncome=0,cumDed=0,prevTax=0,totSal=0,totSi=0,totHf=0,totTax=0,totNet=0,totSupp=0;
   histRows.forEach(function(r){
     var on=r.on!==false;
     if(!on){r.si=0;r.pi=0;r.mi=0;r.ui=0;r.li=0;r.hf=0;r.tax=0;r.net=0;return;}
@@ -668,7 +677,7 @@ function calcHist(){
     r.tax=Math.max(0,cumTax-prevTax);
     prevTax=cumTax;
     r.net=r.sal-r.si-r.hf-r.tax-currentSupp;
-    totSal+=r.sal;totSi+=r.si;totHf+=r.hf;totTax+=r.tax;totNet+=r.net;
+    totSal+=r.sal;totSi+=r.si;totHf+=r.hf;totTax+=r.tax;totNet+=r.net;totSupp+=currentSupp;
   });
   histRows.forEach(function(r,idx){
     $("csi"+idx).textContent=fm(r.si);
@@ -677,11 +686,15 @@ function calcHist(){
     $("cnet"+idx).textContent=fm(r.net);
   });
   var avgRatio=totSal>0?totNet/totSal*100:0;
+  /* 补充扣除>0 时补一格，否则"税前−五险一金−个税≠实发"，用户会以为算错了。
+     用 class 而非内联样式，否则会盖掉移动端的 2 列媒体查询 */
+  $("histSum").className="sum-grid"+(totSupp>0?" c5":"");
   $("histSum").innerHTML=
-    '<div class="sum-box"><div class="sl">累计税前收入</div><div class="sv" style="color:#2563eb">'+fm(totSal)+'</div></div>'+
-    '<div class="sum-box"><div class="sl">累计五险一金(个人)</div><div class="sv" style="color:#059669">'+fm(totSi+totHf)+'</div></div>'+
-    '<div class="sum-box"><div class="sl">累计个税</div><div class="sv" style="color:#e11d48">'+fm(totTax)+'</div></div>'+
-    '<div class="sum-box"><div class="sl">累计实发 / 平均实发比</div><div class="sv" style="color:#7c3aed">'+fm(totNet)+' · '+avgRatio.toFixed(1)+'%</div></div>';
+    '<div class="sum-box"><div class="sl">累计税前收入</div><div class="sv" style="color:#2563eb"><span id="sumSal">'+fm(totSal)+'</span></div></div>'+
+    '<div class="sum-box"><div class="sl">累计五险一金(个人)</div><div class="sv" style="color:#059669"><span id="sumSI">'+fm(totSi+totHf)+'</span></div></div>'+
+    '<div class="sum-box"><div class="sl">累计个税</div><div class="sv" style="color:#e11d48"><span id="sumTax">'+fm(totTax)+'</span></div></div>'+
+    (totSupp>0?'<div class="sum-box"><div class="sl">累计补充扣除(年金/养老金/税优险)</div><div class="sv" style="color:#0d9488"><span id="sumSupp">'+fm(totSupp)+'</span></div></div>':'')+
+    '<div class="sum-box"><div class="sl">累计实发 / 平均实发比</div><div class="sv" style="color:#7c3aed"><span id="sumNet">'+fm(totNet)+'</span> · '+avgRatio.toFixed(1)+'%</div></div>';
   renderChart();
 }
 function renderLegend(){
