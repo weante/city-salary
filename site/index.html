@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>广东工资计算器 · 社保公积金个税</title>
+<title>城市工资计算器 · 社保公积金个税（广东21市 + 北京/上海）</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg,#f8fafc);color:var(--text,#1f2937);font-size:13px;line-height:1.5}
@@ -145,9 +145,9 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 </head>
 <body>
 <div class="w">
-<h1>广东工资计算器</h1>
-<div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（2025-2026年度 · 每年7月15日更新基数）</div>
-<div class="city-bar"><span class="city-tag" id="cityTag">深圳</span><button class="city-btn" onclick="showOverlay()">切换城市</button><span class="nt" style="margin:0">各市按当地政策计算 · 深圳参数不变</span></div>
+<h1>城市工资计算器</h1>
+<div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（广东21市 + 北京/上海 · 每年1月/7月核查基数）</div>
+<div class="city-bar"><span class="city-tag" id="cityTag">深圳</span><button class="city-btn" onclick="showOverlay()">切换城市</button><span class="nt" style="margin:0">各市按当地政策计算 · 京沪为2026年度、广东为2025-2026年度</span></div>
 <div class="tabs">
   <button class="tab a" id="tab0" onclick="switchTab(0)">单月计算</button>
   <button class="tab" id="tab1" onclick="switchTab(1)">历史明细</button>
@@ -156,7 +156,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 <!-- 城市选择遮罩 -->
 <div class="overlay" id="cityOverlay">
   <h2>请选择工作城市</h2>
-  <div class="os">广东 21 个地级市均可计算（橙框城市部分数据待官方确认，仅供参考）</div>
+  <div class="os">广东 21 个地级市 + 北京 / 上海（橙框城市部分数据待官方确认，仅供参考）</div>
   <div class="city-grid" id="cityGrid"></div>
 </div>
 
@@ -182,7 +182,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
     <div class="base-row"><span class="bl">生育保险<span class="rng" id="rngMT"></span></span><div style="display:flex;align-items:center"><input type="number" id="mtBase" value="6727" min="0" step="100"><span class="u">元</span></div></div>
     <div class="base-row"><span class="bl">工伤保险<span class="rng" id="rngIJ"></span></span><div style="display:flex;align-items:center"><input type="number" id="ijBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
     <div class="base-row"><span class="bl">住房公积金<span class="rng" id="rngHF"></span></span><div style="display:flex;align-items:center"><input type="number" id="hfBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
-    <div class="sld"><label>公积金比例<span class="h">0 或 5~12%</span></label><input type="range" id="hfRate" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateV">5%</span></div>
+    <div class="sld"><label>公积金比例<span class="h" id="hfRateHint">0 或 5~12%</span></label><input type="range" id="hfRate" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateV">5%</span></div>
     <div id="ltcWrap"><label class="chk"><input type="checkbox" id="ltcOn" onchange="calc()">长期护理险（第六险）<span class="h" id="ltcRate"></span></label></div>
     <div class="nt" id="baseNote"></div>
   </div>
@@ -226,7 +226,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
     <div class="st te">补充扣除（年度）</div>
     <div class="r"><label>税优健康险<span class="h">≤200元/月</span></label><div style="display:flex;align-items:center"><input type="number" id="healthIns" value="0" min="0" max="200" step="10"><span class="u">元/月</span></div></div>
     <div class="r"><label>个人养老金<span class="h">≤1000元/月</span></label><div style="display:flex;align-items:center"><input type="number" id="persPen" value="0" min="0" max="1000" step="100"><span class="u">元/月</span></div></div>
-    <div class="r"><label>企业年金（个人）<span class="h">≤工资4%</span></label><div style="display:flex;align-items:center"><input type="number" id="annuity" value="0" min="0" max="4" step="0.5" style="width:54px"><span class="u">%</span></div></div>
+    <div class="r"><label>企业年金（个人）<span class="h">≤缴费工资基数4%</span></label><div style="display:flex;align-items:center"><input type="number" id="annuity" value="0" min="0" max="4" step="0.5" style="width:54px"><span class="u">%</span></div></div>
   </div>
 
   <div class="c">
@@ -270,19 +270,39 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 </div>
 
 <script>
-/* ===== 广东 21 市参数（2025-2026年度，每年7月15日后核查）=====
-   养老：全省单位16%、个人8%（深圳深户另+1%地方补充）；上限27549全省统一，下限广州5510/其他4775
-   失业：全省单位0.8%、个人0.2%；工伤：单位0.2%~1.4%（取最低档）、个人不缴
-   生育：多数市并入医保单位费率（mat.comp=0）；深圳0.5%、佛山1%、阳江1%单独缴纳
-   公积金：5%-12%（个人=单位），各市基数上下限不同 */
+/* ===== 城市参数工厂 =====
+   CI()  广东型：五险基数各自独立；养老上限全省统一27549；失业/工伤全省统一2520~44265
+   CIU() 直辖市型：五险共用一个基数区间（北京/上海），各险费率与公积金区间按当地政策传入
+   两者末尾都用 opt 做浅覆盖：新增城市只需按工厂格式加一行，opt 里可覆盖任意字段
+   字段说明：hfRateMax 公积金比例上限（广东12、上海7）；medFixEmp 医保个人每月固定额（北京大额互助3元）
+            region/dataYear 用于页脚展示数据依据；rent 住房租金专项附加扣除档位 */
 function CI(name,med,mat,hf,pPensionMin,opt){
-  return Object.assign({name:name,
+  return Object.assign({name:name,region:"广东",dataYear:"2025-2026",
     pension:{min:pPensionMin||4775,max:27549,comp:.16,emp:.08},
     med:med,unemp:{min:2520,max:44265,comp:.008,emp:.002},
     mat:mat||{min:med.min,max:med.max,comp:0},
-    inj:{min:2520,max:44265,comp:.002},hf:hf,rent:1100},opt||{});
+    inj:{min:2520,max:44265,comp:.002},hf:hf,rent:1100,
+    hfRateMax:12,medFixEmp:0},opt||{});
+}
+function CIU(name,u,r,hf,opt){
+  return Object.assign({name:name,region:"直辖市",dataYear:"2026",
+    pension:{min:u.min,max:u.max,comp:.16,emp:.08},
+    med:{min:u.min,max:u.max,comp:r.medComp,emp:r.medEmp},
+    unemp:{min:u.min,max:u.max,comp:r.unempComp,emp:r.unempEmp},
+    mat:{min:u.min,max:u.max,comp:0},
+    inj:{min:u.min,max:u.max,comp:r.injComp===undefined?.002:r.injComp},
+    hf:hf,rent:1500,hfRateMax:r.hfRateMax||12,medFixEmp:r.medFixEmp||0},opt||{});
 }
 var CITIES={
+  /* ===== 直辖市（五险统一基数，2026年度·2026年7月起执行）=====
+     北京：京人社发〔2026〕7号 五险 7270~36348；医保含生育 单位9.8%/个人2%+大额互助3元；
+           失业 单位0.5%/个人0.5%；工伤一类行业0.2%起；公积金 京房公积金管委会办〔2026〕6号 2540~36348、比例5%-12%
+     上海：市人社局2026-08-18 五险 7546~37731；医保含生育 单位9%/个人2%（沪医保规〔2026〕，有效期至2027-02-28）；
+           失业 单位0.5%/个人0.5%、工伤一类0.2%起（沪人社规〔2024〕25号，有效期至2029-12-31）；
+           公积金 2740~37731、单位与个人各5%-7%；长护险从医保统筹基金划转，不扣个人 */
+  bj:CIU("北京",{min:7270,max:36348},{medComp:.098,medEmp:.02,medFixEmp:3,unempComp:.005,unempEmp:.005,injComp:.002},{min:2540,max:36348}),
+  sh:CIU("上海",{min:7546,max:37731},{medComp:.09,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002,hfRateMax:7},{min:2740,max:37731}),
+  /* ===== 广东 21 市（2025-2026年度，每年7月15日后核查）===== */
   sz:CI("深圳",{min:6727,max:33633,comp:.06,emp:.02},{min:6727,max:33633,comp:.005},{min:2520,max:48471},4775,{hukou:true,rent:1500,ltc:{emp:.00125,comp:.00125},tiers:[{name:"一档",comp:.06,emp:.02},{name:"二档",comp:.015,emp:.005}]}),
   gz:CI("广州",{min:6234,max:31170,comp:.06,emp:.02},null,{min:2500,max:41697},5510,{rent:1500}),
   dg:CI("东莞",{min:4775,max:27549,comp:.05,emp:.02},{min:4775,max:27549,comp:.007},{min:2080,max:27391},4775,{ltc:{emp:.0015,comp:.0015},tiers:[{name:"医疗保险-统账(有个账)",comp:.05,emp:.02},{name:"医疗保险-统账(无个账)",comp:.045,emp:.005},{name:"医疗保险-单建统筹",comp:.0245,emp:.005}]}),
@@ -305,12 +325,12 @@ var CITIES={
   jy:CI("揭阳",{min:3727,max:18636,comp:.06,emp:.02},null,{min:1750,max:24618}),
   yf:CI("云浮",{min:4556,max:22782,comp:.06,emp:.02},{min:4556,max:22782,comp:.01},{min:1750,max:27642},4775,{rent:800})
 };
-var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,lastHFBase=2520;
+var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,currentSupp=0,lastHFBase=2520;
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
 var BBR=[[3000,.03,0],[12000,.10,210],[25000,.20,1410],[35000,.25,2660],[55000,.30,4410],[80000,.35,7160],[1/0,.45,15160]];
 var TRAPS=[[36000,2309.10],[144000,13199.20],[300000,13749.25],[420000,19249.30],[660000,30249.35],[960000,87999.45]];
 function cl(v,a,b){return Math.max(a,Math.min(b,v))}
-function normHF(v){v=parseFloat(v)||0;if(v<=0)return 0;if(v<5)return 0;return cl(v,5,12)}
+function normHF(v,max){max=max||12;v=parseFloat(v)||0;if(v<=0)return 0;if(v<5)return 0;return cl(v,5,max)}
 function fmtPct(r){var p=r*100;if(Math.abs(p-Math.round(p))<1e-9)return String(Math.round(p));if(Math.abs(p*100-Math.round(p*100))<1e-9)return p.toFixed(2);return p.toFixed(3)}
 function fm(n){return n.toLocaleString("zh-CN",{minimumFractionDigits:2,maximumFractionDigits:2})}
 function tx(t){if(t<=0)return{t:0,r:0,d:0};for(var i=0;i<BR.length;i++)if(t<=BR[i][0])return{t:t*BR[i][1]-BR[i][2],r:BR[i][1],d:BR[i][2]};return{t:t*.45-181920,r:.45,d:181920}}
@@ -339,6 +359,8 @@ function selectCity(k){
   if(!CITY.hukou)hk=0;
   $("hk0").className=hk===0?"a":"";$("hk1").className=hk===1?"a":"";
   renderMedBtns();
+  $("hfRate").max=CITY.hfRateMax;
+  $("hfRateHint").textContent="0 或 5~"+CITY.hfRateMax+"%";
   if(houseMode===1){
     $("houseLabel").textContent="住房租金("+CITY.name+")";
     $("houseHint").textContent=CITY.rent+"元/月(当地标准)";
@@ -351,7 +373,11 @@ function selectCity(k){
   $("rngP").textContent=P.min+"~"+P.max;$("rngM").textContent=(M.min||"-")+"~"+(M.max||"-");
   $("rngU").textContent=U.min+"~"+U.max;$("rngMT").textContent=(MT.min||"-")+"~"+(MT.max||"-");
   $("rngIJ").textContent=IJ.min+"~"+IJ.max;$("rngHF").textContent=HF.min+"~"+HF.max;
-  $("footNote").innerHTML='数据依据：广东省2025-2026年度（养老全省单位16%/个人8%，失业0.8%/0.2%，工伤0.2%起）· '+CITY.name+'医保/公积金按当地标准（'+(CITY.note||"官方数据")+'）<br>深圳深户养老单位16%+1%地方补充 · 公积金5%-12% · 数据时效：2026-08-12 已联网核查 · 每年7月15日后需重新核查';
+  $("footNote").innerHTML='数据依据：'+CITY.name+' '+CITY.dataYear+'年度 · '+
+    (CITY.region==="广东"?'养老/失业/工伤按广东省统一标准，医保/公积金按当地标准':'五险按当地统一基数区间，医保/公积金按当地标准')+
+    '（'+(CITY.note||"官方数据")+'）<br>公积金 5%-'+CITY.hfRateMax+'%'+
+    (CITY.medFixEmp>0?' · 医保个人另缴大额医疗互助 '+fm(CITY.medFixEmp)+' 元/月':'')+
+    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 每年1月(医保)/7月(养老公积金)需重新核查';
   calc();
 }
 function renderMedBtns(){
@@ -424,7 +450,7 @@ function calc(){
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf,ts=CITY.tiers||[];
   var sal=gv("salary"),mo=cl(gv("month"),1,12),startM=cl(gv("startMonth"),1,12);
   var mW=Math.max(1,mo-startM+1),aM=Math.max(1,12-startM+1);
-  var hfR=normHF(gv("hfRate"));$("hfRate").value=hfR;$("hfRateV").textContent=hfR===0?"0%(不缴)":hfR+"%";var hfD=hfR/100;
+  var hfR=normHF(gv("hfRate"),CITY.hfRateMax);$("hfRate").value=hfR;$("hfRateV").textContent=hfR===0?"0%(不缴)":hfR+"%";var hfD=hfR/100;
   if(gv("hfBase")>0)lastHFBase=gv("hfBase");
   if(hfR===0){$("hfBase").value=0;$("hfBase").disabled=true;}
   else{$("hfBase").disabled=false;if(gv("hfBase")<=0)$("hfBase").value=lastHFBase>0?lastHFBase:HF.min;}
@@ -437,7 +463,8 @@ function calc(){
   var mtB=MT.min?cl(gv("mtBase"),MT.min,MT.max):0;
   var ijB=cl(gv("ijBase"),IJ.min,IJ.max);
   var hB=cl(gv("hfBase"),HF.min,HF.max);
-  var pE=pB*P.emp,mE=mB*md.emp,uE=uB*U.emp,ltcE=ltc?pB*CITY.ltc.emp:0;
+  var medFix=CITY.medFixEmp||0;
+  var pE=pB*P.emp,mE=mB*md.emp+medFix,uE=uB*U.emp,ltcE=ltc?pB*CITY.ltc.emp:0;
   var siE=pE+mE+uE+ltcE;
   var pComp=CITY.hukou?(hk===1?P.comp+.01:P.comp):P.comp;
   var siC=pB*pComp+mB*md.comp+uB*U.comp+mtB*MT.comp+ijB*IJ.comp+(ltc?pB*CITY.ltc.comp:0);
@@ -446,20 +473,28 @@ function calc(){
   var eduA=$("eduOn").checked?cl(gv("eduAmt"),0,400):0;
   var houseA=$("houseOn").checked?cl(gv("houseAmt"),0,houseMode===0?1000:CITY.rent):0;
   var elderlyA=$("elderlyOn").checked?cl(gv("elderlyAmt"),0,3000):0;
+  /* 大病医疗按规定只能在年度汇算清缴时据实扣除，不进月度预扣预缴 */
   var medicalA=$("medicalOn").checked?cl(gv("medicalAmt"),0,6667):0;
-  var spT=childA+eduA+houseA+elderlyA+medicalA;
+  var spT=childA+eduA+houseA+elderlyA;      /* 可用于月度预扣的专项附加 */
+  var spTAnnual=spT+medicalA;               /* 年度汇算再加计大病医疗 */
   currentSpT=spT;
-  $("spTot").textContent=fm(spT)+" 元/月";
-  var hi=cl(gv("healthIns"),0,200),pp=cl(gv("persPen"),0,1000),anPct=cl(gv("annuity"),0,4)/100,anAmt=sal*anPct,suppM=hi+pp+anAmt;
-  var mDed=siE+hfE+5000+spT;
+  $("spTot").textContent=fm(spT)+" 元/月"+(medicalA>0?"（另有大病医疗 "+fm(medicalA)+" 元/月，仅年度汇算扣除）":"");
+  /* 补充扣除：既减少应纳税所得额（月度预扣即可享受），又是个人实际支出的现金 */
+  var hi=cl(gv("healthIns"),0,200),pp=cl(gv("persPen"),0,1000);
+  var anPct=cl(gv("annuity"),0,4)/100;
+  /* 企业年金个人缴费上限＝本人缴费工资计税基数的4%，此处以养老缴费基数作为缴费工资基数 */
+  var anAmt=pB*anPct;
+  var suppM=hi+pp+anAmt,suppCash=suppM;
+  currentSupp=suppCash;
+  var mDed=siE+hfE+5000+spT+suppM;
   var cumI=sal*mW,cumD=mDed*mW,cumTx=Math.max(0,cumI-cumD);
   var ci=tx(cumTx),cumT=Math.max(0,ci.t);
   var pTx=Math.max(0,sal*(mW-1)-mDed*(mW-1));
   var curT=Math.max(0,cumT-Math.max(0,tx(pTx).t));
-  var net=sal-siE-hfE-curT;
-  var ratio=sal>0?net/sal*100:0,totD=siE+hfE+curT;
-  var aI=sal*aM,aDed=(mDed+suppM)*aM,aTx=Math.max(0,aI-aDed);
-  var aT=Math.max(0,tx(aTx).t),aNet=aI-(siE+hfE)*aM-aT;
+  var net=sal-siE-hfE-curT-suppCash;
+  var ratio=sal>0?net/sal*100:0,totD=siE+hfE+curT+suppCash;
+  var aI=sal*aM,aDed=(siE+hfE+5000+spTAnnual+suppM)*aM,aTx=Math.max(0,aI-aDed);
+  var aT=Math.max(0,tx(aTx).t),aNet=aI-(siE+hfE)*aM-suppCash*aM-aT;
   var suppSave=Math.max(0,tx(Math.max(0,aTx+suppM*aM)).t-aT);
   var bonus=gv("bonus"),bi=btx(bonus),bonusNet=bonus-bi.t;
   var trapDetail="";
@@ -475,7 +510,7 @@ function calc(){
   if(ltc)rows.push(["长期护理险",pB,CITY.ltc.emp,ltcE]);
   rows.forEach(function(r){h+='<div class="grid4r"><span style="color:#6b7280">'+r[0]+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fm(r[1])+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fmtPct(r[2])+'%</span><span style="text-align:right;font-variant-numeric:tabular-nums">'+fm(r[3])+'</span></div>';});
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">个人社保合计</label><span class="v b" style="color:#059669">'+fm(siE)+' 元</span></div>';
-  h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+fmtPct(pComp)+'%+医疗'+fmtPct(md.comp)+'%+失业0.8%+工伤0.2%+生育'+fmtPct(MT.comp)+'%'+(ltc?'+长护'+fmtPct(CITY.ltc.comp)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
+  h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+fmtPct(pComp)+'%+医疗'+fmtPct(md.comp)+'%+失业'+fmtPct(U.comp)+'%+工伤'+fmtPct(IJ.comp)+'%'+(MT.comp>0?'+生育'+fmtPct(MT.comp)+'%':'，生育并入医保')+(ltc?'+长护'+fmtPct(CITY.ltc.comp)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
   h+='<div class="c"><div class="st sk">住房公积金'+(hfR===0?'（未缴存）':'')+'</div>';
   h+='<div class="r"><label>基数 '+fm(hB)+' × '+hfR+'%</label><span class="v"></span></div>';
   h+='<div class="r"><label>个人缴存</label><span class="v" style="color:#0284c7">'+fm(hfE)+'</span></div>';
@@ -486,6 +521,7 @@ function calc(){
   h+='<div class="r ind"><label>− 五险一金</label><span class="v">'+fm((siE+hfE)*mW)+'</span></div>';
   h+='<div class="r ind"><label>− 免征额 5000×'+mW+'</label><span class="v">'+fm(5000*mW)+'</span></div>';
   h+='<div class="r ind"><label>− 专项附加</label><span class="v">'+fm(spT*mW)+'</span></div>';
+  if(suppM>0)h+='<div class="r ind"><label>− 补充扣除（年金/个人养老金/税优险）</label><span class="v">'+fm(suppM*mW)+'</span></div>';
   h+='<div class="sp"></div><div class="r"><label style="font-weight:600;color:#1f2937">累计应纳税所得额</label><span class="v b">'+fm(cumTx)+'</span></div>';
   h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">税率 '+(ci.r*100).toFixed(0)+'% / 速算 '+fm(ci.d)+'</label><span style="font-size:11px;color:#9ca3af;font-variant-numeric:tabular-nums">累计税 '+fm(cumT)+'</span></div>';
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">'+mo+'月应扣个税</label><span class="v b" style="color:#e11d48">'+fm(curT)+' 元</span></div></div>';
@@ -493,7 +529,8 @@ function calc(){
   h+='<div class="r"><label>本年度税前收入</label><span class="v">'+fm(aI)+'</span></div>';
   h+='<div class="r ind"><label>− 五险一金（个人）</label><span class="v">'+fm((siE+hfE)*aM)+'</span></div>';
   h+='<div class="r ind"><label>− 免征额 5000×'+aM+'</label><span class="v">'+fm(5000*aM)+'</span></div>';
-  h+='<div class="r ind"><label>− 专项附加扣除</label><span class="v">'+fm(spT*aM)+'</span></div>';
+  h+='<div class="r ind"><label>− 专项附加扣除</label><span class="v">'+fm(spTAnnual*aM)+'</span></div>';
+  if(medicalA>0)h+='<div class="r ind"><label style="font-size:10px;color:#9ca3af">含大病医疗 '+fm(medicalA)+'/月（汇算清缴）</label><span class="v"></span></div>';
   if(hi>0)h+='<div class="r ind"><label>− 税优健康险</label><span class="v" style="color:#0d9488">'+fm(hi*aM)+'</span></div>';
   if(pp>0)h+='<div class="r ind"><label>− 个人养老金</label><span class="v" style="color:#0d9488">'+fm(pp*aM)+'</span></div>';
   if(anAmt>0)h+='<div class="r ind"><label>− 企业年金(个人'+gv("annuity")+'%)</label><span class="v" style="color:#0d9488">'+fm(anAmt*aM)+'</span></div>';
@@ -523,7 +560,10 @@ function calc(){
   if(ltc)h+='<div class="dr"><span class="dl">− 长期护理险</span><span class="dv" style="color:#34d399">'+fm(ltcE)+'</span></div>';
   h+='<div class="dr"><span class="dl">− 住房公积金</span><span class="dv" style="color:#38bdf8">'+fm(hfE)+'</span></div>';
   h+='<div class="dr"><span class="dl">− 个人所得税</span><span class="dv" style="color:#fb7185">'+fm(curT)+'</span></div>';
-  h+='<div class="dr tt"><span>实发工资</span><span class="dv">'+fm(net)+' 元</span></div></div>';
+  if(pp>0)h+='<div class="dr"><span class="dl">− 个人养老金（计入个人账户）</span><span class="dv" style="color:#34d399">'+fm(pp)+'</span></div>';
+  if(anAmt>0)h+='<div class="dr"><span class="dl">− 企业年金（个人）</span><span class="dv" style="color:#34d399">'+fm(anAmt)+'</span></div>';
+  if(hi>0)h+='<div class="dr"><span class="dl">− 税优健康险（自缴）</span><span class="dv" style="color:#34d399">'+fm(hi)+'</span></div>';
+  h+='<div class="dr tt"><span>到手现金</span><span class="dv">'+fm(net)+' 元</span></div></div>';
   $("res").innerHTML=h;
 }
 
@@ -574,7 +614,7 @@ function renderHistTable(){
     h+='<td><input type="number" value="'+r.mtb+'" min="0" step="100" data-i="'+idx+'" data-f="mtb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" value="'+r.ijb+'" min="0" step="100" data-i="'+idx+'" data-f="ijb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" value="'+r.hfb+'" min="0" step="100" data-i="'+idx+'" data-f="hfb"'+(on?'':' disabled')+'></td>';
-    h+='<td><input type="number" value="'+r.rate+'" min="0" max="12" step="1" data-i="'+idx+'" data-f="rate" style="width:46px"'+(on?'':' disabled')+'></td>';
+    h+='<td><input type="number" value="'+r.rate+'" min="0" max="'+CITY.hfRateMax+'" step="1" data-i="'+idx+'" data-f="rate" style="width:46px"'+(on?'':' disabled')+'></td>';
     h+='<td id="csi'+idx+'"></td><td id="chf'+idx+'"></td><td id="ctx'+idx+'"></td><td id="cnet'+idx+'" style="font-weight:600"></td>';
     h+='</tr>';
   });
@@ -583,13 +623,13 @@ function renderHistTable(){
     el.addEventListener("input",function(){
       var i=parseInt(el.dataset.i),f=el.dataset.f;
       var v=parseFloat(el.value)||0;
-      if(f==="rate"){v=normHF(v);el.value=v;}
+      if(f==="rate"){v=normHF(v,CITY.hfRateMax);el.value=v;}
       histRows[i][f]=v;
       calcHist();
     });
   });
   var realCnt=histRows.filter(function(r){return !r.future}).length,predCnt=histRows.length-realCnt;
-  $("rangeLabel").textContent="统计区间：2026年 "+histRows[0].m+" 月 ~ "+histRows[histRows.length-1].m+" 月（实际"+realCnt+"个月"+(predCnt>0?" + 预测"+predCnt+"个月(蓝色)":"")+" · 五险基数各自独立 · 公积金比例仅0或5-12%）";
+  $("rangeLabel").textContent="统计区间：2026年 "+histRows[0].m+" 月 ~ "+histRows[histRows.length-1].m+" 月（实际"+realCnt+"个月"+(predCnt>0?" + 预测"+predCnt+"个月(蓝色)":"")+" · 五险基数各自独立 · 公积金比例仅0或5-"+CITY.hfRateMax+"%）";
 }
 function toggleHist(i,on){
   histRows[i].on=on;
@@ -617,16 +657,17 @@ function calcHist(){
     var mB=M.min?cl(r.mb,M.min,M.max):0;
     var uB=cl(r.ub,U.min,U.max);
     var hB=cl(r.hfb,HF.min,HF.max);
-    var rate=normHF(r.rate)/100;
-    r.pi=pB*P.emp;r.mi=mB*md.emp;r.ui=uB*U.emp;r.li=ltc?pB*CITY.ltc.emp:0;
+    var rate=normHF(r.rate,CITY.hfRateMax)/100;
+    var medFix=CITY.medFixEmp||0;
+    r.pi=pB*P.emp;r.mi=mB*md.emp+medFix;r.ui=uB*U.emp;r.li=ltc?pB*CITY.ltc.emp:0;
     r.si=r.pi+r.mi+r.ui+r.li;
     r.hf=hB*rate;
-    var mDed=r.si+r.hf+5000+currentSpT;
+    var mDed=r.si+r.hf+5000+currentSpT+currentSupp;
     cumIncome+=r.sal;cumDed+=mDed;
     var cumTax=Math.max(0,tx(Math.max(0,cumIncome-cumDed)).t);
     r.tax=Math.max(0,cumTax-prevTax);
     prevTax=cumTax;
-    r.net=r.sal-r.si-r.hf-r.tax;
+    r.net=r.sal-r.si-r.hf-r.tax-currentSupp;
     totSal+=r.sal;totSi+=r.si;totHf+=r.hf;totTax+=r.tax;totNet+=r.net;
   });
   histRows.forEach(function(r,idx){
@@ -755,15 +796,17 @@ function loadScript(src){
   });
 }
 function exportPDF(){
-  var done=false;
-  function tryPrint(){if(!done){done=true;window.print();}}
+  /* printed=已走打印兜底；saved=PDF已成功保存。只有保存成功才阻断兜底，
+     否则"画布生成失败/组装PDF抛错"时两条兜底路径都会被误判为已完成而静默失效 */
+  var printed=false,saved=false;
+  function tryPrint(){if(printed||saved)return;printed=true;window.print();}
   var p1=window.html2canvas?Promise.resolve():loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
   var p2=window.jspdf?Promise.resolve():loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
   Promise.all([p1,p2]).then(function(){
-    if(done)return;
+    if(printed)return;
     var node=$("page1");
-    html2canvas(node,{scale:2,useCORS:true,backgroundColor:"#f8fafc",windowWidth:node.scrollWidth}).then(function(canvas){
-      if(done)return;done=true;
+    return html2canvas(node,{scale:2,useCORS:true,backgroundColor:"#f8fafc",windowWidth:node.scrollWidth}).then(function(canvas){
+      if(printed)return;
       var img=canvas.toDataURL("image/png");
       var pdf=new jspdf.jsPDF("p","mm","a4");
       var pw=210,ph=297;
@@ -778,7 +821,8 @@ function exportPDF(){
         heightLeft-=ph;
       }
       pdf.save(CITY.name+"工资历史明细.pdf");
-    }).catch(tryPrint);
+      saved=true;
+    });
   }).catch(tryPrint);
   setTimeout(tryPrint,6000);
 }
