@@ -45,7 +45,7 @@ city-salary/
 ├── site/
 │   └── index.html           # 计算器镜像副本（用于 GitHub Pages 等静态托管）
 ├── tools/                   # 零依赖 Node 脚本：测试与维护
-│   ├── test-calc.js         #   530 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归
+│   ├── test-calc.js         #   557 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
 │   ├── check-sync.js        #   漂移检查：镜像是否同步、城市参数是否都写进了文档
 │   ├── test-export.js       #   导出 PDF 的降级链测试

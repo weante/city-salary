@@ -41,7 +41,7 @@ function loadCalculator() {
   const window = { print() {} };
   const api = new Function('document', 'window', 'console', 'setTimeout',
     m[1] + '\n;return {tx,btx,TRAPS,BR,BBR,CITIES,CLAMP:cl,normHF,calc,selectCity,setHk,setMed,' +
-    'buildHistory,calcHist,histRows:function(){return histRows},els:function(){return null}};'
+    'buildHistory,calcHist,switchTab,histRows:function(){return histRows},els:function(){return null}};'
   )(document, window, console, setTimeout);
   api._doc = document;
   api._set = (k, v) => { document.getElementById(k).value = v; };
@@ -468,6 +468,41 @@ section('10. 年终奖陷阱命中');
   ok('39000 已脱离陷阱(超过38567)', /当前奖金未处于临界值陷阱区间/.test(A._html('bonusResult')), true);
   A._set('bonus', 50000); A.calc();
   ok('50000 已脱离陷阱', /当前奖金未处于临界值陷阱区间/.test(A._html('bonusResult')), true);
+})();
+
+/* =========================================================
+   11. 历史页编辑保留 + 统计区间年份 + 专项扣除口径明示
+   ========================================================= */
+section('11. 历史页编辑保留与文案口径');
+(function histEditCase() {
+  A.selectCity('bj');
+  A._setMany({ salary: 20000, month: 6, startMonth: 1, pBase: 20000, mBase: 20000, uBase: 20000, mtBase: 20000, ijBase: 20000, hfBase: 20000, hfRate: 12, persPen: 0, healthIns: 0, annuity: 0 });
+  A.calc();
+  A.buildHistory();
+
+  A.histRows()[0].sal = 12345;
+  A.histRows()[2].on = false;
+  A.switchTab(0); A.switchTab(1);
+  eq('切页后已编辑月份保留(sal=12345)', A.histRows()[0].sal, 12345);
+  eq('切页后未编辑月份仍继承默认值', A.histRows()[1].sal, 20000);
+  eq('切页后排除月份状态保留(on=false)', A.histRows()[2].on, false);
+
+  A._set('salary', 22000); A.calc(); A.buildHistory();
+  eq('改默认值后已编辑月份仍保留', A.histRows()[0].sal, 12345);
+  eq('改默认值后未编辑月份跟随新默认值', A.histRows()[1].sal, 22000);
+
+  A.histRows()[5].sal = 33333;
+  A._set('startMonth', 3); A.calc(); A.buildHistory();
+  eq('收缩区间后行数 = 10（3月~12月）', A.histRows().length, 10);
+  eq('收缩区间后按月份保留编辑(6月)', A.histRows()[3].sal, 33333);
+
+  A.selectCity('sz'); A.calc(); A.buildHistory();
+  eq('换城市后历史整体重置(6月旧编辑不残留)', A.histRows()[3].sal, 22000);
+
+  ok('统计区间显示当前年份', A._text('rangeLabel').indexOf('统计区间：' + new Date().getFullYear() + '年 ') === 0, true);
+  ok('源码未硬编码统计区间年份', /统计区间：\d{4}年/.test(html), false);
+  ok('历史页明示专项附加扣除取自第1页', /专项附加扣除取自第 1 页、各月相同/.test(html), true);
+  console.log('  逐月编辑在切页/改默认值/缩区间后保留，换城市重置 ✓');
 })();
 
 /* =========================================================

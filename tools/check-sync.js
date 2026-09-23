@@ -2,9 +2,11 @@
 /*
  * 漂移检查（CI 守卫）。
  *
- * 两类检查：
+ * 四类检查：
  *   A. 镜像文件是否与源文件逐字节相同（防止改了 calculator.html 忘了同步 site/index.html）
  *   B. 各城市参数是否在文档中都有记录（防止加了城市忘了写文档）
+ *   C. 文档陈旧表述 lint（防止机制改版时漏改措辞）
+ *   D. 文档断言数与 test-calc.js 实际输出一致（防止加了测试忘了改文档）
  *
  * 运行：node tools/check-sync.js
  * 退出码：0 = 无漂移，1 = 有漂移
@@ -12,6 +14,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
@@ -110,6 +113,41 @@ for (const f of MD_FILES) {
   }
 }
 if (!staleHits) console.log(`  ✓ ${MD_FILES.length} 份文档无陈旧表述`);
+
+/* ---------- D. 文档断言数与实际一致 ----------
+   教训来自一次真实漂移：测试从 530 涨到 546，README/SKILL 里的"530 项断言"没人改。
+   以 test-calc.js 的实际输出为准，文档写错这里会拦下。 */
+console.log('\nD. 文档断言数');
+let actualCount = null, testOk = true;
+try {
+  const out = execSync('node tools/test-calc.js', { cwd: ROOT, encoding: 'utf8' });
+  const m2 = out.match(/全部通过：(\d+) 项断言/);
+  if (m2) actualCount = Number(m2[1]);
+} catch (e) { testOk = false; }
+if (!testOk) {
+  console.log('  ✗ test-calc.js 运行失败，无法核对断言数（先修复测试）');
+  fail++;
+} else if (actualCount === null) {
+  console.log('  ✗ 无法从 test-calc.js 输出解析"全部通过：N 项断言"');
+  fail++;
+} else {
+  const COUNT_FILES = MD_FILES.concat(['skills/city-salary/SKILL.md']);
+  let countHits = 0;
+  for (const f of COUNT_FILES) {
+    let content;
+    try { content = read(f); } catch (e) { continue; }
+    const re = /(\d+) 项断言/g;
+    let cm;
+    while ((cm = re.exec(content))) {
+      if (Number(cm[1]) !== actualCount) {
+        const line = content.slice(0, cm.index).split('\n').length;
+        console.log(`  ✗ ${f}:${line} 写着"${cm[1]} 项断言"，实际 ${actualCount} 项`);
+        countHits++; fail++;
+      }
+    }
+  }
+  if (!countHits) console.log(`  ✓ 文档断言数均为实际值 ${actualCount}`);
+}
 
 /* ---------- 汇总 ---------- */
 console.log('\n' + '='.repeat(58));

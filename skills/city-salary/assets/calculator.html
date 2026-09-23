@@ -247,7 +247,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 <div id="page1" style="display:none">
   <div class="c">
     <div class="tbl-title"><span class="st bl" style="margin:0;border:none;padding:0">逐月工资与五险一金（<span id="histCity"></span>）</span><span class="tt" id="rangeLabel"></span></div>
-    <div class="nt" style="margin-bottom:6px">每月工资、五险基数、公积金基数、公积金比例均可独立调整（默认继承第一页数值）。个税按累计预扣预缴从首月起累计，当前月之后为预测月份（蓝色）。<b>本页累计个税为月度预扣口径</b>，不含仅年度汇算可扣的大病医疗（对比见第一页"年度预估"）。</div>
+    <div class="nt" style="margin-bottom:6px">每月工资、五险基数、公积金基数、公积金比例均可独立调整（默认继承第一页数值；已修改的月份在切换页面或调整默认值后保留）。<b>专项附加扣除取自第 1 页、各月相同</b>。个税按累计预扣预缴从首月起累计，当前月之后为预测月份（蓝色）。<b>本页累计个税为月度预扣口径</b>，不含仅年度汇算可扣的大病医疗（对比见第一页"年度预估"）。</div>
     <div class="tbl-wrap">
       <table class="hist" id="histTable"></table>
     </div>
@@ -381,6 +381,8 @@ function selectCity(k){
     '（'+(CITY.note||"官方数据")+'）<br>公积金 5%-'+CITY.hfRateMax+'%'+
     (CITY.medFixEmp>0?' · 医保个人另缴大额医疗互助 '+fm(CITY.medFixEmp)+' 元/月':'')+
     ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
+  histRows=[];
+  histCity=null;
   calc();
 }
 function renderMedBtns(){
@@ -576,6 +578,8 @@ function calc(){
 
 /* ============ 页面2：历史明细 ============ */
 var histRows=[];
+var histCity=null;
+var HIST_F=["sal","pb","mb","ub","mtb","ijb","hfb","rate"];
 var SERIES=[
   {key:"sal",name:"税前工资",color:"#2563eb",on:true},
   {key:"pi",name:"养老(个人)",color:"#059669",on:false},
@@ -599,9 +603,24 @@ function buildHistory(){
   if(startM>mo)startM=mo;
   calc();
   var defSal=gv("salary"),defPB=gv("pBase"),defMB=gv("mBase"),defUB=gv("uBase"),defMTB=gv("mtBase"),defIJB=gv("ijBase"),defHfb=gv("hfBase"),defRate=gv("hfRate");
+  var seed={sal:defSal,pb:defPB,mb:defMB,ub:defUB,mtb:defMTB,ijb:defIJB,hfb:defHfb,rate:defRate};
+  var old=histCity===CITY?histRows:null;
+  var byM={};
+  if(old)for(var i=0;i<old.length;i++)byM[old[i].m]=old[i];
+  function row(m,future){
+    var o=byM[m],r={m:m,on:true,future:future,seed:{}};
+    for(var k=0;k<HIST_F.length;k++){
+      var f=HIST_F[k];
+      r[f]=o&&o.seed&&o[f]!==o.seed[f]?o[f]:seed[f];
+      r.seed[f]=seed[f];
+    }
+    if(o&&o.on===false)r.on=false;
+    return r;
+  }
   histRows=[];
-  for(var m=startM;m<=mo;m++)histRows.push({m:m,sal:defSal,pb:defPB,mb:defMB,ub:defUB,mtb:defMTB,ijb:defIJB,hfb:defHfb,rate:defRate,on:true,future:false});
-  if(mo<12){for(var m2=mo+1;m2<=12;m2++)histRows.push({m:m2,sal:defSal,pb:defPB,mb:defMB,ub:defUB,mtb:defMTB,ijb:defIJB,hfb:defHfb,rate:defRate,on:true,future:true});}
+  for(var m=startM;m<=mo;m++)histRows.push(row(m,false));
+  if(mo<12){for(var m2=mo+1;m2<=12;m2++)histRows.push(row(m2,true));}
+  histCity=CITY;
   renderHistTable();
   calcHist();
   renderLegend();
@@ -638,7 +657,7 @@ function renderHistTable(){
     });
   });
   var realCnt=histRows.filter(function(r){return !r.future}).length,predCnt=histRows.length-realCnt;
-  $("rangeLabel").textContent="统计区间：2026年 "+histRows[0].m+" 月 ~ "+histRows[histRows.length-1].m+" 月（实际"+realCnt+"个月"+(predCnt>0?" + 预测"+predCnt+"个月(蓝色)":"")+" · 五险基数各自独立 · 公积金比例仅0或5-"+CITY.hfRateMax+"%）";
+  $("rangeLabel").textContent="统计区间："+new Date().getFullYear()+"年 "+histRows[0].m+" 月 ~ "+histRows[histRows.length-1].m+" 月（实际"+realCnt+"个月"+(predCnt>0?" + 预测"+predCnt+"个月(蓝色)":"")+" · 五险基数各自独立 · 公积金比例仅0或5-"+CITY.hfRateMax+"%）";
 }
 function toggleHist(i,on){
   histRows[i].on=on;

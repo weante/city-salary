@@ -329,7 +329,7 @@ CITIES.城市key = CIU("城市名",
 改完参数或计算逻辑后，跑仓库自带的检查（均为零依赖 Node 脚本，可作为 CI 门禁）：
 
 ```bash
-node tools/test-calc.js     # 530 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归
+node tools/test-calc.js     # 557 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归
 node tools/check-dom.js     # 静态结构：重复 id、悬空 $() 引用、未定义的事件处理器
 node tools/check-sync.js    # 漂移检查：镜像是否同步、城市参数是否都写进文档、文档有无陈旧表述
 node tools/test-export.js   # 导出 PDF 的降级链（含 6 秒兜底等待）
