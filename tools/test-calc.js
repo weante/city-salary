@@ -213,6 +213,25 @@ function runCase(city, opt) {
   ok('上海·税后实发', got.net, net);
 })();
 
+/* 3.4 成都：2026年度，月薪20000、基数20000、公积金12%、赡养老人1500 */
+(function cdCase() {
+  runCase('cd', { salary: 20000, pBase: 20000, mBase: 20000, uBase: 20000, mtBase: 20000, ijBase: 20000, hfBase: 20000, hfRate: 12 });
+  A._check('elderlyOn', true); A._set('elderlyAmt', 1500); A.calc();
+  const pE = 20000 * 0.08, mE = 20000 * 0.02, uE = 20000 * 0.004;
+  const si = pE + mE + uE, hf = 20000 * 0.12;
+  const mDed = si + hf + 5000 + 1500, mW = 7;
+  const cum = (n) => Math.max(0, Math.max(0, officialTx(Math.max(0, 20000 * n - mDed * n))));
+  const tax = cum(mW) - cum(mW - 1), net = 20000 - si - hf - tax;
+  const got = { si: A._num('resSI'), tax: A._num('resTax'), net: A._num('resNet') };
+  console.log(`  成都 20000/基数20000/公积金12%/赡养老人1500（四川失业个人0.4%）`);
+  console.log(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)}，其中失业 ${fmt(uE)})`);
+  console.log(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
+  console.log(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
+  ok('成都·个人社保', got.si, si);
+  ok('成都·当月个税', got.tax, tax);
+  ok('成都·税后实发', got.net, net);
+})();
+
 /* =========================================================
    4. 基数夹取：各险种用各自的上下限
    ========================================================= */
@@ -377,9 +396,10 @@ Object.keys(A.CITIES).forEach(k => {
   ok(`${c.name}.hf.min<=max`, c.hf.min <= c.hf.max, true);
   ok(`${c.name}.hfRateMax 在 5~12`, c.hfRateMax >= 5 && c.hfRateMax <= 12, true);
 });
-eq('城市总数', Object.keys(A.CITIES).length, 23);
+eq('城市总数', Object.keys(A.CITIES).length, 44);
 eq('北京存在', !!A.CITIES.bj, true);
 eq('上海存在', !!A.CITIES.sh, true);
+eq('成都存在', !!A.CITIES.cd, true);
 
 /* 京沪参数关键值抽查（对照官方文件） */
 eq('北京·养老下限(京人社发〔2026〕7号)', A.CITIES.bj.pension.min, 7270);
@@ -404,9 +424,24 @@ eq('上海·公积金比例上限7%', A.CITIES.sh.hfRateMax, 7);
 eq('上海·医保无固定附加', A.CITIES.sh.medFixEmp, 0);
 eq('上海·房租扣除1500', A.CITIES.sh.rent, 1500);
 
+/* 四川参数关键值抽查（对照官方文件） */
+eq('成都·养老下限(川人社办发〔2026〕50号)', A.CITIES.cd.pension.min, 4699);
+eq('成都·养老上限', A.CITIES.cd.pension.max, 23493);
+eq('成都·医保单位费率8.3%', A.CITIES.cd.med.comp, 0.083);
+eq('成都·医保个人费率2%', A.CITIES.cd.med.emp, 0.02);
+eq('成都·医保基数下限4699', A.CITIES.cd.med.min, 4699);
+eq('成都·公积金下限2330', A.CITIES.cd.hf.min, 2330);
+eq('成都·公积金上限(成公积金委〔2026〕5号)', A.CITIES.cd.hf.max, 32969);
+eq('成都·房租扣除1500', A.CITIES.cd.rent, 1500);
+eq('四川·失业单位0.6%', A.CITIES.cd.unemp.comp, 0.006);
+eq('四川·失业个人0.4%', A.CITIES.cd.unemp.emp, 0.004);
+eq('四川·工伤一类0.24%', A.CITIES.cd.inj.comp, 0.0024);
+eq('四川·公积金比例上限12%', A.CITIES.cd.hfRateMax, 12);
+
 /* 生育并入医保的城市 mat.comp 应为 0，且医保单位费率含生育 */
 eq('北京·生育并入医保(mat.comp=0)', A.CITIES.bj.mat.comp, 0);
 eq('上海·生育并入医保(mat.comp=0)', A.CITIES.sh.mat.comp, 0);
+eq('成都·生育并入医保(mat.comp=0)', A.CITIES.cd.mat.comp, 0);
 
 /* =========================================================
    9. 历史明细页：补充扣除同样扣现金

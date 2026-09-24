@@ -142,13 +142,17 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 .city-card:hover .cd{color:#dbeafe}
 .city-card.warn{outline:1px dashed #f59e0b}
 .city-card.warn .cd{color:#f59e0b}
+.prov-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px;max-width:720px;width:100%}
+.prov-tab{background:#1e293b;border:1px solid #334155;border-radius:999px;padding:6px 18px;font-size:13px;color:#cbd5e1;cursor:pointer;transition:.15s}
+.prov-tab:hover{border-color:#2563eb;color:#fff}
+.prov-tab.a{background:#2563eb;border-color:#2563eb;color:#fff;font-weight:600}
 </style>
 </head>
 <body>
 <div class="w">
 <h1>城市工资计算器</h1>
-<div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（广东21市 + 北京/上海 · 每年1月/7月核查基数）</div>
-<div class="city-bar"><span class="city-tag" id="cityTag">深圳</span><button class="city-btn" onclick="showOverlay()">切换城市</button><span class="nt" style="margin:0">各市按当地政策计算 · 京沪为2026年度、广东为2025-2026年度</span></div>
+<div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（京沪 + 广东21市 + 四川21市州 · 每年1月/7月核查基数）</div>
+<div class="city-bar"><span class="city-tag" id="cityTag">深圳</span><button class="city-btn" onclick="showOverlay()">切换城市</button><span class="nt" style="margin:0">各市按当地政策计算 · 京沪/四川为2026年度、广东为2025-2026年度</span></div>
 <div class="tabs">
   <button class="tab a" id="tab0" onclick="switchTab(0)">单月计算</button>
   <button class="tab" id="tab1" onclick="switchTab(1)">历史明细</button>
@@ -157,7 +161,8 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 <!-- 城市选择遮罩 -->
 <div class="overlay" id="cityOverlay">
   <h2>请选择工作城市</h2>
-  <div class="os">广东 21 个地级市 + 北京 / 上海（橙框城市部分数据待官方确认，仅供参考）</div>
+  <div class="os">先选省份，再选城市（橙框城市部分数据待官方确认，仅供参考）</div>
+  <div class="prov-tabs" id="provTabs"></div>
   <div class="city-grid" id="cityGrid"></div>
 </div>
 
@@ -324,7 +329,33 @@ var CITIES={
   qy:CI("清远",{min:4157,max:20787,comp:.065,emp:.02},{min:4157,max:20787,comp:.01},{min:1750,max:27593},4775,{ltc:{emp:.0015,comp:.0015},note:"长护险拟2026.7实施(0.3%各半)"}),
   cz:CI("潮州",{min:3763,max:18816,comp:.074,emp:.02},null,{min:1750,max:26043},4775,{tiers:[{name:"综合医保(其他单位)",comp:.074,emp:.02},{name:"综合医保(财政拨款)",comp:.069,emp:.02},{name:"住院医保(单建)",comp:.045,emp:.005}]}),
   jy:CI("揭阳",{min:3727,max:18636,comp:.06,emp:.02},null,{min:1750,max:24618}),
-  yf:CI("云浮",{min:4556,max:22782,comp:.06,emp:.02},{min:4556,max:22782,comp:.01},{min:1750,max:27642},4775,{rent:800})
+  yf:CI("云浮",{min:4556,max:22782,comp:.06,emp:.02},{min:4556,max:22782,comp:.01},{min:1750,max:27642},4775,{rent:800}),
+  /* ===== 四川 21 市州（2026年度）=====
+     养老/失业/工伤全省统一基数 4699~23493（川人社办发〔2026〕50号，省平7831元/月）；
+     养老 单位16%/个人8%（川办发〔2019〕27号）；失业 单位0.6%/个人0.4%（川人社规〔2024〕7号，执行至2026-12-31）；
+     工伤一类行业0.24%（川人社规〔2026〕3号）；生育并入医保(mat.comp=0)；医保个人均2%，单位费率与基数口径各统筹区不同；
+     公积金比例5%-12%同比例（成都可差异化、南充灵活就业10%-24%）；医保基数标注“省平X%”按7831元/月折算 */
+  cd:CIU("成都",{min:4699,max:23493},{medComp:.083,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2330,max:32969},{region:"四川",dataYear:"2026",rent:1500,note:"医保单位8.3%含生育0.8%与大病0.75%；医保基数4699~23493(省平60%~300%)；公积金基数中心城区下限2330/县市新城2200、上限32969(成公积金委〔2026〕5号)"}),
+  zy:CIU("自贡",{min:4699,max:23493},{medComp:.084,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:24244},{region:"四川",dataYear:"2026",rent:1100,note:"医保统账结合单位8.4%含生育0.9%、单建统筹6.9%(灵活就业)；医保基数省平60%~300%"}),
+  pzh:CIU("攀枝花",{min:4699,max:23493},{medComp:.08,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:29184},{region:"四川",dataYear:"2026",rent:800,med:{min:7831,max:27408.5,comp:.08,emp:.02},note:"医保财政供养单位7.7%、其他8%含生育；医保基数省平100%~350%(7831~27408.5)"}),
+  lz:CIU("泸州",{min:4699,max:23493},{medComp:.0775,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:26601},{region:"四川",dataYear:"2026",rent:1100,med:{min:7047.9,max:23493,comp:.0775,emp:.02},note:"医保单位7.75%、机关事业单位7.4%；医保基数省平90%~300%(7047.9~23493)"}),
+  dy:CIU("德阳",{min:4699,max:23493},{medComp:.075,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:27571},{region:"四川",dataYear:"2026",rent:1100,note:"医保单位7.5%、机关/参公/财政全额拨款7.2%(两险合并口径)；医保基数省平60%~300%"}),
+  my:CIU("绵阳",{min:4699,max:23493},{medComp:.065,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:26812},{region:"四川",dataYear:"2026",rent:1100,note:"医保单位6%+生育0.5%(机关生育0.4%)；医保基数由市医保局定,暂按省平口径4699~23493待核实"}),
+  gy:CIU("广元",{min:4699,max:23493},{medComp:.065,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:23493},{region:"四川",dataYear:"2026",rent:800,warn:true,med:{min:6264.8,max:23493,comp:.065,emp:.02},note:"医保统账结合单位6.5%含生育、单建统筹5%；医保基数省平80%~300%(6264.8)；公积金2026上限未见公布,暂用省平3倍23493替代待核实"}),
+  sn:CIU("遂宁",{min:4699,max:23493},{medComp:.075,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:23714},{region:"四川",dataYear:"2026",rent:800,note:"医保单位7.5%含生育0.5%；医保基数口径未见数值,暂按省平4699~23493待核实"}),
+  nj:CIU("内江",{min:4699,max:23493},{medComp:.078,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:25172},{region:"四川",dataYear:"2026",rent:1100,note:"医保单位7.8%含生育0.5%(合计9.8%)；医保基数按上年度本市口径,暂按省平4699~23493待核实"}),
+  ls:CIU("乐山",{min:4699,max:23493},{medComp:.065,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:26495.5},{region:"四川",dataYear:"2026",rent:1100,med:{min:6880,max:23493,comp:.065,emp:.02},note:"医保单位6%+生育0.5%；2026医保最低基数6880元/月(82560元/年)、上限省平300%"}),
+  nc:CIU("南充",{min:4699,max:23493},{medComp:.079,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:26757},{region:"四川",dataYear:"2026",rent:1100,note:"医保单位7.9%含生育(合计9.9%)；职工医保基数口径未见数值,暂按省平4699~23493待核实；灵活就业公积金10%~24%"}),
+  ms:CIU("眉山",{min:4699,max:23493},{medComp:.088,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:24490},{region:"四川",dataYear:"2026",rent:800,warn:true,med:{min:4588,max:23493,comp:.088,emp:.02},note:"医保财政供养8.3%、其他8.8%含生育0.3%/0.8%,大额220元/人/年；医保基数4588~23493；公积金2026上限未公布,暂用2024版24490待核实"}),
+  yb:CIU("宜宾",{min:4699,max:23493},{medComp:.073,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:27219},{region:"四川",dataYear:"2026",rent:1100,note:"医保单位7.3%含生育和补充医疗保险；医保基数口径未见数值,暂按省平4699~23493待核实"}),
+  ga:CIU("广安",{min:4699,max:23493},{medComp:.06,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:25068},{region:"四川",dataYear:"2026",rent:800,med:{min:6264.8,max:23493,comp:.06,emp:.02},note:"医保单位6%；医保基数省平80%~300%(6264.8)"}),
+  dz:CIU("达州",{min:4699,max:23493},{medComp:.07,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:26084},{region:"四川",dataYear:"2026",rent:1100,med:{min:7047.9,max:23493,comp:.07,emp:.02},note:"医保单位7%含生育；医保基数省平90%~300%(7047.9~23493)"}),
+  ya:CIU("雅安",{min:4699,max:23493},{medComp:.08,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:24979},{region:"四川",dataYear:"2026",rent:800,note:"医保企业及其他8%含生育0.5%、党政机关/财政负担7.6%含生育0.1%；医保基数全市口径80%~3倍,暂按省平4699~23493待核实"}),
+  bz:CIU("巴中",{min:4699,max:23493},{medComp:.076,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:22894},{region:"四川",dataYear:"2026",rent:800,note:"医保单位7%+生育0.6%；2026医保基数待定(2025年6321元/月),暂按省平4699~23493待核实"}),
+  ziy:CIU("资阳",{min:4699,max:23493},{medComp:.077,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:23864},{region:"四川",dataYear:"2026",rent:800,note:"医保财政供养7.5%、其他7.7%含生育0.5%/0.7%,单建统筹5.7%；医保基数全市口径,暂按省平4699~23493待核实"}),
+  ab:CIU("阿坝",{min:4699,max:23493},{medComp:.07,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:30642},{region:"四川",dataYear:"2026",rent:800,warn:true,note:"医保单位6.5%+生育0.5%(合计9%)；医保基数全省口径60%~300%；公积金下限2200(阿府发〔2025〕1号),2026上限未公布暂用2024版30642待核实"}),
+  ganz:CIU("甘孜",{min:4699,max:23493},{medComp:.065,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:31827},{region:"四川",dataYear:"2026",rent:800,med:{min:6264.8,max:23493,comp:.065,emp:.02},note:"医保单位6.5%含生育0.5%；医保基数省平80%~300%(6264.8)；公积金下限2200、石渠/色达/理塘/稻城2330(甘府规〔2025〕3号)"}),
+  lsh:CIU("凉山",{min:4699,max:23493},{medComp:.077,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:26845},{region:"四川",dataYear:"2026",rent:800,note:"医保单位7.7%含生育(合计9.7%)；医保基数口径未见数值,暂按省平4699~23493待核实"})
 };
 var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,currentSupp=0,lastHFBase=2520;
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
@@ -339,18 +370,32 @@ function btx(b){if(b<=0)return{t:0,r:0,d:0,m:0};var m=b/12;for(var i=0;i<BBR.len
 function $(i){return document.getElementById(i)}
 function gv(i){return parseFloat($(i).value)||0}
 
-/* ===== 城市选择 ===== */
-(function buildCityGrid(){
+/* ===== 城市选择（省份 → 城市 二级联动） ===== */
+var PROVS=[];
+for(var pk in CITIES){var pr=CITIES[pk].region||"其他";if(PROVS.indexOf(pr)<0)PROVS.push(pr);}
+var prov=PROVS[0];
+function buildProvTabs(){
+  var h="";
+  PROVS.forEach(function(r){
+    h+='<button class="prov-tab'+(r===prov?' a':'')+'" onclick="setProv(\''+r+'\')">'+r+'</button>';
+  });
+  $("provTabs").innerHTML=h;
+}
+function buildCityGrid(){
   var h="";
   for(var k in CITIES){
     var c=CITIES[k];
+    if((c.region||"其他")!==prov)continue;
     h+='<div class="city-card'+(c.warn?' warn':'')+'" onclick="selectCity(\''+k+'\')"><div class="cn">'+c.name+'</div><div class="cd">'+(c.warn?'数据待确认':'可计算')+'</div></div>';
   }
   $("cityGrid").innerHTML=h;
-})();
-function showOverlay(){$("cityOverlay").style.display="flex"}
+}
+function setProv(r){prov=r;buildProvTabs();buildCityGrid();}
+buildProvTabs();buildCityGrid();
+function showOverlay(){if(CITY)prov=CITY.region||prov;buildProvTabs();buildCityGrid();$("cityOverlay").style.display="flex"}
 function selectCity(k){
   CITY=CITIES[k];
+  prov=CITY.region||prov;
   $("cityOverlay").style.display="none";
   $("cityTag").textContent=CITY.name;
   $("histCity").textContent=CITY.name;
@@ -380,7 +425,7 @@ function selectCity(k){
     (CITY.region==="广东"?'养老/失业/工伤按广东省统一标准，医保/公积金按当地标准':'五险按当地统一基数区间，医保/公积金按当地标准')+
     '（'+(CITY.note||"官方数据")+'）<br>公积金 5%-'+CITY.hfRateMax+'%'+
     (CITY.medFixEmp>0?' · 医保个人另缴大额医疗互助 '+fm(CITY.medFixEmp)+' 元/月':'')+
-    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
+    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 四川核查于 2026-09-23 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
   histRows=[];
   histCity=null;
   calc();
