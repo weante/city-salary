@@ -60,7 +60,11 @@ const api = new Function('document', 'window', 'console', 'setTimeout',
   src + '\n;return {CITIES};')(document, {}, console, setTimeout);
 
 const CITIES = api.CITIES;
-const docs = { 'AGENTS.md': read('AGENTS.md'), 'SKILL.md': read('SKILL.md') };
+const docs = {
+  'AGENTS.md': { content: read('AGENTS.md'), checkValues: true },
+  'SKILL.md':  { content: read('SKILL.md'),  checkValues: true },
+  'README.md': { content: read('README.md'), checkValues: false },
+};
 const num = (n) => n.toLocaleString('en-US');
 
 let missing = 0;
@@ -71,20 +75,23 @@ for (const key in CITIES) {
     ['公积金基数下限', c.hf.min], ['公积金基数上限', c.hf.max],
   ];
   for (const dname in docs) {
-    for (const [label, v] of vals) {
-      if (docs[dname].indexOf(String(v)) < 0 && docs[dname].indexOf(num(v)) < 0) {
-        console.log(`  ✗ ${c.name}(${key}) ${label}=${v} 未出现在 ${dname}`);
-        missing++; fail++;
+    const { content, checkValues } = docs[dname];
+    if (checkValues) {
+      for (const [label, v] of vals) {
+        if (content.indexOf(String(v)) < 0 && content.indexOf(num(v)) < 0) {
+          console.log(`  ✗ ${c.name}(${key}) ${label}=${v} 未出现在 ${dname}`);
+          missing++; fail++;
+        }
       }
     }
     /* 城市名必须被文档提到 */
-    if (docs[dname].indexOf(c.name) < 0) {
+    if (content.indexOf(c.name) < 0) {
       console.log(`  ✗ 城市 ${c.name} 未出现在 ${dname}`);
       missing++; fail++;
     }
   }
 }
-if (!missing) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市的基数与名称在 AGENTS.md / SKILL.md 中均可检索到`);
+if (!missing) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市的基数与名称在 AGENTS.md / SKILL.md 中均可检索到（README.md 核对城市名）`);
 
 /* ---------- C. 文档陈旧表述 lint ----------
    教训来自一次真实漂移：时效机制改成双检查点后，README/SKILL/AGENTS 都改了，
@@ -98,6 +105,8 @@ const MD_FILES = ['README.md', 'SKILL.md', 'AGENTS.md']
 const STALE_PATTERNS = [
   [/7\s*月\s*15\s*日后/, '单一检查点表述"7月15日后"（双检查点机制下应为：1月(医保)/7月(养老公积金)/限期费率到期）'],
   [/广东省\s*21\s*个?\s*地级市(?!.*北京)/, '城市清单未包含京沪'],
+  [/23\s*城/, '城市数"23城"已过时，应为44城（含四川21市州）'],
+  [/广东\s*21\s*市\s*\+\s*北京\s*\/\s*上海(?!.*四川)/, '城市清单未包含四川21市州'],
 ];
 let staleHits = 0;
 for (const f of MD_FILES) {

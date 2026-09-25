@@ -32,10 +32,12 @@ else console.log('   ✓ 无重复');
 
 /* 2. JS 引用的静态 id（动态生成的 id 形如 csi0/chf0/hrow0，靠 render 时创建，不在此列） */
 const refs = [...new Set([...js.matchAll(/\$\("([^"]+)"\)/g)].map(m => m[1]))];
-const dynamic = refs.filter(r => /^(csi|chf|ctx|cnet|hrow|md)\d?$/.test(r));
-const staticRefs = refs.filter(r => dynamic.indexOf(r) < 0);
+/* 动态 id（csi0/chf0/hrow0/md1 等）由 $("csi"+idx) 拼接生成，
+   上面的字面量正则捕获不到，因此不在此检查范围。
+   它们的正确性由 test-calc.js 的渲染断言（_cell/_num）间接守卫。 */
+const staticRefs = refs;  /* 所有捕获到的都是字面量静态引用 */
 const missing = staticRefs.filter(r => ids.indexOf(r) < 0);
-console.log(`\n2. JS 中 $() 静态引用 ${staticRefs.length} 个（另有 ${dynamic.length} 个动态 id）`);
+console.log(`\n2. JS 中 $() 静态引用 ${staticRefs.length} 个`);
 if (missing.length) { console.log('   ✗ HTML 中不存在：' + missing.join(', ')); fail++; }
 else console.log('   ✓ 全部存在');
 

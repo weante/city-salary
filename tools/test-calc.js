@@ -484,6 +484,15 @@ section('9. 历史明细页');
   A.selectCity('sz'); A.calc(); A.buildHistory();
   ok('深圳·历史表有生育基数列', /生育基数/.test(A._html('histTable')), true);
   console.log('  历史表生育基数列：北京无 / 深圳有 ✓');
+
+  /* 生育/工伤基数仅影响单位侧，个人实发不应随之变化 */
+  A.selectCity('sz');  /* 深圳单独缴生育险，有 mtb 列 */
+  A._setMany({ salary: 20000, month: 6, startMonth: 1, pBase: 20000, mBase: 20000, uBase: 20000, mtBase: 20000, ijBase: 20000, hfBase: 20000, hfRate: 5 });
+  A.calc(); A.buildHistory();
+  const netBefore = A.histRows()[0].net;
+  A.histRows()[0].mtb = 99999; A.histRows()[0].ijb = 99999;
+  A.calcHist();
+  eq('历史页·生育/工伤基数变化不影响个人实发', A.histRows()[0].net, netBefore);
 })();
 
 /* =========================================================
