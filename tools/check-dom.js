@@ -60,6 +60,29 @@ if (listMatch) {
   else console.log('   ✓ 全部存在');
 }
 
+/* 5. CITIES 字面量中是否有重复的 key / 重复的城市名
+       —— JS 对象字面量遇到重复 key 时「值取后者、位置取前者」，会静默丢掉一个城市，
+          且用 Object.keys(CITIES).length 也看不出来（总数会少，但难以定位）。
+          本仓库已两次踩到（hez/bs、qy/wz），故在此固化检查。 */
+const citiesBlock = html.split('var CITIES=')[1];
+/* 注意：广东 21 市用 CI() 工厂（基数各自独立），其余省市用 CIU()，两者都要覆盖 */
+const litKeys = [...citiesBlock.matchAll(/^[ \t]*([A-Za-z][\w]*):CIU?\(/gm)].map(m => m[1]);
+const litNames = [...citiesBlock.matchAll(/^[ \t]*[A-Za-z][\w]*:CIU?\("([^"]+)"/gm)].map(m => m[1]);
+const rdup = k => [...new Set(k.filter((v, i) => k.indexOf(v) !== i))];
+const dupKeys = rdup(litKeys), dupNames = rdup(litNames);
+/* 自校验：字面量 key 数必须等于 :CIU( 出现次数，否则说明正则漏扫（会静默漏检重复 key） */
+const allCiu = (citiesBlock.match(/:CIU?\(/g) || []).length;
+console.log(`\n5. CITIES 字面量 key ${litKeys.length} 个 / 城市名 ${litNames.length} 个`);
+if (litKeys.length !== allCiu) {
+  console.log(`   ✗ 正则覆盖不全：key 捕获 ${litKeys.length} ≠ :CIU( 出现 ${allCiu}`);
+  fail++;
+}
+if (dupKeys.length || dupNames.length) {
+  if (dupKeys.length) console.log('   ✗ 重复 key（会静默丢城市）：' + dupKeys.join(', '));
+  if (dupNames.length) console.log('   ✗ 重复城市名：' + dupNames.join(', '));
+  fail++;
+} else console.log('   ✓ 无重复 key、无重复城市名');
+
 /* 汇总 */
 const lines = html.split('\n').length;
 const fns = [...js.matchAll(/function\s+([\w$]+)\s*\(/g)].map(m => m[1]);

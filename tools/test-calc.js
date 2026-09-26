@@ -396,7 +396,8 @@ Object.keys(A.CITIES).forEach(k => {
   ok(`${c.name}.hf.min<=max`, c.hf.min <= c.hf.max, true);
   ok(`${c.name}.hfRateMax 在 5~12`, c.hfRateMax >= 5 && c.hfRateMax <= 12, true);
 });
-eq('城市总数', Object.keys(A.CITIES).length, 330);
+eq('城市总数', Object.keys(A.CITIES).length, 337);
+eq('省份分组数', [...new Set(Object.keys(A.CITIES).map(k => A.CITIES[k].region))].length, 28);
 eq('北京存在', !!A.CITIES.bj, true);
 eq('上海存在', !!A.CITIES.sh, true);
 eq('成都存在', !!A.CITIES.cd, true);
@@ -424,7 +425,8 @@ eq('山东菏泽未被覆盖', A.CITIES.hez.name, '菏泽');
 eq('吉林白山未被覆盖', A.CITIES.bs.name, '白山');
 eq('广东清远未被覆盖', A.CITIES.qy.name, '清远');
 eq('浙江温州未被覆盖', A.CITIES.wz.name, '温州');
-eq('拉萨存在', !!A.CITIES.ls, true);
+eq('四川乐山未被覆盖', A.CITIES.ls.name, '乐山');
+eq('拉萨存在', A.CITIES.lasa.name, '拉萨');
 eq('兰州存在', !!A.CITIES.lzh, true);
 eq('银川存在', !!A.CITIES.ychuan, true);
 eq('呼和浩特存在', !!A.CITIES.hhht, true);
@@ -763,6 +765,24 @@ eq('海口·租金1500', A.CITIES.haik.rent, 1500);
 eq('三亚·租金800（户籍80.3万）', A.CITIES.sanya.rent, 800);
 eq('三沙·公积金上限38500.53', A.CITIES.ssha.hf.max, 38500.53);
 eq('儋州·租金1100（户籍109.55万，存争议）', A.CITIES.danz.rent, 1100);
+
+/* 西藏 7 市地抽查（对照官方文件） */
+eq('西藏·基数下限(藏人社发〔2026〕46号)', A.CITIES.lasa.pension.min, 7172.4);
+eq('西藏·基数上限', A.CITIES.lasa.pension.max, 35862);
+eq('西藏·失业单位0.5%', A.CITIES.lasa.unemp.comp, 0.005);
+eq('西藏·工伤一类0.1%（全国最低）', A.CITIES.lasa.inj.comp, 0.001);
+eq('拉萨·医保单位7.5%', A.CITIES.lasa.med.comp, 0.075);
+eq('拉萨·公积金下限2360（全区最低工资）', A.CITIES.lasa.hf.min, 2360);
+eq('拉萨·公积金上限42214', A.CITIES.lasa.hf.max, 42214);
+eq('拉萨·租金1500', A.CITIES.lasa.rent, 1500);
+eq('日喀则·医保单位7%', A.CITIES.rkz.med.comp, 0.07);
+eq('日喀则·租金800', A.CITIES.rkz.rent, 800);
+eq('昌都·公积金上限43049', A.CITIES.changdu.hf.max, 43049);
+eq('林芝·公积金上限42581', A.CITIES.linzhi.hf.max, 42581);
+eq('山南·公积金上限44202（同规则推得）', A.CITIES.shannan.hf.max, 44202);
+eq('那曲·租金800', A.CITIES.naqu.rent, 800);
+eq('阿里·租金800', A.CITIES.ali.rent, 800);
+eq('西藏 7 市地全部已接入', ['lasa','rkz','changdu','linzhi','shannan','naqu','ali'].filter(k=>!!A.CITIES[k]).length, 7);
 
 /* =========================================================
    9. 历史明细页：补充扣除同样扣现金
