@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>城市工资计算器 · 社保公积金个税（京沪 + 广东21市 + 四川21市州）</title>
+<title>城市工资计算器 · 社保公积金个税（97 城：京沪渝 + 粤川鲁辽吉黑）</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg,#f8fafc);color:var(--text,#1f2937);font-size:13px;line-height:1.5}
@@ -151,8 +151,8 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 <body>
 <div class="w">
 <h1>城市工资计算器</h1>
-<div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（京沪 + 广东21市 + 四川21市州 · 每年1月/7月核查基数）</div>
-<div class="city-bar"><span class="city-tag" id="cityTag">深圳</span><button class="city-btn" onclick="showOverlay()">切换城市</button><span class="nt" style="margin:0">各市按当地政策计算 · 京沪/四川为2026年度、广东为2025-2026年度</span></div>
+<div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（京沪渝 + 广东21市 + 四川21市州 + 山东16市 + 辽宁14市 + 吉林9市州 + 黑龙江13市地 · 每年1月/7月核查基数）</div>
+<div class="city-bar"><span class="city-tag" id="cityTag">深圳</span><button class="city-btn" onclick="showOverlay()">切换城市</button><span class="nt" style="margin:0">各市按当地政策计算 · 京沪渝/川/鲁/辽/吉为2026年度、粤为2025-2026年度、黑为2025年度</span></div>
 <div class="tabs">
   <button class="tab a" id="tab0" onclick="switchTab(0)">单月计算</button>
   <button class="tab" id="tab1" onclick="switchTab(1)">历史明细</button>
@@ -355,7 +355,83 @@ var CITIES={
   ziy:CIU("资阳",{min:4699,max:23493},{medComp:.077,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:23864},{region:"四川",dataYear:"2026",rent:800,note:"医保财政供养7.5%、其他7.7%含生育0.5%/0.7%,单建统筹5.7%；医保基数全市口径,暂按省平4699~23493待核实"}),
   ab:CIU("阿坝",{min:4699,max:23493},{medComp:.07,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:30642},{region:"四川",dataYear:"2026",rent:800,warn:true,note:"医保单位6.5%+生育0.5%(合计9%)；医保基数全省口径60%~300%；公积金下限2200(阿府发〔2025〕1号),2026上限未公布暂用2024版30642待核实"}),
   ganz:CIU("甘孜",{min:4699,max:23493},{medComp:.065,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:31827},{region:"四川",dataYear:"2026",rent:800,med:{min:6264.8,max:23493,comp:.065,emp:.02},note:"医保单位6.5%含生育0.5%；医保基数省平80%~300%(6264.8)；公积金下限2200、石渠/色达/理塘/稻城2330(甘府规〔2025〕3号)"}),
-  lsh:CIU("凉山",{min:4699,max:23493},{medComp:.077,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:26845},{region:"四川",dataYear:"2026",rent:800,note:"医保单位7.7%含生育(合计9.7%)；医保基数口径未见数值,暂按省平4699~23493待核实"})
+  lsh:CIU("凉山",{min:4699,max:23493},{medComp:.077,medEmp:.02,unempComp:.006,unempEmp:.004,injComp:.0024,hfRateMax:12},{min:2200,max:26845},{region:"四川",dataYear:"2026",rent:800,note:"医保单位7.7%含生育(合计9.7%)；医保基数口径未见数值,暂按省平4699~23493待核实"}),
+  /* ===== 重庆（直辖市·2026年度）=====
+     五险统一基数 4553~22765（2025年度全口径年平 91059 元，2026-08-26 起执行）
+     医保 单位8%+生育0.5%=8.5%、个人2%+大额医疗互助5元/月（渝府办发〔2014〕97号；单位另有1.5%大额互助不计入个人端）
+     失业 单位0.5%/个人0.5%（渝人社规〔2025〕10号，2026 延续文件未找到）；工伤 一类0.3%（渝人社发〔2017〕191号）
+     公积金 2330~31393、比例5%~12%（渝公积金发〔2026〕51号，下限主城26区2330/城口等12县2200） */
+  cq:CIU("重庆",{min:4553,max:22765},{medComp:.085,medEmp:.02,medFixEmp:5,unempComp:.005,unempEmp:.005,injComp:.003},{min:2330,max:31393},{region:"直辖市",dataYear:"2026",rent:1500,note:"医保单位8%+生育0.5%，个人2%+大额医疗互助5元/月；失业0.5%/0.5%（2026延续文件未找到）；公积金 渝公积金发〔2026〕51号 下限主城26区2330、城口等12县2200"}),
+  /* ===== 山东 16 市（2026年度·五险统一基数）=====
+     鲁人社字〔2026〕75号：2025年度全口径年平 91452 元 → 2026年度 养老/医疗/长护/工伤/失业 个人月缴费基数 4573~22863
+     养老 16%/8%；医保 单位8%（含生育1%）/个人2%（鲁政字〔2023〕184号）；失业 单位0.7%/个人0.3%（鲁人社发〔2022〕25号）
+     工伤 一类基准0.2%、现执行0.16%（统一下调20%，鲁人社函〔2025〕5号）；公积金 比例0或5%~12% */
+  jn:CIU("济南",{min:4573,max:22863},{medComp:.08,medEmp:.02,medFixEmp:10,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2400,max:33902},{region:"山东",rent:1500,note:"公积金 济住中字〔2026〕9号（历下/市中/槐荫/天桥/历城2400、长清等7区县2210）；个人另缴大额医疗10元/月（济医保发〔2025〕20号）"}),
+  qd:CIU("青岛",{min:4573,max:22863},{medComp:.08,medEmp:.02,medFixEmp:5,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2400,max:34342.75},{region:"山东",rent:1500,note:"公积金 青住金发〔2026〕5号（市区2400、胶州/平度/莱西2210）；个人另缴大额医疗5元/月（青医保发〔2023〕27号）；计划单列市"}),
+  zb:CIU("淄博",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2400,max:26736.5},{region:"山东",rent:1100,note:"公积金 淄住字〔2026〕1号（张店/淄川/临淄/高新/经开2400、博山/周村/桓台2210、高青/沂源2020）"}),
+  zz:CIU("枣庄",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2210,max:24276.5},{region:"山东",rent:1100,note:"公积金 枣住公〔2026〕17号（市中/薛城/滕州2210、峄城/台儿庄/山亭2020）"}),
+  dyy:CIU("东营",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2400,max:34431},{region:"山东",rent:1100,note:"公积金上限34431（2026-07-09通知）；东营月最低工资2400"}),
+  yt:CIU("烟台",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2400,max:28692},{region:"山东",rent:1100,note:"公积金 2026-07-07通知（芝罘/福山/牟平/莱山/蓬莱/龙口/莱州/招远2400、莱阳/栖霞/海阳2210）"}),
+  wf:CIU("潍坊",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2400,max:24909},{region:"山东",rent:1100,note:"公积金 2026-07-01通知（潍城/寒亭/坊子/奎文/诸城/寿光2400、青州/安丘/高密/昌邑/临朐/昌乐2210）"}),
+  jng:CIU("济宁",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2210,max:25548},{region:"山东",rent:1100,note:"公积金 济住发〔2026〕21号（任城/兖州/曲阜/邹城/微山2210、泗水/鱼台/金乡/嘉祥/汶上/梁山2020）"}),
+  ta:CIU("泰安",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2210,max:23809},{region:"山东",rent:1100,note:"公积金 2026-06-29通知（泰山/新泰/肥城2210、岱岳/宁阳/东平2020）"}),
+  wh:CIU("威海",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2400,max:24950},{region:"山东",rent:1100,note:"公积金 2026-07-09通知；威海月最低工资2400"}),
+  rz:CIU("日照",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2210,max:26484},{region:"山东",rent:1100,note:"公积金 2026-07-29通知；日照月最低工资2210"}),
+  ly:CIU("临沂",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2210,max:25484},{region:"山东",rent:1100,note:"公积金 临住字〔2026〕15号（兰山/罗庄/河东及市直、沂河新区2210、九县2020）"}),
+  dez:CIU("德州",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2020,max:24373},{region:"山东",rent:1100,note:"公积金 2026-07-09通知；德州月最低工资2020"}),
+  lc:CIU("聊城",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2020,max:24162},{region:"山东",rent:1100,note:"公积金 2026-07-13通知；聊城月最低工资2020"}),
+  biz:CIU("滨州",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2210,max:25269},{region:"山东",rent:1100,note:"公积金 2026-07-03通知（滨城/邹平/博兴2210、沾化/惠民/阳信/无棣2020）"}),
+  hez:CIU("菏泽",{min:4573,max:22863},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.0016},{min:2020,max:22671},{region:"山东",rent:1100,note:"公积金 菏住金〔2026〕9号；菏泽月最低工资2020"}),
+  /* ===== 辽宁 14 市（2026年度）=====
+     辽人社〔2026〕19号：2026年 养老/机关事业个人缴费基数 4533~22665（2025年度 4359~21792）
+     养老 16%/8%；失业 单位0.5%/个人0.5%（辽人社发〔2024〕5号延至2025-12-31）
+     工伤 一类基准0.2%（辽人社〔2026〕1号，2026-01-01起至2028-12-31）
+     医保 个人2%、单位7%~8%区间（辽医保规〔2025〕2号），生育并入（辽政办发〔2024〕3号）；公积金 比例0或5%~12% */
+  sy:CIU("沈阳",{min:4533,max:22665},{medComp:.086,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2230,max:30657},{region:"辽宁",rent:1500,note:"医保单位8%+生育0.6%=8.6%（沈人社发〔2017〕63号）；公积金上限30657（2026-07通知）、下限市区2230/辽中/新民/法库/康平2080"}),
+  dl:CIU("大连",{min:4533,max:22665},{medComp:.09,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2230,max:31929},{region:"辽宁",rent:1500,note:"医保单位9%（已含生育，大医保发〔2019〕127号）；公积金 大房金发〔2026〕12号 上限31929、下限2230；计划单列市"}),
+  as:CIU("鞍山",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2080,max:22816},{region:"辽宁",rent:1100,warn:true,note:"公积金 2026-07-13 上限22816、下限市区2080/海城/台安/岫岩1930；医保单位费率未单列，按省级区间8%暂算待核实"}),
+  fsh:CIU("抚顺",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2080,max:23016},{region:"辽宁",rent:1100,warn:true,note:"公积金 2026-07-30 上限23016、下限市区2080/抚顺县/清原/新宾1930；医保费率待核实"}),
+  bx:CIU("本溪",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2100,max:21933},{region:"辽宁",rent:1100,warn:true,note:"公积金上限21933（2026-08-04）、下限市区2100/本溪县/桓仁2000（高于最低工资2080/1930，系中心专门文件）；医保费率待核实"}),
+  dd:CIU("丹东",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2080,max:22141},{region:"辽宁",rent:1100,warn:true,note:"公积金 2026-07-30 上限22141、下限市区2080/东港/凤城/宽甸1930；医保费率待核实"}),
+  jz:CIU("锦州",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:1930,max:20610},{region:"辽宁",rent:1100,warn:true,note:"2026年度公积金上限未公布，暂用2025年度20610；下限1930（锦人社〔2025〕15号）；医保费率待核实"}),
+  yk:CIU("营口",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2080,max:21927},{region:"辽宁",rent:1100,warn:true,note:"公积金 营公积金发〔2026〕7号 上限21927、下限2080；医保费率待核实"}),
+  fx:CIU("阜新",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:1930,max:21201},{region:"辽宁",rent:1100,warn:true,note:"公积金上限21201（2026-07-21）；下限未找到，按最低工资1930计；医保费率待核实"}),
+  lyo:CIU("辽阳",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2080,max:23181},{region:"辽宁",rent:1100,warn:true,note:"公积金上限23181（2026-07-16）、下限市区2080/辽阳县/灯塔1930；医保费率待核实"}),
+  pj:CIU("盘锦",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2080,max:27591},{region:"辽宁",rent:1100,warn:true,note:"公积金 2026-06-29 上限27591、下限2080；医保费率待核实"}),
+  tl:CIU("铁岭",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:1930,max:22056},{region:"辽宁",rent:1100,warn:true,note:"公积金 铁公积金函〔2026〕40号 上限22056、下限1930；医保费率待核实"}),
+  cy:CIU("朝阳",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:1930,max:21816},{region:"辽宁",rent:1100,warn:true,note:"公积金上限21816（2026-07-13）；下限未找到，按最低工资1930计；医保费率待核实"}),
+  hld:CIU("葫芦岛",{min:4533,max:22665},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:1930,max:22848},{region:"辽宁",rent:1100,warn:true,note:"公积金上限22848（2026-07-21）、下限1930；医保费率待核实"}),
+  /* ===== 吉林 9 市州（2026年度）=====
+     吉人社联〔2025〕97号：2025.7-2026.6 养老/医保个人缴费基数 4393.2~21966
+     2025年全口径年平 89778 元（吉人社联〔2026〕74号，2026-09-01）已公布，新上下限待落地
+     养老 16%/8%；失业 单位0.7%/个人0.3%（吉人社联〔2023〕39号）；工伤 一类基准0.2%（吉人社联〔2021〕68号）
+     医保 个人2%、单位6%左右+生育0.5%左右（吉医保规〔2026〕1号）；公积金 比例0或5%~12% */
+  cc:CIU("长春",{min:4393.2,max:21966},{medComp:.077,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:2230,max:30505},{region:"吉林",rent:1500,note:"医保单位7.7%（含生育，长春市社会医疗保险管理局）、个人2%；公积金上限30505（2026-07-29）、下限市区2230/榆树/德惠/公主岭/农安1870"}),
+  jl:CIU("吉林市",{min:4393.2,max:21966},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:2020,max:22734.75},{region:"吉林",rent:1100,warn:true,note:"公积金上限22734.75（2026-08-14）、下限2020；医保单位费率未找到，按省级区间8%暂算待核实"}),
+  sp:CIU("四平",{min:4393.2,max:21966},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:1870,max:20724},{region:"吉林",rent:1100,warn:true,note:"公积金上限20724（2026-07-16）、下限1870；医保费率待核实"}),
+  lyu:CIU("辽源",{min:4393.2,max:21966},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:1870,max:22444},{region:"吉林",rent:1100,warn:true,note:"公积金上限22444（2026-09-21）、下限1870；医保费率待核实"}),
+  th:CIU("通化",{min:4393.2,max:21966},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:1870,max:19816},{region:"吉林",rent:1100,warn:true,note:"公积金上限19816（2026-07-01起）；下限未找到，按最低工资1870计；医保费率待核实"}),
+  bs:CIU("白山",{min:4393.2,max:21966},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:2020,max:19272.5},{region:"吉林",rent:1100,warn:true,note:"公积金上限19272.5（2026-01-13）；下限未找到，市区按最低工资2020计；医保费率待核实"}),
+  syu:CIU("松原",{min:4393.2,max:21966},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:2020,max:22932},{region:"吉林",rent:1100,warn:true,note:"公积金上限22932（2026-08-31）；2026下限未公布，按市区最低工资2020计（2025口径1920）；医保费率待核实"}),
+  bc:CIU("白城",{min:4393.2,max:21966},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:1870,max:20676},{region:"吉林",rent:1100,warn:true,note:"公积金上限20676（2026-09-07）、下限1870；医保费率待核实"}),
+  ybi:CIU("延边",{min:4393.2,max:21966},{medComp:.08,medEmp:.02,unempComp:.007,unempEmp:.003,injComp:.002},{min:2020,max:22955},{region:"吉林",rent:1100,warn:true,note:"公积金上限22955（2026-08-06）；下限未找到，延吉/珲春按2020计；医保费率待核实"}),
+  /* ===== 黑龙江 13 市地（2025年度·2026年度基数未公布）=====
+     黑人社函〔2024〕548号：2025年度全口径年平 90840 元 → 养老个人缴费基数 4542~22710（自2025-01-01起）
+     养老 16%/8%；失业 单位0.5%/个人0.5%（黑政办规〔2023〕2号等延至2025-12-31，2026延续文件未找到）
+     工伤 一类基准0.2%（工伤保险省级统筹）；医保 个人2%、生育并入（黑医保发〔2019〕38号）；公积金 比例0或5%~12% */
+  heb:CIU("哈尔滨",{min:4542,max:22710},{medComp:.081,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2270,max:28430},{region:"黑龙江",rent:1500,note:"医保单位7.5%(市区)+生育0.6%=8.1%、个人2%（哈医保规〔2019〕5号/〔2020〕2号）；公积金上限28430（2026-07-13）、下限市区2270/呼兰/阿城/双城2010/各县市1910"}),
+  qqhe:CIU("齐齐哈尔",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:22251},{region:"黑龙江",rent:1100,warn:true,note:"公积金上限22251（2026-07-13）、下限市区2010/各县市1910；医保费率待核实"}),
+  jx:CIU("鸡西",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:22482},{region:"黑龙江",rent:1100,warn:true,note:"公积金 鸡房金管〔2026〕17号 上限22482、下限市区2010/鸡东/密山/虎林1910；医保费率待核实"}),
+  hg:CIU("鹤岗",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:20900},{region:"黑龙江",rent:1100,warn:true,note:"公积金上限20900（2026-07-03）、下限市区2010/县1910；医保费率待核实"}),
+  sys:CIU("双鸭山",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:21818},{region:"黑龙江",rent:1100,warn:true,note:"公积金上限21818（2026-06-30）、下限市区2010/各县1910；医保费率待核实"}),
+  dq:CIU("大庆",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2270,max:32701},{region:"黑龙江",rent:1100,note:"医保单位7.5%+生育0.5%=8%、个人2%（庆医保规〔2020〕8号/1号）；公积金上限32701（2026-07）、下限市区2270/肇州/肇源/林甸/杜蒙1910"}),
+  yc:CIU("伊春",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:1910,max:21189},{region:"黑龙江",rent:1100,warn:true,note:"公积金上限21189（2026-07-09）、下限1910；医保费率待核实"}),
+  jms:CIU("佳木斯",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:22660},{region:"黑龙江",rent:1100,warn:true,note:"公积金上限22660（2026-07-01）、下限市区及抚远2010/富锦/同江/桦南/汤原/桦川1910；医保费率待核实"}),
+  qth:CIU("七台河",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:20598},{region:"黑龙江",rent:1100,warn:true,note:"公积金上限20598（2026-07-09）、下限市区2010/勃利县1910；医保费率待核实"}),
+  mdj:CIU("牡丹江",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:22451},{region:"黑龙江",rent:1100,warn:true,note:"公积金 牡公管委发〔2026〕8号 上限22451、下限市区2010/县市1910；医保费率待核实"}),
+  hh:CIU("黑河",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:1910,max:22208},{region:"黑龙江",rent:1100,warn:true,note:"公积金 黑市房金管办发〔2026〕5号 上限22208、下限1910；医保费率待核实"}),
+  suih:CIU("绥化",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:20868},{region:"黑龙江",rent:1100,warn:true,note:"公积金上限20868（2026-07-21）、下限市区2010/其他县市1910；医保费率待核实"}),
+  dxal:CIU("大兴安岭",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:22929},{region:"黑龙江",rent:1100,warn:true,note:"2026年度公积金通知未找到，暂用2025年度上限22929；下限按最低工资二档2010计；医保费率待核实"})
 };
 var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,currentSupp=0,lastHFBase=2520;
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
@@ -429,7 +505,7 @@ function selectCity(k){
     (CITY.region==="广东"?'养老/失业/工伤按广东省统一标准，医保/公积金按当地标准':'五险按当地统一基数区间，医保/公积金按当地标准')+
     '（'+(CITY.note||"官方数据")+'）<br>公积金 5%-'+CITY.hfRateMax+'%'+
     (CITY.medFixEmp>0?' · 医保个人另缴大额医疗互助 '+fm(CITY.medFixEmp)+' 元/月':'')+
-    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 四川核查于 2026-09-23 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
+    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 四川核查于 2026-09-23 · 新增重庆/山东/辽宁/吉林/黑龙江核查于 2026-09-26 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
   histRows=[];
   histCity=null;
   calc();

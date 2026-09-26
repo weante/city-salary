@@ -396,10 +396,15 @@ Object.keys(A.CITIES).forEach(k => {
   ok(`${c.name}.hf.min<=max`, c.hf.min <= c.hf.max, true);
   ok(`${c.name}.hfRateMax 在 5~12`, c.hfRateMax >= 5 && c.hfRateMax <= 12, true);
 });
-eq('城市总数', Object.keys(A.CITIES).length, 44);
+eq('城市总数', Object.keys(A.CITIES).length, 97);
 eq('北京存在', !!A.CITIES.bj, true);
 eq('上海存在', !!A.CITIES.sh, true);
 eq('成都存在', !!A.CITIES.cd, true);
+eq('重庆存在', !!A.CITIES.cq, true);
+eq('济南存在', !!A.CITIES.jn, true);
+eq('沈阳存在', !!A.CITIES.sy, true);
+eq('长春存在', !!A.CITIES.cc, true);
+eq('哈尔滨存在', !!A.CITIES.heb, true);
 
 /* 京沪参数关键值抽查（对照官方文件） */
 eq('北京·养老下限(京人社发〔2026〕7号)', A.CITIES.bj.pension.min, 7270);
@@ -442,6 +447,57 @@ eq('四川·公积金比例上限12%', A.CITIES.cd.hfRateMax, 12);
 eq('北京·生育并入医保(mat.comp=0)', A.CITIES.bj.mat.comp, 0);
 eq('上海·生育并入医保(mat.comp=0)', A.CITIES.sh.mat.comp, 0);
 eq('成都·生育并入医保(mat.comp=0)', A.CITIES.cd.mat.comp, 0);
+
+/* 重庆 / 山东 / 辽宁 / 吉林 / 黑龙江 参数抽查（对照官方文件） */
+eq('重庆·五险下限(全口径年平91059)', A.CITIES.cq.pension.min, 4553);
+eq('重庆·五险上限', A.CITIES.cq.pension.max, 22765);
+eq('重庆·医保单位8.5%(含生育0.5%)', A.CITIES.cq.med.comp, 0.085);
+eq('重庆·医保个人2%', A.CITIES.cq.med.emp, 0.02);
+eq('重庆·大额医疗互助5元/月', A.CITIES.cq.medFixEmp, 5);
+eq('重庆·公积金下限2330', A.CITIES.cq.hf.min, 2330);
+eq('重庆·公积金上限(渝公积金发〔2026〕51号)', A.CITIES.cq.hf.max, 31393);
+eq('重庆·房租扣除1500', A.CITIES.cq.rent, 1500);
+eq('山东·五险下限(鲁人社字〔2026〕75号)', A.CITIES.jn.pension.min, 4573);
+eq('山东·五险上限', A.CITIES.jn.pension.max, 22863);
+eq('山东·医保单位8%', A.CITIES.jn.med.comp, 0.08);
+eq('山东·医保个人2%', A.CITIES.jn.med.emp, 0.02);
+eq('山东·失业单位0.7%', A.CITIES.jn.unemp.comp, 0.007);
+eq('山东·失业个人0.3%', A.CITIES.jn.unemp.emp, 0.003);
+eq('山东·工伤现执行0.16%', A.CITIES.jn.inj.comp, 0.0016);
+eq('济南·公积金下限2400', A.CITIES.jn.hf.min, 2400);
+eq('济南·公积金上限(济住中字〔2026〕9号)', A.CITIES.jn.hf.max, 33902);
+eq('济南·大额医疗10元/月', A.CITIES.jn.medFixEmp, 10);
+eq('青岛·公积金上限(青住金发〔2026〕5号)', A.CITIES.qd.hf.max, 34342.75);
+eq('青岛·大额医疗5元/月', A.CITIES.qd.medFixEmp, 5);
+eq('菏泽·公积金上限(菏住金〔2026〕9号)', A.CITIES.hez.hf.max, 22671);
+eq('辽宁·五险下限(辽人社〔2026〕19号)', A.CITIES.sy.pension.min, 4533);
+eq('辽宁·五险上限', A.CITIES.sy.pension.max, 22665);
+eq('辽宁·失业单位0.5%', A.CITIES.sy.unemp.comp, 0.005);
+eq('辽宁·工伤一类0.2%', A.CITIES.sy.inj.comp, 0.002);
+eq('沈阳·医保单位8.6%(含生育0.6%)', A.CITIES.sy.med.comp, 0.086);
+eq('沈阳·公积金下限2230', A.CITIES.sy.hf.min, 2230);
+eq('沈阳·公积金上限30657', A.CITIES.sy.hf.max, 30657);
+eq('大连·医保单位9%(含生育)', A.CITIES.dl.med.comp, 0.09);
+eq('大连·公积金上限(大房金发〔2026〕12号)', A.CITIES.dl.hf.max, 31929);
+eq('本溪·公积金下限2100(中心专门文件)', A.CITIES.bx.hf.min, 2100);
+eq('盘锦·公积金上限27591', A.CITIES.pj.hf.max, 27591);
+eq('吉林·五险下限(吉人社联〔2025〕97号)', A.CITIES.cc.pension.min, 4393.2);
+eq('吉林·五险上限', A.CITIES.cc.pension.max, 21966);
+eq('吉林·失业单位0.7%', A.CITIES.cc.unemp.comp, 0.007);
+eq('吉林·失业个人0.3%', A.CITIES.cc.unemp.emp, 0.003);
+eq('长春·医保单位7.7%(含生育)', A.CITIES.cc.med.comp, 0.077);
+eq('长春·公积金下限2230', A.CITIES.cc.hf.min, 2230);
+eq('长春·公积金上限30505', A.CITIES.cc.hf.max, 30505);
+eq('吉林市·公积金上限22734.75', A.CITIES.jl.hf.max, 22734.75);
+eq('黑龙江·五险下限(黑人社函〔2024〕548号)', A.CITIES.heb.pension.min, 4542);
+eq('黑龙江·五险上限', A.CITIES.heb.pension.max, 22710);
+eq('黑龙江·失业单位0.5%', A.CITIES.heb.unemp.comp, 0.005);
+eq('黑龙江·工伤一类0.2%', A.CITIES.heb.inj.comp, 0.002);
+eq('哈尔滨·医保单位8.1%(含生育0.6%)', A.CITIES.heb.med.comp, 0.081);
+eq('哈尔滨·公积金下限2270', A.CITIES.heb.hf.min, 2270);
+eq('哈尔滨·公积金上限28430', A.CITIES.heb.hf.max, 28430);
+eq('大庆·公积金上限32701', A.CITIES.dq.hf.max, 32701);
+eq('重庆/山东/辽宁/吉林/黑龙江·生育并入医保(mat.comp=0)', A.CITIES.cq.mat.comp + A.CITIES.jn.mat.comp + A.CITIES.sy.mat.comp + A.CITIES.cc.mat.comp + A.CITIES.heb.mat.comp, 0);
 
 /* =========================================================
    9. 历史明细页：补充扣除同样扣现金
