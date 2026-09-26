@@ -396,7 +396,7 @@ Object.keys(A.CITIES).forEach(k => {
   ok(`${c.name}.hf.min<=max`, c.hf.min <= c.hf.max, true);
   ok(`${c.name}.hfRateMax 在 5~12`, c.hfRateMax >= 5 && c.hfRateMax <= 12, true);
 });
-eq('城市总数', Object.keys(A.CITIES).length, 97);
+eq('城市总数', Object.keys(A.CITIES).length, 122);
 eq('北京存在', !!A.CITIES.bj, true);
 eq('上海存在', !!A.CITIES.sh, true);
 eq('成都存在', !!A.CITIES.cd, true);
@@ -405,6 +405,9 @@ eq('济南存在', !!A.CITIES.jn, true);
 eq('沈阳存在', !!A.CITIES.sy, true);
 eq('长春存在', !!A.CITIES.cc, true);
 eq('哈尔滨存在', !!A.CITIES.heb, true);
+eq('天津存在', !!A.CITIES.tj, true);
+eq('南京存在', !!A.CITIES.nanj, true);
+eq('杭州存在', !!A.CITIES.hangz, true);
 
 /* 京沪参数关键值抽查（对照官方文件） */
 eq('北京·养老下限(京人社发〔2026〕7号)', A.CITIES.bj.pension.min, 7270);
@@ -498,6 +501,38 @@ eq('哈尔滨·公积金下限2270', A.CITIES.heb.hf.min, 2270);
 eq('哈尔滨·公积金上限28430', A.CITIES.heb.hf.max, 28430);
 eq('大庆·公积金上限32701', A.CITIES.dq.hf.max, 32701);
 eq('重庆/山东/辽宁/吉林/黑龙江·生育并入医保(mat.comp=0)', A.CITIES.cq.mat.comp + A.CITIES.jn.mat.comp + A.CITIES.sy.mat.comp + A.CITIES.cc.mat.comp + A.CITIES.heb.mat.comp, 0);
+
+/* 天津 / 江苏 / 浙江 参数抽查（对照官方文件） */
+eq('天津·五险下限(津人社局发〔2026〕5号)', A.CITIES.tj.pension.min, 5180);
+eq('天津·五险上限', A.CITIES.tj.pension.max, 25902);
+eq('天津·医保单位10.5%(含生育)', A.CITIES.tj.med.comp, 0.105);
+eq('天津·医保个人2%', A.CITIES.tj.med.emp, 0.02);
+eq('天津·大额医疗救助260元/年≈21.67元/月', A.CITIES.tj.medFixEmp, 21.67);
+eq('天津·公积金下限2510', A.CITIES.tj.hf.min, 2510);
+eq('天津·公积金上限(津公积金委〔2026〕3号)', A.CITIES.tj.hf.max, 28917);
+eq('天津·房租扣除1500', A.CITIES.tj.rent, 1500);
+eq('江苏·五险下限(苏人社发〔2025〕33号)', A.CITIES.nanj.pension.min, 4952);
+eq('江苏·五险上限', A.CITIES.nanj.pension.max, 24762);
+eq('江苏·失业单位0.5%', A.CITIES.nanj.unemp.comp, 0.005);
+eq('江苏·工伤一类0.2%', A.CITIES.nanj.inj.comp, 0.002);
+eq('南京·医保单位7.8%(含生育)', A.CITIES.nanj.med.comp, 0.078);
+eq('南京·大病救助10元/月(个人)', A.CITIES.nanj.medFixEmp, 10);
+eq('南京·公积金下限2660', A.CITIES.nanj.hf.min, 2660);
+eq('南京·公积金上限42400', A.CITIES.nanj.hf.max, 42400);
+eq('苏州·公积金上限40600', A.CITIES.su.hf.max, 40600);
+eq('徐州·个人固定额=大病6元+长护险70元/年≈11.83', A.CITIES.xz.medFixEmp, 11.83);
+eq('宿迁·公积金下限2010', A.CITIES.sq.hf.min, 2010);
+eq('浙江·五险下限(浙人社发〔2025〕52号)', A.CITIES.hangz.pension.min, 4986);
+eq('浙江·五险上限', A.CITIES.hangz.pension.max, 25299);
+eq('杭州·医保单位9.5%(含生育0.6%)', A.CITIES.hangz.med.comp, 0.095);
+eq('杭州·公积金上限42151', A.CITIES.hangz.hf.max, 42151);
+eq('宁波·公积金上限38947', A.CITIES.nb.hf.max, 38947);
+eq('宁波·医保单位8.5%(含大病0.5%+生育0.5%)', A.CITIES.nb.med.comp, 0.085);
+eq('绍兴·医保个人1%(其他单位口径)', A.CITIES.sx.med.emp, 0.01);
+eq('台州·医保个人1%', A.CITIES.taiz.med.emp, 0.01);
+eq('衢州·公积金上限37530', A.CITIES.qz.hf.max, 37530);
+eq('丽水·公积金上限暂用2025年度36405', A.CITIES.lish.hf.max, 36405);
+eq('天津/江苏/浙江·生育并入医保(mat.comp=0)', A.CITIES.tj.mat.comp + A.CITIES.nanj.mat.comp + A.CITIES.hangz.mat.comp, 0);
 
 /* =========================================================
    9. 历史明细页：补充扣除同样扣现金

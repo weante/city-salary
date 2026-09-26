@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>城市工资计算器 · 社保公积金个税（97 城：京沪渝 + 粤川鲁辽吉黑）</title>
+<title>城市工资计算器 · 社保公积金个税（122 城：京沪渝津 + 粤川鲁辽吉黑苏浙）</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;background:var(--bg,#f8fafc);color:var(--text,#1f2937);font-size:13px;line-height:1.5}
@@ -151,8 +151,8 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 <body>
 <div class="w">
 <h1>城市工资计算器</h1>
-<div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（京沪渝 + 广东21市 + 四川21市州 + 山东16市 + 辽宁14市 + 吉林9市州 + 黑龙江13市地 · 每年1月/7月核查基数）</div>
-<div class="city-bar"><span class="city-tag" id="cityTag">深圳</span><button class="city-btn" onclick="showOverlay()">切换城市</button><span class="nt" style="margin:0">各市按当地政策计算 · 京沪渝/川/鲁/辽/吉为2026年度、粤为2025-2026年度、黑为2025年度</span></div>
+<div class="sub">社保公积金 · 个税累计预扣 · 年终奖 · 历史明细（京沪渝 + 广东21市 + 四川21市州 + 山东16市 + 辽宁14市 + 吉林9市州 + 黑龙江13市地 + 天津 + 江苏13市 + 浙江11市 · 每年1月/7月核查基数）</div>
+<div class="city-bar"><span class="city-tag" id="cityTag">深圳</span><button class="city-btn" onclick="showOverlay()">切换城市</button><span class="nt" style="margin:0">各市按当地政策计算 · 京沪渝津/川/鲁/辽/吉为2026年度、粤为2025-2026年度、黑为2025年度、苏浙社保基数暂按2025年度</span></div>
 <div class="tabs">
   <button class="tab a" id="tab0" onclick="switchTab(0)">单月计算</button>
   <button class="tab" id="tab1" onclick="switchTab(1)">历史明细</button>
@@ -431,7 +431,45 @@ var CITIES={
   mdj:CIU("牡丹江",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:22451},{region:"黑龙江",rent:1100,warn:true,note:"公积金 牡公管委发〔2026〕8号 上限22451、下限市区2010/县市1910；医保费率待核实"}),
   hh:CIU("黑河",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:1910,max:22208},{region:"黑龙江",rent:1100,warn:true,note:"公积金 黑市房金管办发〔2026〕5号 上限22208、下限1910；医保费率待核实"}),
   suih:CIU("绥化",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:20868},{region:"黑龙江",rent:1100,warn:true,note:"公积金上限20868（2026-07-21）、下限市区2010/其他县市1910；医保费率待核实"}),
-  dxal:CIU("大兴安岭",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:22929},{region:"黑龙江",rent:1100,warn:true,note:"2026年度公积金通知未找到，暂用2025年度上限22929；下限按最低工资二档2010计；医保费率待核实"})
+  dxal:CIU("大兴安岭",{min:4542,max:22710},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:22929},{region:"黑龙江",rent:1100,warn:true,note:"2026年度公积金通知未找到，暂用2025年度上限22929；下限按最低工资二档2010计；医保费率待核实"}),
+  /* ===== 天津（直辖市·2026年度）=====
+     津人社局发〔2026〕5号：五险统一基数 5180~25902（自 2026-09-01 起；1-8 月为 5124~25620）
+     医保含生育 单位10.5%/个人2%（津医保规字〔2026〕1号，2026-03-01 起；此前 10%）
+     个人另缴大额医疗救助 260元/年（约21.67元/月，按月21/22元扣）；失业 0.5%/0.5%（1%延续文件未找到）
+     工伤 一类 0.2%（天津市工伤保险费率管理实施办法）；公积金 2510~28917、比例5%~12%（津公积金委〔2026〕3号） */
+  tj:CIU("天津",{min:5180,max:25902},{medComp:.105,medEmp:.02,medFixEmp:21.67,unempComp:.005,unempEmp:.005,injComp:.002},{min:2510,max:28917},{region:"直辖市",dataYear:"2026",rent:1500,note:"五险统一基数（2026-09-01起；1-8月5124~25620）；医保含生育单位10.5%/个人2%（2026-03-01起，此前10%）；个人另缴大额医疗救助260元/年≈21.67元/月；公积金下限2510=最低工资；失业1%延续文件未找到"}),
+  /* ===== 江苏 13 市（省级统一基数）=====
+     苏人社发〔2025〕33号：2025年度基数 4952~24762；2026年度新基数未公布（苏税发〔2026〕3号暂按 2025 年度预处理）→ 全部标 warn
+     养老 16%/8%；失业 单位0.5%/个人0.5%；工伤 一类基准0.2%（八档0.2%~1.9%）；生育并入职工医保
+     医保单位费率含生育（未单列的按 8%+生育计）；公积金为各市 2026 年度官方通知，比例5%~12% */
+  nanj:CIU("南京",{min:4952,max:24762},{medComp:.078,medEmp:.02,medFixEmp:10,unempComp:.005,unempEmp:.005,injComp:.002},{min:2660,max:42400},{region:"江苏",rent:1500,warn:true,note:"2026社保新基数未公布，暂按2025年度24762/4952；医保单位7%+生育0.8%=7.8%、个人2%+大病救助10元/月（宁政办发〔2005〕76号，个人缴）；公积金2660~42400（2026-07-01）"}),
+  su:CIU("苏州",{min:4952,max:24762},{medComp:.078,medEmp:.02,medFixEmp:5,unempComp:.005,unempEmp:.005,injComp:.002},{min:2660,max:40600},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位7%+生育0.8%=7.8%、个人2%+大额5元/月；公积金2660~40600（园区下限4952、上限38900）"}),
+  wx:CIU("无锡",{min:4952,max:24762},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2490,max:36800},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位7%+大额0.2%+生育0.8%=8%、个人2%；公积金2490~36800"}),
+  czh:CIU("常州",{min:4952,max:24762},{medComp:.088,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2660,max:34080},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位8%+生育0.8%=8.8%、个人2%（另大额医疗0.3%个人年缴，未计入）；公积金2660~34080"}),
+  xz:CIU("徐州",{min:4952,max:24762},{medComp:.09,medEmp:.02,medFixEmp:11.83,unempComp:.005,unempEmp:.005,injComp:.002},{min:2430,max:32917},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位9%（含生育）、个人2%；个人固定额=大病6元/月+职工长护险70元/年≈11.83元/月；公积金2430~32917"}),
+  nt:CIU("南通",{min:4952,max:24762},{medComp:.09,medEmp:.02,medFixEmp:10,unempComp:.005,unempEmp:.005,injComp:.002},{min:2490,max:34000},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位9%（含生育1%）、个人2%+大病10元/月；公积金2490~34000"}),
+  lyg:CIU("连云港",{min:4952,max:24762},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2260,max:31545},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位8%（7+1含生育）、个人2%；公积金2260~31545（自然年2026-01-01起）"}),
+  ha:CIU("淮安",{min:4952,max:24762},{medComp:.089,medEmp:.02,medFixEmp:8,unempComp:.005,unempEmp:.005,injComp:.002},{min:2430,max:30900},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位8%+生育0.9%=8.9%、个人2%+大病8元/月；公积金2430~30900（自然年）"}),
+  ych:CIU("盐城",{min:4952,max:24762},{medComp:.089,medEmp:.02,medFixEmp:6,unempComp:.005,unempEmp:.005,injComp:.002},{min:2260,max:31314},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位8%+生育0.9%=8.9%、个人2%+大额6元/月；公积金2260~31314（大丰等2010）"}),
+  yz:CIU("扬州",{min:4952,max:24762},{medComp:.085,medEmp:.02,medFixEmp:6,unempComp:.005,unempEmp:.005,injComp:.002},{min:2490,max:31618},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位8%+生育0.5%=8.5%、个人2%（大病单位1%、个人6元/月）；公积金2490~31618"}),
+  tz:CIU("泰州",{min:4952,max:24762},{medComp:.085,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2660,max:30258},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位8%+生育0.5%=8.5%、个人2%（大病个人0.3%为费率，未计入）；公积金2660~30258（姜堰/兴化2430）"}),
+  zjh:CIU("镇江",{min:4952,max:24762},{medComp:.095,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2660,max:32400},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位9.5%（含生育0.5%）、个人2%（补充医保0.5%个人为费率，未计入）；公积金2660~32400"}),
+  sq:CIU("宿迁",{min:4952,max:24762},{medComp:.08,medEmp:.02,medFixEmp:5,unempComp:.005,unempEmp:.005,injComp:.002},{min:2010,max:31000},{region:"江苏",rent:1100,warn:true,note:"2026社保新基数未公布，暂按2025年度；医保单位8%（7+1含生育）、个人2%+大额5元/月（宿政规发〔2020〕4号）；公积金2010~31000（自然年）"}),
+  /* ===== 浙江 11 市（省级统一基数，宁波单独统筹）=====
+     浙人社发〔2025〕52号：2025年度基数 4986~25299；2026年度新基数未找到（杭州医保2026通告佐证仍沿用4986下限）→ 全部标 warn
+     养老 16%/8%；失业 单位0.5%/个人0.5%（2026延续文件未找到）；工伤 一类基准0.2%；生育并入职工医保
+     医保费率含生育（绍兴按其他单位口径、衢州按建账口径）；公积金为各市 2026 年度官方通知，比例5%~12% */
+  hangz:CIU("杭州",{min:4986,max:25299},{medComp:.095,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2660,max:42151},{region:"浙江",rent:1500,warn:true,note:"2026社保新基数未找到，暂按2025年度25299/4986；医保单位9.5%（含生育0.6%）、个人2%（杭政函〔2025〕88号）；公积金 杭公积金〔2026〕38号 2660~42151（桐庐/淳安/建德2430）"}),
+  nb:CIU("宁波",{min:4986,max:25299},{medComp:.085,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2660,max:38947},{region:"浙江",rent:1500,warn:true,note:"宁波单独统筹，2026社保基数官方口径未找到，暂按现行25299/4986；医保单位8.5%（含大病0.5%+生育0.5%）、个人2%；公积金 上限38947（2026-06-12确认）、下限市区2660/余姚慈溪宁海象山2430；计划单列市"}),
+  wz:CIU("温州",{min:4986,max:25299},{medComp:.092,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2660,max:32964},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保单位9.2%（含生育1%）、个人2%（温政办〔2022〕86号）；公积金 温公积金〔2026〕26号 2660~32964（乐清/瑞安2430、永嘉等2180）"}),
+  jiax:CIU("嘉兴",{min:4986,max:25299},{medComp:.09,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2430,max:34920},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保单位9%（含生育0.5%）、个人2%（嘉政发〔2024〕22号）；公积金2430~34920"}),
+  huz:CIU("湖州",{min:4986,max:25299},{medComp:.084,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2430,max:31436},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保单位8.4%（含生育0.9%）、个人2%（湖州市职工基本医疗保险办法）；公积金2430~31436"}),
+  sx:CIU("绍兴",{min:4986,max:25299},{medComp:.086,medEmp:.01,unempComp:.005,unempEmp:.005,injComp:.002},{min:2430,max:31968},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保按其他单位口径 单位8.6%（含生育0.6%）/个人1%（机关事业/省属为9%/2%，绍政发〔2024〕17号）；公积金2430~31968"}),
+  jh:CIU("金华",{min:4986,max:25299},{medComp:.075,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2430,max:31911},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保单位7.5%（含生育0.5%）、个人2%（金政发〔2021〕27号）；公积金2430~31911"}),
+  qz:CIU("衢州",{min:4986,max:25299},{medComp:.085,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2180,max:37530},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保按建账口径 单位8.5%（含生育0.5%）/个人2%（不建账5.5%/1%、机关事业11%，衢政发〔2020〕26号）；公积金37530（月平12510×3）、下限2180"}),
+  zsh:CIU("舟山",{min:4986,max:25299},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2260,max:34515},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保单位8%（含生育）、个人2%（舟政发〔2022〕28号）；公积金 舟公积金〔2026〕9号 2260~34515、比例5%~12%"}),
+  taiz:CIU("台州",{min:4986,max:25299},{medComp:.075,medEmp:.01,unempComp:.005,unempEmp:.005,injComp:.002},{min:2430,max:30568},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保单位7.5%+个人1%（含生育，台医保发〔2019〕51号，且含生育后单位合计8.5%）；公积金2430~30568（三门/天台/仙居/玉环2180）"}),
+  lish:CIU("丽水",{min:4986,max:25299},{medComp:.08,medEmp:.02,unempComp:.005,unempEmp:.005,injComp:.002},{min:2180,max:36405},{region:"浙江",rent:1100,warn:true,note:"2026社保新基数未找到，暂按2025年度；医保单位费率未找到，按省级常见8%暂算、个人2%（生育统一0.5%）；公积金2026上限待统计指标下达，暂用2025年度36405（丽公积金〔2025〕33号）、下限2180"})
 };
 var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,currentSupp=0,lastHFBase=2520;
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
@@ -505,7 +543,7 @@ function selectCity(k){
     (CITY.region==="广东"?'养老/失业/工伤按广东省统一标准，医保/公积金按当地标准':'五险按当地统一基数区间，医保/公积金按当地标准')+
     '（'+(CITY.note||"官方数据")+'）<br>公积金 5%-'+CITY.hfRateMax+'%'+
     (CITY.medFixEmp>0?' · 医保个人另缴大额医疗互助 '+fm(CITY.medFixEmp)+' 元/月':'')+
-    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 四川核查于 2026-09-23 · 新增重庆/山东/辽宁/吉林/黑龙江核查于 2026-09-26 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
+    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 四川核查于 2026-09-23 · 重庆/山东/辽宁/吉林/黑龙江核查于 2026-09-26 · 天津/江苏/浙江核查于 2026-09-26 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
   histRows=[];
   histCity=null;
   calc();

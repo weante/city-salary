@@ -91,7 +91,21 @@ for (const key in CITIES) {
     }
   }
 }
-if (!missing) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市的基数与名称在 AGENTS.md / SKILL.md 中均可检索到（README.md 核对城市名）`);
+/* 省份分组名必须被每份文档提到（防止新增省份时漏更新城市清单） */
+const REGIONS = [];
+for (const key in CITIES) {
+  const r = CITIES[key].region || '其他';
+  if (REGIONS.indexOf(r) < 0) REGIONS.push(r);
+}
+for (const r of REGIONS) {
+  for (const dname in docs) {
+    if (docs[dname].content.indexOf(r) < 0) {
+      console.log(`  ✗ 省份分组 ${r} 未出现在 ${dname}`);
+      missing++; fail++;
+    }
+  }
+}
+if (!missing) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市（${REGIONS.length} 个省份分组）的基数与名称在 AGENTS.md / SKILL.md 中均可检索到（README.md 核对城市名与省名）`);
 
 /* ---------- C. 文档陈旧表述 lint ----------
    教训来自一次真实漂移：时效机制改成双检查点后，README/SKILL/AGENTS 都改了，
@@ -105,10 +119,11 @@ const MD_FILES = ['README.md', 'SKILL.md', 'AGENTS.md']
 const STALE_PATTERNS = [
   [/7\s*月\s*15\s*日后/, '单一检查点表述"7月15日后"（双检查点机制下应为：1月(医保)/7月(养老公积金)/限期费率到期）'],
   [/广东省\s*21\s*个?\s*地级市(?!.*北京)/, '城市清单未包含京沪'],
-  [/23\s*城/, '城市数"23城"已过时，应为97城（京沪渝 + 广东21 + 四川21 + 山东16 + 辽宁14 + 吉林9 + 黑龙江13）'],
-  [/\b44\s*(?:个)?\s*(?:城|市)/, '城市数"44"已过时，应为97城（新增重庆+山东16+辽宁14+吉林9+黑龙江13）'],
+  [/23\s*城/, '城市数"23城"已过时（当前城市数以 AGENTS.md 第 1 条为准）'],
+  [/\b44\s*(?:个)?\s*(?:城|市)/, '城市数"44"已过时（当前城市数以 AGENTS.md 第 1 条为准）'],
+  [/\b97\s*(?:个)?\s*(?:城|市)/, '城市数"97"已过时（当前城市数以 AGENTS.md 第 1 条为准）'],
   [/广东\s*21\s*市\s*\+\s*北京\s*\/\s*上海(?!.*四川)/, '城市清单未包含四川21市州'],
-  [/京沪\s*\+\s*广东\s*21\s*市\s*\+\s*四川\s*21\s*市州(?!.*(?:山东|重庆))/, '城市清单未包含新增五省市（重庆/山东/辽宁/吉林/黑龙江）'],
+  [/京沪\s*\+\s*广东\s*21\s*市\s*\+\s*四川\s*21\s*市州(?!.*(?:山东|重庆))/, '城市清单未包含重庆/山东/辽宁/吉林/黑龙江'],
 ];
 let staleHits = 0;
 for (const f of MD_FILES) {
