@@ -602,6 +602,29 @@ eq('上饶·医保基数上限18684', A.CITIES.sr.med.max, 18684);
 eq('新余·公积金下限3920', A.CITIES.xinyu.hf.min, 3920);
 eq('河南/湖北/湖南/安徽/福建/江西·生育并入医保(mat.comp=0)', A.CITIES.zzheng.mat.comp + A.CITIES.wuha.mat.comp + A.CITIES.chsh.mat.comp + A.CITIES.hef.mat.comp + A.CITIES.fz.mat.comp + A.CITIES.nanch.mat.comp, 0);
 
+/* 住房租金专项附加扣除档位抽查（国发〔2018〕41号第十七条；总局指引名单 + 统计年鉴市辖区户籍人口） */
+eq('郑州·租金1500（省会）', A.CITIES.zzheng.rent, 1500);
+eq('洛阳·租金1100（市区户籍202.97万）', A.CITIES.luoy.rent, 1100);
+eq('鹤壁·租金800（总局名单）', A.CITIES.hbi.rent, 800);
+eq('武汉·租金1500（省会）', A.CITIES.wuha.rent, 1500);
+eq('荆州·租金1100（城区户籍112.18万）', A.CITIES.jzh.rent, 1100);
+eq('黄石·租金800（总局名单）', A.CITIES.hs.rent, 800);
+eq('长沙·租金1500（省会）', A.CITIES.chsh.rent, 1500);
+eq('株洲·租金800（总局名单）', A.CITIES.zhuz.rent, 800);
+eq('合肥·租金1500（省会）', A.CITIES.hef.rent, 1500);
+eq('马鞍山·租金800（市辖区户籍82.52万）', A.CITIES.mas.rent, 800);
+eq('阜阳·租金1100（市辖区户籍226.38万）', A.CITIES.fuy.rent, 1100);
+eq('阜阳·公积金上限23817（阜公积金〔2026〕40号）', A.CITIES.fuy.hf.max, 23817);
+eq('福州·租金1500（省会）', A.CITIES.fz.rent, 1500);
+eq('泉州·租金1100（市辖区户籍112.45万）', A.CITIES.quanz.rent, 1100);
+eq('三明·租金800（市辖区户籍28.10万）', A.CITIES.sm.rent, 800);
+eq('南昌·租金1500（省会）', A.CITIES.nanch.rent, 1500);
+eq('赣州·租金1100（总局名单）', A.CITIES.ganzh.rent, 1100);
+eq('景德镇·租金800（总局名单）', A.CITIES.jdz.rent, 800);
+eq('三门峡·大额220元/年≈18.33元/月', A.CITIES.smx.medFixEmp, 18.33);
+eq('商丘·大额150元/年=12.5元/月', A.CITIES.sqiu.medFixEmp, 12.5);
+eq('南阳·大额按0.6%口径≈19.16元/月', A.CITIES.ny.medFixEmp, 19.16);
+
 /* =========================================================
    9. 历史明细页：补充扣除同样扣现金
    ========================================================= */
