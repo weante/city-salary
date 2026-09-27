@@ -1,0 +1,29 @@
+{
+  "name": "city-salary",
+  "version": "1.1.0",
+  "private": true,
+  "description": "城市工资计算器（Agent Skill）：社保 / 公积金 / 个税 / 年终奖，覆盖全国 337 个地级及以上城市",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weante/city-salary.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node tools/test-calc.js && node tools/check-dom.js && node tools/check-sync.js && node tools/test-export.js",
+    "test:calc": "node tools/test-calc.js",
+    "test:dom": "node tools/check-dom.js",
+    "test:sync": "node tools/check-sync.js",
+    "test:export": "node tools/test-export.js",
+    "sync": "node tools/sync.js"
+  },
+  "keywords": [
+    "salary",
+    "tax",
+    "social-insurance",
+    "housing-fund",
+    "agent-skill"
+  ]
+}

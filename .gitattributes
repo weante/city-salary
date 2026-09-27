@@ -1,0 +1,19 @@
+# 统一换行符：仓库内一律 LF。
+#
+# 起因：本机 core.autocrlf=true，检出时把仓库里的 LF 换成 CRLF，提交时又换回去。
+# 开发者机器（Windows）与 CI（Linux）的检出结果因此不一致，比对类守卫的输入
+# 也就不可复现。锁成 LF 后两端检出内容一致。
+#
+# 注意：守卫本身并不依赖换行符（check-sync 的 A 检查比较的是同一工作树内的
+# 源文件与镜像，两端 EOL 天然一致），这里是为了消除不确定性，不是修 bug。
+* text=auto eol=lf
+
+# 显式声明二进制，避免被当文本做行尾转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary

@@ -1,5 +1,7 @@
 # city-salary · 城市工资计算器（Agent Skill）
 
+[![CI](https://github.com/weante/city-salary/actions/workflows/ci.yml/badge.svg)](https://github.com/weante/city-salary/actions/workflows/ci.yml)
+
 一个开箱即用的**按城市计算工资**的 Agent Skill：社保、公积金、个人所得税、年终奖、历史明细与趋势图，打开先选城市，按当地政策实时计算。**已内置 337 城，全国地级及以上城市 100% 覆盖**（28 个省区市：京沪渝津 + 粤川鲁辽吉黑苏浙豫鄂湘皖闽赣冀晋陕桂云贵甘宁蒙新青琼藏；民政部 2024 年底口径共 337 个地级及以上城市）。
 
 同时兼容多种 Agent 工具（Claude Code / Codex / opencode / TRAE / WorkBuddy 等），既可作为 **Agent Skills（SKILL.md）** 安装，也可作为项目指令（**AGENTS.md**）使用。
@@ -73,11 +75,14 @@ city-salary/
 ├── tools/                   # 零依赖 Node 脚本：测试与维护
 │   ├── test-calc.js         #   6638 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
-│   ├── check-sync.js        #   漂移检查：镜像是否同步、城市参数是否都写进了文档、年度口径是否与基线表一致
+│   ├── check-sync.js        #   漂移检查：镜像/文档/陈旧表述/断言数/省份年度口径（A–E 五项）
 │   ├── test-export.js       #   导出 PDF 的降级链测试
 │   ├── province-year.js     #   省份年度基线表（check-sync 检查 E 的唯一事实来源）
+│   ├── ci-selfcheck.js      #   CI 自检：零依赖红线 + Node 版本
 │   └── sync.js              #   把 skills/ 下的源文件同步到镜像位置
-└── docs/                    # 各工具安装文档
+├── package.json             # 仅 scripts（零依赖）：npm test 统一入口
+├── .github/workflows/ci.yml # CI 门禁：guard 链 × Node 18/20/22
+└── docs/                    # 各工具安装文档 + 政策来源存档 + 年度基线表
 ```
 
 **注意**：`skills/city-salary/` 下的两份文件才是源文件；根级 `SKILL.md` 与 `site/index.html` 是镜像副本。改完请执行 `node tools/sync.js`，并用 `node tools/check-sync.js` 确认没有漂移。
@@ -85,14 +90,18 @@ city-salary/
 ## 维护与测试
 
 ```bash
+npm test                    # ★ 一次跑完下面四项（零依赖，无需 npm install）
 node tools/test-calc.js     # 计算回归（改参数/改逻辑后必跑）
 node tools/check-dom.js     # 单文件 HTML 的静态结构检查
-node tools/check-sync.js    # 镜像与文档漂移检查
+node tools/check-sync.js    # 漂移检查：A 镜像 / B 文档 / C 陈旧表述 / D 断言数 / E 省份年度口径
 node tools/test-export.js   # 导出 PDF 降级链
+node tools/ci-selfcheck.js  # 零依赖红线自检（CI 也会跑）
 node tools/sync.js          # 同步源文件到镜像位置
 ```
 
-全部为零依赖 Node 脚本，无需 `npm install`，可直接作为 CI 门禁。测试的做法是**从 `calculator.html` 里抽取真实的 `<script>` 放到最小 DOM 桩上执行**——测的是真正会跑在用户浏览器里的那份代码，而不是测试文件里重写一遍的副本。
+**CI 门禁**：`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 三个版本跑完整守卫链。注意 CI 里**刻意不跑 `sync.js`**——sync 会把镜像"修好"，反而掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查做逐字节比对。
+
+全部为零依赖 Node 脚本，无需 `npm install`，`tools/ci-selfcheck.js` 会守住这条红线（禁止声明依赖、禁止在 scripts 里调用包管理器、禁止 `tools/` 下 require 第三方包）。测试的做法是**从 `calculator.html` 里抽取真实的 `<script>` 放到最小 DOM 桩上执行**——测的是真正会跑在用户浏览器里的那份代码，而不是测试文件里重写一遍的副本。
 
 ## 使用示例
 

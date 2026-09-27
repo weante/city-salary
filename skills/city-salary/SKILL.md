@@ -976,15 +976,19 @@ CITIES.城市key = CIU("城市名",
 
 ## Verification
 
-改完参数或计算逻辑后，跑仓库自带的检查（均为零依赖 Node 脚本，可作为 CI 门禁）：
+改完参数或计算逻辑后，跑仓库自带的检查（均为零依赖 Node 脚本，无需 `npm install`）：
 
 ```bash
+npm test                    # ★ 一次跑完下面四项
 node tools/test-calc.js     # 6638 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归/年度口径（北京 158 / 上海 144 / 深圳 209 / 成都 3 + 跨城市 337 + 抽查 295 + 租金档位 47 + 年度口径 35）
 node tools/check-dom.js     # 静态结构：重复 id、悬空 $() 引用、未定义事件处理器、CITIES 重复 key/城市名
-node tools/check-sync.js    # 漂移检查：镜像同步、城市参数写进文档、陈旧表述、断言数、省份年度口径（E）
+node tools/check-sync.js    # 漂移检查：A 镜像同步 / B 城市参数写进文档 / C 陈旧表述 / D 断言数 / E 省份年度口径
 node tools/test-export.js   # 导出 PDF 的降级链（含 6 秒兜底等待）
+node tools/ci-selfcheck.js  # 零依赖红线自检（禁止声明依赖、禁止 scripts 调包管理器）
 node tools/sync.js          # 改完 skills/ 后同步到 site/index.html 与根级 SKILL.md
 ```
+
+`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 跑完整守卫链。CI 里**不跑 `sync.js`**——它会把镜像"修好"，掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查逐字节比对。
 
 - 对照当地人社局/医保局/公积金中心官网核实基数上下限与费率，优先取官方文件名与文号
 - 年终奖六个临界值的"多1元少拿"金额必须精确验证（`test-calc.js` 已含独立复算）

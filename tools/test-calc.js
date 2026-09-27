@@ -18,6 +18,13 @@ const html = fs.readFileSync(CALC, 'utf8');
 /* 省份年度基线表：与 check-sync 检查 E 共用同一份，避免再造第二个事实来源 */
 const { PROVINCE_YEAR } = require('./province-year.js');
 
+/* 是否作为主程序运行。被 check-sync 的 D 检查 require 时，本模块在加载过程中
+   静默跑完全部断言，调用方直接读导出值即可——不再起子进程 + 解析 stdout。
+   起因：原来 D 检查用 execSync('node tools/test-calc.js')，在受限环境下经
+   cmd.exe 中转会 EBUSY 直接起不来；且未设 maxBuffer，断言输出膨胀后会 ENOBUFS 静默失败。 */
+const IS_MAIN = require.main === module;
+const emit = IS_MAIN ? function () { console.log.apply(console, arguments); } : function () {};
+
 /* ---------- 最小 DOM 桩 ---------- */
 function makeEl(id) {
   return {
@@ -81,7 +88,7 @@ function ok(name, actual, expected, tol) {
   else { fail++; failures.push(`${name}\n      实际=${actual}  期望=${expected}`); }
 }
 function eq(name, actual, expected) { ok(name, actual, expected); }
-function section(t) { console.log('\n' + t); }
+function section(t) { emit('\n' + t); }
 
 const A = loadCalculator();
 const fmt = n => Number(n).toFixed(2);
@@ -170,10 +177,10 @@ function runCase(city, opt) {
   const tax = Math.max(0, Math.max(0, officialTx(cumTx)) - Math.max(0, officialTx(Math.max(0, 7500 * (mW - 1) - mDed * (mW - 1)))));
   const net = 7500 - si - hf - tax;
   const got = { si: A._num('resSI'), tax: A._num('resTax'), net: A._num('resNet') };
-  console.log(`  深圳 7500/基数6750/公积金5%/赡养老人1500`);
-  console.log(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)})`);
-  console.log(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
-  console.log(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
+  emit(`  深圳 7500/基数6750/公积金5%/赡养老人1500`);
+  emit(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)})`);
+  emit(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
+  emit(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
   ok('深圳·个人社保', got.si, si);
   ok('深圳·当月个税', got.tax, tax);
   ok('深圳·税后实发', got.net, net);
@@ -189,10 +196,10 @@ function runCase(city, opt) {
   const cum = (n) => Math.max(0, Math.max(0, officialTx(Math.max(0, 20000 * n - mDed * n))));
   const tax = cum(mW) - cum(mW - 1), net = 20000 - si - hf - tax;
   const got = { si: A._num('resSI'), tax: A._num('resTax'), net: A._num('resNet') };
-  console.log(`  北京 20000/基数20000/公积金12%/赡养老人1500（医保个人含大额互助3元）`);
-  console.log(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)}，其中医保 ${fmt(mE)}=400+3)`);
-  console.log(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
-  console.log(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
+  emit(`  北京 20000/基数20000/公积金12%/赡养老人1500（医保个人含大额互助3元）`);
+  emit(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)}，其中医保 ${fmt(mE)}=400+3)`);
+  emit(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
+  emit(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
   ok('北京·个人社保(含3元大额互助)', got.si, si);
   ok('北京·当月个税', got.tax, tax);
   ok('北京·税后实发', got.net, net);
@@ -206,10 +213,10 @@ function runCase(city, opt) {
   const cum = (n) => Math.max(0, Math.max(0, officialTx(Math.max(0, 30000 * n - mDed * n))));
   const tax = cum(mW) - cum(mW - 1), net = 30000 - si - hf - tax;
   const got = { si: A._num('resSI'), tax: A._num('resTax'), net: A._num('resNet') };
-  console.log(`  上海 30000/基数30000/公积金7%（无专项附加）`);
-  console.log(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)})`);
-  console.log(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
-  console.log(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
+  emit(`  上海 30000/基数30000/公积金7%（无专项附加）`);
+  emit(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)})`);
+  emit(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
+  emit(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
   ok('上海·个人社保', got.si, si);
   ok('上海·当月个税', got.tax, tax);
   ok('上海·税后实发', got.net, net);
@@ -225,10 +232,10 @@ function runCase(city, opt) {
   const cum = (n) => Math.max(0, Math.max(0, officialTx(Math.max(0, 20000 * n - mDed * n))));
   const tax = cum(mW) - cum(mW - 1), net = 20000 - si - hf - tax;
   const got = { si: A._num('resSI'), tax: A._num('resTax'), net: A._num('resNet') };
-  console.log(`  成都 20000/基数20000/公积金12%/赡养老人1500（四川失业个人0.4%）`);
-  console.log(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)}，其中失业 ${fmt(uE)})`);
-  console.log(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
-  console.log(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
+  emit(`  成都 20000/基数20000/公积金12%/赡养老人1500（四川失业个人0.4%）`);
+  emit(`    个人社保 ${fmt(got.si)}  (手算 ${fmt(si)}，其中失业 ${fmt(uE)})`);
+  emit(`    当月个税 ${fmt(got.tax)}  (手算 ${fmt(tax)})`);
+  emit(`    税后实发 ${fmt(got.net)}  (手算 ${fmt(net)})`);
   ok('成都·个人社保', got.si, si);
   ok('成都·当月个税', got.tax, tax);
   ok('成都·税后实发', got.net, net);
@@ -247,7 +254,7 @@ section('4. 基数上下限夹取');
   ok('广州·养老基数夹取到上限', rows[0], 27549);
   ok('广州·医疗基数夹取到上限', rows[1], 31170);
   ok('广州·失业基数夹取到上限', rows[2], 44265);
-  console.log(`  广州 输入60000 → 养老${rows[0]} / 医疗${rows[1]} / 失业${rows[2]}`);
+  emit(`  广州 输入60000 → 养老${rows[0]} / 医疗${rows[1]} / 失业${rows[2]}`);
 
   /* 北京 输入低于下限 → 夹取到 7270；高于上限 → 36348 */
   A.selectCity('bj');
@@ -256,12 +263,12 @@ section('4. 基数上下限夹取');
   const bjRows = [A._num('ob0'), A._num('ob1')];
   ok('北京·养老基数夹取到下限', bjRows[0], 7270);
   ok('北京·医疗基数夹取到下限', bjRows[1], 7270);
-  console.log(`  北京 输入1000 → 养老${bjRows[0]} / 医疗${bjRows[1]}（下限7270）`);
+  emit(`  北京 输入1000 → 养老${bjRows[0]} / 医疗${bjRows[1]}（下限7270）`);
 
   /* F4：北京医保个人含 3 元大额互助，明细行须标注，否则"2%×基数≠金额"看起来像算错 */
   const medRowLabel = A._html('res').match(/grid4r"><span style="color:#6b7280">([^<]+)<\/span><span id="ob1"/);
   ok('北京·医疗行标注"含3元互助"', medRowLabel ? medRowLabel[1] : null, '医疗保险(含3元互助)');
-  console.log(`  北京·医疗行险种名：「${medRowLabel ? medRowLabel[1] : '未找到'}」`);
+  emit(`  北京·医疗行险种名：「${medRowLabel ? medRowLabel[1] : '未找到'}」`);
 
   /* F5：生育并入医保的城市应隐藏生育基数输入行 */
   ok('北京·生育基数行已隐藏', A._style('mtRow'), 'none');
@@ -275,7 +282,7 @@ section('4. 基数上下限夹取');
   A.calc();
   const shRows = [A._num('ob0')];
   ok('上海·养老基数夹取到下限', shRows[0], 7546);
-  console.log(`  上海 输入100 → 养老${shRows[0]}（下限7546）`);
+  emit(`  上海 输入100 → 养老${shRows[0]}（下限7546）`);
 
   /* 公积金基数用另一套区间：北京 2540~36348、上海 2740~37731 */
   A.selectCity('bj'); A._setMany({ hfBase: 100, salary: 20000 }); A.calc();
@@ -322,8 +329,8 @@ section('6. D1 大病医疗只进年度汇算');
   ok('提示文案说明仅年度汇算扣除', spTotText.indexOf('仅年度汇算扣除') > -1, true);
   ok('年度税因大病医疗而下降', annualAfter < annualBefore, true);
   ok('年度预估段带口径说明', /口径说明/.test(A._html('res')), true);
-  console.log(`  大病医疗 6667 填入前后当月个税：${fmt(taxBefore)} → ${fmt(taxAfter)}（应相等）`);
-  console.log(`  年度预估税：${fmt(annualBefore)} → ${fmt(annualAfter)}（降 ${fmt(annualBefore - annualAfter)}）`);
+  emit(`  大病医疗 6667 填入前后当月个税：${fmt(taxBefore)} → ${fmt(taxAfter)}（应相等）`);
+  emit(`  年度预估税：${fmt(annualBefore)} → ${fmt(annualAfter)}（降 ${fmt(annualBefore - annualAfter)}）`);
 
   /* F8 回归：年度大病医疗 = min(月均×12, 80000)，不随就业月数折算。
      1月入职时 aM=12，"×12"与"×aM"结果相同（仅差封顶4元），所以真正的判别用例是年中入职。 */
@@ -342,7 +349,7 @@ section('6. D1 大病医疗只进年度汇算');
   const wrong6 = Math.max(0, officialTx(Math.max(0, 40000 * aM6 - mDed0 * aM6 - 6667 * aM6)));
   ok('7月入职：大病医疗仍按全年80000扣（不随就业月数折算）', A._num('resATax'), expect6, 0.02);
   ok('7月入职：与"按就业月数折算"的错误结果确有差异', Math.abs(expect6 - wrong6) > 1, true);
-  console.log(`  7月入职：正确年度税=${fmt(expect6)}，若按就业月数折算会得到=${fmt(wrong6)}（差 ${fmt(wrong6 - expect6)}）`);
+  emit(`  7月入职：正确年度税=${fmt(expect6)}，若按就业月数折算会得到=${fmt(wrong6)}（差 ${fmt(wrong6 - expect6)}）`);
 })();
 
 /* =========================================================
@@ -364,9 +371,9 @@ section('7. D2 补充扣除的现金流');
 
   /* 企业年金按"缴费工资基数"（此处取养老缴费基数30000）而非月薪 */
   const anAmt = 30000 * 0.04, cash = 1000 + 200 + anAmt;
-  console.log(`  实发：${fmt(net0)} → ${fmt(net1)}（少了 ${fmt(net0 - net1)}）`);
-  console.log(`  当月个税：${fmt(tax0)} → ${fmt(tax1)}（省了 ${fmt(tax0 - tax1)}）`);
-  console.log(`  现金流出 个人养老金1000 + 税优险200 + 年金${fmt(anAmt)} = ${fmt(cash)}`);
+  emit(`  实发：${fmt(net0)} → ${fmt(net1)}（少了 ${fmt(net0 - net1)}）`);
+  emit(`  当月个税：${fmt(tax0)} → ${fmt(tax1)}（省了 ${fmt(tax0 - tax1)}）`);
+  emit(`  现金流出 个人养老金1000 + 税优险200 + 年金${fmt(anAmt)} = ${fmt(cash)}`);
   /* 恒等式：实发减少额 = 现金流出 − 少缴的税 */
   ok('实发减少额 = 现金流出 − 少缴的税', net0 - net1, cash - (tax0 - tax1));
   ok('补充扣除确实减少了应纳税额（税率>0）', tax0 - tax1 > 0, true);
@@ -859,7 +866,7 @@ section('9. 历史明细页');
   /* 实发下降 1000 − 省下的税；低档税率下接近 1000 但不等于 1000 */
   const drop = netNoSupp - rows2[0].net;
   ok('历史页实发确实下降了', drop > 900 && drop <= 1000, true);
-  console.log(`  历史页首月实发：${fmt(netNoSupp)} → ${fmt(rows2[0].net)}（少 ${fmt(drop)}，个人养老金1000 − 省税）`);
+  emit(`  历史页首月实发：${fmt(netNoSupp)} → ${fmt(rows2[0].net)}（少 ${fmt(drop)}，个人养老金1000 − 省税）`);
 
   /* F6：补充扣除>0 时应出现第 5 个汇总框，且渲染出来的数字四则运算闭合 */
   const sumHtml = A._html('histSum');
@@ -868,7 +875,7 @@ section('9. 历史明细页');
   const sSal = A._num('sumSal'), sSI = A._num('sumSI'), sTax = A._num('sumTax'),
         sSupp = A._num('sumSupp'), sNet = A._num('sumNet');
   ok('汇总框闭合：税前−五险一金−个税−补充扣除 = 实发', sSal - sSI - sTax - sSupp, sNet, 0.02);
-  console.log(`  汇总框：${fmt(sSal)} − ${fmt(sSI)} − ${fmt(sTax)} − ${fmt(sSupp)} = ${fmt(sNet)} ✓`);
+  emit(`  汇总框：${fmt(sSal)} − ${fmt(sSI)} − ${fmt(sTax)} − ${fmt(sSupp)} = ${fmt(sNet)} ✓`);
 
   /* 补充扣除为 0 时回到 4 框，且同样闭合 */
   A._set('persPen', 0); A.calc(); A.buildHistory();
@@ -881,7 +888,7 @@ section('9. 历史明细页');
   ok('北京·历史表无生育基数列', /生育基数/.test(A._html('histTable')), false);
   A.selectCity('sz'); A.calc(); A.buildHistory();
   ok('深圳·历史表有生育基数列', /生育基数/.test(A._html('histTable')), true);
-  console.log('  历史表生育基数列：北京无 / 深圳有 ✓');
+  emit('  历史表生育基数列：北京无 / 深圳有 ✓');
 
   /* 生育/工伤基数仅影响单位侧，个人实发不应随之变化 */
   A.selectCity('sz');  /* 深圳单独缴生育险，有 mtb 列 */
@@ -944,7 +951,7 @@ section('11. 历史页编辑保留与文案口径');
   ok('统计区间显示当前年份', A._text('rangeLabel').indexOf('统计区间：' + new Date().getFullYear() + '年 ') === 0, true);
   ok('源码未硬编码统计区间年份', /统计区间：\d{4}年/.test(html), false);
   ok('历史页明示专项附加扣除取自第1页', /专项附加扣除取自第 1 页、各月相同/.test(html), true);
-  console.log('  逐月编辑在切页/改默认值/缩区间后保留，换城市重置 ✓');
+  emit('  逐月编辑在切页/改默认值/缩区间后保留，换城市重置 ✓');
 })();
 
 /* =========================================================
@@ -1019,20 +1026,24 @@ section('12. 省份年度口径与页脚文案');
   eq('应提示待公布的城市都已标记', missTip, 0);
   eq('不应提示待公布的城市均未误标', extraTip, 0);
 
-  console.log('  100 城年度口径已修正，页脚按「年度 + 待公布提示」双段呈现 ✓');
+  emit('  100 城年度口径已修正，页脚按「年度 + 待公布提示」双段呈现 ✓');
 })();
 
 /* =========================================================
    汇总
    ========================================================= */
-console.log('\n' + '='.repeat(58));
+emit('\n' + '='.repeat(58));
 if (fail) {
-  console.log(`失败 ${fail} 项 / 共 ${pass + fail} 项\n`);
-  failures.forEach(f => console.log('  ✗ ' + f + '\n'));
-  console.log('='.repeat(58));
-  process.exit(1);
+  emit(`失败 ${fail} 项 / 共 ${pass + fail} 项\n`);
+  failures.forEach(f => emit('  ✗ ' + f + '\n'));
+  emit('='.repeat(58));
 } else {
-  console.log(`全部通过：${pass} 项断言`);
-  console.log('='.repeat(58));
-  process.exit(0);
+  emit(`全部通过：${pass} 项断言`);
+  emit('='.repeat(58));
 }
+
+/* 被 require 时导出计数，供 check-sync 的 D 检查直接读取；
+   作为主程序运行时保持原有的输出与退出码语义。 */
+const RESULT = { pass, fail, failures };
+module.exports = { pass, fail, failures, ok: fail === 0, results: () => RESULT };
+if (IS_MAIN) process.exit(fail ? 1 : 0);

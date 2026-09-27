@@ -15,8 +15,6 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
-
 const ROOT = path.join(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 
@@ -156,19 +154,33 @@ if (!staleHits) console.log(`  ✓ ${MD_FILES.length} 份文档无陈旧表述`)
 
 /* ---------- D. 文档断言数与实际一致 ----------
    教训来自一次真实漂移：测试从 530 涨到 546，README/SKILL 里的"530 项断言"没人改。
-   以 test-calc.js 的实际输出为准，文档写错这里会拦下。 */
+   以 test-calc.js 的实际计数为准，文档写错这里会拦下。
+
+   实现方式（2026-09-27 改）：直接 require 拿计数，不再 execSync 起子进程。
+   原实现有两个问题：① 在受限环境下经 cmd.exe 中转会 EBUSY 直接起不来；
+   ② 未设 maxBuffer（默认 1MB），断言输出继续膨胀会 ENOBUFS 静默失败；
+   而 catch 又吞掉了 e.message，于是"环境起不来"被误报成"测试失败（先修复测试）"，
+   归因完全错误。现在 test-calc 被 require 时静默跑完整套断言并导出计数，
+   依赖消失，且任何异常都会带类型与消息打印出来。 */
 console.log('\nD. 文档断言数');
-let actualCount = null, testOk = true;
+let actualCount = null, testOk = true, testErr = '';
 try {
-  const out = execSync('node tools/test-calc.js', { cwd: ROOT, encoding: 'utf8' });
-  const m2 = out.match(/全部通过：(\d+) 项断言/);
-  if (m2) actualCount = Number(m2[1]);
-} catch (e) { testOk = false; }
+  const tc = require('./test-calc.js');   /* 静默运行整套断言，只取计数 */
+  actualCount = tc.pass;
+  testOk = tc.fail === 0;
+  if (!testOk) {
+    const first = (tc.failures && tc.failures.length) ? String(tc.failures[0]).split('\n')[0] : '';
+    testErr = `${tc.fail} 项断言失败${first ? '；首个：' + first : ''}`;
+  }
+} catch (e) {
+  testOk = false;
+  testErr = `${e.name}: ${e.message}`;
+}
 if (!testOk) {
-  console.log('  ✗ test-calc.js 运行失败，无法核对断言数（先修复测试）');
+  console.log(`  ✗ test-calc 未能通过，无法核对断言数：${testErr}`);
   fail++;
-} else if (actualCount === null) {
-  console.log('  ✗ 无法从 test-calc.js 输出解析"全部通过：N 项断言"');
+} else if (typeof actualCount !== 'number') {
+  console.log(`  ✗ test-calc 未导出 pass 计数（实际类型 ${typeof actualCount}）`);
   fail++;
 } else {
   const COUNT_FILES = MD_FILES.concat(['skills/city-salary/SKILL.md']);
