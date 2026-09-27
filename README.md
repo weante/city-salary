@@ -75,7 +75,7 @@ city-salary/
 ├── tools/                   # 零依赖 Node 脚本：测试与维护
 │   ├── test-calc.js         #   6647 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径/起始月边界
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
-│   ├── check-sync.js        #   漂移检查：镜像/文档/陈旧表述/断言数/省份年度口径（A–E 五项）
+│   ├── check-sync.js        #   漂移检查：镜像/文档锚定/陈旧表述/断言数/省份年度口径/数据状态表年度（A–F 六项）
 │   ├── test-export.js       #   导出 PDF 的降级链测试
 │   ├── province-year.js     #   省份年度基线表（check-sync 检查 E 的唯一事实来源）
 │   ├── ci-selfcheck.js      #   CI 自检：零依赖红线 + Node 版本
@@ -93,7 +93,7 @@ city-salary/
 npm test                    # ★ 一次跑完下面四项（零依赖，无需 npm install）
 node tools/test-calc.js     # 计算回归（改参数/改逻辑后必跑）
 node tools/check-dom.js     # 单文件 HTML 的静态结构检查
-node tools/check-sync.js    # 漂移检查：A 镜像 / B 文档 / C 陈旧表述 / D 断言数 / E 省份年度口径
+node tools/check-sync.js    # 漂移检查：A 镜像 / B 城市参数锚定 / C 陈旧表述 / D 断言数 / E 省份年度口径 / F 数据状态表年度
 node tools/test-export.js   # 导出 PDF 降级链
 node tools/ci-selfcheck.js  # 零依赖红线自检（CI 也会跑）
 node tools/sync.js          # 同步源文件到镜像位置

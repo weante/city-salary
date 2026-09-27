@@ -45,7 +45,7 @@ jobs:
       - name: DOM 静态结构
         run: node tools/check-dom.js
 
-      - name: 漂移检查（镜像 / 文档 / 陈旧表述 / 断言数 / 省份年度口径）
+      - name: 漂移检查（镜像 / 文档锚定 / 陈旧表述 / 断言数 / 省份年度口径 / 数据状态表年度）
         run: node tools/check-sync.js
 
       - name: 导出 PDF 降级链
