@@ -117,7 +117,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 ### A. 新增/修改一个城市
 
-1. 在 `calculator.html` 的 `CITIES` 里按工厂格式加一行（`CI()` 广东型 / `CIU()` 直辖市型；省内差异用 `opt` 浅覆盖，如 `opt.med`）。
+1. 在 `calculator.html` 的 `CITIES` 里按工厂格式加**一段**（`CI()` 广东型 / `CIU()` 直辖市型；省内差异用 `opt` 浅覆盖，如 `opt.med`）。每个城市占多行、`opt` 的字段各占一行——这样改一个字段只动一行，diff 干净。
 2. **`opt` 里必须显式写 `region` 与 `dataYear`**（省级年度见 `tools/province-year.js`）。漏写 `dataYear` 会让页脚显示错误年度——这正是 E 检查存在的原因。
 3. 同步文档（缺一即被 B/C 拦下）：
    - `AGENTS.md`：省份规则行 + 第 1 条城市清单
