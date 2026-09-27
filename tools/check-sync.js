@@ -293,10 +293,10 @@ if (read('README.md').indexOf(DEPLOY_URL) < 0) {
    而 CONTRIBUTING 里的示例写在反引号内（行首是 `> \``），不会自我匹配。 */
 const SNAPSHOT_MARK = /^>\s*📌\s*\*\*历史快照（/m;
 const SCALE_RULES = [
-  { re: /A\s*[–\-—~]\s*F\b/g, why: '检查范围写 A–F（现为 A–H 八项）' },
+  { re: /A\s*[–\-—~]\s*[A-H]\b/g, why: '检查范围写成过时的终点（现为 A–I 九项）' },
   { re: /五连验证|五连全绿|五命令验证|五命令链|\b5\s*命令链/g, why: '验证链写"五连"（现为六连，多一条 check-golden.js）' },
   { re: /一次跑完下面四项|跑完下面四项/g, why: 'npm test 写"四项"（现为 5 条）' },
-  { re: /\b[3-7]\s*项守卫/g, why: '守卫总数写错（现为 A–H 八项）', ordinal: true },
+  { re: /(?:\b[3-8]\s*项|[三四五六七八]\s*项)守卫/g, why: '守卫总数写错（现为 A–I 九项）', ordinal: true },
 ];
 let scaleHits = 0;
 const snapshots = [];
@@ -613,6 +613,127 @@ if (!warnMiss) {
   const dup = backlogCities.filter((n, i) => backlogCities.indexOf(n) !== i);
   if (dup.length) { console.log(`  ✗ 清单里有重复城市名：${[...new Set(dup)].join('、')}`); warnMiss++; fail++; }
   else console.log(`  ✓ warn 城市集合与清单一致（${warnCities.length} 城 / 全国 ${Object.keys(CITIES).length} 城）`);
+}
+
+/* ---------- I. 计算口径白皮书常量 ----------
+   docs/calculation-spec.md 是"从税前工资到到手现金"的规则定义，通篇是公式与常量。
+   这类文档最大的风险不是写错，而是**写得对、然后代码改了没人改它**——
+   它会变成一份"权威的错误答案"，比没有文档更糟。
+   所以这里把文档里的常量与税率表**逐项拉回实现比对**：
+     I-1 标量常量：从 calculator.html 用正则取实现值，与文档常量表比对
+     I-2 三张表：BR（综合所得预扣率）/ BBR（年终奖月换算）/ TRAPS（临界值）
+     I-3 租金档位：CITIES 的 rent 只能取 800/1100/1500，且文档写明
+   只做离线比对，不联网。 */
+console.log('\nI. 计算口径白皮书常量');
+const specSrc = read('docs/calculation-spec.md');
+const calcSrc = read('skills/city-salary/assets/calculator.html');
+
+/* 取"某个表头之后的第一张表"的行（用于精确定位，避免误读别的表） */
+function tableAfter(text, headerRe) {
+  const lines = text.split(/\r?\n/);
+  let i = lines.findIndex(l => headerRe.test(l));
+  if (i < 0) return null;
+  const rows = [];
+  for (i += 2; i < lines.length && /^\s*\|/.test(lines[i]); i++) {
+    const c = lines[i].split('|').slice(1, -1).map(s => s.trim());
+    if (c.length) rows.push(c);
+  }
+  return rows;
+}
+const num = (s) => String(s).replace(/[,\s]/g, '').replace(/%$/, '');
+const pct = (s) => Math.round(parseFloat(num(s)) * 100) / 100;
+
+let specFail = 0;
+
+/* --- I-1 标量常量 --- */
+const SPEC_SCALARS = [
+  ['个税减除费用（起征点）', /C\.hfE\+(\d+)\+D\.spT/],
+  ['子女教育 / 婴幼儿照护上限', /cl\(gv\("childAmt"\),0,(\d+)\)/],
+  ['继续教育上限', /cl\(gv\("eduAmt"\),0,(\d+)\)/],
+  ['住房贷款利息', /houseMode===0\?(\d+):CITY\.rent/],
+  ['赡养老人上限', /cl\(gv\("elderlyAmt"\),0,(\d+)\)/],
+  ['大病医疗月度上限', /cl\(gv\("medicalAmt"\),0,(\d+)\)/],
+  ['大病医疗年度限额', /medicalA\*12,(\d+)\)/],
+  ['税优健康险上限', /cl\(gv\("healthIns"\),0,(\d+)\)/],
+  ['个人养老金上限', /cl\(gv\("persPen"\),0,(\d+)\)/],
+  ['企业年金个人比例上限', /cl\(gv\("annuity"\),0,(\d+)\)\/100/],
+  ['公积金比例下限', /if\(v<(\d+)\)return 0/],
+  ['公积金比例默认上限', /max=max\|\|(\d+)/],
+];
+const constRows = tableAfter(specSrc, /^\|\s*常量\s*\|\s*值\s*\|/);
+if (!constRows) {
+  console.log('  ✗ 白皮书里找不到「常量表」（表头应为 | 常量 | 值 | 单位 | 实现位置 |）');
+  specFail++; fail++;
+} else {
+  const docConst = {};
+  for (const r of constRows) if (r.length >= 2 && /^[\d,]+$/.test(r[1])) docConst[r[0]] = num(r[1]);
+  for (const [name, re] of SPEC_SCALARS) {
+    const m = calcSrc.match(re);
+    if (!m) { console.log(`  ✗ 实现里找不到常量「${name}」的取值正则（代码结构变了？）`); specFail++; fail++; continue; }
+    const codeVal = m[1];
+    if (!(name in docConst)) { console.log(`  ✗ 白皮书常量表缺「${name}」（实现值 ${codeVal}）`); specFail++; fail++; continue; }
+    if (docConst[name] !== codeVal) {
+      console.log(`  ✗ 常量「${name}」不一致：白皮书写 ${docConst[name]}，实现是 ${codeVal}`);
+      specFail++; fail++;
+    }
+  }
+}
+
+/* --- I-2 三张表 --- */
+const A = loadCalculator();
+const cmpTable = (label, docRows, codeRows, codeLimit, codeRate, codeDeduct, docLimit) => {
+  if (!docRows) { console.log(`  ✗ 白皮书里找不到「${label}」表`); specFail++; fail++; return; }
+  const doc = docRows.map(r => ({ limit: docLimit(r[0]), rate: pct(r[1]), ded: parseFloat(num(r[2])) }));
+  const code = codeRows.map(r => ({ limit: codeLimit(r), rate: codeRate(r), ded: codeDeduct(r) }));
+  if (doc.length !== code.length) {
+    console.log(`  ✗ 「${label}」行数不符：白皮书 ${doc.length} 行，实现 ${code.length} 行`);
+    specFail++; fail++; return;
+  }
+  for (let i = 0; i < code.length; i++) {
+    if (doc[i].limit !== code[i].limit || Math.abs(doc[i].rate - code[i].rate) > 1e-9 || Math.abs(doc[i].ded - code[i].ded) > 1e-9) {
+      console.log(`  ✗ 「${label}」第 ${i + 1} 行不符：白皮书 ${doc[i].limit}/${doc[i].rate}%/${doc[i].ded}，实现 ${code[i].limit}/${code[i].rate}%/${code[i].ded}`);
+      specFail++; fail++;
+    }
+  }
+};
+cmpTable('综合所得预扣率',
+  tableAfter(specSrc, /^\|\s*累计应纳税所得额\s*≤\s*\|/),
+  A.BR,
+  r => r[0], r => r[1] * 100, r => r[2],
+  s => (/超过/.test(s) ? Infinity : parseFloat(num(s))));
+cmpTable('年终奖月换算税率',
+  tableAfter(specSrc, /^\|\s*月均（奖金÷12）≤\s*\|/),
+  A.BBR,
+  r => r[0], r => r[1] * 100, r => r[2],
+  s => (/超过/.test(s) ? Infinity : parseFloat(num(s))));
+/* 临界值表只有两列（临界点 / 多 1 元少拿），单独比对 */
+const trapRows = tableAfter(specSrc, /^\|\s*临界点\s*\|\s*多 1 元少拿\s*\|/);
+if (!trapRows) {
+  console.log('  ✗ 白皮书里找不到「六个临界值陷阱」表');
+  specFail++; fail++;
+} else if (trapRows.length !== A.TRAPS.length) {
+  console.log(`  ✗ 「年终奖临界值」行数不符：白皮书 ${trapRows.length} 行，实现 ${A.TRAPS.length} 行`);
+  specFail++; fail++;
+} else {
+  for (let i = 0; i < A.TRAPS.length; i++) {
+    const docLo = parseFloat(num(trapRows[i][0])), docLoss = parseFloat(num(trapRows[i][1]));
+    if (docLo !== A.TRAPS[i][0] || Math.abs(docLoss - A.TRAPS[i][1]) > 0.005) {
+      console.log(`  ✗ 「年终奖临界值」第 ${i + 1} 行不符：白皮书 ${docLo}/${docLoss}，实现 ${A.TRAPS[i][0]}/${A.TRAPS[i][1]}`);
+      specFail++; fail++;
+    }
+  }
+}
+
+/* --- I-3 租金档位 --- */
+const rents = [...new Set(Object.keys(CITIES).map(k => CITIES[k].rent))].sort((a, b) => a - b);
+const rentOk = rents.length === 3 && rents.join(',') === '800,1100,1500' && /800\s*\/\s*1100\s*\/\s*1500/.test(specSrc);
+if (!rentOk) {
+  console.log(`  ✗ 租金档位：CITIES 实际为 [${rents.join(', ')}]，白皮书须写明 800 / 1100 / 1500`);
+  specFail++; fail++;
+}
+
+if (!specFail) {
+  console.log(`  ✓ 白皮书与实现一致：${SPEC_SCALARS.length} 个标量常量 + 3 张税率表（${A.BR.length}+${A.BBR.length}+${A.TRAPS.length} 行）+ 租金 3 档`);
 }
 
 /* ---------- 汇总 ---------- */

@@ -53,6 +53,10 @@
 
 ## 口径说明（影响"到手多少钱"的四条关键约定）
 
+> **完整的计算规则定义（公式、常量、全部口径选择）见 [docs/calculation-spec.md](docs/calculation-spec.md)（计算口径白皮书）**。
+> 那份文档的每个常量都由 `check-sync` 的检查 I 与实现比对，改了代码不改它会 CI 变红。
+> 下面四条是最容易踩的要点。
+
 1. **大病医疗只在年度汇算清缴时扣除**，不进月度预扣预缴——模板中该项只影响"年度预估"，不影响当月税额；且年度金额**按全年 12 个月计并封顶 80000 元**，不随就业月数折算
 2. **两个"年度个税"口径不同**：单月页"年度预估"是汇算后口径（含大病医疗），历史页"累计个税"是月度预扣口径（不含）——两者差额≈大病医疗扣除效果，不应相等
 3. **补充扣除既减税也从实发中扣现金**：个人养老金、企业年金个人缴费、税优健康险都是个人真实支出，工资条中列为扣款项，最后一行是"到手现金"而非"实发工资"
@@ -87,7 +91,7 @@ city-salary/
 │   ├── check-golden.js      #   黄金用例：16 用例 × 4 面板逐字节比对（重构安全网）
 │   ├── golden-cases.json    #   黄金用例快照（由 check-golden.js --update 生成）
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
-│   ├── check-sync.js        #   漂移检查 A–H：镜像/文档锚定/陈旧表述/断言数/年度口径/数据状态表/限期费率/warn 清单
+│   ├── check-sync.js        #   漂移检查 A–I：镜像/文档锚定/陈旧表述/断言数/年度口径/数据状态表/限期费率/warn 清单/计算口径
 │   ├── test-export.js       #   导出 PDF 的降级链测试
 │   ├── province-year.js     #   省份年度基线表（检查 E/F 的唯一事实来源）
 │   ├── policy-expiry.js     #   限期费率清单（检查 G 的唯一事实来源）
@@ -100,7 +104,7 @@ city-salary/
 ├── .editorconfig            # 编辑器统一按 LF 写入（减少 Windows 工作区 CRLF 摩擦）
 ├── .gitignore               # 防呆：依赖/锁文件/临时文件不入库
 ├── CONTRIBUTING.md          # 维护手册：守卫语义、新增城市/年度更新的清单
-└── docs/                    # 安装文档 + 政策来源存档 + 年度基线表 + 运营日历 + warn 清单
+└── docs/                    # 安装文档 + 政策来源存档 + 年度基线表 + 运营日历 + warn 清单 + 计算口径白皮书
 ```
 
 **注意**：`skills/city-salary/` 下的两份文件才是源文件；根级 `SKILL.md` 与 `site/index.html` 是镜像副本。改完请执行 `node tools/sync.js`，并用 `node tools/check-sync.js` 确认没有漂移。
@@ -112,7 +116,7 @@ npm test                    # ★ 一次跑完下面五项（零依赖，无需 
 node tools/test-calc.js     # 计算回归（改参数/改逻辑后必跑）
 node tools/check-golden.js  # 黄金用例：整块渲染输出的逐字节比对
 node tools/check-dom.js     # 单文件 HTML 的静态结构检查
-node tools/check-sync.js    # 漂移检查 A–H：镜像 / 城市参数锚定 / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单
+node tools/check-sync.js    # 漂移检查 A–I：镜像 / 城市参数锚定 / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单 / 计算口径
 node tools/test-export.js   # 导出 PDF 降级链
 node tools/ci-selfcheck.js  # 零依赖红线自检（CI 也会跑）
 node tools/sync.js          # 同步源文件到镜像位置
