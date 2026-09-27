@@ -2,11 +2,12 @@
 /*
  * 漂移检查（CI 守卫）。
  *
- * 四类检查：
+ * 五类检查：
  *   A. 镜像文件是否与源文件逐字节相同（防止改了 calculator.html 忘了同步 site/index.html）
  *   B. 各城市参数是否在文档中都有记录（防止加了城市忘了写文档）
  *   C. 文档陈旧表述 lint（防止机制改版时漏改措辞）
  *   D. 文档断言数与 test-calc.js 实际输出一致（防止加了测试忘了改文档）
+ *   E. 各城市 dataYear/dataNext 是否与省份年度基线表一致（防止年度口径标错年份）
  *
  * 运行：node tools/check-sync.js
  * 退出码：0 = 无漂移，1 = 有漂移
@@ -128,6 +129,15 @@ const STALE_PATTERNS = [
   [/\b330\s*(?:个)?\s*(?:城|市)/, '城市数"330"已过时（当前城市数以 AGENTS.md 第 1 条为准）'],
   [/广东\s*21\s*市\s*\+\s*北京\s*\/\s*上海(?!.*四川)/, '城市清单未包含四川21市州'],
   [/京沪\s*\+\s*广东\s*21\s*市\s*\+\s*四川\s*21\s*市州(?!.*(?:山东|重庆))/, '城市清单未包含重庆/山东/辽宁/吉林/黑龙江'],
+  /* 年度口径事故（2026-09-27）：吉林被列进 2026 年度组（实为社保年度 2025.7-2026.6），
+     湖北压根没进任何年度组，100 城页脚把 2025 年度基数标成「2026年度」。
+     下面几条拦截"措辞改回去"。注意：新写的文档不要原样引用这些旧串，否则会被自己拦下。
+     数据侧的一致性由检查 E（tools/province-year.js）负责，本条只管文档措辞。 */
+  [/鲁\/辽\/吉\/皖/, '年度分组仍把吉林列在 2026 年度（吉林实为社保年度 2025.7-2026.6，应标 2025-2026）'],
+  [/辽宁\/吉林\/安徽/, '年度分组仍把吉林列在 2026 年度（同上）'],
+  [/吉林全省（9 市州）·\s*2026\s*年度/, '吉林小节标题仍写 2026 年度（实为 2025-2026 社保年度）'],
+  [/黑龙江\/江西\/海南、(?!.*湖北)/, '年度分组遗漏湖北（湖北实为社保基数 2025 年度、2026 年度待公布）'],
+  [/黑\/赣\/琼、(?!.*鄂)/, '年度分组遗漏湖北（同上）'],
 ];
 let staleHits = 0;
 for (const f of MD_FILES) {
@@ -178,6 +188,47 @@ if (!testOk) {
   }
   if (!countHits) console.log(`  ✓ 文档断言数均为实际值 ${actualCount}`);
 }
+
+/* ---------- E. 省份年度口径 ----------
+   教训来自一次真实事故：CIU() 工厂默认 dataYear:"2026"，新增省份城市时只覆盖了
+   region 没覆盖 dataYear，导致吉林/黑龙江/江苏/浙江/河南/湖北/福建/江西/海南共 100 城
+   的页脚显示「数据依据：哈尔滨 2026年度」——而这些省的 2026 年度基数其实尚未公布，
+   用户会误以为基数已更新。原 B 检查只查"数值是否出现在文档里"，拦不住这类漂移。
+   基线表见 tools/province-year.js（改年度先改表，再改 CITIES）。 */
+console.log('\nE. 省份年度口径');
+const { PROVINCE_YEAR } = require('./province-year.js');
+let yearMiss = 0, yearSamples = 0;
+const seenRegions = new Set();
+for (const key in CITIES) {
+  const c = CITIES[key];
+  const region = c.region || '其他';
+  seenRegions.add(region);
+  const base = PROVINCE_YEAR[region];
+  if (!base) {
+    console.log(`  ✗ ${c.name}(${key}) 省份分组「${region}」未登记在 tools/province-year.js`);
+    yearMiss++; fail++;
+    continue;
+  }
+  const gotNext = c.dataNext || null;
+  const expNext = base.dataNext || null;
+  if (c.dataYear !== base.dataYear) {
+    if (yearSamples++ < 12) console.log(`  ✗ ${c.name}(${key}) dataYear="${c.dataYear}"，基线表要求 "${base.dataYear}"`);
+    yearMiss++; fail++;
+  }
+  if (gotNext !== expNext) {
+    if (yearSamples++ < 12) console.log(`  ✗ ${c.name}(${key}) dataNext=${JSON.stringify(gotNext)}，基线表要求 ${JSON.stringify(expNext)}`);
+    yearMiss++; fail++;
+  }
+}
+if (yearMiss > yearSamples) console.log(`  …… 另有 ${yearMiss - yearSamples} 处同类不一致（已省略）`);
+/* 反向检查：基线表登记了但 CITIES 里没人用的省份分组（防新增省份只改了一边） */
+for (const r of Object.keys(PROVINCE_YEAR)) {
+  if (!seenRegions.has(r)) {
+    console.log(`  ✗ 基线表登记了省份「${r}」，但 CITIES 中没有任何城市使用该分组`);
+    yearMiss++; fail++;
+  }
+}
+if (!yearMiss) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市的 dataYear/dataNext 与基线表一致（${Object.keys(PROVINCE_YEAR).length} 个省份分组）`);
 
 /* ---------- 汇总 ---------- */
 console.log('\n' + '='.repeat(58));

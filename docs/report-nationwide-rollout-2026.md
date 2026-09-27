@@ -155,9 +155,9 @@
 
 ```
 node tools/sync.js        # 由源生成 2 个镜像
-node tools/test-calc.js   # 6603 项断言（税率表/年终奖陷阱/端到端算例/基数夹取/结构不变量/城市参数抽查/租金档位）
+node tools/test-calc.js   # 6638 项断言（税率表/年终奖陷阱/端到端算例/基数夹取/结构不变量/城市参数抽查/租金档位/年度口径）
 node tools/check-dom.js   # 静态结构 + CITIES 重复 key
-node tools/check-sync.js  # 镜像/文档/陈旧表述/断言数 四项
+node tools/check-sync.js  # 镜像/文档/陈旧表述/断言数/省份年度口径 五项
 node tools/test-export.js # 导出降级链 3 条路径
 ```
 

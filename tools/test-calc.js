@@ -15,6 +15,8 @@ const path = require('path');
 
 const CALC = path.join(__dirname, '..', 'skills', 'city-salary', 'assets', 'calculator.html');
 const html = fs.readFileSync(CALC, 'utf8');
+/* 省份年度基线表：与 check-sync 检查 E 共用同一份，避免再造第二个事实来源 */
+const { PROVINCE_YEAR } = require('./province-year.js');
 
 /* ---------- 最小 DOM 桩 ---------- */
 function makeEl(id) {
@@ -943,6 +945,81 @@ section('11. 历史页编辑保留与文案口径');
   ok('源码未硬编码统计区间年份', /统计区间：\d{4}年/.test(html), false);
   ok('历史页明示专项附加扣除取自第1页', /专项附加扣除取自第 1 页、各月相同/.test(html), true);
   console.log('  逐月编辑在切页/改默认值/缩区间后保留，换城市重置 ✓');
+})();
+
+/* =========================================================
+   12. 省份年度口径（dataYear / dataNext）与页脚文案
+   —— 回归自一次真实事故：CIU() 工厂默认 dataYear:"2026"，新增省份城市时
+      只覆盖了 region 没覆盖 dataYear，导致 100 城把 2025 年度基数标成
+      「2026年度」显示给用户。年度基线表与 check-sync 检查 E 同源。
+   ========================================================= */
+section('12. 省份年度口径与页脚文案');
+(function yearCase() {
+  const ALLOWED = ['2025', '2025-2026', '2026'];
+
+  /* 12.1 dataYear 取值只能在设计范围内（防止写出 '2026年度'、'2025.7' 之类的变体） */
+  const badYear = Object.keys(A.CITIES).filter(k => ALLOWED.indexOf(A.CITIES[k].dataYear) < 0);
+  eq('dataYear 取值均在设计范围内（' + badYear.slice(0, 3).join(',') + '）', badYear.length, 0);
+
+  /* 12.2 逐城年度与基线表一致 */
+  let mismatch = 0, firstBad = '';
+  for (const k in A.CITIES) {
+    const c = A.CITIES[k], b = PROVINCE_YEAR[c.region];
+    const okRow = b && c.dataYear === b.dataYear && (c.dataNext || null) === (b.dataNext || null);
+    if (!okRow) { mismatch++; if (!firstBad) firstBad = `${c.name}=${c.dataYear}/${c.dataNext}`; }
+  }
+  eq(`全部城市年度与基线表一致（首个不符：${firstBad || '无'}）`, mismatch, 0);
+
+  /* 12.3 受影响 9 省逐省抽查 + 未受影响省份不得被误改 */
+  const CASES = [
+    ['heb', '哈尔滨', '2025', '2026'], ['nanj', '南京', '2025', '2026'],
+    ['hangz', '杭州', '2025', '2026'], ['zzheng', '郑州', '2025', '2026'],
+    ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2025', '2026'],
+    ['haik', '海口', '2025', '2026'],
+    ['cc', '长春', '2025-2026', null], ['fz', '福州', '2025-2026', null],
+  ];
+  for (const [key, name, y, next] of CASES) {
+    eq(`${name} dataYear=${y}`, A.CITIES[key].dataYear, y);
+    eq(`${name} dataNext=${JSON.stringify(next)}`, A.CITIES[key].dataNext || null, next);
+  }
+  eq('北京 dataYear 保持 2026', A.CITIES.bj.dataYear, '2026');
+  eq('北京 dataNext 为空', A.CITIES.bj.dataNext || null, null);
+  eq('深圳 dataYear 保持 2025-2026', A.CITIES.sz.dataYear, '2025-2026');
+  eq('深圳 dataNext 为空', A.CITIES.sz.dataNext || null, null);
+  eq('广州 dataYear 保持 2025-2026', A.CITIES.gz.dataYear, '2025-2026');
+
+  /* 12.4 页脚实际渲染文案 —— 用户真正看到的那一行 */
+  const foot = () => A._doc.getElementById('footNote').innerHTML;
+
+  A.selectCity('heb');
+  ok('哈尔滨页脚显示 2025年度', foot().indexOf('数据依据：哈尔滨 2025年度') === 0, true);
+  ok('哈尔滨页脚提示 2026年度待公布', foot().indexOf('（2026年度待公布）') > 0, true);
+  ok('哈尔滨页脚不再出现"哈尔滨 2026年度"', foot().indexOf('哈尔滨 2026年度') < 0, true);
+
+  A.selectCity('nanj');
+  ok('南京页脚显示 2025年度（2026年度待公布）',
+    foot().indexOf('数据依据：南京 2025年度（2026年度待公布）') === 0, true);
+
+  A.selectCity('cc');
+  ok('长春页脚显示 2025-2026年度', foot().indexOf('数据依据：长春 2025-2026年度') === 0, true);
+  ok('长春页脚不提示待公布（年度已跨到 2026）', foot().indexOf('待公布') < 0, true);
+
+  A.selectCity('bj');
+  ok('北京页脚显示 2026年度', foot().indexOf('数据依据：北京 2026年度') === 0, true);
+  ok('北京页脚不提示待公布', foot().indexOf('待公布') < 0, true);
+
+  /* 12.5 反向：基线表说"有待公布"的城市必须带 dataNext，反之必须不带 */
+  let missTip = 0, extraTip = 0;
+  for (const k in A.CITIES) {
+    const c = A.CITIES[k], b = PROVINCE_YEAR[c.region];
+    const shouldTip = !!(b && b.dataNext);
+    if (shouldTip && !c.dataNext) missTip++;
+    if (!shouldTip && c.dataNext) extraTip++;
+  }
+  eq('应提示待公布的城市都已标记', missTip, 0);
+  eq('不应提示待公布的城市均未误标', extraTip, 0);
+
+  console.log('  100 城年度口径已修正，页脚按「年度 + 待公布提示」双段呈现 ✓');
 })();
 
 /* =========================================================
