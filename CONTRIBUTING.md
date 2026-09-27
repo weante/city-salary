@@ -26,16 +26,17 @@ node tools/sync.js        # 源 → 镜像
 ## 二、改完要跑什么
 
 ```bash
-npm test                  # 一次跑完下面四项（零依赖，无需 npm install）
-node tools/test-calc.js   # 6600+ 项计算断言
-node tools/check-dom.js   # 单文件 HTML 的静态结构
-node tools/check-sync.js  # 漂移检查 A–F
-node tools/test-export.js # 导出 PDF 降级链
-node tools/ci-selfcheck.js # 零依赖红线自检
-node tools/sync.js        # 同步镜像（改完 skills/ 之后）
+npm test                    # 一次跑完下面五项（零依赖，无需 npm install）
+node tools/test-calc.js     # 6647 项计算断言
+node tools/check-golden.js  # 黄金用例：16 用例 × 4 面板逐字节比对
+node tools/check-dom.js     # 单文件 HTML 的静态结构
+node tools/check-sync.js    # 漂移检查 A–F
+node tools/test-export.js   # 导出 PDF 降级链
+node tools/ci-selfcheck.js  # 零依赖红线自检
+node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 ```
 
-典型顺序：`改源文件` → `sync.js` → `test-calc.js` → `check-dom.js` → `check-sync.js` → `test-export.js`。
+典型顺序：`改源文件` → `sync.js` → `test-calc.js` → `check-golden.js` → `check-dom.js` → `check-sync.js` → `test-export.js`。
 
 ---
 
@@ -77,7 +78,38 @@ node tools/sync.js        # 同步镜像（改完 skills/ 之后）
 
 ---
 
-## 四、两类最常见的改动
+### `check-golden.js` + `golden-cases.json`：黄金用例
+
+`test-calc.js` 断言的是**具体数值**，覆盖已知关注点；黄金用例捕获的是**整块渲染结果**，覆盖所有没被单独断言到的字段。前者告诉你"哪个数错了"，后者告诉你"有什么变了"。
+
+- 16 个用例按**结构差异**选（直辖市 / 省级统一 / 多档医保 / 户籍区分 / 长护险 / 市级基数覆盖 / 跨年度 / 极端基数），输入变体覆盖触底与封顶夹取、公积金不缴、起始月晚于当前月、全部扣除、年终奖陷阱命中。
+- 捕获 4 个面板：`res`（单月结果）、`bonus`（年终奖）、`hist`（历史明细表）、`sum`（历史汇总）。
+- 快照里剥掉了 `style="..."` 内联样式（静态呈现常量，占体积 80% 以上却与计算无关），并归一化日期避免跨年误报。
+- **改动渲染输出后**（新增字段、调整文案）跑 `npm run golden:update` 重新冻结；比对失败时会指出首个差异位置与上下文。
+
+### `calc-harness.js`：测试脚手架
+
+最小 DOM 桩 + 加载器，供 `test-calc.js` / `check-golden.js` / `check-sync.js` 共用（此前这三个脚本各写一份桩）。它做的是本项目测试的核心动作：**从 `calculator.html` 抽出真实 `<script>`，在桩上执行**——测的是真正跑在用户浏览器里的那份代码。
+
+## 四、计算器代码结构
+
+`calculator.html` 里的 `calc()` 原先是一个 131 行的单体函数（读输入、算社保、算公积金、算扣除、算个税、拼 HTML 全挤在一起）。现已按职责拆成五段，`calc()` 只做编排（8 行）：
+
+| 段 | 函数 | 职责 | 有无副作用 |
+|:--:|------|------|-----------|
+| 1 | `readInputs()` | 读 DOM、夹取基数、归一化公积金比例；同步受输入影响的界面元素 | **有**（写 `hfRate`/`hfBase`/`startWarn`） |
+| 2 | `calcContrib(I)` | 社保与公积金缴费（个人侧决定到手现金，单位侧仅展示） | 无 |
+| 3 | `calcDeductions(I)` | 七项专项附加扣除 + 三项补充扣除 | 写 `spTot`、`currentSpT`、`currentSupp` |
+| 4 | `calcTax(I,C,D)` | 累计预扣预缴、年度预估、年终奖与临界值陷阱 | 无 |
+| 5 | `renderResult(I,C,D,T)` | 拼 HTML，写 `res` 与 `bonusResult` | 写 DOM |
+
+四段之间用对象传递：`I`=inputs、`C`=contrib、`D`=deductions、`T`=tax。**第 1 段必须先执行**（它的副作用是后四段的输入）。
+
+文件顶部有一份**命名约定表**（`cl`/`gv`/`fm`/`fmtPct`/`tx`/`btx`/`normHF`/`effStart` 各自的含义），改代码前先看一眼。
+
+> **动这一块的规矩**：拆分段时**只搬运表达式、不改语义**。判据是 `check-golden.js` 的 16 个用例 × 4 个面板必须逐字节一致，且 `test-calc.js` 断言数不得下降。M5 重构就是这么做的——重构后黄金用例一次通过。
+
+## 五、两类最常见的改动
 
 ### A. 新增/修改一个城市
 
@@ -102,7 +134,7 @@ node tools/sync.js        # 同步镜像（改完 skills/ 之后）
 
 ---
 
-## 五、两个容易踩的坑
+## 六、两个容易踩的坑
 
 ### 1. 不要原样引用"旧措辞"当反面例子
 
@@ -114,7 +146,7 @@ node tools/sync.js        # 同步镜像（改完 skills/ 之后）
 
 ---
 
-## 六、零依赖红线
+## 七、零依赖红线
 
 本仓库的立身之本是**单文件 HTML + 零依赖 Node 脚本**。`tools/ci-selfcheck.js` 会把这条约定变成可执行的守卫：
 
@@ -127,7 +159,7 @@ CI 里**不执行 `npm install`**。若某个改动需要引入依赖，那不�
 
 ---
 
-## 七、CI
+## 八、CI
 
 `.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 三个版本跑完整守卫链。本地跑通不代表 CI 会绿（少数差异来自换行符与路径），所以推送后请确认 CI 状态。
 

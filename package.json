@@ -12,11 +12,13 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node tools/test-calc.js && node tools/check-dom.js && node tools/check-sync.js && node tools/test-export.js",
+    "test": "node tools/test-calc.js && node tools/check-golden.js && node tools/check-dom.js && node tools/check-sync.js && node tools/test-export.js",
     "test:calc": "node tools/test-calc.js",
+    "test:golden": "node tools/check-golden.js",
     "test:dom": "node tools/check-dom.js",
     "test:sync": "node tools/check-sync.js",
     "test:export": "node tools/test-export.js",
+    "golden:update": "node tools/check-golden.js --update",
     "sync": "node tools/sync.js"
   },
   "keywords": [

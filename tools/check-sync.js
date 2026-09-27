@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
+const { loadCalculator } = require('./calc-harness.js');
 
 let fail = 0;
 
@@ -40,25 +41,9 @@ for (const [src, dst] of PAIRS) {
 
 /* ---------- B. 城市参数是否都在文档里 ---------- */
 console.log('\nB. 城市参数与文档的一致性');
-const html = read('skills/city-salary/assets/calculator.html');
-const src = html.match(/<script>([\s\S]*)<\/script>/)[1];
-
-/* 在最小 DOM 桩上取出 CITIES */
-function makeEl(id) {
-  return { id, value: '', textContent: '', innerHTML: '', style: {}, dataset: {}, checked: false,
-    disabled: false, addEventListener() {}, querySelectorAll() { return []; },
-    querySelector() { return null; }, setAttribute() {}, getAttribute() { return null; },
-    classList: { add() {}, remove() {}, toggle() {} }, appendChild() {}, max: '' };
-}
-const els = new Map();
-const document = {
-  getElementById: (id) => { if (!els.has(id)) els.set(id, makeEl(id)); return els.get(id); },
-  createElement: () => makeEl('n'), head: { appendChild() {} }, querySelectorAll: () => [],
-};
-const api = new Function('document', 'window', 'console', 'setTimeout',
-  src + '\n;return {CITIES};')(document, {}, console, setTimeout);
-
-const CITIES = api.CITIES;
+/* 用共享脚手架取出 CITIES（原先本文件自带一份 DOM 桩，与 test-calc /
+   test-export 三份重复）。 */
+const CITIES = loadCalculator().CITIES;
 /* 守卫一律读**源文件**；镜像与源的一致性由 A 检查单独负责。
    （B 曾经读根级镜像、F 读源文件，规则不统一，排查时容易误判是谁在报错。） */
 const docs = {

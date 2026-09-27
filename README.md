@@ -73,7 +73,10 @@ city-salary/
 ├── site/
 │   └── index.html           # 计算器镜像副本（用于 GitHub Pages 等静态托管）
 ├── tools/                   # 零依赖 Node 脚本：测试与维护
+│   ├── calc-harness.js      #   测试脚手架：最小 DOM 桩 + 加载器（各测试脚本共用）
 │   ├── test-calc.js         #   6647 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径/起始月边界
+│   ├── check-golden.js      #   黄金用例：16 用例 × 4 面板逐字节比对（重构安全网）
+│   ├── golden-cases.json    #   黄金用例快照（由 check-golden.js --update 生成）
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
 │   ├── check-sync.js        #   漂移检查：镜像/文档锚定/陈旧表述/断言数/省份年度口径/数据状态表年度（A–F 六项）
 │   ├── test-export.js       #   导出 PDF 的降级链测试
@@ -82,6 +85,7 @@ city-salary/
 │   └── sync.js              #   把 skills/ 下的源文件同步到镜像位置
 ├── package.json             # 仅 scripts（零依赖）：npm test 统一入口
 ├── .github/workflows/ci.yml # CI 门禁：guard 链 × Node 18/20/22
+├── CONTRIBUTING.md          # 维护手册：守卫语义、新增城市/年度更新的清单
 └── docs/                    # 各工具安装文档 + 政策来源存档 + 年度基线表
 ```
 
@@ -90,14 +94,19 @@ city-salary/
 ## 维护与测试
 
 ```bash
-npm test                    # ★ 一次跑完下面四项（零依赖，无需 npm install）
+npm test                    # ★ 一次跑完下面五项（零依赖，无需 npm install）
 node tools/test-calc.js     # 计算回归（改参数/改逻辑后必跑）
+node tools/check-golden.js  # 黄金用例：整块渲染输出的逐字节比对
 node tools/check-dom.js     # 单文件 HTML 的静态结构检查
 node tools/check-sync.js    # 漂移检查：A 镜像 / B 城市参数锚定 / C 陈旧表述 / D 断言数 / E 省份年度口径 / F 数据状态表年度
 node tools/test-export.js   # 导出 PDF 降级链
 node tools/ci-selfcheck.js  # 零依赖红线自检（CI 也会跑）
 node tools/sync.js          # 同步源文件到镜像位置
+
+npm run golden:update       # 渲染输出有意变更后，重新冻结黄金快照
 ```
+
+**黄金用例是什么**：`test-calc.js` 断言的是**具体数值**（6647 项），覆盖已知关注点；`check-golden.js` 捕获的是**整块渲染结果**（16 个用例覆盖结构差异：直辖市/省统一/多档医保/户籍区分/长护险/市级基数覆盖/跨年度/极端基数，输入变体覆盖触底与封顶夹取、公积金不缴、起始月晚于当前月、全部扣除、年终奖陷阱），覆盖所有没被单独断言到的字段。前者告诉你"哪个数错了"，后者告诉你"有什么变了"。改动渲染输出后跑 `npm run golden:update` 重新冻结。
 
 **CI 门禁**：`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 三个版本跑完整守卫链。注意 CI 里**刻意不跑 `sync.js`**——sync 会把镜像"修好"，反而掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查做逐字节比对。
 

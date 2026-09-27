@@ -776,6 +776,20 @@ var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,currentSupp=0,last
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
 var BBR=[[3000,.03,0],[12000,.10,210],[25000,.20,1410],[35000,.25,2660],[55000,.30,4410],[80000,.35,7160],[1/0,.45,15160]];
 var TRAPS=[[36000,2309.10],[144000,13199.20],[300000,13749.25],[420000,19249.30],[660000,30249.35],[960000,87999.45]];
+/* ===== 命名约定（本文件的缩写在此统一说明，读代码时不必逐个反推）=====
+   cl(v,a,b)   把 v 夹取到 [a,b] 区间
+   gv(id)      读输入框的值，转成数字（非法/空 → 0）
+   fm(n)       金额格式化：千分位 + 两位小数
+   fmtPct(r)   费率格式化：0.085 → "8.5"（去掉无意义的尾随 0）
+   tx(t)       个税：按年度累计预扣率表 BR 求 {税额 t, 税率 r, 速算扣除 d}
+   btx(b)      年终奖单独计税：按"奖金÷12"查月表 BBR，返回 {t,r,d,m(月均)}
+   normHF(v,m) 公积金比例归一：≤0 视为不缴；>0 但 <5 视为不缴；其余夹到 [5,m]
+   effStart()  就业起始月夹取（见下方说明）
+
+   四段对象命名（calc 的五段之间传递）：
+   I = inputs（readInputs 的结果）  C = contrib（社保+公积金）
+   D = deductions（专项附加+补充扣除）  T = tax（个税与净额）
+   城市参数对象：P=养老 M=城市医保 MT=生育 IJ=工伤 U=失业 HF=公积金 */
 function cl(v,a,b){return Math.max(a,Math.min(b,v))}
 /* 就业起始月夹取：本字段口径是"本年度开始就业时间"，同一年度内不可能出现
    "现在 3 月、但本年度 12 月才开始就业"，故起始月晚于当前月时按当前月计（即 1 个月）。
@@ -921,8 +935,19 @@ function onDedToggle(key){
   calc();
 }
 
-function calc(){
-  if(!CITY)return;
+/* calc() 的五段拆分（M5 重构）。
+   原来是一个 131 行的单体函数：读输入、算社保、算公积金、算扣除、算个税、
+   拼 HTML 全挤在一起，改一处政策要通读全篇。现按职责拆成五段，
+   calc() 只做编排。
+
+   重构的唯一判据是**行为不变**：拆完后 tools/check-golden.js 的 16 个用例
+   × 4 个面板必须逐字节一致，test-calc.js 的 6647 项断言不得下降。
+   因此下面每一行表达式都从原实现原样搬运，只把局部变量改成从参数对象取。 */
+
+/* ---- 第 1 段：输入归一化 ----
+   读 DOM、做夹取、同步受输入影响的界面元素（公积金比例显示、起始月提示、
+   公积金基数输入框的启用与回填）。副作用集中在这里，后面四段都是纯计算。 */
+function readInputs(){
   /* 命名约定：M=CITY.med（城市医保参数对象），med=档次索引（1-based），md=当前医疗档次数据（tiers[med-1] 或 M） */
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf,ts=CITY.tiers||[];
   var sal=gv("salary"),mo=cl(gv("month"),1,12),startRaw=cl(gv("startMonth"),1,12),startM=effStart(mo,startRaw);
@@ -946,11 +971,25 @@ function calc(){
   var ijB=cl(gv("ijBase"),IJ.min,IJ.max);
   var hB=cl(gv("hfBase"),HF.min,HF.max);
   var medFix=CITY.medFixEmp||0;
-  var pE=pB*P.emp,mE=mB*md.emp+medFix,uE=uB*U.emp,ltcE=ltc?pB*CITY.ltc.emp:0;
+  return {P:P,M:M,U:U,MT:MT,IJ:IJ,HF:HF,sal:sal,mo:mo,startM:startM,mW:mW,aM:aM,
+          hfR:hfR,hfD:hfD,md:md,ml:ml,ltc:ltc,pB:pB,mB:mB,uB:uB,mtB:mtB,ijB:ijB,hB:hB,medFix:medFix};
+}
+
+/* ---- 第 2 段：社保与公积金缴费 ----
+   个人侧（决定到手现金）与单位侧（仅展示）分别算。 */
+function calcContrib(I){
+  var pE=I.pB*I.P.emp,mE=I.mB*I.md.emp+I.medFix,uE=I.uB*I.U.emp,ltcE=I.ltc?I.pB*CITY.ltc.emp:0;
   var siE=pE+mE+uE+ltcE;
-  var pComp=CITY.hukou?(hk===1?P.comp+.01:P.comp):P.comp;
-  var siC=pB*pComp+mB*md.comp+uB*U.comp+mtB*MT.comp+ijB*IJ.comp+(ltc?pB*CITY.ltc.comp:0);
-  var hfE=hB*hfD,hfC=hB*hfD;
+  /* 深圳按户籍区分养老单位费率（深户 +1% 地方补充） */
+  var pComp=CITY.hukou?(hk===1?I.P.comp+.01:I.P.comp):I.P.comp;
+  var siC=I.pB*pComp+I.mB*I.md.comp+I.uB*I.U.comp+I.mtB*I.MT.comp+I.ijB*I.IJ.comp+(I.ltc?I.pB*CITY.ltc.comp:0);
+  var hfE=I.hB*I.hfD,hfC=I.hB*I.hfD;
+  return {pE:pE,mE:mE,uE:uE,ltcE:ltcE,siE:siE,pComp:pComp,siC:siC,hfE:hfE,hfC:hfC};
+}
+
+/* ---- 第 3 段：专项附加扣除与补充扣除 ----
+   专项附加七项（互斥关系由界面按钮保证）；补充扣除三项既减税、也是个人真实现金支出。 */
+function calcDeductions(I){
   var childA=$("childOn").checked?cl(gv("childAmt"),0,10000):0;
   var eduA=$("eduOn").checked?cl(gv("eduAmt"),0,400):0;
   var houseA=$("houseOn").checked?cl(gv("houseAmt"),0,houseMode===0?1000:CITY.rent):0;
@@ -966,22 +1005,43 @@ function calc(){
   var hi=cl(gv("healthIns"),0,200),pp=cl(gv("persPen"),0,1000);
   var anPct=cl(gv("annuity"),0,4)/100;
   /* 企业年金个人缴费上限＝本人缴费工资计税基数的4%，此处以养老缴费基数作为缴费工资基数 */
-  var anAmt=pB*anPct;
+  var anAmt=I.pB*anPct;
   var suppM=hi+pp+anAmt,suppCash=suppM;
   currentSupp=suppCash;
-  var mDed=siE+hfE+5000+spT+suppM;
-  var cumI=sal*mW,cumD=mDed*mW,cumTx=Math.max(0,cumI-cumD);
+  return {childA:childA,eduA:eduA,houseA:houseA,elderlyA:elderlyA,medicalA:medicalA,spT:spT,
+          medicalAnnual:medicalAnnual,hi:hi,pp:pp,anPct:anPct,anAmt:anAmt,suppM:suppM,suppCash:suppCash};
+}
+
+/* ---- 第 4 段：个税 ----
+   月度走累计预扣预缴；年度预估是汇算后口径（含大病医疗）；
+   年终奖单独计税并检测六个临界值陷阱。 */
+function calcTax(I,C,D){
+  var mDed=C.siE+C.hfE+5000+D.spT+D.suppM;
+  var cumI=I.sal*I.mW,cumD=mDed*I.mW,cumTx=Math.max(0,cumI-cumD);
   var ci=tx(cumTx),cumT=Math.max(0,ci.t);
-  var pTx=Math.max(0,sal*(mW-1)-mDed*(mW-1));
+  var pTx=Math.max(0,I.sal*(I.mW-1)-mDed*(I.mW-1));
   var curT=Math.max(0,cumT-Math.max(0,tx(pTx).t));
-  var net=sal-siE-hfE-curT-suppCash;
-  var ratio=sal>0?net/sal*100:0,totD=siE+hfE+curT+suppCash;
-  var aI=sal*aM,aDed=(siE+hfE+5000+spT+suppM)*aM+medicalAnnual,aTx=Math.max(0,aI-aDed);
-  var aT=Math.max(0,tx(aTx).t),aNet=aI-(siE+hfE)*aM-suppCash*aM-aT;
-  var suppSave=Math.max(0,tx(Math.max(0,aTx+suppM*aM)).t-aT);
+  var net=I.sal-C.siE-C.hfE-curT-D.suppCash;
+  var ratio=I.sal>0?net/I.sal*100:0,totD=C.siE+C.hfE+curT+D.suppCash;
+  var aI=I.sal*I.aM,aDed=(C.siE+C.hfE+5000+D.spT+D.suppM)*I.aM+D.medicalAnnual,aTx=Math.max(0,aI-aDed);
+  var aT=Math.max(0,tx(aTx).t),aNet=aI-(C.siE+C.hfE)*I.aM-D.suppCash*I.aM-aT;
+  var suppSave=Math.max(0,tx(Math.max(0,aTx+D.suppM*I.aM)).t-aT);
   var bonus=gv("bonus"),bi=btx(bonus),bonusNet=bonus-bi.t;
   var trapDetail="";
   if(bonus>0){for(var i=0;i<TRAPS.length;i++){var lo=TRAPS[i][0];var netLo=lo-btx(lo).t;if(bonus>lo&&bonusNet<netLo){trapDetail="⚠ 奖金 "+fm(bonus)+" 税后 "+fm(bonusNet)+"，反而低于 "+fm(lo)+" 的税后 "+fm(netLo)+"，少拿 "+fm(netLo-bonusNet)+" 元！建议将超出部分以福利形式发放。";break;}}}
+  return {mDed:mDed,cumI:cumI,cumD:cumD,cumTx:cumTx,ci:ci,cumT:cumT,curT:curT,net:net,ratio:ratio,
+          totD:totD,aI:aI,aDed:aDed,aTx:aTx,aT:aT,aNet:aNet,suppSave:suppSave,
+          bonus:bonus,bi:bi,bonusNet:bonusNet,trapDetail:trapDetail};
+}
+
+/* ---- 第 5 段：渲染 ----
+   只读入参与前四段的结果，不再重新计算；年终奖面板写到 bonusResult，
+   结果面板写到 res。 */
+function renderResult(I,C,D,T){
+  var P=I.P,M=I.M,U=I.U,MT=I.MT,IJ=I.IJ,HF=I.HF,mo=I.mo,mW=I.mW,aM=I.aM,startM=I.startM,hfR=I.hfR,hB=I.hB;
+  var ml=I.ml,md=I.md,ltc=I.ltc,medFix=I.medFix,pB=I.pB,mB=I.mB,uB=I.uB;
+  var pE=C.pE,mE=C.mE,uE=C.uE,ltcE=C.ltcE,siE=C.siE,siC=C.siC,pComp=C.pComp,hfE=C.hfE,hfC=C.hfC;
+  var curT=T.curT,net=T.net,ratio=T.ratio,totD=T.totD,sal=I.sal;
   $("baseNote").innerHTML="养老 "+fm(P.min)+"~"+fm(P.max)+" · "+ml+" "+fm(M.min)+"~"+fm(M.max)+" · 失业 "+fm(U.min)+"~"+fm(U.max)+"<br>公积金 "+fm(HF.min)+"~"+fm(HF.max)+" · 基数每年7月15日调整";
   var h="";
   h+='<div class="hero"><div class="tp"><div><div class="lb">税后实发（'+CITY.name+' · '+mo+'月）</div><div class="bg"><span id="resNet">'+fm(net)+'</span><span>元</span></div></div><div style="text-align:right"><div class="lb">实发比例</div><div class="pc">'+ratio.toFixed(1)+'%</div></div></div>';
@@ -1001,42 +1061,42 @@ function calc(){
   h+='<div class="r"><label>单位缴存</label><span class="v" style="color:#9ca3af">'+fm(hfC)+'</span></div>';
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">公积金入账合计</label><span class="v b" style="color:#0284c7">'+fm(hfE+hfC)+' 元</span></div></div>';
   h+='<div class="c"><div class="st ro">个税 · 累计预扣预缴（已就业'+mW+'个月）</div>';
-  h+='<div class="r"><label>累计收入（'+mW+'个月）</label><span class="v">'+fm(cumI)+'</span></div>';
+  h+='<div class="r"><label>累计收入（'+mW+'个月）</label><span class="v">'+fm(T.cumI)+'</span></div>';
   h+='<div class="r ind"><label>− 五险一金</label><span class="v">'+fm((siE+hfE)*mW)+'</span></div>';
   h+='<div class="r ind"><label>− 免征额 5000×'+mW+'</label><span class="v">'+fm(5000*mW)+'</span></div>';
-  h+='<div class="r ind"><label>− 专项附加</label><span class="v">'+fm(spT*mW)+'</span></div>';
-  if(suppM>0)h+='<div class="r ind"><label>− 补充扣除（年金/个人养老金/税优险）</label><span class="v">'+fm(suppM*mW)+'</span></div>';
-  h+='<div class="sp"></div><div class="r"><label style="font-weight:600;color:#1f2937">累计应纳税所得额</label><span class="v b">'+fm(cumTx)+'</span></div>';
-  h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">税率 '+(ci.r*100).toFixed(0)+'% / 速算 '+fm(ci.d)+'</label><span style="font-size:11px;color:#9ca3af;font-variant-numeric:tabular-nums">累计税 '+fm(cumT)+'</span></div>';
+  h+='<div class="r ind"><label>− 专项附加</label><span class="v">'+fm(D.spT*mW)+'</span></div>';
+  if(D.suppM>0)h+='<div class="r ind"><label>− 补充扣除（年金/个人养老金/税优险）</label><span class="v">'+fm(D.suppM*mW)+'</span></div>';
+  h+='<div class="sp"></div><div class="r"><label style="font-weight:600;color:#1f2937">累计应纳税所得额</label><span class="v b">'+fm(T.cumTx)+'</span></div>';
+  h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">税率 '+(T.ci.r*100).toFixed(0)+'% / 速算 '+fm(T.ci.d)+'</label><span style="font-size:11px;color:#9ca3af;font-variant-numeric:tabular-nums">累计税 '+fm(T.cumT)+'</span></div>';
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">'+mo+'月应扣个税</label><span class="v b" id="resTax" style="color:#e11d48">'+fm(curT)+' 元</span></div></div>';
   h+='<div class="c"><div class="st vi">年度预估（本年度就业'+aM+'个月 · '+startM+'月入职）</div>';
-  h+='<div class="r"><label>本年度税前收入</label><span class="v">'+fm(aI)+'</span></div>';
+  h+='<div class="r"><label>本年度税前收入</label><span class="v">'+fm(T.aI)+'</span></div>';
   h+='<div class="r ind"><label>− 五险一金（个人）</label><span class="v">'+fm((siE+hfE)*aM)+'</span></div>';
   h+='<div class="r ind"><label>− 免征额 5000×'+aM+'</label><span class="v">'+fm(5000*aM)+'</span></div>';
-  h+='<div class="r ind"><label>− 专项附加扣除</label><span class="v">'+fm(spT*aM)+'</span></div>';
-  if(medicalA>0)h+='<div class="r ind"><label>− 大病医疗（全年 · 限额80000）</label><span class="v" style="color:#0d9488">'+fm(medicalAnnual)+'</span></div>';
-  if(hi>0)h+='<div class="r ind"><label>− 税优健康险</label><span class="v" style="color:#0d9488">'+fm(hi*aM)+'</span></div>';
-  if(pp>0)h+='<div class="r ind"><label>− 个人养老金</label><span class="v" style="color:#0d9488">'+fm(pp*aM)+'</span></div>';
-  if(anAmt>0)h+='<div class="r ind"><label>− 企业年金(个人'+gv("annuity")+'%)</label><span class="v" style="color:#0d9488">'+fm(anAmt*aM)+'</span></div>';
+  h+='<div class="r ind"><label>− 专项附加扣除</label><span class="v">'+fm(D.spT*aM)+'</span></div>';
+  if(D.medicalA>0)h+='<div class="r ind"><label>− 大病医疗（全年 · 限额80000）</label><span class="v" style="color:#0d9488">'+fm(D.medicalAnnual)+'</span></div>';
+  if(D.hi>0)h+='<div class="r ind"><label>− 税优健康险</label><span class="v" style="color:#0d9488">'+fm(D.hi*aM)+'</span></div>';
+  if(D.pp>0)h+='<div class="r ind"><label>− 个人养老金</label><span class="v" style="color:#0d9488">'+fm(D.pp*aM)+'</span></div>';
+  if(D.anAmt>0)h+='<div class="r ind"><label>− 企业年金(个人'+gv("annuity")+'%)</label><span class="v" style="color:#0d9488">'+fm(D.anAmt*aM)+'</span></div>';
   h+='<div class="sp"></div>';
-  h+='<div class="r"><label style="font-weight:600">年度应纳税所得额</label><span class="v b">'+fm(aTx)+'</span></div>';
-  h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">补充扣除年度节税约</label><span style="font-size:11px;color:#0d9488;font-variant-numeric:tabular-nums">'+fm(suppSave)+'</span></div>';
-  h+='<div class="r"><label>年度个人所得税</label><span class="v" id="resATax" style="color:#e11d48">'+fm(aT)+'</span></div>';
-  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">本年度税后收入（至12月）</label><span class="v b" style="color:#7c3aed">'+fm(aNet)+' 元</span></div>';
-  if(medicalA>0)h+='<div class="nt">口径说明：大病医疗仅在年度汇算清缴时扣除，本段为汇算后口径；历史页"累计个税"为月度预扣口径，两者差额≈大病医疗的扣除效果。</div>';
+  h+='<div class="r"><label style="font-weight:600">年度应纳税所得额</label><span class="v b">'+fm(T.aTx)+'</span></div>';
+  h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">补充扣除年度节税约</label><span style="font-size:11px;color:#0d9488;font-variant-numeric:tabular-nums">'+fm(T.suppSave)+'</span></div>';
+  h+='<div class="r"><label>年度个人所得税</label><span class="v" id="resATax" style="color:#e11d48">'+fm(T.aT)+'</span></div>';
+  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">本年度税后收入（至12月）</label><span class="v b" style="color:#7c3aed">'+fm(T.aNet)+' 元</span></div>';
+  if(D.medicalA>0)h+='<div class="nt">口径说明：大病医疗仅在年度汇算清缴时扣除，本段为汇算后口径；历史页"累计个税"为月度预扣口径，两者差额≈大病医疗的扣除效果。</div>';
   h+='</div>';
   var bh='';
-  if(bonus>0){
-    bh+='<div class="r"><label>奖金金额</label><span class="v b">'+fm(bonus)+'</span></div>';
-    bh+='<div class="r ind"><label>月均 '+fm(bi.m)+' → 税率 '+(bi.r*100).toFixed(0)+'% / 速算 '+fm(bi.d)+'</label><span class="v"></span></div>';
-    bh+='<div class="r"><label>应缴个税</label><span class="v" style="color:#e11d48">'+fm(bi.t)+'</span></div>';
-    bh+='<div class="ss"></div><div class="r"><label style="font-weight:600">年终奖到手</label><span class="v b" style="color:#7c3aed">'+fm(bonusNet)+' 元</span></div>';
-    if(trapDetail){bh+='<div class="trap"><div class="tt">临界值陷阱警告</div><div class="ti">'+trapDetail+'</div></div>';}
+  if(T.bonus>0){
+    bh+='<div class="r"><label>奖金金额</label><span class="v b">'+fm(T.bonus)+'</span></div>';
+    bh+='<div class="r ind"><label>月均 '+fm(T.bi.m)+' → 税率 '+(T.bi.r*100).toFixed(0)+'% / 速算 '+fm(T.bi.d)+'</label><span class="v"></span></div>';
+    bh+='<div class="r"><label>应缴个税</label><span class="v" style="color:#e11d48">'+fm(T.bi.t)+'</span></div>';
+    bh+='<div class="ss"></div><div class="r"><label style="font-weight:600">年终奖到手</label><span class="v b" style="color:#7c3aed">'+fm(T.bonusNet)+' 元</span></div>';
+    if(T.trapDetail){bh+='<div class="trap"><div class="tt">临界值陷阱警告</div><div class="ti">'+T.trapDetail+'</div></div>';}
     else{bh+='<div class="safe">当前奖金未处于临界值陷阱区间。</div>';}
   }else{bh+='<div style="font-size:12px;color:#9ca3af;padding:4px 0">输入年终奖金额后自动计算。</div>';}
   bh+='<div style="margin-top:8px;font-size:10px;color:#9ca3af;font-weight:600;margin-bottom:3px">六个临界点速查</div>';
   bh+='<div class="grid4"><span>临界点</span><span style="text-align:right">陷阱区间</span><span style="text-align:right">多1元少拿</span><span style="text-align:right">状态</span></div>';
-  TRAPS.forEach(function(t){var lo=t[0],loss=t[1];var netLo=lo-btx(lo).t;var hiP=lo;for(var x=lo+100;x<=lo*1.3;x+=100){if(x-btx(x).t>=netLo){hiP=x;break;}}var status="";if(bonus>lo&&bonus<=hiP)status='<span style="color:#dc2626;font-weight:600">⚠ 命中</span>';else if(bonus>hiP)status='<span style="color:#16a34a">✓ 安全</span>';else status='<span style="color:#9ca3af">—</span>';bh+='<div class="grid4r" style="font-size:11px"><span style="color:#6b7280;font-variant-numeric:tabular-nums">'+fm(lo)+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">~'+fm(hiP)+'</span><span style="text-align:right;color:#dc2626;font-variant-numeric:tabular-nums">'+fm(loss)+'</span><span style="text-align:right">'+status+'</span></div>';});
+  TRAPS.forEach(function(t){var lo=t[0],loss=t[1];var netLo=lo-btx(lo).t;var hiP=lo;for(var x=lo+100;x<=lo*1.3;x+=100){if(x-btx(x).t>=netLo){hiP=x;break;}}var status="";if(T.bonus>lo&&T.bonus<=hiP)status='<span style="color:#dc2626;font-weight:600">⚠ 命中</span>';else if(T.bonus>hiP)status='<span style="color:#16a34a">✓ 安全</span>';else status='<span style="color:#9ca3af">—</span>';bh+='<div class="grid4r" style="font-size:11px"><span style="color:#6b7280;font-variant-numeric:tabular-nums">'+fm(lo)+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">~'+fm(hiP)+'</span><span style="text-align:right;color:#dc2626;font-variant-numeric:tabular-nums">'+fm(loss)+'</span><span style="text-align:right">'+status+'</span></div>';});
   $("bonusResult").innerHTML=bh;
   h+='<div class="dk"><div class="dt">工资条汇总（'+CITY.name+' · '+mo+'月）</div>';
   h+='<div class="dr"><span class="dl">税前工资</span><span class="dv" style="font-weight:500">'+fm(sal)+'</span></div>';
@@ -1046,11 +1106,23 @@ function calc(){
   if(ltc)h+='<div class="dr"><span class="dl">− 长期护理险</span><span class="dv" style="color:#34d399">'+fm(ltcE)+'</span></div>';
   h+='<div class="dr"><span class="dl">− 住房公积金</span><span class="dv" style="color:#38bdf8">'+fm(hfE)+'</span></div>';
   h+='<div class="dr"><span class="dl">− 个人所得税</span><span class="dv" style="color:#fb7185">'+fm(curT)+'</span></div>';
-  if(pp>0)h+='<div class="dr"><span class="dl">− 个人养老金（计入个人账户）</span><span class="dv" style="color:#34d399">'+fm(pp)+'</span></div>';
-  if(anAmt>0)h+='<div class="dr"><span class="dl">− 企业年金（个人）</span><span class="dv" style="color:#34d399">'+fm(anAmt)+'</span></div>';
-  if(hi>0)h+='<div class="dr"><span class="dl">− 税优健康险（自缴）</span><span class="dv" style="color:#34d399">'+fm(hi)+'</span></div>';
+  if(D.pp>0)h+='<div class="dr"><span class="dl">− 个人养老金（计入个人账户）</span><span class="dv" style="color:#34d399">'+fm(D.pp)+'</span></div>';
+  if(D.anAmt>0)h+='<div class="dr"><span class="dl">− 企业年金（个人）</span><span class="dv" style="color:#34d399">'+fm(D.anAmt)+'</span></div>';
+  if(D.hi>0)h+='<div class="dr"><span class="dl">− 税优健康险（自缴）</span><span class="dv" style="color:#34d399">'+fm(D.hi)+'</span></div>';
   h+='<div class="dr tt"><span>到手现金</span><span class="dv">'+fm(net)+' 元</span></div></div>';
   $("res").innerHTML=h;
+}
+
+/* ---- 编排：五段依次调用，本函数只负责顺序 ----
+   注意 readInputs 有副作用（写 hfRate/hfBase/startWarn），
+   必须先于其余四段执行。 */
+function calc(){
+  if(!CITY)return;
+  var inp=readInputs();
+  var con=calcContrib(inp);
+  var ded=calcDeductions(inp);
+  var tax=calcTax(inp,con,ded);
+  renderResult(inp,con,ded,tax);
 }
 
 /* ============ 页面2：历史明细 ============ */

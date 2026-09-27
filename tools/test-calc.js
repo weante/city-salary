@@ -25,57 +25,10 @@ const { PROVINCE_YEAR } = require('./province-year.js');
 const IS_MAIN = require.main === module;
 const emit = IS_MAIN ? function () { console.log.apply(console, arguments); } : function () {};
 
-/* ---------- 最小 DOM 桩 ---------- */
-function makeEl(id) {
-  return {
-    id, value: '', textContent: '', innerHTML: '', max: '', disabled: false, checked: false,
-    className: '', style: {}, dataset: {}, scrollWidth: 800,
-    addEventListener() {}, removeEventListener() {},
-    querySelectorAll() { return []; }, querySelector() { return null; },
-    setAttribute() {}, getAttribute() { return null; },
-    classList: { add() {}, remove() {}, toggle() {} }, appendChild() {},
-  };
-}
-
-function loadCalculator() {
-  const m = html.match(/<script>([\s\S]*)<\/script>/);
-  if (!m) throw new Error('calculator.html 中找不到 <script> 块');
-  const els = new Map();
-  const document = {
-    getElementById(id) { if (!els.has(id)) els.set(id, makeEl(id)); return els.get(id); },
-    createElement: () => makeEl('_new'),
-    head: { appendChild() {} },
-    querySelectorAll: () => [],
-  };
-  const window = { print() {} };
-  const api = new Function('document', 'window', 'console', 'setTimeout',
-    m[1] + '\n;return {tx,btx,TRAPS,BR,BBR,CITIES,CLAMP:cl,normHF,calc,selectCity,setHk,setMed,' +
-    'buildHistory,calcHist,switchTab,histRows:function(){return histRows},els:function(){return null}};'
-  )(document, window, console, setTimeout);
-  api._doc = document;
-  api._set = (k, v) => { document.getElementById(k).value = v; };
-  api._setMany = (o) => { for (const k in o) document.getElementById(k).value = o[k]; };
-  api._check = (k, v) => { document.getElementById(k).checked = v; };
-  api._text = (k) => document.getElementById(k).textContent;
-  api._html = (k) => document.getElementById(k).innerHTML;
-  /* 按 id 从渲染结果里取数字。只依赖 id（稳定契约），不依赖内联样式；
-     桩不做 DOM 解析，所以从 HTML 字符串里定位——找不到就抛出带 id 的明确错误，
-     而不是像过去那样返回 null 让断言以"实际=null"的形式含糊失败。 */
-  const renderRoots = () => api._html('res') + api._html('bonusResult') + api._html('histSum') + api._html('histTable');
-  api._cell = (id) => {
-    const m = renderRoots().match(new RegExp('id="' + id + '"[^>]*>([^<]*)<'));
-    if (!m) throw new Error(`渲染结果中找不到 id=${id} 的输出节点`);
-    return m[1];
-  };
-  api._num = (id) => parseFloat(api._cell(id).replace(/[^\d.\-]/g, ''));
-  api._has = (id) => new RegExp('id="' + id + '"').test(renderRoots());
-  /* 桩元素属性（可见性/类名等），用于断言交互状态而非文本 */
-  api._style = (id) => document.getElementById(id).style.display;
-  api._class = (id) => document.getElementById(id).className;
-  api._checked = (id) => document.getElementById(id).checked;
-  return api;
-}
-
+/* ---------- 计算器脚手架（共享模块） ----------
+   原先桩与加载器在本文件里各写一份，check-sync.js / test-export.js 又各有一份。
+   现集中到 tools/calc-harness.js，黄金用例脚本也能直接复用。 */
+const { loadCalculator } = require('./calc-harness.js');
 /* ---------- 断言 ---------- */
 let pass = 0, fail = 0;
 const failures = [];

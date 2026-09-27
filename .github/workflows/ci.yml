@@ -42,6 +42,9 @@ jobs:
       - name: 计算回归（6600+ 项断言）
         run: node tools/test-calc.js
 
+      - name: 黄金用例快照（16 用例 × 4 面板逐字节比对）
+        run: node tools/check-golden.js
+
       - name: DOM 静态结构
         run: node tools/check-dom.js
 
