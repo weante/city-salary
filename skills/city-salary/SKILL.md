@@ -980,10 +980,10 @@ CITIES.城市key = CIU("城市名",
 
 ```bash
 npm test                    # ★ 一次跑完下面四项
-node tools/test-calc.js     # 6638 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归/年度口径（北京 158 / 上海 144 / 深圳 209 / 成都 3 + 跨城市 337 + 抽查 295 + 租金档位 47 + 年度口径 35）
+node tools/test-calc.js     # 6647 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归/年度口径/起始月边界（北京 158 / 上海 144 / 深圳 209 / 成都 3 + 跨城市 337 + 抽查 295 + 租金档位 47 + 年度口径 35 + 起始月边界 9）
 node tools/check-dom.js     # 静态结构：重复 id、悬空 $() 引用、未定义事件处理器、CITIES 重复 key/城市名
 node tools/check-sync.js    # 漂移检查：A 镜像同步 / B 城市参数写进文档 / C 陈旧表述 / D 断言数 / E 省份年度口径
-node tools/test-export.js   # 导出 PDF 的降级链（含 6 秒兜底等待）
+node tools/test-export.js   # 导出 PDF 的降级链（4 条路径，含兜底等待）
 node tools/ci-selfcheck.js  # 零依赖红线自检（禁止声明依赖、禁止 scripts 调包管理器）
 node tools/sync.js          # 改完 skills/ 后同步到 site/index.html 与根级 SKILL.md
 ```

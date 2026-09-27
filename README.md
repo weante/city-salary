@@ -73,7 +73,7 @@ city-salary/
 ├── site/
 │   └── index.html           # 计算器镜像副本（用于 GitHub Pages 等静态托管）
 ├── tools/                   # 零依赖 Node 脚本：测试与维护
-│   ├── test-calc.js         #   6638 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径
+│   ├── test-calc.js         #   6647 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径/起始月边界
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
 │   ├── check-sync.js        #   漂移检查：镜像/文档/陈旧表述/断言数/省份年度口径（A–E 五项）
 │   ├── test-export.js       #   导出 PDF 的降级链测试
@@ -102,6 +102,19 @@ node tools/sync.js          # 同步源文件到镜像位置
 **CI 门禁**：`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 三个版本跑完整守卫链。注意 CI 里**刻意不跑 `sync.js`**——sync 会把镜像"修好"，反而掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查做逐字节比对。
 
 全部为零依赖 Node 脚本，无需 `npm install`，`tools/ci-selfcheck.js` 会守住这条红线（禁止声明依赖、禁止在 scripts 里调用包管理器、禁止 `tools/` 下 require 第三方包）。测试的做法是**从 `calculator.html` 里抽取真实的 `<script>` 放到最小 DOM 桩上执行**——测的是真正会跑在用户浏览器里的那份代码，而不是测试文件里重写一遍的副本。
+
+## 安全与隐私
+
+| 项 | 状态 |
+|----|------|
+| 数据外发 | **无**。纯前端计算，除导出 PDF 时从 cdnjs 加载两个库外不发起任何网络请求 |
+| 凭据/个人信息 | 仓库无密钥、无个人信息；计算结果只留在浏览器里 |
+| 用户输入 | 一律经 `parseFloat()` 转为数值后才进入计算与显示，无注入路径（页面内容全部来自作者维护的 `CITIES` 常量） |
+| 动态执行 | 无 `eval`；仅测试脚手架用 `new Function` 执行被测脚本 |
+| 子资源完整性 | html2canvas 1.4.1 与 jsPDF 2.5.1 均带 **SRI `sha384`** 哈希 |
+| CSP | `calculator.html` / `site/index.html` 内置 `Content-Security-Policy` meta，限制脚本源到自身 + cdnjs，`connect-src 'none'` |
+
+CSP 策略已在真实 Chrome 中做过 A/B 验证：加策略前后页面渲染结果一致，html2canvas 的 DOM 克隆渲染正常，`securitypolicyviolation` 事件为 0。修改 CSP 时**不要收紧掉 `frame-src`**——那是给 html2canvas 的克隆 iframe 留的。
 
 ## 使用示例
 

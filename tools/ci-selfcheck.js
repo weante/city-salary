@@ -74,6 +74,20 @@ if (min && major < Number(min)) {
   console.log(`  ✓ 当前 Node ${process.versions.node} 满足 engines ${want || '(未声明)'}`);
 }
 
+/* ---------- 5. test-calc 被 require 时必须静默 ----------
+   check-sync 的 D 检查直接 require test-calc.js 取断言计数。若测试里残留裸
+   console.log（而没走 emit），它的输出就会混进 check-sync 的 stdout，破坏
+   "被 require 时静默"的契约——2026-09-27 新增第 13 节时就踩过一次。 */
+console.log('\n5. test-calc 的输出必须全部走 emit（被 require 时静默）');
+const calcSrc = fs.readFileSync(path.join(__dirname, 'test-calc.js'), 'utf8');
+const rawLogs = calcSrc.split('console.log(').length - 1;
+if (rawLogs > 0) {
+  console.log(`  ✗ test-calc.js 中有 ${rawLogs} 处裸 console.log，应改用 emit（被 require 时会污染调用方输出）`);
+  fail++;
+} else {
+  console.log('  ✓ 无裸 console.log，输出统一走 emit');
+}
+
 console.log('\n' + '='.repeat(58));
 if (fail) { console.log(`零依赖自检未通过：${fail} 项`); process.exit(1); }
 console.log('零依赖自检通过');

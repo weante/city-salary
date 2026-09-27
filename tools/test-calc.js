@@ -1030,6 +1030,66 @@ section('12. 省份年度口径与页脚文案');
 })();
 
 /* =========================================================
+   13. 就业起始月边界：calc() 与 buildHistory() 必须同口径
+   —— 回归自代码审查问题 3：本字段口径是"本年度开始就业时间"，
+      起始月晚于当前月属非法输入。历史上 calc() 用原始值渲染成
+      「已就业 1 个月（12月入职）」（自相矛盾），buildHistory() 却自行
+      改成 3 月入职——同一组输入两页给出不同的入职月。
+      现在两处共用 effStart()，并由本节的 144 组全组合守卫。
+   ========================================================= */
+section('13. 就业起始月边界（两页口径一致）');
+(function startMonthCase() {
+  A.selectCity('bj');
+  A._setMany({ salary: 20000, pBase: 20000, mBase: 20000, uBase: 20000, mtBase: 20000,
+    ijBase: 20000, hfBase: 20000, hfRate: 12, persPen: 0, healthIns: 0, annuity: 0, bonus: 0 });
+
+  let badCross = 0, badSelf = 0, firstCross = '', firstSelf = '';
+  for (let mo = 1; mo <= 12; mo++) {
+    for (let sm = 1; sm <= 12; sm++) {
+      A._setMany({ month: mo, startMonth: sm });
+      A.calc();
+      const resHtml = A._doc.getElementById('res').innerHTML;
+      const m1 = resHtml.match(/（(\d+)月入职）/);
+      const n1 = resHtml.match(/本年度已就业 (\d+) 个月/);
+      A.buildHistory();
+      const rows = A.histRows();
+      const m2 = rows.length ? rows[0].m : null;
+      const expStart = sm > mo ? mo : sm;      /* effStart 的期望语义 */
+
+      if (!m1 || Number(m1[1]) !== expStart || m2 !== expStart) {
+        badCross++;
+        if (!firstCross) firstCross = `当前${mo}月/起始${sm}月 → 第1页${m1 ? m1[1] : '?'}月入职、第2页首行${m2}月，期望${expStart}月`;
+      }
+      const expN = mo - expStart + 1;
+      if (!n1 || Number(n1[1]) !== expN) {
+        badSelf++;
+        if (!firstSelf) firstSelf = `当前${mo}月/起始${sm}月 → 显示${n1 ? n1[1] : '?'}个月，期望${expN}`;
+      }
+    }
+  }
+  eq(`144 组（当前月×起始月）两页入职月一致${badCross ? '；首个不符：' + firstCross : ''}`, badCross, 0);
+  eq(`144 组「已就业 N 个月」与入职月自洽${badSelf ? '；首个不符：' + firstSelf : ''}`, badSelf, 0);
+
+  /* 非法输入要明示，不能静默——但也不改写用户输入框里的值 */
+  A._setMany({ month: 3, startMonth: 12 }); A.calc();
+  const w = A._doc.getElementById('startWarn');
+  ok('起始月晚于当前月时显示校验提示', w.style.display !== 'none', true);
+  ok('校验提示写明按哪个月计', w.textContent.indexOf('3 月') > 0, true);
+  eq('不静默改写用户输入框里的原始值', Number(A._doc.getElementById('startMonth').value), 12);
+
+  A._setMany({ startMonth: 3 }); A.calc();
+  ok('起始月合法时隐藏校验提示', A._doc.getElementById('startWarn').style.display === 'none', true);
+
+  A._setMany({ month: 12, startMonth: 1 }); A.calc();
+  ok('正常边界（1 月入职、12 月）无提示', A._doc.getElementById('startWarn').style.display === 'none', true);
+  eq('1 月入职、12 月显示已就业 12 个月',
+    Number(A._doc.getElementById('res').innerHTML.match(/本年度已就业 (\d+) 个月/)[1]), 12);
+  eq('用户输入框保留原始值（不被静默改写）', Number(A._doc.getElementById('startMonth').value), 1);
+
+  emit('  144 组边界组合两页口径一致，非法输入有明示且不改写输入 ✓');
+})();
+
+/* =========================================================
    汇总
    ========================================================= */
 emit('\n' + '='.repeat(58));
