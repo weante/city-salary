@@ -78,15 +78,17 @@ city-salary/
 │   ├── check-golden.js      #   黄金用例：16 用例 × 4 面板逐字节比对（重构安全网）
 │   ├── golden-cases.json    #   黄金用例快照（由 check-golden.js --update 生成）
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
-│   ├── check-sync.js        #   漂移检查：镜像/文档锚定/陈旧表述/断言数/省份年度口径/数据状态表年度（A–F 六项）
+│   ├── check-sync.js        #   漂移检查 A–H：镜像/文档锚定/陈旧表述/断言数/年度口径/数据状态表/限期费率/warn 清单
 │   ├── test-export.js       #   导出 PDF 的降级链测试
-│   ├── province-year.js     #   省份年度基线表（check-sync 检查 E 的唯一事实来源）
+│   ├── province-year.js     #   省份年度基线表（检查 E/F 的唯一事实来源）
+│   ├── policy-expiry.js     #   限期费率清单（检查 G 的唯一事实来源）
+│   ├── gen-warn-backlog.js  #   生成 warn 缺口清单（检查 H 校验其与 CITIES 一致）
 │   ├── ci-selfcheck.js      #   CI 自检：零依赖红线 + Node 版本
 │   └── sync.js              #   把 skills/ 下的源文件同步到镜像位置
 ├── package.json             # 仅 scripts（零依赖）：npm test 统一入口
 ├── .github/workflows/ci.yml # CI 门禁：guard 链 × Node 18/20/22
 ├── CONTRIBUTING.md          # 维护手册：守卫语义、新增城市/年度更新的清单
-└── docs/                    # 各工具安装文档 + 政策来源存档 + 年度基线表
+└── docs/                    # 安装文档 + 政策来源存档 + 年度基线表 + 运营日历 + warn 清单
 ```
 
 **注意**：`skills/city-salary/` 下的两份文件才是源文件；根级 `SKILL.md` 与 `site/index.html` 是镜像副本。改完请执行 `node tools/sync.js`，并用 `node tools/check-sync.js` 确认没有漂移。
@@ -98,13 +100,16 @@ npm test                    # ★ 一次跑完下面五项（零依赖，无需 
 node tools/test-calc.js     # 计算回归（改参数/改逻辑后必跑）
 node tools/check-golden.js  # 黄金用例：整块渲染输出的逐字节比对
 node tools/check-dom.js     # 单文件 HTML 的静态结构检查
-node tools/check-sync.js    # 漂移检查：A 镜像 / B 城市参数锚定 / C 陈旧表述 / D 断言数 / E 省份年度口径 / F 数据状态表年度
+node tools/check-sync.js    # 漂移检查 A–H：镜像 / 城市参数锚定 / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单
 node tools/test-export.js   # 导出 PDF 降级链
 node tools/ci-selfcheck.js  # 零依赖红线自检（CI 也会跑）
 node tools/sync.js          # 同步源文件到镜像位置
 
 npm run golden:update       # 渲染输出有意变更后，重新冻结黄金快照
+npm run warn:update         # warn 集合变化后，重新生成缺口清单
 ```
+
+**数据运营**：核查节奏与 SOP 见 [docs/maintenance-calendar.md](docs/maintenance-calendar.md)；172 个 warn 城市的缺口分层与补齐动作见 [docs/warn-backlog.md](docs/warn-backlog.md)。限期费率（到期即可能恢复原费率的阶段性政策）由 [tools/policy-expiry.js](tools/policy-expiry.js) 登记，**已到期而未记录处置的条目会让 CI 变红**，强制联网核查。
 
 **黄金用例是什么**：`test-calc.js` 断言的是**具体数值**（6647 项），覆盖已知关注点；`check-golden.js` 捕获的是**整块渲染结果**（16 个用例覆盖结构差异：直辖市/省统一/多档医保/户籍区分/长护险/市级基数覆盖/跨年度/极端基数，输入变体覆盖触底与封顶夹取、公积金不缴、起始月晚于当前月、全部扣除、年终奖陷阱），覆盖所有没被单独断言到的字段。前者告诉你"哪个数错了"，后者告诉你"有什么变了"。改动渲染输出后跑 `npm run golden:update` 重新冻结。
 

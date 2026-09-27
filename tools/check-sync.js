@@ -416,6 +416,134 @@ for (const region of Object.keys(PROVINCE_YEAR)) {
 }
 if (!yearTableMiss) console.log(`  ✓ 数据状态表 ${statusRows.length} 行的年度均与基线表一致（${Object.keys(PROVINCE_YEAR).length} 个省份分组）`);
 
+/* ---------- G. 限期费率清单 ----------
+   第三类检查点（限期费率）没有固定日期，靠人记——而它恰恰最容易"标记为已核查、
+   实际已过期"。本检查把它变成可执行的：
+     · 已到期且未记录处置 → 失败，强制联网核查
+     · 已到期但记录了处置理由 → 只提示（理由可审计，见 tools/policy-expiry.js）
+     · 60 天内到期 → 提前提醒
+     · SKILL.md 限期费率表的日期集合必须与清单一致（防双源漂移）
+   用 CITY_SALARY_TODAY 可覆盖"今天"，便于写实验用例。 */
+console.log('\nG. 限期费率清单');
+const { POLICIES, triggerOf, ISO } = require('./policy-expiry.js');
+const TODAY = process.env.CITY_SALARY_TODAY || new Date().toISOString().slice(0, 10);
+const SOON_DAYS = 60;
+const daysBetween = (a, b) => Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 86400000);
+
+let polFail = 0, polNotice = 0;
+const moduleDates = new Set();
+for (const p of POLICIES) {
+  if (p.until === null) {
+    console.log(`  ! ${p.id} ${p.scope}：到期日未知，需先联网确认有效期才能排期核查`);
+    polNotice++;
+    continue;
+  }
+  if (!ISO.test(p.until)) {
+    console.log(`  ✗ ${p.id} 的 until="${p.until}" 不是合法 ISO 日期（YYYY-MM-DD）`);
+    polFail++; fail++;
+    continue;
+  }
+  moduleDates.add(p.until);
+  const trig = triggerOf(p.until);
+  const left = daysBetween(TODAY, trig);
+  if (left <= 0) {
+    if (p.acknowledged && p.acknowledged.date && p.acknowledged.reason) {
+      console.log(`  · ${p.id} 已于 ${p.until} 到期，处置记录（${p.acknowledged.date}）：${p.acknowledged.reason.slice(0, 44)}…`);
+      polNotice++;
+    } else {
+      console.log(`  ✗ ${p.id} ${p.scope} 已于 ${p.until} 到期（触发日 ${trig}），且未记录处置 —— 必须联网核查后更新 current/until，或补 acknowledged 说明`);
+      polFail++; fail++;
+    }
+  } else if (left <= SOON_DAYS) {
+    console.log(`  ! ${p.id} ${p.scope} 将于 ${p.until} 到期（${left} 天后，触发日 ${trig}），请提前核查`);
+    polNotice++;
+  }
+}
+/* SKILL.md 限期费率表的日期集合必须与清单一致 */
+const polRows = (() => {
+  const lines = read('skills/city-salary/SKILL.md').split(/\r?\n/);
+  let start = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\|\s*政策\s*\|\s*现行费率\s*\|\s*文件有效期至\s*\|/.test(lines[i])) { start = i + 2; break; }
+  }
+  const rows = [];
+  if (start < 0) return rows;
+  for (let i = start; i < lines.length && /^\|/.test(lines[i]); i++) {
+    const c = lines[i].split('|').slice(1, -1).map(s => s.trim());
+    if (c.length < 3) continue;
+    rows.push({ line: i + 1, policy: c[0], until: c[2] });
+  }
+  return rows;
+})();
+if (!polRows.length) {
+  console.log('  ✗ SKILL.md 里找不到「限期费率」表（表头应为 | 政策 | 现行费率 | 文件有效期至 | 下次触发核查 |）');
+  polFail++; fail++;
+} else {
+  const tableDates = new Set();
+  for (const r of polRows) for (const m of r.until.match(/\d{4}-\d{2}-\d{2}/g) || []) tableDates.add(m);
+  const onlyModule = [...moduleDates].filter(d => !tableDates.has(d));
+  const onlyTable = [...tableDates].filter(d => !moduleDates.has(d));
+  if (onlyModule.length) {
+    console.log(`  ✗ 清单里有、SKILL.md 限期费率表里没有的到期日：${onlyModule.join('、')}`);
+    polFail++; fail++;
+  }
+  if (onlyTable.length) {
+    console.log(`  ✗ SKILL.md 限期费率表里有、清单里没有的到期日：${onlyTable.join('、')}（新增政策请先加到 tools/policy-expiry.js）`);
+    polFail++; fail++;
+  }
+}
+if (!polFail) {
+  console.log(`  ✓ ${POLICIES.length} 条限期费率与 SKILL.md 表一致（今天 ${TODAY}）；${polNotice} 条需留意，${[...moduleDates].length} 个到期日已登记`);
+}
+
+/* ---------- H. warn 缺口清单与 CITIES 一致 ----------
+   docs/warn-backlog.md 由 tools/gen-warn-backlog.js 生成，列出 172 个 warn 城市
+   及其缺口分类与下一次核查时间。手写 172 行必然漂移，所以这里只校验**集合相等**：
+   新增 warn 城市忘了重新生成 → CI 红；取到官方文件清掉 warn 但忘了重新生成 → 也红。
+   「缺口只有被登记才算被追踪」。 */
+console.log('\nH. warn 缺口清单');
+const warnCities = Object.keys(CITIES).filter(k => CITIES[k].warn).map(k => CITIES[k].name).sort();
+const backlogCities = (() => {
+  const lines = read('docs/warn-backlog.md').split(/\r?\n/);
+  let start = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\|\s*城市\s*\|\s*省份\s*\|\s*类别\s*\|/.test(lines[i])) { start = i + 2; break; }
+  }
+  const out = [];
+  if (start < 0) return out;
+  for (let i = start; i < lines.length && /^\|/.test(lines[i]); i++) {
+    const c = lines[i].split('|').slice(1, -1).map(s => s.trim());
+    if (c.length < 2 || !c[0]) continue;
+    out.push(c[0]);
+  }
+  return out.sort();
+})();
+
+let warnMiss = 0;
+if (!backlogCities.length) {
+  console.log('  ✗ docs/warn-backlog.md 里找不到逐城明细表（表头应为 | 城市 | 省份 | 类别 | … |）');
+  console.log('    生成：node tools/gen-warn-backlog.js --update');
+  warnMiss++; fail++;
+} else {
+  const onlyCities = warnCities.filter(n => backlogCities.indexOf(n) < 0);
+  const onlyBacklog = backlogCities.filter(n => warnCities.indexOf(n) < 0);
+  if (onlyCities.length) {
+    console.log(`  ✗ CITIES 里 warn 但清单里没有（${onlyCities.length} 城）：${onlyCities.slice(0, 8).join('、')}${onlyCities.length > 8 ? ' …' : ''}`);
+    console.log('    重新生成：node tools/gen-warn-backlog.js --update');
+    warnMiss++; fail++;
+  }
+  if (onlyBacklog.length) {
+    console.log(`  ✗ 清单里有但 CITIES 已不是 warn（${onlyBacklog.length} 城）：${onlyBacklog.slice(0, 8).join('、')}${onlyBacklog.length > 8 ? ' …' : ''}`);
+    console.log('    取到官方文件后请重新生成清单：node tools/gen-warn-backlog.js --update');
+    warnMiss++; fail++;
+  }
+}
+if (!warnMiss) {
+  const dup = backlogCities.filter((n, i) => backlogCities.indexOf(n) !== i);
+  if (dup.length) { console.log(`  ✗ 清单里有重复城市名：${[...new Set(dup)].join('、')}`); warnMiss++; fail++; }
+  else console.log(`  ✓ warn 城市集合与清单一致（${warnCities.length} 城 / 全国 ${Object.keys(CITIES).length} 城）`);
+}
+
 /* ---------- 汇总 ---------- */
 console.log('\n' + '='.repeat(58));
 if (fail) {

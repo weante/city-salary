@@ -19,6 +19,7 @@
     "test:sync": "node tools/check-sync.js",
     "test:export": "node tools/test-export.js",
     "golden:update": "node tools/check-golden.js --update",
+    "warn:update": "node tools/gen-warn-backlog.js --update",
     "sync": "node tools/sync.js"
   },
   "keywords": [

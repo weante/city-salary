@@ -42,16 +42,20 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 ## 三、守卫在守什么
 
-### `check-sync.js`：漂移检查（六项）
+### `check-sync.js`：漂移检查（八项）
 
 | 检查 | 断言 | 什么时候会红 |
 |------|------|-------------|
 | **A** 镜像一致性 | 源与镜像**逐字节**相同 | 改了源忘了跑 `sync.js` |
 | **B** 城市参数锚定 | 337 城的医保/公积金基数**挂在对的城市名下** | 数值写错、抄到相邻城市、新增城市忘了写文档 |
-| **C** 陈旧表述 | 17+ 份文档里没有已被取代的措辞 | 城市数、时效机制等改版后漏改某份文档 |
-| **D** 文档断言数 | 文档里写的断言数 = `test-calc.js` 实际输出 | 加了断言没改文档 |
-| **E** 省份年度口径 | 每城 `dataYear`/`dataNext` 与 `tools/province-year.js` 基线表一致 | 新增省份只覆盖 `region` 没覆盖 `dataYear`；年度滚动漏更新 |
+| **C** 陈旧表述 | 19 份文档里没有已被取代的措辞 | 城市数、时效机制等改版后漏改某份文档 |
+| **D** 文档断言数 | 文档里写的断言数 = `test-calc.js` 实际输出（覆盖 4 种句式） | 加了断言没改文档 |
+| **E** 省份年度口径 | 每城 `dataYear`/`dataNext` 与 `tools/province-year.js` 基线表一致 | 新增省份只覆盖 `region` 没覆盖 `dataYear` |
 | **F** 数据状态表年度 | `SKILL.md`「数据状态」表的年度列与基线表一致 | 改了 `CITIES.dataYear` 但漏改这张表 |
+| **G** 限期费率清单 | 日期合法；**已到期且未记录处置则失败**；60 天内到期提前提醒；与 `SKILL.md` 限期费率表日期集合一致 | 阶段性政策悄悄过期；新增政策只改了一边 |
+| **H** warn 缺口清单 | `docs/warn-backlog.md` 的城市集合与 `CITIES` 的 `warn` 集合相等 | 新增 warn 城市忘了 `npm run warn:update`；或清掉 warn 后忘了重新生成 |
+
+> **G 与 H 的用意**：这两类信息原先只散落在各城 `note` 与文档散文里，靠人记。现在变成数据 + 守卫——**已到期的限期费率必须写一条 `acknowledged { date, reason }` 才能降级为提示**（逼你做有记录的判断），**warn 集合变化必须重新生成清单**（缺口只有被登记才算被追踪）。
 
 #### B 的两档判据（值得单独理解）
 
@@ -121,14 +125,18 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
    - `README.md`：首段城市数、城市清单、数据说明
    - 数据来源写进 `docs/policy-<省拼音>-<年度>.md`，查不到的写"未找到"并标 `warn`
 4. `test-calc.js`：更新城市总数断言 + 该省 ≥3 条参数抽查
-5. 跑第二节的全套命令
+5. **warn 集合有变化**（新增或清掉 `warn:true`）→ 跑 `npm run warn:update` 重新生成缺口清单（否则检查 H 红）
+6. 跑第二节的全套命令
 
 ### B. 年度基数更新（每年 1 月 / 7 月）
 
 1. **先改基线表** `tools/province-year.js`（它是 E/F 的唯一事实来源），同步更新 `docs/baseline-year-map.md`
 2. 改 `calculator.html` 里受影响的 `CITIES` 条目（含 `dataYear` / `dataNext`）
 3. 改 `AGENTS.md` 与 `SKILL.md` 的参数行**与年度标题**，以及 `SKILL.md`「数据状态」表的年度列（F 检查）
-4. 跑第二节全套命令
+4. **涉及限期费率**（阶段性降费、有有效期的文件）→ 改 `tools/policy-expiry.js` 的 `current`/`until`，清空 `acknowledged`，并同步 `SKILL.md` 的限期费率表（G 检查）
+5. 跑第二节的全套命令
+
+> **核查节奏与 SOP 见 [docs/maintenance-calendar.md](docs/maintenance-calendar.md)**：三个检查点（1 月医保 / 7 月养老公积金 / 限期费率按到期日）、单省核查 8 步、兜底原则。
 
 > **`dataNext` 语义**：下一个尚未公布的年度，页脚渲染为「（N 年度待公布）」。若 `dataYear` 已经是跨年写法（如 `2025-2026`），`dataNext` 应为 `null` —— 年度已经跨到那一年，再提示"待公布"会自相矛盾。
 
