@@ -250,7 +250,33 @@ for (const f of MD_FILES) {
     }
   }
 }
-if (!staleHits) console.log(`  ✓ ${MD_FILES.length} 份文档无陈旧表述`);
+
+/* C-2. 部署地址一致性
+   线上地址出现在 README + 3 份 SOP 文档共 7 处（含徽章）。改域名时漏改任何一处
+   就是死链——用户点到的那个链接恰好没改，是最难自查的失败。所以要求：
+   ① 规范地址必须在 README.md 里出现；② 全部文档里**不得出现别的 *.pages.dev 主机**。
+   只做离线字符串校验，不联网（联网校验会让 CI 因 Cloudflare 抖动而红）。 */
+const DEPLOY_URL = 'https://city-salary.pages.dev/';
+const DEPLOY_HOST = 'city-salary.pages.dev';
+const pagesHosts = new Set();
+for (const f of MD_FILES) {
+  let content;
+  try { content = read(f); } catch (e) { continue; }
+  for (const m of content.matchAll(/https:\/\/([a-z0-9.-]+\.pages\.dev)/g)) pagesHosts.add(m[1]);
+}
+const strayHosts = [...pagesHosts].filter(h => h !== DEPLOY_HOST);
+if (strayHosts.length) {
+  console.log(`  ✗ 出现非规范部署主机：${strayHosts.join('、')}（规范地址为 ${DEPLOY_HOST}）`);
+  staleHits++; fail++;
+}
+if (read('README.md').indexOf(DEPLOY_URL) < 0) {
+  console.log(`  ✗ README.md 里没有线上地址 ${DEPLOY_URL}（用户第一眼看到的入口，不能缺）`);
+  staleHits++; fail++;
+}
+if (!staleHits) {
+  const n = MD_FILES.reduce((a, f) => { try { return a + (read(f).split(DEPLOY_URL).length - 1); } catch (e) { return a; } }, 0);
+  console.log(`  ✓ ${MD_FILES.length} 份文档无陈旧表述；线上地址 ${DEPLOY_HOST} 一致（共 ${n} 处）`);
+}
 
 /* ---------- D. 文档断言数与实际一致 ----------
    教训来自一次真实漂移：测试从 530 涨到 546，README/SKILL 里的"530 项断言"没人改。

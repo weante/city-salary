@@ -55,7 +55,7 @@
 5. **文档涟漪五件套**（见下表，缺一即被 check-sync 拦下）。
 6. **测试**：`test-calc.js` 增该省 ≥3 条参数抽查断言 + 更新「城市总数」。
 7. **五连验证**：`sync.js` → `test-calc.js` → `check-dom.js` → `check-sync.js` → `test-export.js`，必须全绿。
-8. **交付**：`commit` + `push`（main 自动触发 Cloudflare Pages）→ 抓取线上页面核验新增城市渲染。
+8. **交付**：`commit` + `push`（main 自动触发 Cloudflare Pages）→ 抓取线上页面 <https://city-salary.pages.dev/> 核验新增城市渲染（换行规范化后与 `site/index.html` 逐字节比对）。
 
 ### 城市数/断言数涟漪清单（每波必改，5 处）
 | 位置 | 改什么 |

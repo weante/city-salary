@@ -1,10 +1,19 @@
 # city-salary · 城市工资计算器（Agent Skill）
 
 [![CI](https://github.com/weante/city-salary/actions/workflows/ci.yml/badge.svg)](https://github.com/weante/city-salary/actions/workflows/ci.yml)
+[![在线使用](https://img.shields.io/badge/%E5%9C%A8%E7%BA%BF%E4%BD%BF%E7%94%A8-city--salary.pages.dev-F38020?logo=cloudflare&logoColor=white)](https://city-salary.pages.dev/)
 
 一个开箱即用的**按城市计算工资**的 Agent Skill：社保、公积金、个人所得税、年终奖、历史明细与趋势图，打开先选城市，按当地政策实时计算。**已内置 337 城，全国地级及以上城市 100% 覆盖**（28 个省区市：京沪渝津 + 粤川鲁辽吉黑苏浙豫鄂湘皖闽赣冀晋陕桂云贵甘宁蒙新青琼藏；民政部 2024 年底口径共 337 个地级及以上城市）。
 
 同时兼容多种 Agent 工具（Claude Code / Codex / opencode / TRAE / WorkBuddy 等），既可作为 **Agent Skills（SKILL.md）** 安装，也可作为项目指令（**AGENTS.md**）使用。
+
+## 在线使用
+
+**<https://city-salary.pages.dev/>**
+
+由 **Cloudflare Pages** 托管，推送 `main` 后自动部署 `site/` 目录，打开即用、无需安装。适合想立刻算一次、或在不方便装 Agent 的环境里使用。
+
+计算器是**单文件 HTML、零依赖**，所以也可以直接下载 [`site/index.html`](site/index.html) 双击打开——与在线版**功能完全一致且离线可用**。在线版与仓库内文件在每次部署后逐字节一致（换行规范化后比对）。
 
 ## 功能
 
@@ -71,7 +80,7 @@ city-salary/
 │       └── assets/
 │           └── calculator.html  # ★ 源文件：完整交互式计算器（单文件 HTML，零依赖）
 ├── site/
-│   └── index.html           # 计算器镜像副本（用于 GitHub Pages 等静态托管）
+│   └── index.html           # 计算器镜像副本（Cloudflare Pages 的部署产物，线上 https://city-salary.pages.dev/）
 ├── tools/                   # 零依赖 Node 脚本：测试与维护
 │   ├── calc-harness.js      #   测试脚手架：最小 DOM 桩 + 加载器（各测试脚本共用）
 │   ├── test-calc.js         #   6647 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径/起始月边界

@@ -20,7 +20,7 @@
 | 来源文档 | 3 份 | 7 份政策文档 + 1 份排期计划 | +5 |
 | 校验守卫 | 4 项 | 5 项 | +1 |
 
-**提交记录**（GitHub `weante/city-salary`，推送到 `main` 后自动部署 Cloudflare Pages）：
+**提交记录**（GitHub `weante/city-salary`，推送到 `main` 后自动部署 Cloudflare Pages，线上地址 <https://city-salary.pages.dev/>）：
 
 | 批次 | 提交 | 内容 |
 |---|---|---|
@@ -161,7 +161,7 @@ node tools/check-sync.js  # 镜像/文档/陈旧表述/断言数/省份年度口
 node tools/test-export.js # 导出降级链 4 条路径（含 CDN 慢加载不误弹打印框）
 ```
 
-五连全绿后才 commit，推送 `main` 后由 Cloudflare Pages 自动部署，再抓线上页面核对（规范化换行后与本地镜像**逐字节比对**）。
+五连全绿后才 commit，推送 `main` 后由 Cloudflare Pages 自动部署，再抓线上页面 <https://city-salary.pages.dev/> 核对（规范化换行后与本地镜像**逐字节比对**）。
 
 ### 4.3 数据可信度分层
 
