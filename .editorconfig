@@ -1,0 +1,26 @@
+# 统一编辑器行为，与 .gitattributes 配合。
+#
+# 为什么需要它：.gitattributes 强制**入库**为 LF，但 Windows 工作区在
+# core.autocrlf=true 下检出的仍是 CRLF。本项目多次因此踩坑——写脚本时按 LF
+# 拼锚点、文件却是 CRLF，替换静默失败（守卫实验、格式化脚本都遇到过）。
+# 本文件让编辑器直接按 LF 写入，从源头减少这类摩擦。
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Markdown 里行尾两个空格是换行语义，不能裁掉
+[*.md]
+trim_trailing_whitespace = false
+
+# 单文件计算器是 HTML + 内联 CSS/JS，缩进沿用文件既有风格
+[*.html]
+indent_size = 2
+
+[*.json]
+indent_size = 2

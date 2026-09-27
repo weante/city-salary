@@ -3,6 +3,9 @@
 > 报告日期：2026-09-26 ｜ 范围：从 97 座到 337 座，全国地级及以上城市 100% 覆盖
 > 相关文档：排期计划 `docs/plan-nationwide-coverage.md`、各省调研来源 `docs/policy-*.md`（7 份）
 
+> 📌 **历史快照（2026-09-26）**：本文记录全国铺开期间的实际做法与结果，其中**守卫数量、验证链长度等"机制规模"数字是当时的状态**，不代表当前——当前为守卫 **A–H 八项**、**六连验证**（多一条 `check-golden.js`），见 [CONTRIBUTING.md](../CONTRIBUTING.md) 与 [maintenance-calendar.md](maintenance-calendar.md)。
+> **前瞻性 SOP 段落（§4.2、§7 交付流程）已按现行补齐**，照做不会漏；**历史结论段（§7.1）保留当时原貌**，不做追溯改写——那是"当时确实跑了 5 条命令"的事实陈述。
+
 ---
 
 ## 一、报告概要
@@ -151,17 +154,20 @@
 | 4 | `check-sync.js` D | **断言数一致性**：文档中出现的断言数必须等于 `test-calc.js` 实测值 | 每波断言数变动后靠它发现漏改文档 |
 | 5 | `check-dom.js` | 静态结构：重复 `id`、悬空 `$()` 引用、未定义事件处理器、**CITIES 重复 key/城市名**、**正则覆盖度自校验** | 第 5 项为本轮新增，用于根治「城市被静默覆盖」 |
 
-### 4.2 五命令验证链（每波收尾必跑）
+### 4.2 验证链（每波收尾必跑）
+
+> 当时为五连；**现已补 `check-golden.js` 为六连**，下表已按现行列出——照此执行才不会漏。
 
 ```
-node tools/sync.js        # 由源生成 2 个镜像
-node tools/test-calc.js   # 6647 项断言（税率表/年终奖陷阱/端到端算例/基数夹取/结构不变量/城市参数抽查/租金档位/年度口径/起始月边界）
-node tools/check-dom.js   # 静态结构 + CITIES 重复 key
-node tools/check-sync.js  # 镜像/文档/陈旧表述/断言数/省份年度口径 五项
-node tools/test-export.js # 导出降级链 4 条路径（含 CDN 慢加载不误弹打印框）
+node tools/sync.js         # 由源生成 2 个镜像
+node tools/test-calc.js    # 6647 项断言（税率表/年终奖陷阱/端到端算例/基数夹取/结构不变量/城市参数抽查/租金档位/年度口径/起始月边界）
+node tools/check-golden.js # 黄金用例 16 × 4 面板逐字节比对（当时尚无）
+node tools/check-dom.js    # 静态结构 + CITIES 重复 key
+node tools/check-sync.js   # 漂移检查 A–H（当时为 A–E 五项）
+node tools/test-export.js  # 导出降级链 4 条路径（含 CDN 慢加载不误弹打印框）
 ```
 
-五连全绿后才 commit，推送 `main` 后由 Cloudflare Pages 自动部署，再抓线上页面 <https://city-salary.pages.dev/> 核对（规范化换行后与本地镜像**逐字节比对**）。
+六连全绿后才 commit，推送 `main` 后由 Cloudflare Pages 自动部署，再抓线上页面 <https://city-salary.pages.dev/> 核对（规范化换行后与本地镜像**逐字节比对**）。
 
 ### 4.3 数据可信度分层
 
@@ -253,7 +259,7 @@ node tools/test-export.js # 导出降级链 4 条路径（含 CDN 慢加载不�
 4. **写 CITIES**：统一走 `CIU()` 工厂 + `opt` 浅覆盖（计算逻辑零改动）
 5. **文档涟漪**：`AGENTS.md`（省级参数条目）/ `SKILL.md`（省级参数段 + 城市表行）/ `README.md`（城市清单 + 数据说明）
 6. **补测试**：城市总数 + 每省 ≥3 条参数抽查 + key 防覆盖断言
-7. **五命令验证**：`sync → test-calc → check-dom → check-sync → test-export`
+7. **六连验证**（当时为五命令，现补黄金用例）：`sync → test-calc → check-golden → check-dom → check-sync → test-export`
 8. **交付**：commit + push + 线上核验
 
 ### 7.2 四条关键教训

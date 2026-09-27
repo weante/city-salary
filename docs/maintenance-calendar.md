@@ -52,7 +52,7 @@
 4. **改 `CITIES`**：按工厂格式更新数值；`opt` 里保留 `region`/`dataYear`/`dataNext`。
 5. **文档涟漪五件套**：`AGENTS.md`、`SKILL.md`（清单+小节+参数表）、`README.md`、`SKILL.md`「数据状态」表、`check-sync` 的陈旧表述模式。
 6. **测试**：`test-calc.js` 增/改该省参数抽查断言。
-7. **五连验证**：`sync.js` → `test-calc.js` → `check-golden.js` → `check-dom.js` → `check-sync.js` → `test-export.js`，必须全绿。
+7. **六连验证**：`sync.js` → `test-calc.js` → `check-golden.js` → `check-dom.js` → `check-sync.js` → `test-export.js`，必须全绿。
 8. **收尾**：若 warn 集合有变化，跑 `node tools/gen-warn-backlog.js --update`；提交推送；**抓线上页面 <https://city-salary.pages.dev/> 核验**（Cloudflare Pages 自动部署，换行规范化后与 `site/index.html` 逐字节比对）；确认 CI 绿。
 
 ## 五、兜底原则（不阻塞推进）

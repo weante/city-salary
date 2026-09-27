@@ -273,9 +273,54 @@ if (read('README.md').indexOf(DEPLOY_URL) < 0) {
   console.log(`  ✗ README.md 里没有线上地址 ${DEPLOY_URL}（用户第一眼看到的入口，不能缺）`);
   staleHits++; fail++;
 }
-if (!staleHits) {
+/* C-3. 机制规模表述
+   C 原本只认「城市数 / 时效机制」两类措辞，于是**机制升级后规模数字没跟上**成了盲区：
+   加检查 F/G/H、加黄金用例、命令链从 5 条变 6 条之后，仍有 13 处写着"A–F""五连验证"
+   散在 4 份文档里——靠人工审计才发现。
+   现在补上这一类。判据是"规模数字"而非"提及某个检查"：
+     · `A–F` 这种范围写法（单个 `（F 检查）` 不算）
+     · `五连验证 / 五命令链 / 5 命令链`
+     · `一次跑完下面四项`
+     · `N 项守卫`，但排除"第 5 项守卫"这种序数（check-dom 的第 5 项，不是"共 5 项"）
+
+   **历史文档豁免**：带 `> 📌 **历史快照**（…）` 标记的文档跳过本检查。
+   历史报告里"当时跑了 5 条命令"是事实陈述，改掉它反而是篡改记录；
+   正确做法是加快照标记 + 把前瞻性 SOP 段落补成现行，两件事都已做。
+
+   标记必须**独占行首**（`^> 📌 **历史快照（`）：否则在 CONTRIBUTING 里
+   说明这个约定时，CONTRIBUTING 自己会被豁免——最重要的文档反而脱离检查。
+   （这不是假设：第一版就是这样，写文档的动作把文档本身豁免了。）
+   而 CONTRIBUTING 里的示例写在反引号内（行首是 `> \``），不会自我匹配。 */
+const SNAPSHOT_MARK = /^>\s*📌\s*\*\*历史快照（/m;
+const SCALE_RULES = [
+  { re: /A\s*[–\-—~]\s*F\b/g, why: '检查范围写 A–F（现为 A–H 八项）' },
+  { re: /五连验证|五连全绿|五命令验证|五命令链|\b5\s*命令链/g, why: '验证链写"五连"（现为六连，多一条 check-golden.js）' },
+  { re: /一次跑完下面四项|跑完下面四项/g, why: 'npm test 写"四项"（现为 5 条）' },
+  { re: /\b[3-7]\s*项守卫/g, why: '守卫总数写错（现为 A–H 八项）', ordinal: true },
+];
+let scaleHits = 0;
+const snapshots = [];
+for (const f of MD_FILES) {
+  let content;
+  try { content = read(f); } catch (e) { continue; }
+  if (SNAPSHOT_MARK.test(content)) { snapshots.push(f); continue; }
+  for (const r of SCALE_RULES) {
+    r.re.lastIndex = 0;
+    let m;
+    while ((m = r.re.exec(content)) !== null) {
+      /* 排除"第 5 项守卫"这类序数用法 */
+      if (r.ordinal && /第\s*$/.test(content.slice(Math.max(0, m.index - 3), m.index))) continue;
+      const line = content.slice(0, m.index).split('\n').length;
+      console.log(`  ✗ ${f}:${line} ${r.why}`);
+      console.log(`      ${content.split('\n')[line - 1].trim().slice(0, 104)}`);
+      scaleHits++; fail++;
+    }
+  }
+}
+if (!staleHits && !scaleHits) {
   const n = MD_FILES.reduce((a, f) => { try { return a + (read(f).split(DEPLOY_URL).length - 1); } catch (e) { return a; } }, 0);
-  console.log(`  ✓ ${MD_FILES.length} 份文档无陈旧表述；线上地址 ${DEPLOY_HOST} 一致（共 ${n} 处）`);
+  console.log(`  ✓ ${MD_FILES.length} 份文档无陈旧表述（含机制规模数字）；线上地址 ${DEPLOY_HOST} 一致（共 ${n} 处）`);
+  if (snapshots.length) console.log(`  · 历史快照豁免 ${snapshots.length} 份：${snapshots.join('、')}`);
 }
 
 /* ---------- D. 文档断言数与实际一致 ----------

@@ -96,6 +96,9 @@ city-salary/
 │   └── sync.js              #   把 skills/ 下的源文件同步到镜像位置
 ├── package.json             # 仅 scripts（零依赖）：npm test 统一入口
 ├── .github/workflows/ci.yml # CI 门禁：guard 链 × Node 18/20/22
+├── .gitattributes           # 强制入库换行为 LF
+├── .editorconfig            # 编辑器统一按 LF 写入（减少 Windows 工作区 CRLF 摩擦）
+├── .gitignore               # 防呆：依赖/锁文件/临时文件不入库
 ├── CONTRIBUTING.md          # 维护手册：守卫语义、新增城市/年度更新的清单
 └── docs/                    # 安装文档 + 政策来源存档 + 年度基线表 + 运营日历 + warn 清单
 ```

@@ -1,0 +1,28 @@
+# 本项目零依赖、单文件 HTML，正常流程不产生任何构建产物。
+# 下面的规则是防呆，不是必需——但没有它时，一次误操作留下的临时文件会被 git status 淹没。
+
+# 依赖与锁文件：零依赖红线（tools/ci-selfcheck.js 会检查）不允许引入，
+# 万一有人跑了 npm install，别把结果提交进来。
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# 临时与备份文件：守卫实验、格式化脚本会产生 .tmp-* 中间文件
+*.tmp
+.tmp-*
+*.bak
+*.orig
+*.rej
+
+# 编辑器与操作系统
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 日志
+*.log
+npm-debug.log*
