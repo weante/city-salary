@@ -784,6 +784,61 @@ eq('那曲·租金800', A.CITIES.naqu.rent, 800);
 eq('阿里·租金800', A.CITIES.ali.rent, 800);
 eq('西藏 7 市地全部已接入', ['lasa','rkz','changdu','linzhi','shannan','naqu','ali'].filter(k=>!!A.CITIES[k]).length, 7);
 
+/* 住房租金档位逐市核查回归（2026-09-26：按市辖区户籍人口 >100万=1100 / ≤100万=800 修正 39 市） */
+eq('浙江·湖州 92.90万→800', A.CITIES.huz.rent, 800);
+eq('浙江·衢州 85.2万→800', A.CITIES.qz.rent, 800);
+eq('浙江·舟山 71.06万→800', A.CITIES.zsh.rent, 800);
+eq('浙江·丽水 42.83万→800', A.CITIES.lish.rent, 800);
+eq('浙江·嘉兴 100.13万临界→保持1100', A.CITIES.jiax.rent, 1100);
+eq('浙江·金华约100.5万临界→保持1100', A.CITIES.jh.rent, 1100);
+eq('江苏·镇江 101.18万临界→保持1100', A.CITIES.zjh.rent, 1100);
+eq('四川·德阳 94.5万→800', A.CITIES.dy.rent, 800);
+eq('四川·遂宁 142.9万→1100', A.CITIES.sn.rent, 1100);
+eq('四川·眉山 118.9万→1100', A.CITIES.ms.rent, 1100);
+eq('四川·广安 113.7万→1100', A.CITIES.ga.rent, 1100);
+eq('四川·巴中 124.7万→1100', A.CITIES.bz.rent, 1100);
+eq('四川·资阳 103.5万→1100', A.CITIES.ziy.rent, 1100);
+eq('吉林·吉林市 175.88万→保持1100', A.CITIES.jl.rent, 1100);
+eq('吉林·四平 65.78万→800', A.CITIES.sp.rent, 800);
+eq('吉林·辽源 43.38万→800', A.CITIES.lyu.rent, 800);
+eq('吉林·通化 42.48万→800', A.CITIES.th.rent, 800);
+eq('吉林·白山 50.41万→800', A.CITIES.bs.rent, 800);
+eq('吉林·松原 55.15万→800', A.CITIES.syu.rent, 800);
+eq('吉林·白城 47.32万→800', A.CITIES.bc.rent, 800);
+eq('吉林·延边（无市辖区）→800', A.CITIES.ybi.rent, 800);
+eq('黑龙江·齐齐哈尔约131万→保持1100', A.CITIES.qqhe.rent, 1100);
+eq('黑龙江·大庆约137万→保持1100', A.CITIES.dq.rent, 1100);
+eq('黑龙江·鸡西约77万→800', A.CITIES.jx.rent, 800);
+eq('黑龙江·鹤岗约61万→800', A.CITIES.hg.rent, 800);
+eq('黑龙江·双鸭山约46万→800', A.CITIES.sys.rent, 800);
+eq('黑龙江·伊春约42万→800', A.CITIES.yc.rent, 800);
+eq('黑龙江·佳木斯约76万→800', A.CITIES.jms.rent, 800);
+eq('黑龙江·七台河 44.9万→800', A.CITIES.qth.rent, 800);
+eq('黑龙江·牡丹江约87万→800', A.CITIES.mdj.rent, 800);
+eq('黑龙江·黑河 18.41万→800', A.CITIES.hh.rent, 800);
+eq('黑龙江·绥化 79.1万→800', A.CITIES.suih.rent, 800);
+eq('黑龙江·大兴安岭（地区）→800', A.CITIES.dxal.rent, 800);
+eq('山东·东营约89万→800', A.CITIES.dyy.rent, 800);
+eq('山东·威海约90万→800', A.CITIES.wh.rent, 800);
+eq('山东·德州约120.2万→保持1100', A.CITIES.dez.rent, 1100);
+eq('辽宁·本溪 82.6万→800', A.CITIES.bx.rent, 800);
+eq('辽宁·丹东 74.7万→800', A.CITIES.dd.rent, 800);
+eq('辽宁·锦州约90万→800', A.CITIES.jz.rent, 800);
+eq('辽宁·营口 94.0万→800', A.CITIES.yk.rent, 800);
+eq('辽宁·阜新 70.4万→800', A.CITIES.fx.rent, 800);
+eq('辽宁·辽阳 81.7万→800', A.CITIES.lyo.rent, 800);
+eq('辽宁·铁岭 39.3万→800', A.CITIES.tl.rent, 800);
+eq('辽宁·朝阳 60.8万→800', A.CITIES.cy.rent, 800);
+eq('辽宁·葫芦岛 93.2万→800', A.CITIES.hld.rent, 800);
+eq('辽宁·盘锦 101.2万临界→保持1100', A.CITIES.pj.rent, 1100);
+(function () {
+  const c = { 800: 0, 1100: 0, 1500: 0 };
+  for (const k in A.CITIES) c[A.CITIES[k].rent]++;
+  eq('租金档位分布·1500 档 36 座', c[1500], 36);
+  eq('租金档位分布·1100 档 127 座', c[1100], 127);
+  eq('租金档位分布·800 档 174 座', c[800], 174);
+})();
+
 /* =========================================================
    9. 历史明细页：补充扣除同样扣现金
    ========================================================= */
