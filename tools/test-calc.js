@@ -1043,6 +1043,96 @@ section('13. 就业起始月边界（两页口径一致）');
 })();
 
 /* =========================================================
+   14. 年终奖计税方式对比（单独计税 vs 并入综合所得）
+   ========================================================= */
+section('14. 年终奖计税方式对比');
+
+(function () {
+  /* 测试内**独立实现**两张税率表，不引用页面的 BR/BBR——
+     否则就是"用同一份数据验证自己"：算错了也一起错，验不出来。 */
+  const TX = (t) => {
+    const B = [[36000, .03, 0], [144000, .10, 2520], [300000, .20, 16920], [420000, .25, 31920], [660000, .30, 52920], [960000, .35, 85920], [Infinity, .45, 181920]];
+    if (t <= 0) return 0;
+    for (const [lim, r, d] of B) if (t <= lim) return Math.max(0, t * r - d);
+    return 0;
+  };
+  const BTX = (b) => {
+    const B = [[3000, .03, 0], [12000, .10, 210], [25000, .20, 1410], [35000, .25, 2660], [55000, .30, 4410], [80000, .35, 7160], [Infinity, .45, 15160]];
+    if (b <= 0) return 0;
+    const m = b / 12;
+    for (const [lim, r, d] of B) if (m <= lim) return Math.max(0, b * r - d);
+    return 0;
+  };
+
+  /* 低所得：各基数被夹到北京下限，aTx 很小；高所得：基数顶到上限、公积金 12% */
+  const LOW = { salary: 6000, month: 12, startMonth: 1, pBase: 6000, mBase: 6000, uBase: 6000, mtBase: 6000, ijBase: 6000, hfBase: 6000, hfRate: 0 };
+  const HIGH = { salary: 40000, month: 12, startMonth: 1, pBase: 36348, mBase: 36348, uBase: 36348, mtBase: 36348, ijBase: 36348, hfBase: 36348, hfRate: 12 };
+  const ZERO = { persPen: 0, healthIns: 0, annuity: 0, childAmt: 0, eduAmt: 0, houseAmt: 0, elderlyAmt: 0, medicalAmt: 0 };
+
+  const run = (base, bonus) => {
+    A.selectCity('bj');
+    A._setMany(Object.assign({}, ZERO, base, { bonus }));
+    ['childOn', 'eduOn', 'houseOn', 'elderlyOn', 'medicalOn'].forEach(k => A._check(k, false));
+    A.calc();
+    const html = A._html('bonusResult');
+    const has = A._has('resSepTax');   /* 奖金为 0 时不渲染对比块，不能硬读 */
+    return {
+      aTx: A._num('resATx'), aT: A._num('resATax'), html,
+      sep: has ? A._num('resSepTax') : null,
+      mer: has ? A._num('resMergeTax') : null,
+      save: has ? A._num('resBonusSave') : null,
+      reco: html.indexOf('建议 <b>并入综合所得</b>') >= 0 ? 'merge'
+        : html.indexOf('建议 <b>单独计税</b>') >= 0 ? 'sep'
+          : html.indexOf('两种方式税额相同') >= 0 ? 'same' : 'none',
+    };
+  };
+
+  /* --- 奖金为 0：不渲染对比块 --- */
+  run(LOW, 0);
+  eq('奖金为 0 时不渲染计税方式对比', A._has('resSepTax'), false);
+  eq('奖金为 0 时也不给结论', A._has('resBonusSave'), false);
+
+  /* --- 与独立复算比对（4 个场景 × 3 个数字） --- */
+  for (const [name, base, bonus] of [
+    ['低所得 + 3.6 万', LOW, 36000],
+    ['高所得 + 3.6 万', HIGH, 36000],
+    ['低所得 + 10 万', LOW, 100000],
+    ['高所得 + 100 万', HIGH, 1000000],
+  ]) {
+    const r = run(base, bonus);
+    const eSep = r.aT + BTX(bonus), eMer = TX(Math.max(0, r.aTx + bonus));
+    ok(`对比·${name}：单独计税合计`, r.sep, eSep, 0.01);
+    ok(`对比·${name}：并入综合所得合计`, r.mer, eMer, 0.01);
+    ok(`对比·${name}：差额`, r.save, Math.abs(eSep - eMer), 0.01);
+  }
+
+  /* --- 结论方向（读真实渲染出的建议文案，不是读测试自己的算式） --- */
+  eq('低所得 + 10 万奖金 → 建议并入综合所得', run(LOW, 100000).reco, 'merge');
+  eq('高所得 + 3.6 万奖金 → 建议单独计税', run(HIGH, 36000).reco, 'sep');
+  /* 反直觉但正确：奖金极大时**并入反而更省**。单独计税把整笔奖金推进 45% 档、
+     速算扣除只有 15160；并入后奖金的边际税负反而低于单独计税。 */
+  eq('高所得 + 100 万奖金 → 建议并入综合所得（反直觉但正确）', run(HIGH, 1000000).reco, 'merge');
+
+  /* --- 临界值陷阱：并入可绕开，这是本功能最实用的场景 --- */
+  const trap = run(LOW, 36001);
+  const trapSep = trap.aT + BTX(36001), trapMer = TX(trap.aTx + 36001);
+  eq('陷阱区间（36001）建议并入综合所得', trap.reco, 'merge');
+  ok('陷阱区间并入比单独省 > 2000 元', trapSep - trapMer, 2113.73, 0.01);
+  ok('陷阱场景渲染的差额与独立复算一致', trap.save, Math.abs(trapSep - trapMer), 0.01);
+
+  /* --- 边界：奖金恰为 36000（陷阱只在"多 1 元"时触发） --- */
+  const at = run(LOW, 36000);
+  eq('奖金恰为 36000 时建议单独计税', at.reco, 'sep');
+  ok('恰在临界点上时单独计税更省 196.27 元', at.save, 196.27, 0.01);
+
+  /* --- 陷阱区间内「并入」的税额应显著低于临界点本身的税额 --- */
+  ok('并入绕开陷阱：36001 的并入税额 ≈ 36000 的并入税额 + 0.1',
+    trapMer, TX(at.aTx + 36000) + 0.1, 0.05);
+
+  emit('  5 个场景 × 独立复算 + 结论方向 + 陷阱绕开 + 边界 ✓');
+})();
+
+/* =========================================================
    汇总
    ========================================================= */
 emit('\n' + '='.repeat(58));

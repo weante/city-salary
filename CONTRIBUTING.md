@@ -27,7 +27,7 @@ node tools/sync.js        # 源 → 镜像
 
 ```bash
 npm test                    # 一次跑完下面五项（零依赖，无需 npm install）
-node tools/test-calc.js     # 6647 项计算断言
+node tools/test-calc.js     # 6670 项计算断言
 node tools/check-golden.js  # 黄金用例：16 用例 × 4 面板逐字节比对
 node tools/check-dom.js     # 单文件 HTML 的静态结构
 node tools/check-sync.js    # 漂移检查 A–I

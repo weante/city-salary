@@ -3489,11 +3489,18 @@ function calcTax(I,C,D){
   var aT=Math.max(0,tx(aTx).t),aNet=aI-(C.siE+C.hfE)*I.aM-D.suppCash*I.aM-aT;
   var suppSave=Math.max(0,tx(Math.max(0,aTx+D.suppM*I.aM)).t-aT);
   var bonus=gv("bonus"),bi=btx(bonus),bonusNet=bonus-bi.t;
+  /* 计税方式对比（年度口径）：年终奖「单独计税」vs「并入综合所得」。
+     单独 = 综合所得应纳税额 aT + 奖金按单独计税 bi.t
+     并入 = 奖金加进综合所得应纳税所得额后，整笔按年度税率表算
+     差额 >0 表示并入更省，<0 表示单独更省，=0 无差别。
+     注意这是**年度汇算口径**：月度预扣仍按所选方式执行，差额要到汇算才体现。 */
+  var mergedT=Math.max(0,tx(Math.max(0,aTx+bonus)).t);
+  var sepT=aT+bi.t,bonusDiff=sepT-mergedT;
   var trapDetail="";
   if(bonus>0){for(var i=0;i<TRAPS.length;i++){var lo=TRAPS[i][0];var netLo=lo-btx(lo).t;if(bonus>lo&&bonusNet<netLo){trapDetail="⚠ 奖金 "+fm(bonus)+" 税后 "+fm(bonusNet)+"，反而低于 "+fm(lo)+" 的税后 "+fm(netLo)+"，少拿 "+fm(netLo-bonusNet)+" 元！建议将超出部分以福利形式发放。";break;}}}
   return {mDed:mDed,cumI:cumI,cumD:cumD,cumTx:cumTx,ci:ci,cumT:cumT,curT:curT,net:net,ratio:ratio,
           totD:totD,aI:aI,aDed:aDed,aTx:aTx,aT:aT,aNet:aNet,suppSave:suppSave,
-          bonus:bonus,bi:bi,bonusNet:bonusNet,trapDetail:trapDetail};
+          bonus:bonus,bi:bi,bonusNet:bonusNet,mergedT:mergedT,sepT:sepT,bonusDiff:bonusDiff,trapDetail:trapDetail};
 }
 
 /* ---- 第 5 段：渲染 ----
@@ -3541,7 +3548,7 @@ function renderResult(I,C,D,T){
   if(D.pp>0)h+='<div class="r ind"><label>− 个人养老金</label><span class="v" style="color:#0d9488">'+fm(D.pp*aM)+'</span></div>';
   if(D.anAmt>0)h+='<div class="r ind"><label>− 企业年金(个人'+gv("annuity")+'%)</label><span class="v" style="color:#0d9488">'+fm(D.anAmt*aM)+'</span></div>';
   h+='<div class="sp"></div>';
-  h+='<div class="r"><label style="font-weight:600">年度应纳税所得额</label><span class="v b">'+fm(T.aTx)+'</span></div>';
+  h+='<div class="r"><label style="font-weight:600">年度应纳税所得额</label><span class="v b" id="resATx">'+fm(T.aTx)+'</span></div>';
   h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">补充扣除年度节税约</label><span style="font-size:11px;color:#0d9488;font-variant-numeric:tabular-nums">'+fm(T.suppSave)+'</span></div>';
   h+='<div class="r"><label>年度个人所得税</label><span class="v" id="resATax" style="color:#e11d48">'+fm(T.aT)+'</span></div>';
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">本年度税后收入（至12月）</label><span class="v b" style="color:#7c3aed">'+fm(T.aNet)+' 元</span></div>';
@@ -3555,6 +3562,17 @@ function renderResult(I,C,D,T){
     bh+='<div class="ss"></div><div class="r"><label style="font-weight:600">年终奖到手</label><span class="v b" style="color:#7c3aed">'+fm(T.bonusNet)+' 元</span></div>';
     if(T.trapDetail){bh+='<div class="trap"><div class="tt">临界值陷阱警告</div><div class="ti">'+T.trapDetail+'</div></div>';}
     else{bh+='<div class="safe">当前奖金未处于临界值陷阱区间。</div>';}
+    /* 计税方式对比：年度汇算口径。临界值陷阱只存在于「单独计税」，
+       所以并入更省的情形往往正是奖金落在陷阱区间时——两个结论要一起看。 */
+    bh+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">计税方式对比（年度汇算口径）</label><span class="v"></span></div>';
+    bh+='<div class="r ind"><label>① 单独计税：综合所得 '+fm(T.aT)+' + 奖金单独计税 '+fm(T.bi.t)+'</label><span class="v" id="resSepTax" style="font-variant-numeric:tabular-nums">'+fm(T.sepT)+'</span></div>';
+    bh+='<div class="r ind"><label>② 并入综合所得：奖金并入后整笔按年度税率表算</label><span class="v" id="resMergeTax" style="font-variant-numeric:tabular-nums">'+fm(T.mergedT)+'</span></div>';
+    if(Math.abs(T.bonusDiff)<0.005){
+      bh+='<div class="safe">两种方式税额相同（'+fm(T.sepT)+' 元），选哪种都行。</div>';
+    }else{
+      var better=T.bonusDiff>0?'并入综合所得':'单独计税';
+      bh+='<div class="safe">建议 <b>'+better+'</b>：比另一种少缴 <b id="resBonusSave">'+fm(Math.abs(T.bonusDiff))+'</b> 元'+(T.bonusDiff>0?'（并入可避开临界值陷阱）':'')+'。</div>';
+    }
   }else{bh+='<div style="font-size:12px;color:#9ca3af;padding:4px 0">输入年终奖金额后自动计算。</div>';}
   bh+='<div style="margin-top:8px;font-size:10px;color:#9ca3af;font-weight:600;margin-bottom:3px">六个临界点速查</div>';
   bh+='<div class="grid4"><span>临界点</span><span style="text-align:right">陷阱区间</span><span style="text-align:right">多1元少拿</span><span style="text-align:right">状态</span></div>';
