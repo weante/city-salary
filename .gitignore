@@ -15,6 +15,13 @@ yarn.lock
 *.orig
 *.rej
 
+# 一次性排查脚本与抓取产物（下划线前缀约定为"临时"）
+# 教训：派发子代理做联网核查时，它们在仓库里留下 out1.txt、tools/_*.js 等
+# 临时文件并被误提交。约定：临时脚本一律以 _ 开头，抓取产物一律 out*.txt。
+tools/_*.js
+out*.txt
+*.dom.html
+
 # 编辑器与操作系统
 .vscode/
 .idea/
