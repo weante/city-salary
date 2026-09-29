@@ -36,6 +36,31 @@ function sleepSync(ms) {
   if (ms > 0) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
 }
 
+/* ---------- 限流识别 ----------
+   这是本工具最重要的一段：**"被限流"与"确实没有"必须分开**。
+   Brave 与 Jina 都会在请求过密时返回 429 或空响应；若把空响应当成"查不到"，
+   就会产出**假的"未找到"结论**——比不跑更糟，因为它看起来像已核查。
+   实测：并发 6 个子代理猛打时，Brave 返回 429、Jina 直接连不上（curl 退出码 000）。
+   所以：识别到限流就重试并退避；最终仍失败时返回带 RATE-LIMITED 标记的结果，
+   让调用方知道"这次没查到 ≠ 没有"。 */
+const RATE_LIMITED = '[RATE-LIMITED]';
+function httpStatus(url, extraArgs) {
+  const out = curl(['-o', process.platform === 'win32' ? 'NUL' : '/dev/null', '-w', '%{http_code}', '--max-time', '25'].concat(extraArgs || []).concat([url]));
+  const m = String(out).match(/(\d{3})\s*$/);
+  return m ? m[1] : '000';
+}
+/* 带退避的重试：遇到 429 / 000（连不上）就等，最多 3 轮 */
+function withBackoff(label, fn) {
+  const waits = [0, 12000, 30000];
+  for (let i = 0; i < waits.length; i++) {
+    sleepSync(waits[i]);
+    const r = fn();
+    if (r && r.length > 400 && !BLOCK_PAGE.test(r.slice(0, 4000))) return r;
+    if (i < waits.length - 1) process.stderr.write(`  [${label}] 第 ${i + 1} 次未取到内容，退避 ${waits[i + 1] / 1000}s 后重试\n`);
+  }
+  return '';
+}
+
 function curl(args, timeoutSec) {
   try {
     return execFileSync('curl.exe', ['-s', '--max-time', String(timeoutSec || 45)].concat(args),
@@ -50,14 +75,30 @@ const UA_BROWSER = UA;
 function curlSearch(args, timeoutSec) { return curl(['-A', UA_BROWSER].concat(args), timeoutSec); }
 
 /* ---------- 搜索 ---------- */
+/* Brave 在请求过密时返回 429；必须与"真的没有结果"区分开。
+   重试仍失败则抛 RATE-LIMITED，绝不返回空列表冒充"没有结果"。 */
 function brave(query) {
-  const html = curlSearch(['-G', '--data-urlencode', 'q=' + query, 'https://search.brave.com/search']);
+  const url = 'https://search.brave.com/search?q=' + encodeURIComponent(query);
+  const waits = [0, 15000, 45000];
+  let html = '';
+  for (let i = 0; i < waits.length; i++) {
+    sleepSync(waits[i]);
+    html = curlSearch([url]);
+    const limited = !html || html.length < 2000 || /Too Many Requests|429/.test(html.slice(0, 1500));
+    if (!limited) break;
+    if (i < waits.length - 1) process.stderr.write(`  [brave] 第 ${i + 1} 次被限流或空响应，退避 ${waits[i + 1] / 1000}s\n`);
+  }
+  if (!html || html.length < 2000) {
+    const e = new Error(RATE_LIMITED + ' brave 搜索未取到结果（可能被限流），请稍后重试或减少并发');
+    e.rateLimited = true;
+    throw e;
+  }
   const out = [];
   for (const m of html.matchAll(/href="(https?:\/\/[^"]+)"/g)) {
-    const url = m[1];
-    if (/brave\.com|w3\.org|schema\.org|gstatic|google\.|search\.brave/.test(url)) continue;
-    if (out.some(o => o.url === url)) continue;
-    out.push({ url });
+    const u = m[1];
+    if (/brave\.com|w3\.org|schema\.org|gstatic|google\.|search\.brave/.test(u)) continue;
+    if (out.some(o => o.url === u)) continue;
+    out.push({ url: u });
   }
   return out;
 }
@@ -105,18 +146,11 @@ function htmlToText(html) {
     .trim();
 }
 function fetchPage(url, timeoutSec) {
-  /* Jina 连续请求会被限流并返回挑战页，所以每次调用前留间隔；
-     被挑战时等更久重试一次，再不行才走 Chrome。 */
-  const viaJina = (() => {
-    for (const wait of [0, 9000]) {
-      sleepSync(wait);
-      const r = curl(['https://r.jina.ai/' + url], timeoutSec || 60);
-      if (isUsablePage(r)) return r;
-    }
-    return '';
-  })();
+  /* Jina 连续请求会被限流并返回挑战页或直接连不上，所以退避重试；
+     全部失败才走 Chrome，两条都不通时返回 FETCH-FAILED（**不返回空串**，
+     否则调用方会把"没抓到"当成"页面里没有"）。 */
+  const viaJina = withBackoff('jina', () => curl(['https://r.jina.ai/' + url], timeoutSec || 60));
   if (viaJina) return viaJina;
-  /* 兜底：本地 Chrome 无头。虚拟时间给足，否则拿到的是半渲染骨架。 */
   for (const budget of [15000, 25000]) {
     const dom = chromeDom(url, budget);
     if (dom && dom.length > 1000) {
@@ -124,8 +158,8 @@ function fetchPage(url, timeoutSec) {
       if (isUsablePage(text)) return '[via chrome-headless]\n' + text;
     }
   }
-  /* 两条路都不通时如实说明，不要把挑战页当正文返回 */
-  return '[FETCH-FAILED] ' + url + '\n（Jina 与本地 Chrome 均未取到可用内容，请换来源或稍后重试）';
+  return '[FETCH-FAILED] ' + url + '\n（Jina 与本地 Chrome 均未取到可用内容：可能是限流、站点反爬或页面不存在。'
+    + '**这不等于"该数据不存在"**，请稍后重试或换来源。）';
 }
 
 /* ---------- 事实抽取（只做候选提示，不做判断） ---------- */
@@ -173,13 +207,24 @@ const arg = rest.join(' ');
 (async () => {
   if (cmd === 'search' || cmd === 'gov') {
     if (!arg) { console.log('用法: node tools/research.js search "查询词"'); process.exit(1); }
-    let res = brave(arg);
+    let res;
+    try {
+      res = brave(arg);
+    } catch (e) {
+      if (e.rateLimited) {
+        console.log('⚠ ' + e.message);
+        console.log('  —— 这不是"没有结果"。请等待几分钟再试，并避免同时跑多个核查任务。');
+        process.exit(2);
+      }
+      throw e;
+    }
     console.log(`Brave 结果 ${res.length} 条：`);
     res.slice(0, 12).forEach((r, i) => console.log(`  ${i + 1}. ${r.url}`));
     let gov = res.filter(r => /\.gov\.cn/.test(r.url));
     if (!gov.length) {
-      await sleep(1500);
-      const d = ddgLite(arg);
+      await sleep(2000);
+      let d = [];
+      try { d = ddgLite(arg); } catch (e) { d = []; }
       console.log(`\nBrave 无政府域名，DDG Lite 补充 ${d.length} 条`);
       gov = d.filter(r => /\.gov\.cn/.test(r.url));
     }
