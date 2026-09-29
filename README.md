@@ -96,6 +96,7 @@ city-salary/
 │   ├── province-year.js     #   省份年度基线表（检查 E/F 的唯一事实来源）
 │   ├── policy-expiry.js     #   限期费率清单（检查 G 的唯一事实来源）
 │   ├── gen-warn-backlog.js  #   生成 warn 缺口清单（检查 H 校验其与 CITIES 一致）
+│   ├── research.js          #   联网核查工具：Brave 搜索 + Jina 抓页（年度复核用，唯一联网脚本）
 │   ├── ci-selfcheck.js      #   CI 自检：零依赖红线 + Node 版本
 │   └── sync.js              #   把 skills/ 下的源文件同步到镜像位置
 ├── package.json             # 仅 scripts（零依赖）：npm test 统一入口
