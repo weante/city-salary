@@ -728,6 +728,24 @@ if (!warnMiss) {
   }
 }
 
+/* ---------- H-4. note 不得含 Markdown 语法 ----------
+   note 由 calculator.html:3342 `'（'+(CITY.note||"官方数据")+'）<br>'`
+   **直接拼进 HTML 字符串**，不经过 Markdown 渲染 —— 写 `**粗体**` 会让用户看到字面星号。
+   2026-09-30 实测发现 6 城（梧州/北海/钦州/玉林/玉溪/金昌）的 note 含 `**`，
+   全部是核查过程中我自己加的。强调职责由 warn 橙框承担，note 保持纯文本。 */
+{
+  const MD = [['粗体 **', /\*\*/], ['行内代码 `', /`/], ['表格 |', /\|/], ['链接 []()', /\[[^\]]*\]\(/], ['标题 #', /(^|\s)#\S/]];
+  let bad = 0;
+  for (const [label, re] of MD) {
+    const hits = Object.keys(CITIES).filter(k => re.test(CITIES[k].note || '')).map(k => CITIES[k].name);
+    if (hits.length) {
+      console.log(`  ✗ ${hits.length} 城 note 含 Markdown「${label}」（note 按 HTML 原样渲染，会显示字面符号）：${hits.slice(0, 8).join('、')}${hits.length > 8 ? ' …' : ''}`);
+      bad++; fail++;
+    }
+  }
+  if (!bad) console.log('  ✓ note 均为纯文本（无 Markdown 语法残留）');
+}
+
 /* ---------- I. 计算口径白皮书常量 ----------
    docs/calculation-spec.md 是"从税前工资到到手现金"的规则定义，通篇是公式与常量。
    这类文档最大的风险不是写错，而是**写得对、然后代码改了没人改它**——
