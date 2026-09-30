@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /*
- * 生成 docs/warn-backlog.md —— 172 个 warn 城市的缺口清单。
+ * 生成 docs/warn-backlog.md —— warn 城市的缺口清单。
  *
  * 为什么用生成而不是手写：清单必须与 CITIES 的 warn 集合**严格一致**，
- * 手写 172 行必然漂移（这正是本项目一路在治的病）。生成 + check-sync 的检查 H
+ * 手写清单必然漂移（这正是本项目一路在治的病）。生成 + check-sync 的检查 H
  * 校验集合相等，才能做到"新增 warn 城市忘了登记 → CI 红"。
  *
  * 分类依据是**缺哪个参数**（可操作），而不是"哪个省"：
@@ -84,7 +84,10 @@ const perRegion = {};
 for (const w of warn) perRegion[w.region] = (perRegion[w.region] || 0) + 1;
 
 const lines = [];
-lines.push('# warn 缺口清单（172 城）');
+/* 标题里的城市数**必须计算**，不能写死 —— 原先硬编码「172 城」，
+   warn 数变成 186 后重新生成，标题仍显示 172（生成器与产物不一致）。
+   检查 H 只校验城市**集合**相等，不校验标题里的数字，所以这个错会静默存在。 */
+lines.push(`# warn 缺口清单（${warn.length} 城）`);
 lines.push('');
 lines.push('> **本文件由 `node tools/gen-warn-backlog.js --update` 生成，请勿手改表格部分。**');
 lines.push('> `check-sync` 的**检查 H** 会校验此处的城市集合与 `calculator.html` 里 `warn:true` 的城市**严格一致**——');

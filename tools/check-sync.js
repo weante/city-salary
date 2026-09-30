@@ -638,7 +638,7 @@ if (!polFail) {
 }
 
 /* ---------- H. warn 缺口清单与 CITIES 一致 ----------
-   docs/warn-backlog.md 由 tools/gen-warn-backlog.js 生成，列出 172 个 warn 城市
+   docs/warn-backlog.md 由 tools/gen-warn-backlog.js 生成，列出全部 warn 城市
    及其缺口分类与下一次核查时间。手写 172 行必然漂移，所以这里只校验**集合相等**：
    新增 warn 城市忘了重新生成 → CI 红；取到官方文件清掉 warn 但忘了重新生成 → 也红。
    「缺口只有被登记才算被追踪」。 */
@@ -683,6 +683,28 @@ if (!warnMiss) {
   const dup = backlogCities.filter((n, i) => backlogCities.indexOf(n) !== i);
   if (dup.length) { console.log(`  ✗ 清单里有重复城市名：${[...new Set(dup)].join('、')}`); warnMiss++; fail++; }
   else console.log(`  ✓ warn 城市集合与清单一致（${warnCities.length} 城 / 全国 ${Object.keys(CITIES).length} 城）`);
+}
+
+/* ---------- H-2. warn 与 note 必须一致 ----------
+   规则来自 docs/plan-nationwide-coverage.md 的兜底原则：
+   「任何一项数据联网查不到 →（a）CITIES 标 warn:true（橙框「数据待确认」）；（b）note 写明「未找到」与暂用口径」。
+   ——即 note 承认不确定时，warn **必须**置位，否则用户在页面上看不到"数据待确认"提示。
+
+   2026-09-30 实测发现 14 城违反此规则（四川 9 市 note 写"暂按省平…待核实"、
+   湖南株洲/衡阳写"公积金未找到"、云南玉溪、重庆/天津），warn 数由 172 修正为 186。
+   这条检查防止回退。 */
+{
+  const UNCERTAIN = /未找到|未公布|未取得|未发布|未更新|待核实|待确认|待公布|暂按|暂用|暂算|存疑|未能核查|延续未|未见/;
+  const violators = Object.keys(CITIES)
+    .filter(k => UNCERTAIN.test(CITIES[k].note || '') && !CITIES[k].warn)
+    .map(k => CITIES[k].name);
+  if (violators.length) {
+    console.log(`  ✗ note 承认不确定但未标 warn（${violators.length} 城）：${violators.slice(0, 10).join('、')}${violators.length > 10 ? ' …' : ''}`);
+    console.log('    规则见 docs/plan-nationwide-coverage.md：查不到就标 warn:true，否则用户看不到「数据待确认」');
+    fail++;
+  } else {
+    console.log(`  ✓ note 承认不确定的城市均已标 warn（${warnCities.length} 城）`);
+  }
 }
 
 /* ---------- I. 计算口径白皮书常量 ----------
