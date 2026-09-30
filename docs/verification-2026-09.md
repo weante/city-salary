@@ -183,7 +183,7 @@
 
 **同步范围**：`calculator.html` + `site/index.html`（各 13 市 × 基数/年度字段）+ `SKILL.md` ×2 +
 `AGENTS.md` + `tools/test-calc.js`（含 5 项页脚断言）+ `tools/province-year.js` 基线表 +
-`docs/warn-backlog.md`（重新生成）。全量 `npm test` 通过（6670 断言 / 黄金用例 / A–I 守卫）。
+`docs/warn-backlog.md`（重新生成）。全量 `npm test` 通过（6675 断言 / 黄金用例 / A–I 守卫）。
 
 > ⚠️ **证据强度必须写明**：**没有任何 `.gov.cn` 页面写出 4623 / 23115 / 92460 / 7705 这四个数字。**
 > 支撑来自：① **官方 `.gov.cn`** —— [黑龙江省税务局通告 2025 年第 7 号](http://heilongjiang.chinatax.gov.cn/art/2025/12/29/art_11193_574255.html)

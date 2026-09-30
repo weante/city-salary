@@ -581,6 +581,18 @@ eq('南昌·公积金上限30165', A.CITIES.nanch.hf.max, 30165);
 eq('九江·医保基数上限19590', A.CITIES.jj.med.max, 19590);
 eq('上饶·医保基数上限18684', A.CITIES.sr.med.max, 18684);
 eq('新余·公积金下限3920', A.CITIES.xinyu.hf.min, 3920);
+/* 江西大病保险个人固定额（2026-09-30 补建模）
+   规则：大病缴费基数 = 统筹区上年度**全口径月平均工资**，个人 0.2%
+   依据：鹰潭市政府费率表明写「大病基数6850、个人0.2%=13.7元/月」；
+         抚州市政府明写「大病基数=全市上年度全口径月平均工资」。 */
+eq('鹰潭·大病个人13.7元/月（官方明写值）', A.CITIES.yingt.medFixEmp, 13.7);
+eq('宜春·大病个人11.73元/月(=5863.33×0.2%)', A.CITIES.yichun.medFixEmp, 11.73);
+eq('上饶·大病个人12.46元/月(=6228.33×0.2%)', A.CITIES.sr.medFixEmp, 12.46);
+eq('江西·11市均已设大病固定额（此前全为0）',
+  ['nanch', 'jdz', 'px', 'jj', 'xinyu', 'yingt', 'ganzh', 'jian', 'yichun', 'fuzho', 'sr']
+    .filter(k => !(A.CITIES[k].medFixEmp > 0)).length, 0);
+eq('江西·大病额随全口径月均变化（鹰潭6850 > 宜春5863.33）',
+  A.CITIES.yingt.medFixEmp > A.CITIES.yichun.medFixEmp, true);
 eq('河南/湖北/湖南/安徽/福建/江西·生育并入医保(mat.comp=0)', A.CITIES.zzheng.mat.comp + A.CITIES.wuha.mat.comp + A.CITIES.chsh.mat.comp + A.CITIES.hef.mat.comp + A.CITIES.fz.mat.comp + A.CITIES.nanch.mat.comp, 0);
 
 /* 住房租金专项附加扣除档位抽查（国发〔2018〕41号第十七条；总局指引名单 + 统计年鉴市辖区户籍人口） */
