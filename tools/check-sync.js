@@ -190,12 +190,31 @@ for (const dname in docs) {
     }
     /* 大额医疗固定额：两种写法都要认——
        ① 逐市列出（「郑州10.83、开封15、…」）→ 落在"该城市名之后、下一个城市名之前"的片段内；
-       ② 全省统一（「个人2%+大病15元/月（全省统一）」）→ 落在含该城市名的行内。
+       ② 全省统一（「个人2%+大病15元/月（全省统一）」）→ 落在该省份条目行内。
+       ⚠️ 必须**排除两个"派生提及"来源**，否则会漏报（实测 0/3 → 3/3 的关键）：
+         · 规则 1「先确认城市」的城市清单（「…漯河/三门峡/南阳/商丘…」）
+         · 规则 37「个人社保」的大额汇总（「…三门峡18.33元/月…」）
+       三门峡在 AGENTS.md 里共出现 7 次，其中这两处是**重复提及而非权威值**。
+       实测：只改省份条目里的值，若把这两处也算进片段并集，仍能从规则 37 找到旧值 → 漏报。
        `0` 表示"个人不缴"，文档不会写这个数字，故跳过。 */
-    if (c.medFixEmp > 0
-      && !slotNums.has(Number(c.medFixEmp)) && !lineNums.has(Number(c.medFixEmp))) {
-      console.log(`  ✗ ${c.name}(${key}) 大额医疗固定额=${c.medFixEmp} 既不在 ${dname} 的该城市片段内，也不在含该城市名的行内`);
-      missing++; fail++;
+    if (c.medFixEmp > 0) {
+      const DERIVED = /^\d+\.\s+\*\*(先确认城市|个人社保)\*\*/;
+      const authoritative = mine.filter(h => !DERIVED.test(lines[lineOf(h.i)] || ''));
+      const authNums = numbersIn(authoritative.map(h => {
+        const nxt = hits.find(x => x.i > h.i);
+        return content.slice(h.i, nxt ? nxt.i : Math.min(content.length, h.i + 500));
+      }).join('\n'));
+      /* 还要认"省份条目行"：全省统一的值常写在城市清单**之前**
+         （如湖南「个人2%+大病15元/月（全省统一）；公积金基数（下限~上限）长沙2200~32744…」），
+         此时按"城市名之后的片段"永远找不到。省份条目行本身是权威行，可以安全纳入。
+         直辖市没有「**直辖市**」条目行，此时只用权威片段。 */
+      const provRe = new RegExp('^\\d+\\.\\s+\\*\\*' + (c.region || '') + '\\*\\*');
+      const provLine = lines.findIndex(l => provRe.test(l));
+      const provNums = provLine >= 0 ? numbersIn(lines[provLine]) : new Set();
+      if (!authNums.has(Number(c.medFixEmp)) && !provNums.has(Number(c.medFixEmp))) {
+        console.log(`  ✗ ${c.name}(${key}) 大额医疗固定额=${c.medFixEmp} 不在 ${dname} 该城市的权威条目片段内，也不在「${c.region}」条目行内`);
+        missing++; fail++;
+      }
     }
   }
   anchored[dname] = { tabled, prose };
