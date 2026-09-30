@@ -479,8 +479,8 @@ eq('长春·医保单位7.7%(含生育)', A.CITIES.cc.med.comp, 0.077);
 eq('长春·公积金下限2230', A.CITIES.cc.hf.min, 2230);
 eq('长春·公积金上限30505', A.CITIES.cc.hf.max, 30505);
 eq('吉林市·公积金上限22734.75', A.CITIES.jl.hf.max, 22734.75);
-eq('黑龙江·五险下限(黑人社函〔2024〕548号)', A.CITIES.heb.pension.min, 4542);
-eq('黑龙江·五险上限', A.CITIES.heb.pension.max, 22710);
+eq('黑龙江·五险下限(黑人社函〔2025〕611号)', A.CITIES.heb.pension.min, 4623);
+eq('黑龙江·五险上限', A.CITIES.heb.pension.max, 23115);
 eq('黑龙江·失业单位0.5%', A.CITIES.heb.unemp.comp, 0.005);
 eq('黑龙江·工伤一类0.2%', A.CITIES.heb.inj.comp, 0.002);
 eq('哈尔滨·医保单位8.1%(含生育0.6%)', A.CITIES.heb.med.comp, 0.081);
@@ -932,7 +932,7 @@ section('12. 省份年度口径与页脚文案');
 
   /* 12.3 受影响 9 省逐省抽查 + 未受影响省份不得被误改 */
   const CASES = [
-    ['heb', '哈尔滨', '2025', '2026'], ['nanj', '南京', '2025', '2026'],
+    ['heb', '哈尔滨', '2026', null], ['nanj', '南京', '2025', '2026'],
     ['hangz', '杭州', '2025', '2026'], ['zzheng', '郑州', '2025', '2026'],
     ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2025', '2026'],
     ['haik', '海口', '2025', '2026'],
@@ -952,9 +952,9 @@ section('12. 省份年度口径与页脚文案');
   const foot = () => A._doc.getElementById('footNote').innerHTML;
 
   A.selectCity('heb');
-  ok('哈尔滨页脚显示 2025年度', foot().indexOf('数据依据：哈尔滨 2025年度') === 0, true);
-  ok('哈尔滨页脚提示 2026年度待公布', foot().indexOf('（2026年度待公布）') > 0, true);
-  ok('哈尔滨页脚不再出现"哈尔滨 2026年度"', foot().indexOf('哈尔滨 2026年度') < 0, true);
+  ok('哈尔滨页脚显示 2026年度', foot().indexOf('数据依据：哈尔滨 2026年度') === 0, true);
+  ok('哈尔滨页脚不再提示待公布', foot().indexOf('（2026年度待公布）') < 0, true);
+  ok('哈尔滨页脚不再出现"2025年度"', foot().indexOf('哈尔滨 2025年度') < 0, true);
 
   A.selectCity('nanj');
   ok('南京页脚显示 2025年度（2026年度待公布）',
