@@ -863,8 +863,21 @@ if (!rentOk) {
   specFail++; fail++;
 }
 
+/* --- I-4 大额医疗固定额的覆盖城市数 ---
+   白皮书 §三 写着"全国有 N 个城市使用这种形态"。
+   2026-09-30 实测该数字**已过期**：白皮书写 98，实际 109 ——
+   第 16 轮补建模江西 11 市大病保险个人额时改了 CITIES 却漏改白皮书，
+   而守卫 I 只核对标量/税率表/租金档，**这个计数没人管**。
+   计数类断言最容易随数据变动而静默过期，所以显式核对。 */
+const fixEmpCount = Object.keys(CITIES).filter(k => CITIES[k].medFixEmp > 0).length;
+if (!new RegExp(`全国有\\s*${fixEmpCount}\\s*个城市使用这种形态`).test(specSrc)) {
+  const claimed = (specSrc.match(/全国有\s*(\d+)\s*个城市使用这种形态/) || [])[1];
+  console.log(`  ✗ 大额医疗固定额城市数：CITIES 实际 ${fixEmpCount} 城，白皮书写「${claimed || '（未找到该句）'}」`);
+  specFail++; fail++;
+}
+
 if (!specFail) {
-  console.log(`  ✓ 白皮书与实现一致：${SPEC_SCALARS.length} 个标量常量 + 3 张税率表（${A.BR.length}+${A.BBR.length}+${A.TRAPS.length} 行）+ 租金 3 档`);
+  console.log(`  ✓ 白皮书与实现一致：${SPEC_SCALARS.length} 个标量常量 + 3 张税率表（${A.BR.length}+${A.BBR.length}+${A.TRAPS.length} 行）+ 租金 3 档 + 大额固定额 ${fixEmpCount} 城`);
 }
 
 /* ---------- 汇总 ---------- */
