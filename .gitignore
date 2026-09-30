@@ -33,3 +33,11 @@ desktop.ini
 # 日志
 *.log
 npm-debug.log*
+
+# 子 Agent / 临时抓取产物（2026-09-30 加）
+# 起因：9 个并行子 Agent 在仓库根目录留下了 47 个临时文件（a.html、smx_*.html、
+# bd_yb.docx 等），一次 git add -A 全部混入提交。核查用的抓取产物请放
+# C:\Users\<user>\AppData\Local\Temp\ 下，不要落在仓库里。
+/scratch/
+/tmp/
+*.tmp
