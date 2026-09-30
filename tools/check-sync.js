@@ -152,6 +152,14 @@ for (const dname in docs) {
       if (row.medMax !== Number(c.med.max)) bad.push(`医保基数上限 表=${row.medMax} 代码=${c.med.max}`);
       if (row.hfMin !== Number(c.hf.min)) bad.push(`公积金下限 表=${row.hfMin} 代码=${c.hf.min}`);
       if (row.hfMax !== Number(c.hf.max)) bad.push(`公积金上限 表=${row.hfMax} 代码=${c.hf.max}`);
+      /* 大额医疗固定额（medFixEmp）：表里写在费率列内（如「7%/2%（另大额18.33元/月）」），
+         故按"该行是否出现该数值"核对。此前完全未检查——2026-09-30 发现
+         AGENTS.md 记「三门峡/南阳/商丘未找到」而代码已有 18.33/19.16/12.5，
+         守卫却没报警，就是因为漏了这一项。
+         `0` 表示"个人不缴"，文档不会写这个数字，故跳过。 */
+      if (c.medFixEmp > 0 && !numbersIn(lines[row.line - 1] || '').has(Number(c.medFixEmp))) {
+        bad.push(`大额医疗固定额=${c.medFixEmp} 不在表格行内`);
+      }
       if (bad.length) {
         console.log(`  ✗ ${dname}:${row.line} ${c.name}(${key}) 表格与代码不符 —— ${bad.join('；')}`);
         missing++; fail++;
@@ -179,6 +187,15 @@ for (const dname in docs) {
         console.log(`  ✗ ${c.name}(${key}) ${label}=${v} 不在 ${dname} 中含该城市名的任一行内`);
         missing++; fail++;
       }
+    }
+    /* 大额医疗固定额：两种写法都要认——
+       ① 逐市列出（「郑州10.83、开封15、…」）→ 落在"该城市名之后、下一个城市名之前"的片段内；
+       ② 全省统一（「个人2%+大病15元/月（全省统一）」）→ 落在含该城市名的行内。
+       `0` 表示"个人不缴"，文档不会写这个数字，故跳过。 */
+    if (c.medFixEmp > 0
+      && !slotNums.has(Number(c.medFixEmp)) && !lineNums.has(Number(c.medFixEmp))) {
+      console.log(`  ✗ ${c.name}(${key}) 大额医疗固定额=${c.medFixEmp} 既不在 ${dname} 的该城市片段内，也不在含该城市名的行内`);
+      missing++; fail++;
     }
   }
   anchored[dname] = { tabled, prose };
