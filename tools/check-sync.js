@@ -582,6 +582,53 @@ if (!yearMiss) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市的 dat
   if (!rMiss) console.log('  ✓ README.md 省份行的城市数与基数区间均与 CITIES 一致');
 }
 
+/* --- B-4 医保单位费率（medComp）的文档锚定 ---
+   守卫 B 原先只锚定**区间**（medMin/medMax/hfMin/hfMax）与 medFixEmp、pension，
+   **费率字段一个都没锚定**。2026-09-30 探测：改哈尔滨的 `unempComp` 无人反应；
+   `medComp`/`injComp`/`hfRateMax` 只是碰巧被 test-calc 的**值断言**兜住 ——
+   而值断言不能替代文档锚定：若有人同时改了代码与断言，文档仍会静默漂移。
+   AGENTS.md / SKILL.md 本身就是交付物（Agent 工具直接读），费率写错会直接误导。
+   做法：把城市片段（或省份条目行）里出现的百分数解析出来，与 medComp 数值比对。
+   **按数值比对而非字符串**，避免「8%」vs「8.0%」的格式差异造成误报。 */
+{
+  const pctIn = (text) => {
+    const out = [];
+    const re = /(\d+(?:\.\d+)?)\s*%/g;
+    let m;
+    while ((m = re.exec(text))) out.push(Number(m[1]) / 100);
+    return out;
+  };
+  const near = (a, b) => Math.abs(a - b) < 1e-9;
+  let cMiss = 0;
+  for (const dname in docs) {
+    if (!docs[dname].checkValues) continue;
+    const content = docs[dname].content;
+    const lines = content.split(/\r?\n/);
+    for (const key in CITIES) {
+      const c = CITIES[key];
+      if (!c.med || c.med.comp === undefined) continue;
+      /* 该城市的所有出现位置 */
+      const hits = [];
+      let idx = -1;
+      while ((idx = content.indexOf(c.name, idx + 1)) >= 0) hits.push(idx);
+      if (!hits.length) continue;                     /* 缺城市名由别处报 */
+      /* 省份条目行（全省统一费率常写在这里） */
+      const provRe = new RegExp('^\\d+\\.\\s+\\*\\*' + (c.region || '') + '\\*\\*');
+      const provLine = lines.find(l => provRe.test(l)) || '';
+      const segs = hits.map(i => {
+        const nxt = hits.find(x => x > i);
+        return content.slice(i, nxt ? nxt : Math.min(content.length, i + 500));
+      });
+      const pool = segs.join('\n') + '\n' + provLine;
+      if (!pctIn(pool).some(v => near(v, Number(c.med.comp)))) {
+        console.log(`  ✗ ${c.name}(${key}) 医保单位费率=${(c.med.comp * 100).toFixed(2).replace(/\.?0+$/, '')}% 不在 ${dname} 的该城市片段或「${c.region}」条目行内`);
+        cMiss++; fail++;
+      }
+    }
+  }
+  if (!cMiss) console.log('  ✓ 全部城市的医保单位费率均已锚定在文档中（按数值比对百分数）');
+}
+
 /* ---------- F. 数据状态表的年度与基线表一致 ----------
    SKILL.md 的「数据状态」表是第四处人工维护年度的地方（前三处：CITIES.dataYear
    决定页脚、tools/province-year.js 基线表、各省小节标题）。检查 E 只管
