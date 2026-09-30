@@ -220,6 +220,40 @@ for (const dname in docs) {
   anchored[dname] = { tabled, prose };
 }
 
+/* B-2 五险基数（pension）锚定 —— 2026-09-30 补
+   缺口来源：守卫 B 原先只核对 medMin/medMax/hfMin/hfMax/medFixEmp，**pension 完全没锚定**。
+   SKILL.md 的表格列是「城市|医保费率|医保基数下限|医保基数上限|公积金下限|公积金上限」——
+   当某省的 **医保基数与五险基数口径不同**时（福建/贵州/内蒙古等），表格只记了 med，
+   五险基数（决定养老/失业/工伤缴费）在 SKILL.md 里**无任何记录**，且守卫不会报警。
+   实测：只改 CITIES 的 pension 而不动文档，守卫 A/D 会因镜像与断言报警，
+   但**守卫 B 沉默** —— 也就是说两份 HTML 与测试都同步后，文档仍可能漏记。
+   本检查：凡有城市 pension≠med 的省，其 pension 上下限必须出现在 SKILL.md 中。 */
+{
+  const byRegion = {};
+  for (const key in CITIES) {
+    const c = CITIES[key];
+    const r = c.region || '其他';
+    (byRegion[r] = byRegion[r] || []).push(c);
+  }
+  const skillDoc = docs['SKILL.md'];
+  if (skillDoc) {
+    let b2 = 0;
+    for (const r of Object.keys(byRegion)) {
+      const cs = byRegion[r];
+      if (!cs.some(c => Number(c.pension.min) !== Number(c.med.min) || Number(c.pension.max) !== Number(c.med.max))) continue;
+      const c = cs[0];
+      const nums = numbersIn(skillDoc.content);
+      for (const [label, v] of [['五险基数下限', c.pension.min], ['五险基数上限', c.pension.max]]) {
+        if (!nums.has(Number(v))) {
+          console.log(`  ✗ ${r} 的医保基数与五险基数口径不同，但 ${label}=${v}（以 ${c.name} 为例）未出现在 SKILL.md 中`);
+          b2++; missing++; fail++;
+        }
+      }
+    }
+    if (!b2) console.log(`  ✓ 医保基数与五险基数口径不同的省份，其五险基数均已记录在 SKILL.md`);
+  }
+}
+
 /* 省份分组名必须被每份文档提到（防止新增省份时漏更新城市清单） */
 const REGIONS = [];
 for (const key in CITIES) {
