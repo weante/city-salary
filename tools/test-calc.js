@@ -726,7 +726,8 @@ eq('云南·基数下限(云人社发〔2026〕8号)', A.CITIES.km.pension.min, 
 eq('云南·基数上限', A.CITIES.km.pension.max, 22017);
 eq('昆明·医保单位7.9%（含生育0.9%）', A.CITIES.km.med.comp, 0.079);
 eq('昆明·大额1元/月', A.CITIES.km.medFixEmp, 1);
-eq('昆明·公积金上限32470', A.CITIES.km.hf.max, 32470);
+eq('昆明·公积金上限32543（2026年度，昆明公积金中心2026-09-04通知）', A.CITIES.km.hf.max, 32543);
+eq('昆明·公积金下限2270（一类区，2026-09-01起；二类2120/三类1970）', A.CITIES.km.hf.min, 2270);
 eq('昆明·租金1500', A.CITIES.km.rent, 1500);
 eq('曲靖·租金1100（市辖区约140万）', A.CITIES.quj.rent, 1100);
 eq('西双版纳·医保单位10%', A.CITIES.xsbn.med.comp, 0.1);
