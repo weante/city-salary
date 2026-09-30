@@ -44,6 +44,70 @@ function eq(name, actual, expected) { ok(name, actual, expected); }
 function section(t) { emit('\n' + t); }
 
 const A = loadCalculator();
+
+/* ---------- 个人侧费率的省份级断言（2026-09-30 补） ----------
+   背景：探测发现 medEmp（医保个人费率）与 unempEmp（失业个人费率）
+   **既无文档锚定、也无值断言** —— 改动后无任何守卫反应，而它们直接决定"到手现金"。
+   medComp/injComp/hfRateMax 正是靠 test-calc 的值断言兜住的，这里沿用同一机制。
+   按省份断言**去重取值集合**：任何一处费率被改，都会失败并指出省份。 */
+const _regionSet = (r, f) => [...new Set(Object.keys(A.CITIES).filter(k => A.CITIES[k].region === r).map(k => A.CITIES[k][f[0]][f[1]]))].sort((x, y) => x - y).map(v => (v * 100).toFixed(2).replace(/\.?0+$/, '') + '%').join('/');
+eq('云南·医保个人费率集合', _regionSet('云南', ['med', 'emp']), '2%');
+eq('云南·失业个人费率集合', _regionSet('云南', ['unemp', 'emp']), '0.3%');
+eq('内蒙古·医保个人费率集合', _regionSet('内蒙古', ['med', 'emp']), '2%');
+eq('内蒙古·失业个人费率集合', _regionSet('内蒙古', ['unemp', 'emp']), '0.5%');
+eq('吉林·医保个人费率集合', _regionSet('吉林', ['med', 'emp']), '2%');
+eq('吉林·失业个人费率集合', _regionSet('吉林', ['unemp', 'emp']), '0.3%');
+eq('四川·医保个人费率集合', _regionSet('四川', ['med', 'emp']), '2%');
+eq('四川·失业个人费率集合', _regionSet('四川', ['unemp', 'emp']), '0.4%');
+eq('宁夏·医保个人费率集合', _regionSet('宁夏', ['med', 'emp']), '2%');
+eq('宁夏·失业个人费率集合', _regionSet('宁夏', ['unemp', 'emp']), '0.5%');
+eq('安徽·医保个人费率集合', _regionSet('安徽', ['med', 'emp']), '2%');
+eq('安徽·失业个人费率集合', _regionSet('安徽', ['unemp', 'emp']), '0.5%');
+eq('山东·医保个人费率集合', _regionSet('山东', ['med', 'emp']), '2%');
+eq('山东·失业个人费率集合', _regionSet('山东', ['unemp', 'emp']), '0.3%');
+eq('山西·医保个人费率集合', _regionSet('山西', ['med', 'emp']), '2%');
+eq('山西·失业个人费率集合', _regionSet('山西', ['unemp', 'emp']), '0.3%');
+eq('广东·医保个人费率集合', _regionSet('广东', ['med', 'emp']), '1.5%/2%');
+eq('广东·失业个人费率集合', _regionSet('广东', ['unemp', 'emp']), '0.2%');
+eq('广西·医保个人费率集合', _regionSet('广西', ['med', 'emp']), '2%');
+eq('广西·失业个人费率集合', _regionSet('广西', ['unemp', 'emp']), '0.5%');
+eq('新疆·医保个人费率集合', _regionSet('新疆', ['med', 'emp']), '2%');
+eq('新疆·失业个人费率集合', _regionSet('新疆', ['unemp', 'emp']), '0.5%');
+eq('江苏·医保个人费率集合', _regionSet('江苏', ['med', 'emp']), '2%');
+eq('江苏·失业个人费率集合', _regionSet('江苏', ['unemp', 'emp']), '0.5%');
+eq('江西·医保个人费率集合', _regionSet('江西', ['med', 'emp']), '2%');
+eq('江西·失业个人费率集合', _regionSet('江西', ['unemp', 'emp']), '0.5%');
+eq('河北·医保个人费率集合', _regionSet('河北', ['med', 'emp']), '2%');
+eq('河北·失业个人费率集合', _regionSet('河北', ['unemp', 'emp']), '0.3%');
+eq('河南·医保个人费率集合', _regionSet('河南', ['med', 'emp']), '2%');
+eq('河南·失业个人费率集合', _regionSet('河南', ['unemp', 'emp']), '0.3%');
+eq('浙江·医保个人费率集合', _regionSet('浙江', ['med', 'emp']), '1%/2%');
+eq('浙江·失业个人费率集合', _regionSet('浙江', ['unemp', 'emp']), '0.5%');
+eq('海南·医保个人费率集合', _regionSet('海南', ['med', 'emp']), '2%');
+eq('海南·失业个人费率集合', _regionSet('海南', ['unemp', 'emp']), '0.5%');
+eq('湖北·医保个人费率集合', _regionSet('湖北', ['med', 'emp']), '2%');
+eq('湖北·失业个人费率集合', _regionSet('湖北', ['unemp', 'emp']), '0.3%');
+eq('湖南·医保个人费率集合', _regionSet('湖南', ['med', 'emp']), '2%');
+eq('湖南·失业个人费率集合', _regionSet('湖南', ['unemp', 'emp']), '0.3%');
+eq('甘肃·医保个人费率集合', _regionSet('甘肃', ['med', 'emp']), '2%');
+eq('甘肃·失业个人费率集合', _regionSet('甘肃', ['unemp', 'emp']), '0.3%');
+eq('直辖市·医保个人费率集合', _regionSet('直辖市', ['med', 'emp']), '2%');
+eq('直辖市·失业个人费率集合', _regionSet('直辖市', ['unemp', 'emp']), '0.5%');
+eq('福建·医保个人费率集合', _regionSet('福建', ['med', 'emp']), '2%');
+eq('福建·失业个人费率集合', _regionSet('福建', ['unemp', 'emp']), '0.5%');
+eq('西藏·医保个人费率集合', _regionSet('西藏', ['med', 'emp']), '2%');
+eq('西藏·失业个人费率集合', _regionSet('西藏', ['unemp', 'emp']), '0.5%');
+eq('贵州·医保个人费率集合', _regionSet('贵州', ['med', 'emp']), '2%');
+eq('贵州·失业个人费率集合', _regionSet('贵州', ['unemp', 'emp']), '0.3%');
+eq('辽宁·医保个人费率集合', _regionSet('辽宁', ['med', 'emp']), '2%');
+eq('辽宁·失业个人费率集合', _regionSet('辽宁', ['unemp', 'emp']), '0.5%');
+eq('陕西·医保个人费率集合', _regionSet('陕西', ['med', 'emp']), '2%');
+eq('陕西·失业个人费率集合', _regionSet('陕西', ['unemp', 'emp']), '0.3%');
+eq('青海·医保个人费率集合', _regionSet('青海', ['med', 'emp']), '2%');
+eq('青海·失业个人费率集合', _regionSet('青海', ['unemp', 'emp']), '0.5%');
+eq('黑龙江·医保个人费率集合', _regionSet('黑龙江', ['med', 'emp']), '2%');
+eq('黑龙江·失业个人费率集合', _regionSet('黑龙江', ['unemp', 'emp']), '0.5%');
+
 const fmt = n => Number(n).toFixed(2);
 
 /* =========================================================
