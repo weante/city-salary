@@ -501,6 +501,45 @@ for (const r of Object.keys(PROVINCE_YEAR)) {
 }
 if (!yearMiss) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市的 dataYear/dataNext 与基线表一致（${Object.keys(PROVINCE_YEAR).length} 个省份分组）`);
 
+/* --- E-2 docs/baseline-year-map.md §三「基线表」也必须与 CITIES 一致 ---
+   守卫 E 只对照 tools/province-year.js（代码侧基线），**不检查这份文档**。
+   2026-09-30 实测：黑龙江在第 12 轮由 `2025`/`2026` 改为 `2026`/`—`（2026 年度基数已公布），
+   province-year.js 改了、CITIES 改了，**但 §三 那行文档没改**，静默漂移了 10 轮。
+   §三 是"当前状态表"（§一 才是 2026-09-27 事故的历史记录，已加注说明）。
+   解析方式：按 | 切分单元格再逐格去掉 ** 与 ` —— 比正则稳健（粗体、反引号位置不一）。 */
+{
+  const bLines = read('docs/baseline-year-map.md').split(/\r?\n/);
+  const clean = (s) => String(s).replace(/\*\*/g, '').replace(/`/g, '').trim();
+  const start = bLines.findIndex(l => /^##\s*三、基线表/.test(l));
+  const byRegion = {};
+  for (const k in CITIES) {
+    const c = CITIES[k];
+    const r = c.region || '其他';
+    (byRegion[r] = byRegion[r] || []).push(c);
+  }
+  let bMiss = 0;
+  if (start < 0) {
+    console.log('  ✗ docs/baseline-year-map.md 找不到 §三「基线表」');
+    bMiss++; fail++;
+  } else {
+    for (let i = start; i < bLines.length && !/^##\s*四/.test(bLines[i]); i++) {
+      if (!/^\|/.test(bLines[i])) continue;
+      const c = bLines[i].split('|').slice(1, -1).map(clean);
+      if (c.length < 4 || !/^\d+$/.test(c[1]) || c[0] === '省份分组') continue;
+      const cs = byRegion[c[0]];
+      if (!cs) continue;                      /* 「合计」等非分组行跳过 */
+      const years = [...new Set(cs.map(x => String(x.dataYear)))];
+      const nexts = [...new Set(cs.map(x => (x.dataNext === null || x.dataNext === undefined) ? '—' : String(x.dataNext)))];
+      const docNext = (c[3] === '' ? '—' : c[3]);
+      if (cs.length !== +c[1] || years.join(',') !== c[2] || nexts.join(',') !== docNext) {
+        console.log(`  ✗ baseline-year-map.md:${i + 1} ${c[0]}：文档写 ${c[1]} 城/${c[2]}/${docNext}，实际 ${cs.length} 城/${years.join(',')}/${nexts.join(',')}`);
+        bMiss++; fail++;
+      }
+    }
+  }
+  if (!bMiss) console.log('  ✓ docs/baseline-year-map.md §三 基线表与 CITIES 逐行一致');
+}
+
 /* ---------- F. 数据状态表的年度与基线表一致 ----------
    SKILL.md 的「数据状态」表是第四处人工维护年度的地方（前三处：CITIES.dataYear
    决定页脚、tools/province-year.js 基线表、各省小节标题）。检查 E 只管
