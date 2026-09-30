@@ -540,6 +540,48 @@ if (!yearMiss) console.log(`  ✓ ${Object.keys(CITIES).length} 个城市的 dat
   if (!bMiss) console.log('  ✓ docs/baseline-year-map.md §三 基线表与 CITIES 逐行一致');
 }
 
+/* --- B-3 README.md 省份行的基数区间必须与 CITIES 一致 ---
+   守卫 B 对 README 设了 `checkValues: false`（只核对城市名），
+   所以 **README 的数值从来没人核对**。而 README 是 GitHub 上最多人读的文档。
+   2026-09-30 实测：README 第 27 行仍写「黑龙江 …2025 年度基数 4,542~22,710，2026 年度待公布」，
+   而第 12 轮已改为 2026 年度 4,623~23,115 —— **错了 12 轮无人发现**。
+   本检查：README 每个省份行里的 N~N 区间，必须能在该省 CITIES 的 pension/med 区间里找到；
+   行首的城市数也必须与该省实际城市数一致。
+   注意 README 的省份行有 **2 个前导空格**（`  - 山东 16 市：…`），正则须容忍。 */
+{
+  const rLines = read('README.md').split(/\r?\n/);
+  const byReg = {};
+  for (const k in CITIES) {
+    const c = CITIES[k];
+    const r = c.region || '其他';
+    (byReg[r] = byReg[r] || []).push(c);
+  }
+  const numOf = (s) => Number(String(s).replace(/,/g, ''));
+  let rMiss = 0;
+  for (let i = 0; i < rLines.length; i++) {
+    const m = rLines[i].match(/^\s*-\s*([\u4e00-\u9fa5]+)\s*(\d+)\s*(?:市|地州)/);
+    if (!m) continue;
+    const cs = byReg[m[1]];
+    if (!cs) { console.log(`  ✗ README.md:${i + 1} 写「${m[1]}」，CITIES 无此分组`); rMiss++; fail++; continue; }
+    if (+m[2] !== cs.length) {
+      console.log(`  ✗ README.md:${i + 1} ${m[1]}：写 ${m[2]} 市，实际 ${cs.length} 市`);
+      rMiss++; fail++;
+    }
+    const okRanges = [];
+    for (const c of cs) { okRanges.push([c.pension.min, c.pension.max], [c.med.min, c.med.max]); }
+    const ranges = [...rLines[i].matchAll(/([\d,]+(?:\.\d+)?)\s*~\s*([\d,]+(?:\.\d+)?)/g)]
+      .map(x => [numOf(x[1]), numOf(x[2])]);
+    for (const r of ranges) {
+      if (!okRanges.some(a => Number(a[0]) === r[0] && Number(a[1]) === r[1])) {
+        console.log(`  ✗ README.md:${i + 1} ${m[1]}：区间 ${r[0]}~${r[1]} 不在该省 CITIES 的 pension/med 区间内`);
+        console.log(`      实际 pension：${[...new Set(cs.map(c => c.pension.min + '~' + c.pension.max))].slice(0, 3).join(' / ')}`);
+        rMiss++; fail++;
+      }
+    }
+  }
+  if (!rMiss) console.log('  ✓ README.md 省份行的城市数与基数区间均与 CITIES 一致');
+}
+
 /* ---------- F. 数据状态表的年度与基线表一致 ----------
    SKILL.md 的「数据状态」表是第四处人工维护年度的地方（前三处：CITIES.dataYear
    决定页脚、tools/province-year.js 基线表、各省小节标题）。检查 E 只管
@@ -783,6 +825,24 @@ if (!warnMiss) {
     }
   }
   if (!bad) console.log('  ✓ note 均为纯文本（无 Markdown 语法残留）');
+}
+
+/* ---------- H-5. maintenance-calendar 的 warn 计数必须与实际一致 ----------
+   2026-09-30 实测：把该文档里的「186 城」改成「170 城」，**没有任何守卫反应**。
+   它与 warn-backlog 的标题数字属同一类问题（计数类断言无人管，见 I-4）。
+   I-4 已覆盖白皮书，这里补上 maintenance-calendar。 */
+{
+  const mc = read('docs/maintenance-calendar.md');
+  const m = mc.match(/\|\s*warn 缺口\s*\|\s*\*\*(\d+)\s*城\*\*/);
+  if (!m) {
+    console.log('  ✗ docs/maintenance-calendar.md 找不到「| warn 缺口 | **N 城**」这一行');
+    fail++;
+  } else if (+m[1] !== warnCities.length) {
+    console.log(`  ✗ maintenance-calendar.md 写 warn 缺口 ${m[1]} 城，实际 ${warnCities.length} 城`);
+    fail++;
+  } else {
+    console.log(`  ✓ maintenance-calendar 的 warn 计数与实际一致（${warnCities.length} 城）`);
+  }
 }
 
 /* ---------- I. 计算口径白皮书常量 ----------
