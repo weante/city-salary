@@ -707,6 +707,27 @@ if (!warnMiss) {
   }
 }
 
+/* ---------- H-3. warn 城市必须登记进 docs/policy-*.md ----------
+   规则来自 docs/plan-nationwide-coverage.md 的兜底原则第 (c) 条：
+   「任何一项数据联网查不到 → …（c）写入 docs/policy-*.md 缺口清单」。
+   2026-09-30 实测发现 7 份 policy 文档覆盖 29 个省级单位，**独缺广东/北京/上海**，
+   而茂名（广东）是 warn 城市 —— 它的缺口无处登记，违反 (c)。
+   已新建 docs/policy-yuejinghu-2026.md 补齐。本检查防止再次出现"有 warn 无登记"。 */
+{
+  const polDir = path.join(__dirname, '..', 'docs');
+  const polFiles = fs.readdirSync(polDir).filter(f => /^policy-.*\.md$/.test(f));
+  let blob = '';
+  for (const f of polFiles) blob += fs.readFileSync(path.join(polDir, f), 'utf8');
+  const unlisted = Object.keys(CITIES).filter(k => CITIES[k].warn && blob.indexOf(CITIES[k].name) < 0).map(k => CITIES[k].name);
+  if (unlisted.length) {
+    console.log(`  ✗ warn 城市未登记进任何 docs/policy-*.md（${unlisted.length} 城）：${unlisted.slice(0, 10).join('、')}${unlisted.length > 10 ? ' …' : ''}`);
+    console.log('    规则见 docs/plan-nationwide-coverage.md 第 (c) 条：查不到要写入政策文档的缺口清单');
+    fail++;
+  } else {
+    console.log(`  ✓ ${warnCities.length} 个 warn 城市均已登记进 docs/policy-*.md（${polFiles.length} 份）`);
+  }
+}
+
 /* ---------- I. 计算口径白皮书常量 ----------
    docs/calculation-spec.md 是"从税前工资到到手现金"的规则定义，通篇是公式与常量。
    这类文档最大的风险不是写错，而是**写得对、然后代码改了没人改它**——
