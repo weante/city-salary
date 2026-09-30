@@ -14,10 +14,35 @@
 
 | 能力 | 状态 |
 |------|------|
-| `web_search`（发现来源） | ✅ 可用 |
+| `web_search`（发现来源） | ⚠️ **2026-09-30 20:48 起不可用**（HTTP 401，见下） |
 | 抓页（`research.js`：Jina → 本地 Chrome 兜底） | ⚠️ 部分站点可用；政府站点被挡时返回 `[FETCH-FAILED]` |
 | DSH 原生 `web_fetch` | ❌ 沙箱拒绝（non-public IP） |
 | Brave / DDG / Bing / Yandex 等爬取式搜索 | ❌ 全部不可用（详见下节历史记录） |
+
+### `web_search` 401 的根因（已定位）
+
+**`DEEPSEEK_API_KEY` 槽位里放的是 OpenCode Zen 的密钥，不是 DeepSeek 平台密钥。**
+
+诊断证据（全程未打印密钥值）：
+
+| 项 | 观察 |
+|----|------|
+| 前缀/长度 | `oc_sk_…`，51 字符（**DeepSeek 平台密钥是 `sk-` 开头**） |
+| `OPENCODE_GO_API_KEY` | 同样 `oc_sk_…`、51 字符（两者不同，但同格式） |
+| 报错指纹 | `****X8DF` ↔ 存储值后缀 `…xIX8DF`，**确认就是它被发出去了** |
+| 发往 `api.deepseek.com/anthropic/v1/messages` | **401** invalid |
+| 发往 `opencode.ai/zen/go/v1/…` | **400 MissingSessionID** → **认证通过** |
+| 发往 `opencode.ai/zen/v1/messages` | **402 Insufficient account funds** → 认证通过，**账户余额不足** |
+
+**结论**：该 key 对 OpenCode 网关有效、对 DeepSeek 平台无效。
+`web_search` 走的是 `api.deepseek.com`，故 401。
+
+**修复方式**：在**侧栏 → 插件 → 官方 → 网页搜索**里填入**真正的 DeepSeek 平台密钥**
+（`platform.deepseek.com` 签发，`sk-` 开头）。填 OpenCode 的 key 无效。
+
+> **时间线**：本会话早前 `web_search` 正常（完成了江苏/云南/海南等多项核查），
+> 凭据文件 `~/.dsh/.credentials.yaml` 于 **2026-09-30 20:41 被重建**，此后即 401。
+> 即**此前可用的密钥被替换成了 OpenCode 的密钥**。
 
 **操作约束（血的教训）**：并发核查任务 ≤2~3 个，抓页请求间隔 ≥10 秒。
 上次 6 个并发直接把 Brave 打到 429、Jina 打到连不上，反而拖慢进度。
