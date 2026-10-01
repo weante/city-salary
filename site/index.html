@@ -3383,7 +3383,18 @@ function setAllBase(mode){
   var sal=gv("salary");
   var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf;
   var map={pBase:P.min,mBase:M.min||P.min,uBase:U.min,mtBase:MT.min||M.min||P.min,ijBase:IJ.min,hfBase:HF.min};
-  for(var k in map)$(k).value=mode==="min"?map[k]:sal;
+  /* ⚠️ 必须夹取到该险种的 [下限, 上限]。
+     月薪低于该市该险种下限时（例：广州月薪 6000、医保下限 6234），
+     基数不得低于下限，否则个人缴费会被算少。
+     各险种上下限相互独立（医疗/失业/工伤/公积金常与养老不同），故逐个取。 */
+  var caps={pBase:P.max,mBase:M.max||P.max,uBase:U.max,mtBase:MT.max||M.max||P.max,ijBase:IJ.max,hfBase:HF.max};
+  for(var k in map){
+    var lo=map[k],hi=caps[k];
+    var v=(mode==="min")?lo:sal;
+    if(typeof hi==="number"&&hi>0)v=Math.min(v,hi);
+    v=Math.max(v,lo);
+    $(k).value=v;
+  }
   calc();
 }
 function onChildToggle(){

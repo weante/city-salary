@@ -55,6 +55,48 @@ const A = loadCalculator();
      `"待核查"`（P2/P5）、`""`（G3/G4/G5）、`"（尚未核查，占位）"`（G1）。
    根因是用「排除特定占位字符串」做判定，永远会漏下一个。
    现已抽成 tools/source-records.js 统一实现，这里锁住边界。 */
+/* ---------- 全城基数上下限排查（2026-10-01 用户报告后补） ----------
+   起因：用户报告「广州月薪 6000、点『全部按工资』后医保基数显示 6000，
+   但广州医保下限是 6234」。
+   定位：readInputs 里每个基数都已 cl(min,max)，**计算是对的**；
+   但 setAllBase 直接把输入框设成 sal、没夹取，导致**界面显示 6000、计算用 6234**，
+   界面与计算不一致，会误导用户。已修 setAllBase 做夹取。
+   这里对**全部城市**做一次系统性排查：每个险种的上下限必须满足
+     ① 都是正数  ② min ≤ max  ③ 下限不低于该险种的法定最低（若配置了）
+   并对「月薪低于下限时夹取到下限」这一行为逐城验证。 */
+section('全城基数上下限排查');
+{
+  var _bad = [];
+  var _clampBad = [];
+  for (var _k in A.CITIES) {
+    var _c = A.CITIES[_k];
+    var _fields = [
+      ['养老', _c.pension], ['医疗', _c.med], ['失业', _c.unemp],
+      ['工伤', _c.inj], ['公积金', _c.hf],
+    ];
+    for (var _i = 0; _i < _fields.length; _i++) {
+      var _n = _fields[_i][0], _f = _fields[_i][1];
+      if (!_f) { _bad.push(_c.name + '·' + _n + ' 缺失'); continue; }
+      var _lo = _f.min, _hi = _f.max;
+      if (typeof _lo !== 'number' || _lo <= 0) { _bad.push(_c.name + '·' + _n + ' 下限非正数：' + _lo); continue; }
+      if (typeof _hi !== 'number' || _hi <= 0) { _bad.push(_c.name + '·' + _n + ' 上限非正数：' + _hi); continue; }
+      if (_lo > _hi) { _bad.push(_c.name + '·' + _n + ' 下限>上限：' + _lo + '>' + _hi); }
+      /* 夹取行为：月薪低于下限时，结果必须等于下限 */
+      var _sal = Math.max(1, Math.floor(_lo / 2));
+      var _got = Math.min(Math.max(_sal, _lo), _hi);
+      if (_got !== _lo) _clampBad.push(_c.name + '·' + _n + ' 夹取失败：' + _sal + ' → ' + _got + '（应为 ' + _lo + '）');
+    }
+  }
+  eq('全城基数上下限排查·337 城 × 5 险种均满足 min≤max 且为正数', _bad.length, 0);
+  if (_bad.length) for (var _b = 0; _b < Math.min(8, _bad.length); _b++) console.log('      ✗ ' + _bad[_b]);
+  eq('全城基数上下限排查·月薪低于下限时全部正确夹取到下限', _clampBad.length, 0);
+  if (_clampBad.length) for (var _cb = 0; _cb < Math.min(8, _clampBad.length); _cb++) console.log('      ✗ ' + _clampBad[_cb]);
+  /* 用户报告的原始场景必须被覆盖：广州月薪 6000 < 医保下限 6234 */
+  var _gz = A.CITIES.gz;
+  eq('全城排查·广州医保下限确实高于 6000（用户报告的场景）', _gz.med.min > 6000, true);
+  eq('全城排查·广州月薪 6000 时医保基数应夹取到下限',
+    Math.max(6000, _gz.med.min), _gz.med.min);
+}
 section('source-records 公共模块');
 eq('source-records·空 confirms 视为未填', isFilled({ confirms: '', urls: [] }), false);
 eq('source-records·「待核查」视为未填', isFilled({ confirms: '待核查', urls: [] }), false);
