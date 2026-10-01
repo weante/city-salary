@@ -319,6 +319,8 @@ ok('上海·normHF(3,7) = 0（1-4非法归0）', A.normHF(3, 7), 0);
 ok('上海·normHF(0,7) = 0', A.normHF(0, 7), 0);
 eq('上海·hfRateMax = 7', A.CITIES.sh.hfRateMax, 7);
 eq('深圳·hfRateMax = 12', A.CITIES.sz.hfRateMax, 12);
+eq('珠海·公积金下限2300（珠房金委字〔2026〕5号，依粤府函〔2026〕188号，2026-09-01起）', A.CITIES.zh.hf.min, 2300);
+eq('珠海·公积金上限36279（2026年度，与仓库一致）', A.CITIES.zh.hf.max, 36279);
 ok('上海·输入12%被归一到7%',
   (function () { A.selectCity('sh'); A._setMany({ hfRate: 12, salary: 20000, hfBase: 20000 }); A.calc(); return parseFloat(A._doc.getElementById('hfRate').value); })(), 7);
 
