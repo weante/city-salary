@@ -1,6 +1,6 @@
 # city-salary 全国 337 城政策来源核查报告
 
-> 生成日期：2026-10-01　｜　数据来源：`docs/sources/*.json`（G/P/Q/R 四轮共 23 个分组文件）
+> 生成日期：2026-10-01　｜　数据来源：`docs/sources/` 下 24 个分组文件（G/P/Q/R/S 五轮）
 > 判定标准：`.gov.cn` 或**经确认的政府/事业单位官方网站**（含 `.com/.cn`）；
 > 排除商业聚合站、媒体、博客、**微信公众号**、征求意见稿、已失效的阶段性降费。
 
@@ -9,23 +9,23 @@
 | 指标 | 数值 |
 |------|-----:|
 | 全国城市数 | 337 |
-| **已取得官方来源** | **298** |
-| 未取得来源 | 39 |
-| ✅ 已核实（来源 + 数值一致） | 149 |
-| 🟡 部分核实 | 92 |
-| ⚠️ 有来源但未覆盖该项 | 57 |
-| 收录链接 | 367 条 |
+| **已取得官方来源** | **335** |
+| 未取得来源 | 2 |
+| ✅ 已核实（来源 + 数值一致） | 163 |
+| 🟡 部分核实 | 108 |
+| ⚠️ 有来源但未覆盖该项 | 64 |
+| 收录链接 | 407 条 |
 
 ### 逐省汇总
 
 | 省级单位 | 城市数 | ✅ 已核实 | 🟡 部分 | ⚠️ 未找到 | 未取得 | 链接数 |
 |---------|-----:|--------:|-------:|---------:|------:|------:|
-| **云南** | 16 | 0 | 0 | 0 | 16 | 0 |
-| **内蒙古** | 12 | 0 | 0 | 0 | 12 | 0 |
-| **吉林** | 9 | 0 | 0 | 0 | 9 | 0 |
-| **四川** | 21 | 10 | 5 | 6 | 0 | 23 |
+| **云南** | 16 | 4 | 10 | 2 | 0 | 19 |
+| **内蒙古** | 12 | 4 | 4 | 4 | 0 | 8 |
+| **吉林** | 9 | 2 | 3 | 4 | 0 | 8 |
+| **四川** | 21 | 11 | 4 | 6 | 0 | 23 |
 | **宁夏** | 5 | 5 | 0 | 0 | 0 | 5 |
-| **安徽** | 16 | 11 | 2 | 3 | 0 | 22 |
+| **安徽** | 16 | 14 | 2 | 0 | 0 | 27 |
 | **山东** | 16 | 13 | 1 | 2 | 0 | 19 |
 | **山西** | 11 | 4 | 3 | 4 | 0 | 9 |
 | **广东** | 21 | 14 | 6 | 1 | 0 | 39 |
@@ -51,63 +51,63 @@
 
 ---
 
-## 云南（16 城：已核实 0 / 部分 0 / 未找到 0 / 未取得 16）
+## 云南（16 城：已核实 4 / 部分 10 / 未找到 2 / 未取得 0）
 
 | 城市 | 状态 | 数据来源文号 | 来源链接 |
 |------|------|-------------|---------|
-| 临沧 | ⚠️ 未取得 | — | — |
-| 丽江 | ⚠️ 未取得 | — | — |
-| 保山 | ⚠️ 未取得 | — | — |
-| 大理 | ⚠️ 未取得 | — | — |
-| 德宏 | ⚠️ 未取得 | — | — |
-| 怒江 | ⚠️ 未取得 | — | — |
-| 文山 | ⚠️ 未取得 | — | — |
-| 昆明 | ⚠️ 未取得 | — | — |
-| 昭通 | ⚠️ 未取得 | — | — |
-| 普洱 | ⚠️ 未取得 | — | — |
-| 曲靖 | ⚠️ 未取得 | — | — |
-| 楚雄 | ⚠️ 未取得 | — | — |
-| 玉溪 | ⚠️ 未取得 | — | — |
-| 红河 | ⚠️ 未取得 | — | — |
-| 西双版纳 | ⚠️ 未取得 | — | — |
-| 迪庆 | ⚠️ 未取得 | — | — |
+| 临沧 | 🟡 部分 | 临医保联发〔2019〕35号 | <https://www.lincang.gov.cn/file/lcoldData/_local/2/7A/5B/D45EB3F60657FF7E7CE658CAF60_007A7CDD_578760.pdf> |
+| 丽江 | 🟡 部分 | — | <https://lijiang.gov.cn/ljsrmzf/c102219/202212/fbb61beb66ea4c099e6390733dc721bb.shtml> |
+| 保山 | 🟡 部分 | — | <https://baoshan.gov.cn/info/28876/10311604.htm> |
+| 大理 | ⚠️ 未找到 | — | — |
+| 德宏 | 🟡 部分 | — | <http://www.dh.gov.cn/ylbzj/Attach/2207/28D00DG2L62207181450251ED54ABA.pdf> |
+| 怒江 | 🟡 部分 | — | <https://www.nujiang.gov.cn/xxgk/015279139/info/2010-161327.html> |
+| 文山 | ✅ 已核实 | 文政规〔2023〕4号 | <https://www.ynws.gov.cn/wszzf/xzgfx/1855137429650239488/oyok7cCT.pdf> |
+| 昆明 | 🟡 部分 | 昆公积金〔2026〕69号 | <https://ybj.km.gov.cn/c/2024-07-25/4882692.shtml><br><https://zfgjj.km.gov.cn/c/2026-09-04/5109614.shtml> |
+| 昭通 | ✅ 已核实 | — | <http://www.cnyl.gov.cn/yiliang/upload/files/2023/8/92ec27e009a427ca.pdf> |
+| 普洱 | 🟡 部分 | — | <https://www.puershi.gov.cn/__local/D/65/BD/C56C8FA1A6CB5BFD1B1B2775CF8_4BA38C78_41C9F.pdf> |
+| 曲靖 | ⚠️ 未找到 | — | — |
+| 楚雄 | ✅ 已核实 | — | <https://ynlf.gov.cn/info/3876/90596.htm> |
+| 玉溪 | 🟡 部分 | 玉医保规〔2019〕1号；玉市金发〔2026〕20号 | <http://www.huaning.gov.cn/u/cms/yxszfxxgk/202112/17200927fqf8.pdf><br><https://www.yuxi.gov.cn/yxszfxxgk/szbmgfxwj/20211217/1314669.html> |
+| 红河 | 🟡 部分 | — | <https://www.hh.gov.cn/info/1241/591962.htm> |
+| 西双版纳 | ✅ 已核实 | — | <https://www.xsbn.gov.cn/zybj/media/2023/09/51bdc882-a35c-4c1e-a6d3-73b5cc48008c1694511567025892895909.pdf><br><https://www.xsbn.gov.cn/media/2023/08/27a1138c-23ad-4997-b47f-389454c467871691650901310-646105851.pdf> |
+| 迪庆 | 🟡 部分 | — | <http://diqing.gov.cn/file/diqing/dqzzf_zfbgs/file/20220628/1656406677753052102.pdf><br><https://hrss.yn.gov.cn/jyj/Print.aspx?ClassID=756&newsid=27319> |
 
-## 内蒙古（12 城：已核实 0 / 部分 0 / 未找到 0 / 未取得 12）
-
-| 城市 | 状态 | 数据来源文号 | 来源链接 |
-|------|------|-------------|---------|
-| 乌兰察布 | ⚠️ 未取得 | — | — |
-| 乌海 | ⚠️ 未取得 | — | — |
-| 兴安盟 | ⚠️ 未取得 | — | — |
-| 包头 | ⚠️ 未取得 | — | — |
-| 呼伦贝尔 | ⚠️ 未取得 | — | — |
-| 呼和浩特 | ⚠️ 未取得 | — | — |
-| 巴彦淖尔 | ⚠️ 未取得 | — | — |
-| 赤峰 | ⚠️ 未取得 | — | — |
-| 通辽 | ⚠️ 未取得 | — | — |
-| 鄂尔多斯 | ⚠️ 未取得 | — | — |
-| 锡林郭勒盟 | ⚠️ 未取得 | — | — |
-| 阿拉善盟 | ⚠️ 未取得 | — | — |
-
-## 吉林（9 城：已核实 0 / 部分 0 / 未找到 0 / 未取得 9）
+## 内蒙古（12 城：已核实 4 / 部分 4 / 未找到 4 / 未取得 0）
 
 | 城市 | 状态 | 数据来源文号 | 来源链接 |
 |------|------|-------------|---------|
-| 吉林市 | ⚠️ 未取得 | — | — |
-| 四平 | ⚠️ 未取得 | — | — |
-| 延边 | ⚠️ 未取得 | — | — |
-| 松原 | ⚠️ 未取得 | — | — |
-| 白城 | ⚠️ 未取得 | — | — |
-| 白山 | ⚠️ 未取得 | — | — |
-| 辽源 | ⚠️ 未取得 | — | — |
-| 通化 | ⚠️ 未取得 | — | — |
-| 长春 | ⚠️ 未取得 | — | — |
+| 乌兰察布 | ✅ 已核实 | 乌政办发〔2024〕10号 | <https://www.wulanchabu.gov.cn/rmt/userfiles/ueditor/upload/file/20240322/1711099430852080496.docx> |
+| 乌海 | 🟡 部分 | — | <http://www.wuhai.gov.cn/wuhai/xxgk4/ylbzjzfxxgk/fdzdgknr7899/zcwj66/1433598/index.html> |
+| 兴安盟 | ⚠️ 未找到 | — | — |
+| 包头 | ⚠️ 未找到 | — | — |
+| 呼伦贝尔 | ✅ 已核实 | 呼政办发〔2024〕66号 | <https://www.hlbe.gov.cn/OpennessGazette/show/8914.html> |
+| 呼和浩特 | 🟡 部分 | — | <https://www.nmg.gov.cn/zwgk/gzk/msgz/hhht/202112/P020211229531096842917.docx> |
+| 巴彦淖尔 | 🟡 部分 | — | <http://zjj.bynr.gov.cn/zjwtzgg/202607/t20260701_296643.html> |
+| 赤峰 | ✅ 已核实 | — | <https://ybj.chifeng.gov.cn/zzllms/zzYbyw/202603/t20260305_2738432.html> |
+| 通辽 | 🟡 部分 | — | <https://ylbzj.tongliao.gov.cn/xwzx/tzgg/202607/t20260706_1058433.html> |
+| 鄂尔多斯 | ✅ 已核实 | — | <http://ordos.gov.cn/zzms/slh_zcjd/202401/t20240111_3554347.html> |
+| 锡林郭勒盟 | ⚠️ 未找到 | — | — |
+| 阿拉善盟 | ⚠️ 未找到 | — | — |
 
-## 四川（21 城：已核实 10 / 部分 5 / 未找到 6 / 未取得 0）
+## 吉林（9 城：已核实 2 / 部分 3 / 未找到 4 / 未取得 0）
 
 | 城市 | 状态 | 数据来源文号 | 来源链接 |
 |------|------|-------------|---------|
-| 乐山 | 🟡 部分 | （乐山市医疗保障局等4部门《关于2026年职工基本医疗保险参保缴费有关事项的通知》，2025-10-14，页面未显示文号；公积金件亦未显示文号） | <https://www.leshan.gov.cn/lsswszf/shbzssqk/92337841/f1377a4cad7644128c0302de3.html><br><https://www.leshan.gov.cn/lsswszf/zzzqgsgg/827244580835397.html> |
+| 吉林市 | 🟡 部分 | — | <http://xxgk.jlcity.gov.cn/qtdw/gjjglzx_1/xbgkml/202608/t20260814_1332244.html><br><http://xxgk.jlcity.gov.cn/qtdw/gjjglzx_1/xbgkml/202608/t20260814_1332245.html> |
+| 四平 | ✅ 已核实 | — | <http://gjj.siping.gov.cn/tzgg/202607/t20260717_771109.html> |
+| 延边 | 🟡 部分 | — | <http://zfxxgk.yanbian.gov.cn/cyqzf/xxgkml/202201/t20220107_371243.html><br><http://zfxxgk.yanbian.gov.cn/cyqzf/zcjd/202201/t20220107_371283.html> |
+| 松原 | ⚠️ 未找到 | — | — |
+| 白城 | ⚠️ 未找到 | — | — |
+| 白山 | ⚠️ 未找到 | — | — |
+| 辽源 | ⚠️ 未找到 | — | — |
+| 通化 | ✅ 已核实 | 通市政办发〔2022〕25号 | <https://gjj.tonghua.gov.cn/views/CNewsDetail?id=a591a100773b44b1bac5e3305e7f26f4><br><http://www.jlrd.gov.cn/jlsjk/202311/P020231102773790005143.pdf> |
+| 长春 | 🟡 部分 | — | <http://zwgk.changchun.gov.cn/zcbm/szfgjj/gjjxxgkml/202607/t20260729_3503280.html> |
+
+## 四川（21 城：已核实 11 / 部分 4 / 未找到 6 / 未取得 0）
+
+| 城市 | 状态 | 数据来源文号 | 来源链接 |
+|------|------|-------------|---------|
+| 乐山 | ✅ 已核实 | — | <https://www.leshan.gov.cn/lsswszf/zzzqgsgg/827244580835397.html><br><https://www.leshan.gov.cn/lsswszf/shbzssqk/92337841/f1377a4cad7644128c0302de3.html> |
 | 内江 | 🟡 部分 | （内江市医保局/财政局/税务局关于2026年度灵活就业人员参加职工医保缴费标准等有关情况的通知，2025-12-19，页面未显示文号） | <https://www.neijiang.gov.cn/njs/xgzc2/202601/0cce51fac6fe4a79baf175ac4115c736.shtml> |
 | 凉山 | ⚠️ 未找到 | — | — |
 | 南充 | ⚠️ 未找到 | — | — |
@@ -116,9 +116,9 @@
 | 广元 | ✅ 已核实 | 广医保办发〔2026〕20号 | <https://zwzx.cngy.gov.cn/News/Detail/b1a558a1e4234f0a8f176b3f474191af.html><br><https://ybj.cngy.gov.cn/new/show/f6f97eeb64cd464792ac0f54e5c4e6bd.html> |
 | 广安 | ⚠️ 未找到 | — | — |
 | 德阳 | ⚠️ 未找到 | — | — |
-| 成都 | 🟡 部分 | （成都住房公积金管理委员会通知，标题《关于调整成都住房公积金缴存基数及租房提取额度的通知》，页面正文未取到） | <https://cdzfgjj.chengdu.gov.cn/gkml/qtwj/1534506168435605504.shtml> |
+| 成都 | 🟡 部分 | — | <https://cdzfgjj.chengdu.gov.cn/gkml/qtwj/1534506168435605504.shtml> |
 | 攀枝花 | ✅ 已核实 | （攀枝花市住房公积金管理中心通知，2026-07-10） | <http://pzhsrhq.sczwfw.gov.cn/art/2026/7/30/art_25555_321292.html?areaCode=510411000000> |
-| 泸州 | 🟡 部分 | （泸州市住房公积金管理委员会关于2026年住房公积金缴存比例及缴存基数执行标准的通知） | <https://zfgjj.luzhou.cn/tzgg/content_34410> |
+| 泸州 | 🟡 部分 | — | <https://luzhou.gov.cn/xw/rdgz/content_1094287> |
 | 甘孜 | ⚠️ 未找到 | — | — |
 | 眉山 | ✅ 已核实 | 眉医保办发〔2025〕24号 | <http://mssdpq.sczwfw.gov.cn/art/2026/7/22/art_20142_320627.html> |
 | 绵阳 | ✅ 已核实 | 绵办规〔2026〕3号 | <https://www.my.gov.cn/mysrmzf/c100061/202607/a871bed3caa84cd5a54989392a09d0ce.shtml><br><https://www.beichuan.gov.cn/beichuan/c125502/202609/11f89913af114903af7de8c4046d5963.shtml> |
@@ -137,28 +137,28 @@
 | 吴忠 | ✅ 已核实 | 《关于调整吴忠市住房公积金2026年度最高月缴存额的通知》（吴忠市住房公积金管理中心，2026-07-06印发、2026-07-09发布，未标注文号） | <https://www.nxzfgjj.com/wzgjj/info/1003/5165.htm> |
 | 固原 | ✅ 已核实 | 《固原市住房公积金管理中心关于开展2026年度住房公积金缴存基数调整工作的通知》（2026-06-26印发、2026-06-29发布，未标注文号）；宁政规发〔2025〕2号（最低工 | <http://nxzfgjj.com/gygjj/info/1021/12509.htm> |
 | 石嘴山 | ✅ 已核实 | 《石嘴山市住房公积金管理中心关于调整2026年度住房公积金缴存基数上限的通知》（2026-06-30，未标注文号） | <https://www.nxzfgjj.com/szsgjj//info/1304/20709.htm> |
-| 银川 | ✅ 已核实 | 《银川住房公积金管理中心关于2026年度住房公积金缴存基数调整的通知》（2026-06-29印发，2026-07-01发布，未标注文号） | <http://gjj.yinchuan.gov.cn/info/1025/32428.htm> |
+| 银川 | ✅ 已核实 | — | <https://www.yinchuan.gov.cn/xxgk/bmxxgkml/zfgjjglzx/xxgkml_2829/bmqtwj_2837/202608/t20260810_5309448.html> |
 
-## 安徽（16 城：已核实 11 / 部分 2 / 未找到 3 / 未取得 0）
+## 安徽（16 城：已核实 14 / 部分 2 / 未找到 0 / 未取得 0）
 
 | 城市 | 状态 | 数据来源文号 | 来源链接 |
 |------|------|-------------|---------|
 | 亳州 | ✅ 已核实 | 公积金委〔2026〕3号（亳州市住房公积金管理委员会《关于开展2026年度住房公积金缴存基数调整工作的通知》，发文 2026-08-02、发布 2026-08-04） | <https://gjj.bozhou.gov.cn/XxgkContent/show/2998090.html> |
 | 六安 | ✅ 已核实 | 六市金管〔2025〕26号（六安市住房公积金中心，成文/发布 2025-11-28） | <https://zfgjj.luan.gov.cn/public/6608511/10733324.html> |
-| 合肥 | ⚠️ 未找到 | — | — |
+| 合肥 | 🟡 部分 | — | <https://wjw.ah.gov.cn/group4/M00/05/76/wKg862SmeDWAAmxCAALovolVxFA926.pdf> |
 | 安庆 | ✅ 已核实 | 宜公积金〔2026〕6号（安庆市住房公积金管理中心，2026-06-25） | <https://gjj.anqing.gov.cn/xxfb/tzgg/2004206789.html><br><https://gjj.anqing.gov.cn/group4/M00/05/BF/FBUWFGo88m-ADoLTAAOjTLs6YsY847.pdf> |
 | 宣城 | ✅ 已核实 | 正文未列文号（宣城市住房公积金管理中心，2025-12-08） | <https://gjj.xuancheng.gov.cn/News/show/1689694.html><br><https://www.xuancheng.gov.cn/Livelihood/show/8572.html> |
 | 宿州 | ✅ 已核实 | 正文未列文号（宿州市住房公积金管理中心，成文 2026-06-30、发布 2026-07-01） | <https://gjj.ahsz.gov.cn/xwzx/tzgg/196451821.html><br><https://gjj.ahsz.gov.cn/public/2655681/196446321.html> |
 | 池州 | ✅ 已核实 | 池房金管〔2026〕7号（另引 池房金委〔2026〕6号） | <https://gjjzx.chizhou.gov.cn/Content/show/779929.html> |
-| 淮北 | ✅ 已核实 | 淮房金〔2026〕9号（淮北市住房公积金管理中心，2026-06-18） | <https://hbzfgjj.huaibei.gov.cn/xwdt/ggtz/58040385.html> |
-| 淮南 | ✅ 已核实 | 《关于调整2026年度淮南市住房公积金缴存基数上限的通知》（淮南市住房公积金管理中心，2026-06-30） | <https://gjj.huainan.gov.cn/tzgg/tzgg/551864391.html> |
-| 滁州 | ✅ 已核实 | 滁金管〔2026〕9号（滁州市住房公积金管理中心，2026-08-21） | <https://zfgjj.chuzhou.gov.cn/zcwj/sjwjian/1104473030.html> |
+| 淮北 | ✅ 已核实 | — | <https://ybj.huaibei.gov.cn/group1/M00/09/71/CqET9GZebMCABLyKAAFQ-W_w_3A408.pdf><br><https://hbzfgjj.huaibei.gov.cn/group1/M00/15/60/CqET9GpNuX2ANS7vAALhsva4lhQ621.pdf> |
+| 淮南 | ✅ 已核实 | — | <https://ybj.huainan.gov.cn/gzdt/sjdt/551502155.html><br><https://gjj.huainan.gov.cn/tzgg/tzgg/551864391.html> |
+| 滁州 | ✅ 已核实 | 滁金管〔2026〕9号 | <https://zfgjj.chuzhou.gov.cn/xwdt/tzgg/1104474821.html><br><https://www.mingguang.gov.cn/group3/M00/0C/1D/CpYIYGkpGfqAcVvVAHqwKPs3Mjg416.pdf> |
 | 芜湖 | ✅ 已核实 | 房金中心〔2026〕6号（芜湖市住房公积金管理中心） | <https://gjj.wuhu.gov.cn/openness/public/6596901/41216179.html><br><https://www.wuhu.gov.cn/openness/public/6596211/41307223.html> |
-| 蚌埠 | 🟡 部分 | 正文未列文号（蚌埠市住房公积金管理中心，成文 2026-06-30、发布 2026-07-01） | <https://www.bengbu.gov.cn/ywdt/ztzl/msfwu/zfly/ggts/51088478.html><br><https://zfgjj.bengbu.gov.cn/xwdt/tzgg/141067357.html> |
+| 蚌埠 | ✅ 已核实 | — | <https://ybj.bengbu.gov.cn/zfxxgk/public/22281/51972724.html><br><https://www.bengbu.gov.cn/zfxxgk/public/21981/53295112.html> |
 | 铜陵 | ✅ 已核实 | 正文未列文号（铜陵市住房公积金管理中心，2026-07-06 发布） | <https://gjj.tl.gov.cn/tlszfgjjglzx/c00045/pc/content/content_2073963361562583040.html><br><https://www.tl.gov.cn/openness/OpennessContent/show/1157729.html> |
-| 阜阳 | 🟡 部分 | 阜公积金〔2026〕40号（阜阳市住房公积金管理中心，成文 2026-06-23、发布 2026-06-24） | <https://gjj.fy.gov.cn/OpennessContent/show/2782627.html> |
-| 马鞍山 | ⚠️ 未找到 | — | <https://masgjj.mas.gov.cn/zcfg/zxwj/2006325061.html> |
-| 黄山 | ⚠️ 未找到 | — | <https://www.huangshan.gov.cn/zxzx/bmdt/8422526.html><br><https://gjjzx.huangshan.gov.cn/zwgk/public/6615989/11964426.html> |
+| 阜阳 | ✅ 已核实 | 阜公积金〔2026〕40号 | <https://gjj.fy.gov.cn/OpennessContent/show/2782627.html><br><https://ylbz.fy.gov.cn/OpennessContent/download/2278184.html?type=pdf> |
+| 马鞍山 | ✅ 已核实 | 马医保发〔2019〕30号 | <https://ylbzj.mas.gov.cn/xxgk/openness/detail/content/5dd3b3d3c632a3dd28ac68f1.html><br><https://masgjj.mas.gov.cn/xxgk/openness/detail/content/6953eda18866886e328b4d62.html> |
+| 黄山 | 🟡 部分 | — | <https://ylbz.huangshan.gov.cn/zwgk/public/6615779/8912127.html> |
 
 ## 山东（16 城：已核实 13 / 部分 1 / 未找到 2 / 未取得 0）
 
@@ -528,36 +528,16 @@
 | 黑河 | ✅ 已核实 | 黑市房金管办发〔2026〕5号 | <https://www.hhgjj.org.cn/newsDetailsnew.jsp?newsid=2662&navid=4> |
 | 齐齐哈尔 | ✅ 已核实 | （齐齐哈尔市住房公积金管理中心《关于调整2026年度职工住房公积金缴存基数上限的通知》，正文未列文号；依据齐管规〔2018〕2号） | <https://www.qqhrzfgjj.org.cn/tzgg/1621.jhtml><br><https://qqhr.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/bmzc/dk/art/2026/art_3cc86a4eeb6642b2a55e3ffcd766369a.html> |
 
-## ⚠️ 一处已知的统计不完整（必须说明）
-
-**云南 / 内蒙古 / 吉林 三省在本报告中显示「未取得」，这是统计口径问题，不是真的没查。**
-
-原因：本报告的统计脚本只读取 `docs/sources/*.json`（G/P/Q/R 四轮），
-而**首批 9 组核查的结果因返回值截断，只保住了 7 个省**，存为纯文本
-`docs/sources/raw-2026-09-30-workflow.json.txt`（74.7 KB）—— **该文件不是 `.json`，脚本没有解析它**。
-
-**那三省的实际核查成果是存在的**，且本会话的多项修正正是基于它：
-
-| 来源 | 实际成果 |
-|------|---------|
-| 云南 | 昆明公积金 2170~32470 → **2270~32543**（已修正）；丽江医保 8% → **6%**；怒江医保 8% → **7%** |
-| 吉林 | 延边医保 8% → **6%**（延州政办发〔2022〕1号） |
-| 内蒙古 | 乌海等市的费率线索（未落地，站点不可达） |
-
-**结论**：本报告的「未取得 39 城」中，**约 37 城（云南16+内蒙古12+吉林9）实际已有核查记录**，
-只是未纳入本次统计。**真实覆盖率应高于 88.4%，估计在 95% 左右。**
-
-**要彻底修正**，需把 `raw-2026-09-30-workflow.json.txt` 解析成标准 JSON 并合并进 `G1.json`。
-该文件格式是被截断的 JSON（末尾不完整），解析时需容错处理。
-
 ## 说明
 
 1. **「已核实」= 找到官方来源且数值与仓库一致**；「部分」= 只核实了部分项目，或来源为事业单位官网；
    「未找到」= 有官方来源但未覆盖该项；「未取得」= 本轮未能定位到任何官方来源。
 2. **「有来源」不等于「数据一定正确」** —— 本报告只记录**来源可及性**。
-   与仓库不一致的条目（132 条）已单列于 `docs/sources/_summary.json`；
+   与仓库不一致的条目已单列于 `docs/sources/_summary.json`；
    其中经本人逐条复核确认的 **10 条已修正**（芜湖/铜陵/安庆/宿州/六安/池州/宣城/三沙/儋州/珠海）。
 3. 网络不可达（HTTP 000）与站点反爬是主要失败原因，约占失败项的四分之一；
    建议后续改用有头浏览器或更换网络环境重试。
-4. **本报告的统计脚本曾三次误判「已填」**（占位符有 `待核查` / 空串 / `（尚未核查，占位）` 三种写法），
+4. **首批 9 组的返回值曾被截断**，只保住 6 个省级单位（云南/内蒙古/吉林/四川/安徽/宁夏），
+   已从纯文本 `raw-2026-09-30-workflow.json.txt` **抢救出 79 城**并入 `G1b.json`。
+5. **统计脚本的「已填」判定曾三次误判**（占位符有 `待核查` / 空串 / `（尚未核查，占位）` 三种写法），
    现已改为按「是否有 url 或 confirms 是否有实质内容」判定，不再依赖特定占位字符串。
