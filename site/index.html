@@ -196,6 +196,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
     <div class="base-row"><span class="bl">工伤保险<span class="rng" id="rngIJ"></span></span><div style="display:flex;align-items:center"><input type="number" id="ijBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
     <div class="base-row"><span class="bl">住房公积金<span class="rng" id="rngHF"></span></span><div style="display:flex;align-items:center"><input type="number" id="hfBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
     <div class="sld"><label>公积金比例<span class="h" id="hfRateHint">0 或 5~12%</span></label><input type="range" id="hfRate" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateV">5%</span></div>
+    <div class="sld"><label>公积金比例（单位）<span class="h" id="hfRateCompHint">默认与个人相同</span></label><input type="range" id="hfRateComp" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateCompV">5%</span></div>
     <div id="ltcWrap"><label class="chk"><input type="checkbox" id="ltcOn" onchange="calc()">长期护理险（第六险）<span class="h" id="ltcRate"></span></label></div>
     <div class="nt" id="baseNote"></div>
   </div>
@@ -3463,6 +3464,9 @@ function readInputs(){
   $("startWarn").textContent=startClamped?"不能晚于当前月份，已按 "+mo+" 月计":"";
   var mW=Math.max(1,mo-startM+1),aM=Math.max(1,12-startM+1);
   var hfR=normHF(gv("hfRate"),CITY.hfRateMax);$("hfRate").value=hfR;$("hfRateV").textContent=hfR===0?"0%(不缴)":hfR+"%";var hfD=hfR/100;
+      /* 公积金单位比例：可与个人不同（如单位 12%、个人 5%），同样受该市上限约束 */
+      var hfRComp=normHF(gv("hfRateComp"),CITY.hfRateMax);$("hfRateComp").value=hfRComp;$("hfRateCompV").textContent=hfRComp===0?"0%(不缴)":hfRComp+"%";
+      var hfDComp=hfRComp/100;
   if(gv("hfBase")>0)lastHFBase=gv("hfBase");
   if(hfR===0){$("hfBase").value=0;$("hfBase").disabled=true;}
   else{$("hfBase").disabled=false;if(gv("hfBase")<=0)$("hfBase").value=lastHFBase>0?lastHFBase:HF.min;}
@@ -3477,7 +3481,7 @@ function readInputs(){
   var hB=cl(gv("hfBase"),HF.min,HF.max);
   var medFix=CITY.medFixEmp||0;
   return {P:P,M:M,U:U,MT:MT,IJ:IJ,HF:HF,sal:sal,mo:mo,startM:startM,mW:mW,aM:aM,
-          hfR:hfR,hfD:hfD,md:md,ml:ml,ltc:ltc,pB:pB,mB:mB,uB:uB,mtB:mtB,ijB:ijB,hB:hB,medFix:medFix};
+          hfR:hfR,hfRComp:hfRComp,hfD:hfD,hfDComp:hfDComp,md:md,ml:ml,ltc:ltc,pB:pB,mB:mB,uB:uB,mtB:mtB,ijB:ijB,hB:hB,medFix:medFix};
 }
 
 /* ---- 第 2 段：社保与公积金缴费 ----
@@ -3488,7 +3492,8 @@ function calcContrib(I){
   /* 深圳按户籍区分养老单位费率（深户 +1% 地方补充） */
   var pComp=CITY.hukou?(hk===1?I.P.comp+.01:I.P.comp):I.P.comp;
   var siC=I.pB*pComp+I.mB*I.md.comp+I.uB*I.U.comp+I.mtB*I.MT.comp+I.ijB*I.IJ.comp+(I.ltc?I.pB*CITY.ltc.comp:0);
-  var hfE=I.hB*I.hfD,hfC=I.hB*I.hfD;
+      /* 公积金：个人与单位比例**相互独立**（单位可在该市 5%~上限之间另选） */
+      var hfE=I.hB*I.hfD,hfC=I.hB*(I.hfDComp===undefined?I.hfD:I.hfDComp);
   return {pE:pE,mE:mE,uE:uE,ltcE:ltcE,siE:siE,pComp:pComp,siC:siC,hfE:hfE,hfC:hfC};
 }
 
@@ -3605,7 +3610,7 @@ function calcTax(I,C,D){
    只读入参与前四段的结果，不再重新计算；年终奖面板写到 bonusResult，
    结果面板写到 res。 */
 function renderResult(I,C,D,T){
-  var P=I.P,M=I.M,U=I.U,MT=I.MT,IJ=I.IJ,HF=I.HF,mo=I.mo,mW=I.mW,aM=I.aM,startM=I.startM,hfR=I.hfR,hB=I.hB;
+  var P=I.P,M=I.M,U=I.U,MT=I.MT,IJ=I.IJ,HF=I.HF,mo=I.mo,mW=I.mW,aM=I.aM,startM=I.startM,hfR=I.hfR,hfRComp=I.hfRComp,hB=I.hB;
   var ml=I.ml,md=I.md,ltc=I.ltc,medFix=I.medFix,pB=I.pB,mB=I.mB,uB=I.uB;
   var pE=C.pE,mE=C.mE,uE=C.uE,ltcE=C.ltcE,siE=C.siE,siC=C.siC,pComp=C.pComp,hfE=C.hfE,hfC=C.hfC;
   var curT=T.curT,net=T.net,ratio=T.ratio,totD=T.totD,sal=I.sal;
@@ -3623,9 +3628,9 @@ function renderResult(I,C,D,T){
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">个人社保合计</label><span class="v b" id="resSI" style="color:#059669">'+fm(siE)+' 元</span></div>';
   h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+fmtPct(pComp)+'%+医疗'+fmtPct(md.comp)+'%+失业'+fmtPct(U.comp)+'%+工伤'+fmtPct(IJ.comp)+'%'+(MT.comp>0?'+生育'+fmtPct(MT.comp)+'%':'，生育并入医保')+(ltc?'+长护'+fmtPct(CITY.ltc.comp)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
   h+='<div class="c"><div class="st sk">住房公积金'+(hfR===0?'（未缴存）':'')+'</div>';
-  h+='<div class="r"><label>基数 '+fm(hB)+' × '+hfR+'%</label><span class="v"></span></div>';
+  h+='<div class="r"><label>基数 '+fm(hB)+'</label><span class="v" style="font-size:11px;color:#9ca3af">个人 '+hfR+'% / 单位 '+hfRComp+'%</span></div>';
   h+='<div class="r"><label>个人缴存</label><span class="v" id="resHF" style="color:#0284c7">'+fm(hfE)+'</span></div>';
-  h+='<div class="r"><label>单位缴存</label><span class="v" style="color:#9ca3af">'+fm(hfC)+'</span></div>';
+  h+='<div class="r"><label>单位缴存</label><span class="v" id="resHFComp" style="color:#9ca3af">'+fm(hfC)+'</span></div>';
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">公积金入账合计</label><span class="v b" style="color:#0284c7">'+fm(hfE+hfC)+' 元</span></div></div>';
   h+='<div class="c"><div class="st ro">个税 · 累计预扣预缴（已就业'+mW+'个月）</div>';
   h+='<div class="r"><label>累计收入（'+mW+'个月）</label><span class="v">'+fm(T.cumI)+'</span></div>';

@@ -81,6 +81,25 @@ const A = loadCalculator();
    故本计算器**不内置任何省份默认值**，只提供比例输入，并在界面明示需查当地规定。
    减征作用于**年度应纳税额**（不是应纳税所得额）。
    校验：年度税额 10000、减征 50% → 减征 5000、减免后 5000。 */
+/* ---------- 公积金单位比例独立设置 ----------
+   现实：单位可在该市 5%~上限之间另选比例，**不必与个人相同**
+   （如单位 12%、个人 5%）。原实现是 hfC=I.hB*I.hfD（单位 = 个人），已拆开。
+   校验：基数 10000、个人 5% → 个人 500；单位 12% → 单位 1200；合计 1700。 */
+section('公积金单位比例');
+{
+  eq('公积金·存在独立的单位比例输入', /id="hfRateComp"/.test(html), true);
+  eq('公积金·单位比例同样受该市上限约束', /hfRComp=normHF\(gv\("hfRateComp"\),CITY\.hfRateMax\)/.test(html), true);
+  eq('公积金·单位缴存用独立比例（不再等于个人）', /hfC=I\.hB\*\(I\.hfDComp===undefined\?I\.hfD:I\.hfDComp\)/.test(html), true);
+  eq('公积金·hfRComp 已放进 readInputs 返回对象', /hfR:hfR,hfRComp:hfRComp,/.test(html), true);
+  eq('公积金·renderResult 已取出 hfRComp', /hfR=I\.hfR,hfRComp=I\.hfRComp,/.test(html), true);
+  eq('公积金·基数行同时显示个人与单位比例', /个人 '\+hfR\+'% \/ 单位 '\+hfRComp\+'%/.test(html), true);
+  /* 数值校验：基数 10000 */
+  var _b = 10000;
+  eq('公积金·基数 10000 个人 5% 得 500', _b * 5 / 100, 500);
+  eq('公积金·基数 10000 单位 12% 得 1200', _b * 12 / 100, 1200);
+  eq('公积金·入账合计 1700', _b * 5 / 100 + _b * 12 / 100, 1700);
+  eq('公积金·两者相同时（各 5%）合计 1000', _b * 5 / 100 + _b * 5 / 100, 1000);
+}
 section('减免税（减征）');
 {
   eq('减免税·减征比例输入存在', /id="reliefPct"/.test(html), true);
