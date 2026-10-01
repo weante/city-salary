@@ -1,0 +1,72 @@
+{
+  "group": "G5",
+  "generatedAt": "2026-10-01",
+  "provinces": [
+    {
+      "province": "江西",
+      "provinceWideUrls": [
+        "https://www.jxzfgjj.cn/jxszfbzhgjjglzx/tzgg/pc/content/content_2071479115830697984.html"
+      ],
+      "provinceWideNote": "江西省三项社保（养老/工伤/失业）为省级统一基数，仓库依据「赣人社字〔2025〕150号」，2025 年度 3915~19575（基准 6525 元/月）。截至本次核查，仍未在 .gov.cn 站点抓到该文号原文页（江西人社厅 rst.jiangxi.gov.cn 的 SPA 通知公告栏目经 Chrome 无头与 curl 抓取均返回空白/0 字节）。医保省级口径已由九江市医保局官方通知间接锁定：九医保字〔2026〕22号原文引述「《江西省医疗保障局 江西省财政厅 国家税务总局江西省税务局关于规范职工基本医疗保险（含生育保险）缴费基数的通知》（赣医保字〔2024〕35号）」，即全省职工基本医疗保险（含生育保险）缴费基数＝各统筹区上年度全口径城镇单位就业人员平均工资，并按 300%/60% 核定上下限；大病保险同用该基数。公积金方面，江西省住房保障和公积金管理中心《关于做好2026年度住房公积金缴存基数调整工作的通知》（2026-06-29，jxzfgjj.cn 为省级公积金管理中心事业单位官网，officialDomain 记 false）确认：2026 公积金年度（2026-07-01~2027-06-30）省直缴存基数上限为南昌市 2025 年城镇非私营单位在岗职工月平均工资的 3 倍即 30165 元、缴存比例继续执行 5%~12%、月缴存额上限 7240 元（单位+个人）、下限 260 元。",
+      "cities": [
+        { "city": "南昌", "status": "official-confirmed", "urls": ["https://www.nc.gov.cn/ncszf/jrnca/202606/126cdce0ef1d47a8932976f0c9f9901a.shtml", "https://www.jxzfgjj.cn/jxszfbzhgjjglzx/tzgg/pc/content/content_2071479115830697984.html"], "officialDomain": true, "docNumber": "《关于调整2026年度住房公积金缴存基数的通知》（南昌住房公积金管理中心，2026-06-26 发布）", "confirms": "公积金：南昌市人民政府网（nc.gov.cn）2026-06-28《南昌市调整住房公积金缴存基数 7月1日起执行》确认「《关于调整2026年度住房公积金缴存基数的通知》……2026年7月1日至2027年6月30日，全市将执行住房公积金缴存上下限新标准」「缴存基数上限为南昌市2025年城镇非私营单位在岗职工月平均工资的3倍，即30165元」「新开户企业可在5%—12%范围内自主确定缴存比例」「2026年度住房公积金月缴存额上限为7240元（含单位、个人部分），下限260元（含单位、个人部分）」——下限基数=260÷2÷5%=2600 元。江西省住房保障和公积金管理中心同口径文件（省直）亦确认上限 30165、比例 5%~12%。", "mismatch": "" },
+        { "city": "景德镇", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "萍乡", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "九江", "status": "official-confirmed", "urls": ["http://ybj.jiujiang.gov.cn/zwgk_209/zcfg/zcwj/202607/t20260727_7281168.html", "http://ybj.jiujiang.gov.cn/zwgk_209/zcfg/zcjd/202607/t20260729_7282872.html"], "officialDomain": true, "docNumber": "九医保字〔2026〕22号（九江市医疗保障局 九江市财政局 国家税务总局九江市税务局，2026-07-27）", "confirms": "九江市医疗保障局官网（ybj.jiujiang.gov.cn）原文《九医保字〔2026〕22号 九江市医疗保障局 九江市财政局 国家税务总局九江市税务局关于规范2026年度职工医疗保险（含生育保险）缴费基数的通知》：「根据《江西省医疗保障局 江西省财政厅 国家税务总局江西省税务局关于规范职工基本医疗保险（含生育保险）缴费基数的通知》（赣医保字〔2024〕35号）规定……九江市2025年度全口径城镇单位从业人员平均工资为78361元（月平均工资为6530元）。2026年度的九江市职工基本医疗保险（含生育保险）和大病保险以九江市2025年度全口径城镇单位就业人员平均工资为缴费基数，并以其300%、60%核定当年职工基本医疗保险个人缴费基数上下限。」「本通知自2026年8月1日起执行。」→ 基数上下限 6530×60%=3918、6530×300%=19590；大病个人 0.2%×6530=13.06 元/月。同页图文解读（2026-07-29）为题图形式，正文数值以上述通知原文为准。", "mismatch": "" },
+        { "city": "新余", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "鹰潭", "status": "official-confirmed", "urls": ["http://www.yingtan.gov.cn/art/2026/7/31/art_13034_1609845.html"], "officialDomain": true, "docNumber": "鹰医保字〔2026〕27号（市医保局、市财政局、市税务局联合印发；鹰潭市政府网 2026-07-31 发布，索引号 Y00035/2026-04490）", "confirms": "鹰潭市人民政府网（yingtan.gov.cn）2026-07-31《8月1日起执行！鹰潭职工医保缴费基数有调整》原文：「2026年8月1日起，2025年度我市全口径城镇单位就业人员平均工资为6850元/月，我市职工基本医疗保险（含生育保险）缴费基数相应调整，上限调整为20550元/月，下限调整为4110元/月」，并附《鹰潭市职工医保缴费基数和费率表（2026年8月1日起实施）》：基本医保（含生育保险）普通职工基数 4110~20550、单位 6.8%、个人 2%；灵活就业人员基数 6850、费率 8.8%（602.8 元/月）；大病保险基数 6850、单位 0.3%（20.55 元/月）、个人 0.2%（13.7 元/月），医保退休人员单位 0、个人 0.2%（13.7 元/月），灵活就业 0.5%（34.25 元/月）。页末附件名明确为「鹰医保字〔2026〕27号关于调整我市职工基本医疗保险（含生育保险）使用的全口径城镇单位就业人员月平均工资的通知.pdf」。", "mismatch": "" },
+        { "city": "赣州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "吉安", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "宜春", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "抚州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "上饶", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" }
+      ]
+    },
+    {
+      "province": "河北",
+      "provinceWideUrls": [
+        "https://rst.hebei.gov.cn/pageWarp?isId=1784107904415nkh&id=1"
+      ],
+      "provinceWideNote": "已确认。河北人社网（rst.hebei.gov.cn，SPA 页面需 Chrome --headless=new --dump-dom 渲染）2026-07-14 发布《河北省人力资源和社会保障厅 河北省财政厅关于公布2026年社保缴费有关基数的通知》（冀人社字〔2026〕57号）原文：「2026年全省社会保险（含职工基本养老保险、工伤保险、失业保险）缴费基数以2025年全口径城镇单位就业人员月平均工资6794元确定个人缴费基数上下限，缴费基数下限为4076元（60%），缴费基数上限为20382元（300%）。」——与仓库值（2026年度三项基数 4076~20382、基准 6794）完全一致。注意官方文义仅覆盖养老/工伤/失业三项，医保基数另按单独口径。",
+      "cities": [
+        { "city": "石家庄", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "唐山", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "秦皇岛", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "邯郸", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "邢台", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "保定", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "张家口", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "承德", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "沧州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "廊坊", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "衡水", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" }
+      ]
+    },
+    {
+      "province": "河南",
+      "provinceWideUrls": [
+        "https://hrss.henan.gov.cn/2025/09-19/3228514.html"
+      ],
+      "provinceWideNote": "已确认。河南省人力资源和社会保障厅官网（hrss.henan.gov.cn）发布《河南省人力资源和社会保障厅 河南省医疗保障局 河南省财政厅 国家税务总局河南省税务局关于公布2025年度社会保险缴费基数上下限标准的通知》（豫人社办〔2025〕67号，成文/发布日期 2025-09-19）原文：「自2025年7月1日起，全省社会保险（含基本养老保险、基本医疗保险、工伤保险、失业保险、生育保险）缴费基数以6385元/月确定个人缴费基数上下限，缴费基数下限为3831元（60%），缴费基数上限为19155元（300%）。因2025年度缴费基数上下限标准调整产生的社会保险费差额，参保单位和参保个人应在2025年12月底前完成差额补缴，期间免收滞纳金。」——与仓库值（2025年度 3831~19155、基准 6385）完全一致；官方文义明确医保与生育保险同用该基数，故河南 17 市 2025 年度基数已获省级原文背书（2026 缴费年度仍为暂定值，见仓库 warning）。",
+      "cities": [
+        { "city": "郑州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "开封", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "洛阳", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "平顶山", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "安阳", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "鹤壁", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "新乡", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "焦作", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "濮阳", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "许昌", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "漯河", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "三门峡", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "南阳", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "商丘", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "信阳", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "周口", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "驻马店", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" }
+      ]
+    }
+  ]
+}

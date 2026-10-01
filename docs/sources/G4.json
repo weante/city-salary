@@ -1,0 +1,74 @@
+{
+  "group": "G4",
+  "generatedAt": "2026-10-01",
+  "provinces": [
+    {
+      "province": "广西",
+      "provinceWideUrls": [
+        "http://rst.gxzf.gov.cn/zwgk/xxgkzcfg/fgfxlm/t28152939.shtml",
+        "https://guangxi.chinatax.gov.cn/xxgk/tzgg/202609/t20260921_440353.html"
+      ],
+      "provinceWideNote": "《广西壮族自治区人力资源和社会保障厅等4部门关于公布2026年度社会保险缴费基数上下限标准的通知》（桂人社发〔2026〕32号，成文 2026-09-18，发布 2026-09-20，效力状态：有效）原文经 rst.gxzf.gov.cn 抓取全文确认：「2026年我区职工基本养老保险、职工基本医疗保险、失业保险按7008元/月作为核定个人缴费基数上下限的指标，缴费基数上限为21024元/月，下限为4204.8元/月」——与仓库值 4204.8~21024、核定指标 7008 完全一致，且证实养老/医疗/失业确为同一口径（医疗首次并入同一通知）。",
+      "cities": [
+        { "city": "南宁", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "柳州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "桂林", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "梧州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "北海", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "防城港", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "钦州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "贵港", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "玉林", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "百色", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "贺州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "河池", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "来宾", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "崇左", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" }
+      ]
+    },
+    {
+      "province": "新疆",
+      "provinceWideUrls": [
+        "https://rst.xinjiang.gov.cn/xjrst/c112734/202609/234e01d8b8b9404ca3c98c2cee384903.shtml",
+        "https://4g.aks.gov.cn/zwyw/dqyw/20260917/i1436046.html"
+      ],
+      "provinceWideNote": "新疆维吾尔自治区人社厅/财政厅/税务局《关于明确2026年自治区城镇职工基本养老保险缴费基数的通知》（2026-07-27 发布，rst.xinjiang.gov.cn 原文页）经全文抓取确认：「2025年自治区全口径城镇单位就业人员平均工资为104926元（8744元/月）」「2026年自治区职工基本养老保险个人缴费基数下限（60%）为5246元/月，上限（300%）为26231元/月」——与仓库值 5246~26231、全口径月均 8744 完全一致。注意：该通知标题与正文口径均限定为「城镇职工基本养老保险」个人缴费基数，仓库「自治区统一基数」表述需注意医保为单独口径（见各市）。阿克苏地区政府 2026-09-17 转发页（4g.aks.gov.cn）为同口径地方落地佐证。",
+      "cities": [
+        { "city": "乌鲁木齐", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "克拉玛依", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "吐鲁番", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "哈密", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "昌吉", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "博尔塔拉", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "巴音郭楞", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "阿克苏", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "克孜勒苏", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "喀什", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "和田", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "伊犁", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "塔城", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "阿勒泰", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" }
+      ]
+    },
+    {
+      "province": "江苏",
+      "provinceWideUrls": [],
+      "provinceWideNote": "待核查：苏人社发〔2025〕33号 2025年度基数 4952~24762；2026 年度新基数是否公布。",
+      "cities": [
+        { "city": "南京", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "苏州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "无锡", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "常州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "徐州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "南通", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "连云港", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "淮安", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "盐城", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "扬州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "泰州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "镇江", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" },
+        { "city": "宿迁", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "", "mismatch": "" }
+      ]
+    }
+  ]
+}

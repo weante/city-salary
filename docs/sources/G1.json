@@ -1,0 +1,360 @@
+{
+  "group": "G1",
+  "generatedAt": "2026-10-01",
+  "provinces": [
+    {
+      "province": "云南",
+      "provinceWideUrls": [],
+      "provinceWideNote": "（尚未核查）",
+      "cities": [
+        {
+          "city": "昆明",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "曲靖",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "玉溪",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "保山",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "昭通",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "丽江",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "普洱",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "临沧",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "楚雄",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "红河",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "文山",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "西双版纳",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "大理",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "德宏",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "怒江",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "迪庆",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        }
+      ]
+    },
+    {
+      "province": "内蒙古",
+      "provinceWideUrls": [],
+      "provinceWideNote": "（尚未核查）",
+      "cities": [
+        {
+          "city": "呼和浩特",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "包头",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "乌海",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "赤峰",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "通辽",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "鄂尔多斯",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "呼伦贝尔",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "巴彦淖尔",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "乌兰察布",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "兴安盟",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "锡林郭勒盟",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "阿拉善盟",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        }
+      ]
+    },
+    {
+      "province": "吉林",
+      "provinceWideUrls": [],
+      "provinceWideNote": "（尚未核查）",
+      "cities": [
+        {
+          "city": "长春",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "吉林市",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "四平",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "辽源",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "通化",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "白山",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "松原",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "白城",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        },
+        {
+          "city": "延边",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "（尚未核查，占位）",
+          "mismatch": ""
+        }
+      ]
+    }
+  ]
+}

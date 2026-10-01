@@ -1,0 +1,101 @@
+{
+  "group": "G9",
+  "generatedAt": "2026-10-01",
+  "provinces": [
+    {
+      "province": "青海",
+      "provinceWideUrls": [
+        "http://qinghai.chinatax.gov.cn/hbz/sjtzgg/202609/a75a3e1426ff47609e20a49c859ac000.shtml",
+        "https://rsj.haibei.gov.cn/xwzx/gzdt/9394221.html",
+        "http://www.qinghai.gov.cn/xxgk/xxgk/xzgfxwj/202512/t20251230_389755.html"
+      ],
+      "provinceWideNote": "青人社厅发〔2026〕54号（2026-09-15，青海省人社厅/财政厅/医保局/青海省税务局）：2026年全省社会保险缴费基数以2025年全口径城镇单位就业人员月平均工资8888元确定，下限5333元（60%）、上限26664元（300%）。青政办〔2025〕28号《青海省关于推进职工医保省级统筹实施意见》（2025-12-25印发，2026-01-01施行）：职工基本医疗保险用人单位缴费费率8%、职工个人缴费费率2%；机关和经费来源主要由财政拨款及部分由财政支持的事业单位生育保险缴费费率0.5%，企业和经费自理的事业单位生育保险缴费费率0.9%；职工大额医疗费用补助筹资标准为全省统一规定的全口径城镇单位就业人员年平均工资的0.1%左右，由职工个人（含退休、退职人员）缴纳。",
+      "cities": [
+        {
+          "city": "西宁",
+          "status": "official-partial",
+          "urls": [
+            "http://qinghai.chinatax.gov.cn/hbz/sjtzgg/202609/a75a3e1426ff47609e20a49c859ac000.shtml",
+            "http://www.qinghai.gov.cn/xxgk/xxgk/xzgfxwj/202512/t20251230_389755.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "青人社厅发〔2026〕54号；青政办〔2025〕28号",
+          "confirms": "西宁执行省级统一口径：2026年度社保缴费基数5333~26664（全口径月均8888）；职工医保单位8%、个人2%；生育机关事业0.5%/企业0.9%；大额医疗费用补助按全口径年平均工资0.1%左右由个人缴纳。",
+          "mismatch": "未取到西宁2026年度公积金缴存基数（仓库值2080~31995）的官方原文页面，西宁住房公积金管理中心通知原文为微信公众号发布（mp.weixin.qq.com/s/_Ttoxgu_eyrQMpkxqW-zfg），抓取受阻，暂未确认。"
+        },
+        {
+          "city": "海东",
+          "status": "official-partial",
+          "urls": [
+            "http://qinghai.chinatax.gov.cn/hbz/sjtzgg/202609/a75a3e1426ff47609e20a49c859ac000.shtml",
+            "https://www.haidong.gov.cn/Detailed-document/images/2026062310435086061.pdf"
+          ],
+          "officialDomain": true,
+          "docNumber": "青人社厅发〔2026〕54号；海东市人民政府令 HDFS01—2026—0003（2026-05-19，海东市住房公积金归集/提取/贷款管理办法）",
+          "confirms": "海东执行省级统一社保基数5333~26664与医保8%/2%。海东市住房公积金归集管理办法（2026-06-19施行）确认：缴存基数最高不高于海东市上一年度职工月平均工资的3倍、最低不低于海东市公布的最低工资标准；缴存比例不高于12%且不低于5%。",
+          "mismatch": "海东2026年度公积金缴存基数具体上下限（仓库值2080~28392）未在已抓取官方页面出现具体数字。"
+        },
+        {
+          "city": "海北",
+          "status": "official-partial",
+          "urls": [
+            "https://rsj.haibei.gov.cn/xwzx/gzdt/9394221.html",
+            "http://qinghai.chinatax.gov.cn/hbz/sjtzgg/202609/a75a3e1426ff47609e20a49c859ac000.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "青人社厅发〔2026〕54号",
+          "confirms": "海北州人社局转发省级通知，确认2026年度社保缴费基数下限5333元、上限26664元（2025年全口径月均8888元）。",
+          "mismatch": "海北2026年度公积金缴存基数（仓库值1700~25472，仓库已标 warn）未取到官方原文。"
+        },
+        {
+          "city": "黄南",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "未检索到黄南州单独的官方文件；该州社保执行青海省级统一口径（青人社厅发〔2026〕54号）。",
+          "mismatch": ""
+        },
+        {
+          "city": "海南州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "未检索到海南州单独的官方文件；该州社保执行青海省级统一口径（青人社厅发〔2026〕54号）。",
+          "mismatch": ""
+        },
+        {
+          "city": "果洛",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "未检索到果洛州单独的官方文件；该州社保执行青海省级统一口径（青人社厅发〔2026〕54号）。",
+          "mismatch": ""
+        },
+        {
+          "city": "玉树",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "未检索到玉树州单独的官方文件；该州社保执行青海省级统一口径（青人社厅发〔2026〕54号）。",
+          "mismatch": ""
+        },
+        {
+          "city": "海西",
+          "status": "official-confirmed",
+          "urls": [
+            "https://www.hxzfgjj.com.cn/info/1017/4853.htm",
+            "http://qinghai.chinatax.gov.cn/hbz/sjtzgg/202609/a75a3e1426ff47609e20a49c859ac000.shtml"
+          ],
+          "officialDomain": false,
+          "docNumber": "海西州住房公积金管理中心《关于2026年度住房公积金缴存基数调整的通知》（2026-07-06）；青政〔2025〕11号",
+          "confirms": "海西州2026年度住房公积金缴存基数上限37166元（海西州城镇非私营单位从业人员含青海油田2025年度月平均工资的3倍）、下限2080元（青政〔2025〕11号全省最低工资标准）；单位与职工缴存比例各不低于5%、不高于12%。",
+          "mismatch": ""
+        }
+      ]
+    }
+  ]
+}

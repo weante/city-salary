@@ -1,0 +1,473 @@
+{
+  "group": "G3",
+  "generatedAt": "2026-10-01",
+  "provinces": [
+    {
+      "province": "山东",
+      "provinceWideUrls": [
+        "http://hrss.shandong.gov.cn/resource/srst/att/202608/c7d7b5ca-8d37-4b59-92b7-0a04df2be293.pdf",
+        "http://hrss.shandong.gov.cn/articles/ch00378/202608/b997b4b3-8f32-49a3-b622-b3b74bfd8bf9.shtml"
+      ],
+      "provinceWideNote": "《鲁人社字〔2026〕75号》（山东省人社厅、省医保局、省税务局、国家税务总局青岛市税务局联合发文，省人社厅官网 2026-08 公开，PDF 原文）：2025年度全省全口径城镇单位就业人员平均工资 91452 元/年；据此核定 2026 年度职工基本养老保险、职工基本医疗保险、职工长期护理保险、工伤保险、失业保险个人月缴费基数上限 22863 元/月、下限 4573 元/月。**文号与数值均已在 PDF 正文中核对一致**（仓库值 4573~22863、全口径年平 91452 完全吻合）。补充：该文明确五险口径**还包含「职工长期护理保险」**，仓库未记载山东长护险的费率/扣缴情形，建议补一行说明（长护险在山东多数市从医保统筹基金划转或单位缴纳，个人不额外扣，但需逐市确认）。",
+      "cities": [
+        {
+          "city": "济南",
+          "status": "official-confirmed",
+          "urls": [
+            "https://gjj.jinan.gov.cn/col/col111465/art/2026/art_1df4b8a8b2604fd185a8e9130c55a5ba.html",
+            "https://www.jinan.gov.cn/api-gateway/jpaas-jpolicy-web-server/front/info/detail?iid=1df4b8a8b2604fd185a8e9130c55a5ba"
+          ],
+          "officialDomain": true,
+          "docNumber": "济南住房公积金中心《关于调整2026年度住房公积金缴存基数的通知》（gjj.jinan.gov.cn 2026年发布，未在正文抓到文号）",
+          "confirms": "2026年度济南住房公积金缴存基数上限为济南市上一年度城镇非私营单位就业人员月平均工资的3倍，即 33902 元；下限按省政府公布的各区县月最低工资标准：历下/市中/槐荫/天桥/历城 2400 元，长清/章丘/济阳/莱芜/钢城/平阴/商河 2210 元；单位与职工缴存比例均不得低于5%、最高不超过12%。",
+          "mismatch": ""
+        },
+        {
+          "city": "青岛",
+          "status": "official-confirmed",
+          "urls": [
+            "http://www.qingdao.gov.cn/zwgk/xxgk/gjjgl/gkml/gwfg/202607/t20260706_10652620.shtml",
+            "http://www.qdgjj.com/zcfg_108/zcjd_108/202607/t20260706_10652853.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "青岛市住房公积金管理中心《关于做好2026年度住房公积金缴存基数调整工作的通知》（青岛市政府网 2026-07-06 公开）",
+          "confirms": "2026年7月起，职工住房公积金缴存基数上限 34342.75 元（=上一年度城镇非私营单位在岗职工月平均工资的3倍）；下限：市南/市北/李沧/崂山/黄岛/城阳/即墨 2400 元，胶州/平度/莱西 2210 元。灵活就业人员月缴存额上限 8242 元、下限 222 元。",
+          "mismatch": ""
+        },
+        {
+          "city": "淄博",
+          "status": "official-confirmed",
+          "urls": [
+            "https://zfgjj.zibo.gov.cn/gongkai/channel_c_5f9fa491ab327f36e4c13083_n_1605682382.0377/doc_6a4ca154535041655ab7955e.html",
+            "https://zfgjj.zibo.gov.cn/gongkai/channel_c_5f9fa491ab327f36e4c13083_n_1607419649.5632/doc_6a4da56c61d4c4a7318b9488.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "淄博市住房公积金管理中心《关于做好2026年度住房公积金缴存基数和缴存比例调整工作的通知》（zfgjj.zibo.gov.cn）",
+          "confirms": "2026年度缴存基数上限 26736.5 元（=上一年度全市在岗职工月平均工资的3倍）；下限按各区县月最低工资标准：张店/淄川/临淄/高新区/经开区 2400 元，博山/周村/桓台 2210 元，高青/沂源 2020 元。灵活就业人员月缴存额下限 91 元、上限 6416 元。",
+          "mismatch": ""
+        },
+        {
+          "city": "枣庄",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "东营",
+          "status": "official-confirmed",
+          "urls": [
+            "http://www.dongying.gov.cn/art/2026/7/10/art_38799_10470442.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "东营市住房公积金管理中心《关于公布2026年度住房公积金缴存基数和月缴存额上下限的通知》及其解读（东营市政府网 2026-07-10）",
+          "confirms": "执行周期 2026-07-01 至 2027-06-30；缴存基数上限 34431 元（依据东营市统计局 2025 年度城镇非私营单位在岗职工年平均工资 137726 元，取月平均工资3倍）；下限 2400 元（山东省政府公布的东营市最低工资标准）。",
+          "mismatch": ""
+        },
+        {
+          "city": "烟台",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "潍坊",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "济宁",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "泰安",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "威海",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "日照",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "临沂",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "德州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "聊城",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "滨州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "菏泽",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        }
+      ]
+    },
+    {
+      "province": "山西",
+      "provinceWideUrls": [],
+      "provinceWideNote": "待核查",
+      "cities": [
+        {
+          "city": "太原",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "大同",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "阳泉",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "长治",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "晋城",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "朔州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "晋中",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "运城",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "忻州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "临汾",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "吕梁",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        }
+      ]
+    },
+    {
+      "province": "广东",
+      "provinceWideUrls": [],
+      "provinceWideNote": "待核查",
+      "cities": [
+        {
+          "city": "深圳",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "广州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "东莞",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "佛山",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "珠海",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "惠州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "江门",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "中山",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "汕头",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "韶关",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "湛江",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "肇庆",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "茂名",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "梅州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "汕尾",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "河源",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "阳江",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "清远",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "潮州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "揭阳",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        },
+        {
+          "city": "云浮",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "",
+          "mismatch": ""
+        }
+      ]
+    }
+  ]
+}
