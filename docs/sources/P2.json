@@ -1,0 +1,32 @@
+{
+  "group": "P2",
+  "generatedAt": "2026-10-01",
+  "provinces": [
+    {
+      "province": "安徽",
+      "provinceWideUrls": [],
+      "provinceWideNote": "（核查中，待补省级口径：皖人社秘〔2026〕113号 2026年度基数 4354~21772；皖医保发〔2026〕12号 2027-01-01 起生效的省级医保基准费率）",
+      "cities": [
+        { "city": "合肥", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "芜湖", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "蚌埠", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "淮南", "status": "official-confirmed", "urls": ["https://gjj.huainan.gov.cn/tzgg/tzgg/551864391.html"], "officialDomain": true, "docNumber": "《关于调整2026年度淮南市住房公积金缴存基数上限的通知》（淮南市住房公积金管理中心，2026-06-30）", "confirms": "公积金：2026年度缴存基数上限为统计部门公布的2025年度淮南市城镇非私营单位就业人员月平均工资3倍，即 **29850元**；调整后单位和职工个人月最高缴存额均为 3582元；**从2026年7月1日起执行** —— 与仓库淮南 hf.max=28915 不一致（见 mismatch）。社保基数由省级文件覆盖（4354~21772，2026-01-01~12-31）。", "mismatch": "【已确认错误·公积金上限】仓库值 淮南 2170~28915 vs 官方值 上限 **29850元**（2026-07-01 起执行，淮南市住房公积金管理中心 2026-06-30 通知）。仓库值 28915 系调整前数值，应更正为 29850。下限 2170 本次未在同一通知中出现（该通知仅调整上限），未能证实。另注：仓库 calculator.html 中淮南 note 仍写「公积金2025年度 2170~28915」，与字段 hf.max 同为旧值。" },
+        { "city": "马鞍山", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "淮北", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "铜陵", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "安庆", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "黄山", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "滁州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "阜阳", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "宿州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "六安", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "亳州", "status": "official-confirmed", "urls": ["https://gjj.bozhou.gov.cn/XxgkContent/show/2998090.html"], "officialDomain": true, "docNumber": "公积金委〔2026〕3号（亳州市住房公积金管理委员会《关于开展2026年度住房公积金缴存基数调整工作的通知》，发文 2026-08-02、发布 2026-08-04）", "confirms": "公积金：2026年度缴存基数上限设定为 **22825元**（统计部门公布的我市上年度职工月平均工资3倍口径）；下限不得低于我市最低工资标准，依《安徽省人民政府办公厅关于调整全省最低工资标准的通知》（**皖政办秘〔2025〕32号**）市区最低工资 **2100元**、涡阳县/蒙城县/利辛县 **2000元**；缴存单位可在 **5%~12%** 区间自主确定、单位与个人比例须一致；灵活就业人员比照执行 —— 与仓库亳州 2100~22825 **完全一致**（含涡阳/蒙城/利辛 2000 的分县口径）。社保基数由省级文件覆盖（4354~21772，2026-01-01~12-31）。", "mismatch": "" },
+        { "city": "池州", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" },
+        { "city": "宣城", "status": "not-found", "urls": [], "officialDomain": true, "docNumber": "", "confirms": "待核查", "mismatch": "" }
+      ]
+    }
+  ],
+  "notes": [
+    "骨架已建立（2026-10-01），逐市核查结果分批回写。"
+  ]
+}
