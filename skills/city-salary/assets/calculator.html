@@ -252,6 +252,15 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
   </div>
 
   <div class="c">
+    <div class="st te">减免税（减征）· 年度</div>
+    <div class="r"><label>减征比例<span class="h">0~100%</span></label><div style="display:flex;align-items:center"><input type="number" id="reliefPct" value="0" min="0" max="100" step="10" style="width:64px"><span class="u">%</span></div></div>
+    <div class="nt"><b>各省规定不同，本项不做内置默认值，请按当地规定填写。</b>
+      《个人所得税法》第五条：残疾、孤老人员和烈属的所得，以及因自然灾害遭受重大损失的，
+      可以减征个人所得税，<b>具体幅度和期限由省、自治区、直辖市人民政府规定</b>。
+      常见幅度为减征 50%~100%，部分省份按年限额、部分按比例，且多需备案或审批。</div>
+  </div>
+
+  <div class="c">
     <div class="st vi">年终奖（单独计税）</div>
     <div class="r"><label>全年一次性奖金</label><div style="display:flex;align-items:center"><input type="number" id="bonus" value="0" min="0" step="1000"><span class="u">元</span></div></div>
   </div>
@@ -3564,6 +3573,14 @@ function calcTax(I,C,D){
   var aTAll=Math.max(0,tx(aTxAll).t);
   var otherSettle=aTAll-aT;              /* 并入后增加的年度应纳税额 */
   var otherDiff=otherPre-otherSettle;    /* >0 可退；<0 需补 */
+
+  /* ---- 减免税（减征）----
+     《个人所得税法》第五条：残疾、孤老人员和烈属的所得，以及因自然灾害遭受重大损失的，
+     可以减征个人所得税，**具体幅度和期限由省级人民政府规定** —— 故不内置任何省份默认值，
+     由用户按当地规定填写比例。减征作用于**年度应纳税额**（不是应纳税所得额）。 */
+  var reliefPct=Math.min(100,Math.max(0,gv("reliefPct")||0));
+  var reliefAmt=aTAll*reliefPct/100;      /* 减征税额（以并入其他所得后的年度税额为基数） */
+  var aTAfterRelief=Math.max(0,aTAll-reliefAmt);
   var bonus=gv("bonus"),bi=btx(bonus),bonusNet=bonus-bi.t;
   /* 计税方式对比（年度口径）：年终奖「单独计税」vs「并入综合所得」。
      单独 = 综合所得应纳税额 aT + 奖金按单独计税 bi.t
@@ -3579,6 +3596,7 @@ function calcTax(I,C,D){
     incL:incL,incR:incR,incC:incC,laborNet:laborNet,royalNet:royalNet,licNet:licNet,
     laborPre:laborPre,royalPre:royalPre,licPre:licPre,otherPre:otherPre,otherIncome:otherIncome,
     aTxAll:aTxAll,aTAll:aTAll,otherSettle:otherSettle,otherDiff:otherDiff,
+    reliefPct:reliefPct,reliefAmt:reliefAmt,aTAfterRelief:aTAfterRelief,
           totD:totD,aI:aI,aDed:aDed,aTx:aTx,aT:aT,aNet:aNet,suppSave:suppSave,
           bonus:bonus,bi:bi,bonusNet:bonusNet,mergedT:mergedT,sepT:sepT,bonusDiff:bonusDiff,trapDetail:trapDetail};
 }
@@ -3636,6 +3654,12 @@ function renderResult(I,C,D,T){
   h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">全年预扣 '+fm(T.prepaid12)+' − 汇算应纳 '+fm(T.aT)+'（满 12 个月口径）</label><span class="v"></span></div>';
   if(D.medicalA>0)h+='<div class="r ind"><label style="font-size:11px;color:#0d9488">其中约 '+fm(Math.min(D.medicalAnnual,tx(Math.max(0,T.aTx)).t-Math.max(0,tx(Math.max(0,T.aTx-D.medicalAnnual)).t)))+' 来自大病医疗（仅汇算可扣）</label><span class="v"></span></div>';
   if(aM<12)h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">按实际就业 '+aM+' 个月口径：'+(T.settleDiffActual>=0?'可退 ':'需补 ')+fm(Math.abs(T.settleDiffActual))+' 元</label><span class="v"></span></div>';
+  /* 减免税（减征）：作用于年度应纳税额，比例由用户按当地规定填写 */
+  if(T.reliefPct>0){
+    h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">减免税（减征 '+T.reliefPct+'%）</label><span class="v" id="resRelief" style="color:#0d9488">− '+fm(T.reliefAmt)+'</span></div>';
+    h+='<div class="r"><label style="font-weight:600">减免后年度个人所得税</label><span class="v b" id="resATaxAfterRelief" style="color:#e11d48">'+fm(T.aTAfterRelief)+'</span></div>';
+    h+='<div class="nt">依据《个人所得税法》第五条：残疾、孤老人员和烈属的所得，以及因自然灾害遭受重大损失的，可以减征个人所得税，<b>具体幅度和期限由省级人民政府规定</b>。本计算器不内置任何省份默认值，请按当地规定填写比例，并注意多数省份要求备案或审批。</div>';
+  }
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">本年度税后收入（至12月）</label><span class="v b" style="color:#7c3aed">'+fm(T.aNet)+' 元</span></div>';
   if(D.medicalA>0)h+='<div class="nt">口径说明：大病医疗仅在年度汇算清缴时扣除，本段为汇算后口径；历史页"累计个税"为月度预扣口径，两者差额≈大病医疗的扣除效果。</div>';
   h+='</div>';
