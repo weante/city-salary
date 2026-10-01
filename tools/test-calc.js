@@ -17,6 +17,10 @@ const CALC = path.join(__dirname, '..', 'skills', 'city-salary', 'assets', 'calc
 const html = fs.readFileSync(CALC, 'utf8');
 /* 省份年度基线表：与 check-sync 检查 E 共用同一份，避免再造第二个事实来源 */
 const { PROVINCE_YEAR } = require('./province-year.js');
+/* 政策来源记录的**统一读取与判定**：本仓库历史上「是否已核查」的判定
+   在 4 个脚本里各写了一份，导致同一类 bug 改了 4 遍（漏掉 待核查 / 空串 /
+   （尚未核查，占位） 三种占位写法）。现已抽成公共模块，这里加断言锁住边界。 */
+const { isFilled, STUB_RE } = require('./source-records.js');
 
 /* 是否作为主程序运行。被 check-sync 的 D 检查 require 时，本模块在加载过程中
    静默跑完全部断言，调用方直接读导出值即可——不再起子进程 + 解析 stdout。
@@ -44,6 +48,22 @@ function eq(name, actual, expected) { ok(name, actual, expected); }
 function section(t) { emit('\n' + t); }
 
 const A = loadCalculator();
+
+/* ---------- source-records 公共模块的边界断言 ----------
+   背景：本仓库历史上「政策来源记录是否已核查」的判定在 **4 个脚本里各写了一份**，
+   导致同一类 bug 改了 4 遍 —— 先后漏掉三种占位写法：
+     `"待核查"`（P2/P5）、`""`（G3/G4/G5）、`"（尚未核查，占位）"`（G1）。
+   根因是用「排除特定占位字符串」做判定，永远会漏下一个。
+   现已抽成 tools/source-records.js 统一实现，这里锁住边界。 */
+section('source-records 公共模块');
+eq('source-records·空 confirms 视为未填', isFilled({ confirms: '', urls: [] }), false);
+eq('source-records·「待核查」视为未填', isFilled({ confirms: '待核查', urls: [] }), false);
+eq('source-records·「（尚未核查，占位）」视为未填', isFilled({ confirms: '（尚未核查，占位）', urls: [] }), false);
+eq('source-records·短 confirms 且无 url 视为未填', isFilled({ confirms: '已核查', urls: [] }), false);
+eq('source-records·有实质 confirms 无 url 视为已填', isFilled({ confirms: '2026年度基数4354~21772，依皖人社秘〔2026〕113号', urls: [] }), true);
+eq('source-records·有 url 即视为已填', isFilled({ confirms: 'x', urls: ['https://a.gov.cn'] }), true);
+eq('source-records·占位特征词正则覆盖三种历史写法',
+  STUB_RE.test('待核查') && STUB_RE.test('') && STUB_RE.test('（尚未核查，占位）'), true);
 
 /* ---------- 个人侧费率的省份级断言（2026-09-30 补） ----------
    背景：探测发现 medEmp（医保个人费率）与 unempEmp（失业个人费率）

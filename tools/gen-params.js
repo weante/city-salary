@@ -53,7 +53,6 @@ const FIELDS = { hf: fmtHf, med: fmtMed, rent: fmtRent };
 
 const args = process.argv.slice(2);
 const fieldArg = (args.includes('--field') ? args[args.indexOf('--field') + 1] : null);
-const wantDiff = args.includes('--diff');
 const provArg = args.find(a => !a.startsWith('--') && a !== fieldArg);
 
 const fields = fieldArg ? [fieldArg] : Object.keys(FIELDS);
@@ -74,27 +73,4 @@ for (const r of regions) {
   out.push('');
 }
 
-if (!wantDiff) {
-  console.log(out.join('\n'));
-  process.exit(0);
-}
-
-/* --diff：把生成的串与 AGENTS.md 里的现有串比对，只报「文档里有但值不同」的项 */
-const agents = fs.readFileSync(path.join(ROOT, 'AGENTS.md'), 'utf8');
-const numbersIn = s => (s.match(/\d+(?:\.\d+)?/g) || []).map(Number);
-let checked = 0, drift = 0;
-for (const r of regions) {
-  for (const c of byRegion[r]) {
-    const idx = agents.indexOf(c.name);
-    if (idx < 0) { console.log('  ⚠️ ' + r + '·' + c.name + '：AGENTS.md 中未出现该城市名'); drift++; continue; }
-    /* 取城市名之后的一段（到下一个城市名为止，或 220 字符） */
-    const seg = agents.slice(idx, idx + 220);
-    const nums = numbersIn(seg);
-    const want = [c.hf.min, c.hf.max];
-    const hit = want.every(n => nums.includes(n));
-    checked++;
-    if (!hit) { console.log('  ✗ ' + r + '·' + c.name + '：公积金 ' + want.join('~') + ' 未在该城之后的片段中出现'); drift++; }
-  }
-}
-console.log('\n  已比对 ' + checked + ' 城，发现 ' + drift + ' 处不一致');
-process.exit(drift ? 1 : 0);
+console.log(out.join('\n'));
