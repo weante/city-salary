@@ -809,7 +809,10 @@ eq('海口·医保单位6.5%（全省统一）', A.CITIES.haik.med.comp, 0.065);
 eq('海口·公积金上限30452.67', A.CITIES.haik.hf.max, 30452.67);
 eq('海口·租金1500', A.CITIES.haik.rent, 1500);
 eq('三亚·租金800（户籍80.3万）', A.CITIES.sanya.rent, 800);
-eq('三沙·公积金上限38500.53', A.CITIES.ssha.hf.max, 38500.53);
+eq('三沙·公积金下限2250（海南省公积金管理局2026-06-26通告）', A.CITIES.ssha.hf.min, 2250);
+eq('三沙·公积金上限39621.87（同上，按全省年平均工资增幅测算）', A.CITIES.ssha.hf.max, 39621.87);
+eq('儋州·公积金下限2250（同上通告）', A.CITIES.danz.hf.min, 2250);
+eq('儋州·公积金上限30806.07（同上通告）', A.CITIES.danz.hf.max, 30806.07);
 eq('儋州·租金1100（户籍109.55万，存争议）', A.CITIES.danz.rent, 1100);
 
 /* 西藏 7 市地抽查（对照官方文件） */
