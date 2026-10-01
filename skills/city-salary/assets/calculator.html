@@ -3502,6 +3502,22 @@ function calcTax(I,C,D){
   var aI=I.sal*I.aM,aDed=(C.siE+C.hfE+5000+D.spT+D.suppM)*I.aM+D.medicalAnnual,aTx=Math.max(0,aI-aDed);
   var aT=Math.max(0,tx(aTx).t),aNet=aI-(C.siE+C.hfE)*I.aM-D.suppCash*I.aM-aT;
   var suppSave=Math.max(0,tx(Math.max(0,aTx+D.suppM*I.aM)).t-aT);
+  /* ---- 汇算退补金额 ----
+     全年预扣：按累计预扣预缴法，就业满 12 个月时单位全年已扣的税额。
+       累计预扣是「累计所得 − 累计扣除」查年度税率表，所以满 12 个月即为：
+       tx(max(0, 月薪×12 − 月扣除×12)).t
+     汇算应纳：年度综合所得按年度税率表算，且**只有汇算才能扣大病医疗**（aT）。
+     差额 = 全年预扣 − 汇算应纳：
+       > 0 → 可退税；< 0 → 需补税；≈ 0 → 不退不补。
+     注意两点口径：
+       ① 这里算的是**综合所得**的汇算，年终奖按单独计税处理（其税额另计，不参与本差额）；
+          若年终奖选择并入综合所得，汇算差额会另有一块，本计算器在「计税方式对比」里单独给出。
+       ② 若本年度就业不满 12 个月，单位实际只预扣了 aM 个月，
+          故同时给出「按实际就业月数」的口径，供对照。 */
+  var prepaid12=Math.max(0,tx(Math.max(0,I.sal*12-mDed*12)).t);
+  var prepaidActual=Math.max(0,tx(Math.max(0,I.sal*I.aM-mDed*I.aM)).t);
+  var settleDiff=prepaid12-aT;              /* >0 退税；<0 补税 */
+  var settleDiffActual=prepaidActual-aT;    /* 按实际就业月数口径 */
   var bonus=gv("bonus"),bi=btx(bonus),bonusNet=bonus-bi.t;
   /* 计税方式对比（年度口径）：年终奖「单独计税」vs「并入综合所得」。
      单独 = 综合所得应纳税额 aT + 奖金按单独计税 bi.t
@@ -3513,6 +3529,7 @@ function calcTax(I,C,D){
   var trapDetail="";
   if(bonus>0){for(var i=0;i<TRAPS.length;i++){var lo=TRAPS[i][0];var netLo=lo-btx(lo).t;if(bonus>lo&&bonusNet<netLo){trapDetail="⚠ 奖金 "+fm(bonus)+" 税后 "+fm(bonusNet)+"，反而低于 "+fm(lo)+" 的税后 "+fm(netLo)+"，少拿 "+fm(netLo-bonusNet)+" 元！建议将超出部分以福利形式发放。";break;}}}
   return {mDed:mDed,cumI:cumI,cumD:cumD,cumTx:cumTx,ci:ci,cumT:cumT,curT:curT,net:net,ratio:ratio,
+    prepaid12:prepaid12,prepaidActual:prepaidActual,settleDiff:settleDiff,settleDiffActual:settleDiffActual,
           totD:totD,aI:aI,aDed:aDed,aTx:aTx,aT:aT,aNet:aNet,suppSave:suppSave,
           bonus:bonus,bi:bi,bonusNet:bonusNet,mergedT:mergedT,sepT:sepT,bonusDiff:bonusDiff,trapDetail:trapDetail};
 }
@@ -3565,6 +3582,11 @@ function renderResult(I,C,D,T){
   h+='<div class="r"><label style="font-weight:600">年度应纳税所得额</label><span class="v b" id="resATx">'+fm(T.aTx)+'</span></div>';
   h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">补充扣除年度节税约</label><span style="font-size:11px;color:#0d9488;font-variant-numeric:tabular-nums">'+fm(T.suppSave)+'</span></div>';
   h+='<div class="r"><label>年度个人所得税</label><span class="v" id="resATax" style="color:#e11d48">'+fm(T.aT)+'</span></div>';
+  /* 汇算退补金额：全年预扣 − 汇算应纳。>0 退税，<0 补税。 */
+  h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">年度汇算退补</label><span class="v b" id="resSettle" style="color:'+(T.settleDiff>=0?'#0d9488':'#e11d48')+'">'+(T.settleDiff>=0?'可退 ':'需补 ')+fm(Math.abs(T.settleDiff))+' 元</span></div>';
+  h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">全年预扣 '+fm(T.prepaid12)+' − 汇算应纳 '+fm(T.aT)+'（满 12 个月口径）</label><span class="v"></span></div>';
+  if(D.medicalA>0)h+='<div class="r ind"><label style="font-size:11px;color:#0d9488">其中约 '+fm(Math.min(D.medicalAnnual,tx(Math.max(0,T.aTx)).t-Math.max(0,tx(Math.max(0,T.aTx-D.medicalAnnual)).t)))+' 来自大病医疗（仅汇算可扣）</label><span class="v"></span></div>';
+  if(aM<12)h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">按实际就业 '+aM+' 个月口径：'+(T.settleDiffActual>=0?'可退 ':'需补 ')+fm(Math.abs(T.settleDiffActual))+' 元</label><span class="v"></span></div>';
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">本年度税后收入（至12月）</label><span class="v b" style="color:#7c3aed">'+fm(T.aNet)+' 元</span></div>';
   if(D.medicalA>0)h+='<div class="nt">口径说明：大病医疗仅在年度汇算清缴时扣除，本段为汇算后口径；历史页"累计个税"为月度预扣口径，两者差额≈大病医疗的扣除效果。</div>';
   h+='</div>';

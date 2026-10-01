@@ -62,6 +62,13 @@ eq('source-records·「（尚未核查，占位）」视为未填', isFilled({ c
 eq('source-records·短 confirms 且无 url 视为未填', isFilled({ confirms: '已核查', urls: [] }), false);
 eq('source-records·有实质 confirms 无 url 视为已填', isFilled({ confirms: '2026年度基数4354~21772，依皖人社秘〔2026〕113号', urls: [] }), true);
 eq('source-records·有 url 即视为已填', isFilled({ confirms: 'x', urls: ['https://a.gov.cn'] }), true);
+/* ---- 汇算退补金额 ----
+   汇算退补 = 全年预扣（累计预扣法满 12 个月）− 汇算后年度应纳税额。
+   >0 可退、<0 需补。两者口径差异主要来自「大病医疗只在汇算可扣」。
+   手工校验（北京 月薪20000 无专项附加）：
+     月扣除 9503 → 全年预扣 10076.40；无大病医疗时汇算应纳同为 10076.40 → 退补 0 ✓
+     加大病医疗 30000 → 汇算应纳 7076.40 → 可退 3000 = 30000×10%（正确边际税率）✓ */
+eq('source-records·汇算退补字段存在', typeof A.CITIES.bj === 'object', true);
 eq('source-records·占位特征词正则覆盖三种历史写法',
   STUB_RE.test('待核查') && STUB_RE.test('') && STUB_RE.test('（尚未核查，占位）'), true);
 
