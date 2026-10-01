@@ -88,9 +88,9 @@ section('全城基数上下限排查');
     }
   }
   eq('全城基数上下限排查·337 城 × 5 险种均满足 min≤max 且为正数', _bad.length, 0);
-  if (_bad.length) for (var _b = 0; _b < Math.min(8, _bad.length); _b++) console.log('      ✗ ' + _bad[_b]);
+  if (_bad.length) for (var _b = 0; _b < Math.min(8, _bad.length); _b++) emit('      ✗ ' + _bad[_b]);
   eq('全城基数上下限排查·月薪低于下限时全部正确夹取到下限', _clampBad.length, 0);
-  if (_clampBad.length) for (var _cb = 0; _cb < Math.min(8, _clampBad.length); _cb++) console.log('      ✗ ' + _clampBad[_cb]);
+  if (_clampBad.length) for (var _cb = 0; _cb < Math.min(8, _clampBad.length); _cb++) emit('      ✗ ' + _clampBad[_cb]);
   /* 用户报告的原始场景必须被覆盖：广州月薪 6000 < 医保下限 6234 */
   var _gz = A.CITIES.gz;
   eq('全城排查·广州医保下限确实高于 6000（用户报告的场景）', _gz.med.min > 6000, true);
