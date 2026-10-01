@@ -243,6 +243,15 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
   </div>
 
   <div class="c">
+    <div class="st vi">其他所得（年度金额 · 与工资分开预扣，年度汇算并入综合所得）</div>
+    <div class="r"><label>劳务报酬<span class="h">减 20% 后并入</span></label><div style="display:flex;align-items:center"><input type="number" id="incLabor" value="0" min="0" step="1000"><span class="u">元/年</span></div></div>
+    <div class="r"><label>稿酬<span class="h">减 20% 再 ×70% 并入</span></label><div style="display:flex;align-items:center"><input type="number" id="incRoyal" value="0" min="0" step="1000"><span class="u">元/年</span></div></div>
+    <div class="r"><label>特许权使用费<span class="h">减 20% 后并入</span></label><div style="display:flex;align-items:center"><input type="number" id="incLic" value="0" min="0" step="1000"><span class="u">元/年</span></div></div>
+    <div class="nt">这三项由支付方<b>按次预扣</b>（劳务报酬 20%/30%/40% 三级；稿酬、特许权使用费 20%），
+      年度汇算时<b>并入综合所得</b>按年度税率表重算，多退少补。下方「其他所得」面板给出预扣与汇算的差额。</div>
+  </div>
+
+  <div class="c">
     <div class="st vi">年终奖（单独计税）</div>
     <div class="r"><label>全年一次性奖金</label><div style="display:flex;align-items:center"><input type="number" id="bonus" value="0" min="0" step="1000"><span class="u">元</span></div></div>
   </div>
@@ -3529,6 +3538,32 @@ function calcTax(I,C,D){
   var prepaidActual=Math.max(0,tx(Math.max(0,I.sal*I.aM-mDed*I.aM)).t);
   var settleDiff=prepaid12-aT;              /* >0 退税；<0 补税 */
   var settleDiffActual=prepaidActual-aT;    /* 按实际就业月数口径 */
+
+  /* ---- 其他所得（劳务报酬 / 稿酬 / 特许权使用费）----
+     计税规则（《个人所得税法》及实施条例）：
+       ① 减除费用：每次收入 ≤4000 元减 800；>4000 元减 20%。
+          本题按**年度合计金额**一次性减除（简化：真实是按次，年度合计口径与之等价，
+          因为每笔都>4000时合计的 20% 等于各笔 20% 之和）。
+       ② 稿酬再按 70% 计入（即收入 ×80% ×70% = 56%）。
+       ③ 劳务报酬预扣：按「减除后金额」分三级预扣率 —— ≤20000 用 20%；
+          20000~50000 用 30%（速算 2000）；>50000 用 40%（速算 7000）。
+       ④ 稿酬、特许权使用费预扣：统一 20%。
+       ⑤ 年度汇算：三项按「收入额」（劳务/特许 80%、稿酬 56%）**并入综合所得**，
+          与工资合并后按年度税率表重算。 */
+  var incL=gv("incLabor")||0, incR=gv("incRoyal")||0, incC=gv("incLic")||0;
+  var cut=function(x){return x<=0?0:(x<=4000?Math.max(0,x-800):x*0.8);};
+  var laborNet=cut(incL), royalNet=cut(incR)*0.7, licNet=cut(incC);
+  /* 预扣税额 */
+  var laborPre=0;
+  if(laborNet>0){ laborPre = laborNet<=20000 ? laborNet*0.2 : (laborNet<=50000 ? laborNet*0.3-2000 : laborNet*0.4-7000); }
+  var royalPre=royalNet*0.2, licPre=licNet*0.2;
+  var otherPre=laborPre+royalPre+licPre;
+  /* 年度汇算：三项收入额并入综合所得 */
+  var otherIncome=laborNet+royalNet+licNet;
+  var aTxAll=Math.max(0,aI-(C.siE+C.hfE+5000+D.spT+D.suppM)*I.aM-D.medicalAnnual+otherIncome);
+  var aTAll=Math.max(0,tx(aTxAll).t);
+  var otherSettle=aTAll-aT;              /* 并入后增加的年度应纳税额 */
+  var otherDiff=otherPre-otherSettle;    /* >0 可退；<0 需补 */
   var bonus=gv("bonus"),bi=btx(bonus),bonusNet=bonus-bi.t;
   /* 计税方式对比（年度口径）：年终奖「单独计税」vs「并入综合所得」。
      单独 = 综合所得应纳税额 aT + 奖金按单独计税 bi.t
@@ -3541,6 +3576,9 @@ function calcTax(I,C,D){
   if(bonus>0){for(var i=0;i<TRAPS.length;i++){var lo=TRAPS[i][0];var netLo=lo-btx(lo).t;if(bonus>lo&&bonusNet<netLo){trapDetail="⚠ 奖金 "+fm(bonus)+" 税后 "+fm(bonusNet)+"，反而低于 "+fm(lo)+" 的税后 "+fm(netLo)+"，少拿 "+fm(netLo-bonusNet)+" 元！建议将超出部分以福利形式发放。";break;}}}
   return {mDed:mDed,cumI:cumI,cumD:cumD,cumTx:cumTx,ci:ci,cumT:cumT,curT:curT,net:net,ratio:ratio,
     prepaid12:prepaid12,prepaidActual:prepaidActual,settleDiff:settleDiff,settleDiffActual:settleDiffActual,
+    incL:incL,incR:incR,incC:incC,laborNet:laborNet,royalNet:royalNet,licNet:licNet,
+    laborPre:laborPre,royalPre:royalPre,licPre:licPre,otherPre:otherPre,otherIncome:otherIncome,
+    aTxAll:aTxAll,aTAll:aTAll,otherSettle:otherSettle,otherDiff:otherDiff,
           totD:totD,aI:aI,aDed:aDed,aTx:aTx,aT:aT,aNet:aNet,suppSave:suppSave,
           bonus:bonus,bi:bi,bonusNet:bonusNet,mergedT:mergedT,sepT:sepT,bonusDiff:bonusDiff,trapDetail:trapDetail};
 }
@@ -3601,6 +3639,22 @@ function renderResult(I,C,D,T){
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">本年度税后收入（至12月）</label><span class="v b" style="color:#7c3aed">'+fm(T.aNet)+' 元</span></div>';
   if(D.medicalA>0)h+='<div class="nt">口径说明：大病医疗仅在年度汇算清缴时扣除，本段为汇算后口径；历史页"累计个税"为月度预扣口径，两者差额≈大病医疗的扣除效果。</div>';
   h+='</div>';
+  /* 其他所得（劳务报酬/稿酬/特许权使用费）：支付方预扣 vs 年度汇算并入后的差额 */
+  if(T.otherIncome>0||T.otherPre>0){
+    h+='<div class="c"><div class="st vi">其他所得（并入综合所得）</div>';
+    if(T.incL>0){h+='<div class="r"><label>劳务报酬（年）</label><span class="v">'+fm(T.incL)+'</span></div>';
+      h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">减除费用后计入综合所得 '+fm(T.laborNet)+'（80%）；预扣 '+fm(T.laborPre)+'</label><span class="v"></span></div>';}
+    if(T.incR>0){h+='<div class="r"><label>稿酬（年）</label><span class="v">'+fm(T.incR)+'</span></div>';
+      h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">×80%×70% 后计入 '+fm(T.royalNet)+'（56%）；预扣 '+fm(T.royalPre)+'</label><span class="v"></span></div>';}
+    if(T.incC>0){h+='<div class="r"><label>特许权使用费（年）</label><span class="v">'+fm(T.incC)+'</span></div>';
+      h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">减除费用后计入 '+fm(T.licNet)+'（80%）；预扣 '+fm(T.licPre)+'</label><span class="v"></span></div>';}
+    h+='<div class="ss"></div><div class="r"><label>三项计入综合所得合计</label><span class="v b">'+fm(T.otherIncome)+'</span></div>';
+    h+='<div class="r"><label>① 支付方预扣合计</label><span class="v" id="resOtherPre" style="font-variant-numeric:tabular-nums">'+fm(T.otherPre)+'</span></div>';
+    h+='<div class="r"><label>② 并入综合所得后年度应纳税额</label><span class="v" id="resOtherSettle" style="font-variant-numeric:tabular-nums">'+fm(T.aTAll)+'</span></div>';
+    h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">其中其他所得贡献 '+fm(T.otherSettle)+'</label><span class="v"></span></div>';
+    h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">其他所得汇算退补</label><span class="v b" id="resOtherDiff" style="color:'+(T.otherDiff>=0?'#0d9488':'#e11d48')+'">'+(T.otherDiff>=0?'可退 ':'需补 ')+fm(Math.abs(T.otherDiff))+' 元</span></div>';
+    h+='<div class="nt">口径：① 为支付方按次预扣的税额；② 为并入综合所得后按年度税率表重算的税额，两者差额在年度汇算时多退少补。<b>劳务报酬预扣率（20/30/40%）通常高于年度边际税率，故多数情形可退。</b></div></div>';
+  }
   var bh='';
   if(T.bonus>0){
     bh+='<div class="r"><label>奖金金额</label><span class="v b">'+fm(T.bonus)+'</span></div>';
