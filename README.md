@@ -87,7 +87,7 @@ city-salary/
 │   └── index.html           # 计算器镜像副本（Cloudflare Pages 的部署产物，线上 https://city-salary.pages.dev/）
 ├── tools/                   # 零依赖 Node 脚本：测试与维护
 │   ├── calc-harness.js      #   测试脚手架：最小 DOM 桩 + 加载器（各测试脚本共用）
-│   ├── test-calc.js         #   6788 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径/起始月边界
+│   ├── test-calc.js         #   6793 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径/起始月边界
 │   ├── check-golden.js      #   黄金用例：16 用例 × 4 面板逐字节比对（重构安全网）
 │   ├── golden-cases.json    #   黄金用例快照（由 check-golden.js --update 生成）
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
@@ -128,7 +128,7 @@ npm run warn:update         # warn 集合变化后，重新生成缺口清单
 
 **数据运营**：核查节奏与 SOP 见 [docs/maintenance-calendar.md](docs/maintenance-calendar.md)；172 个 warn 城市的缺口分层与补齐动作见 [docs/warn-backlog.md](docs/warn-backlog.md)。限期费率（到期即可能恢复原费率的阶段性政策）由 [tools/policy-expiry.js](tools/policy-expiry.js) 登记，**已到期而未记录处置的条目会让 CI 变红**，强制联网核查。
 
-**黄金用例是什么**：`test-calc.js` 断言的是**具体数值**（6788 项），覆盖已知关注点；`check-golden.js` 捕获的是**整块渲染结果**（16 个用例覆盖结构差异：直辖市/省统一/多档医保/户籍区分/长护险/市级基数覆盖/跨年度/极端基数，输入变体覆盖触底与封顶夹取、公积金不缴、起始月晚于当前月、全部扣除、年终奖陷阱），覆盖所有没被单独断言到的字段。前者告诉你"哪个数错了"，后者告诉你"有什么变了"。改动渲染输出后跑 `npm run golden:update` 重新冻结。
+**黄金用例是什么**：`test-calc.js` 断言的是**具体数值**（6793 项），覆盖已知关注点；`check-golden.js` 捕获的是**整块渲染结果**（16 个用例覆盖结构差异：直辖市/省统一/多档医保/户籍区分/长护险/市级基数覆盖/跨年度/极端基数，输入变体覆盖触底与封顶夹取、公积金不缴、起始月晚于当前月、全部扣除、年终奖陷阱），覆盖所有没被单独断言到的字段。前者告诉你"哪个数错了"，后者告诉你"有什么变了"。改动渲染输出后跑 `npm run golden:update` 重新冻结。
 
 **CI 门禁**：`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 三个版本跑完整守卫链。注意 CI 里**刻意不跑 `sync.js`**——sync 会把镜像"修好"，反而掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查做逐字节比对。
 

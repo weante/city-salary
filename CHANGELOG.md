@@ -77,7 +77,7 @@
 
 ## 说明
 
-- 断言总数：**6788**（`npm test` 的六命令门禁：`sync.js` → `test-calc.js` →
+- 断言总数：**6793**（`npm test` 的六命令门禁：`sync.js` → `test-calc.js` →
   `check-golden.js` → `check-dom.js` → `check-sync.js` → `test-export.js`）。
 - 数据时效分三类检查点：每年 **1 月**核查医保/生育费率与基数；
   每年 **7 月**核查养老/失业/工伤/公积金基数；
