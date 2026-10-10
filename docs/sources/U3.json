@@ -1,0 +1,68 @@
+{
+  "group": "U3",
+  "generatedAt": "2026-10-11",
+  "note": "第七轮专项：青海省 6 市住房公积金缴存基数上下限官方来源核查。",
+  "provinces": [
+    {
+      "province": "青海",
+      "provinceWideUrls": [],
+      "provinceWideNote": "未找到青海省级住房公积金缴存基数统一文件。青海住房公积金由各市州中心分别管理、上下限逐年单独发布，省级层面（省住房和城乡建设厅 https://zjt.qinghai.gov.cn/ 、省人民政府 http://www.qinghai.gov.cn/ ）未发布省级统一的缴存基数上下限文件：省住建厅「通知公告」栏目 2026-09~2026-10 共 19 条通知公告逐条核查，无一条涉及住房公积金缴存基数；省住建厅政府信息公开「机构」栏目下设「住房公积金」条目，但其下页面 curl 返回空（栏目内容为 JS 渲染或无公开文件）。省人民政府网站检索（TRS WAS5，channelid=219598，字段 searchword）被瑞数反爬拦截，返回 HTTP 412 反爬页，无法取得结果，故无法在省级层面确认。",
+      "cities": [
+        {
+          "city": "西宁",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "已核查以下渠道，均未取得企业职工口径的官方缴存基数文件：1) 西宁市人民政府门户网站 https://www.xining.gov.cn/ （网站标识码 6301000023，首页可取 156KB）——「通知公告」/xwdt/tzgg/ 与「政府信息公开」/zwgk/zc/ 栏目的文章列表均为 JS 动态渲染，curl 取不到任何文章链接；站内检索路径 /so/s?tab=all&siteCode=6301000023、/so/s?qt=、/jsearch?keywords=、/search/?keywords= 全部返回 404；/zwgk/zc/search.html 经查为「政府规章库」检索（仅 68 部规章），不含部门规范性文件。2) 官网「住房与公积金」入口下 4 个子链接全部指向青海政务服务网 qhzwfw.gov.cn 的个人查询页（公积金明细账查询/个人信息查询等），无政策发布内容。3) 可能的中心自有域名 www.xngjj.cn（DNS 解析 168.76.254.209）与 www.xnzfgjj.cn：curl（含 http/https、带 www/不带 www 共 6 种组合）全部 code=000 连接失败，web_fetch 亦返回 fetch failed，无法访问。4) 信用中国（青海西宁）子站 https://credit.xining.gov.cn/ 检索到 http://hx.qhcredit.gov.cn/qhzcfg2222/1021461.jhtml「2026年西宁市行政事业单位住房公积金缴存基数调整」（2025-12-29），内容为**行政事业单位口径**：上限 30534 元、下限不低于西宁地区最低工资标准 2080 元，调整期间 2026-01-01 至 2026-02-28。该文页面标注「来源：西宁都市报」，属媒体报道转载，且口径为行政事业单位而非企业职工，四关中「口径」与「来源官方性」均不通过，不能作为西宁企业职工缴存基数的依据，仅作事实记录。5) 公开网页搜索（360 搜索 m.so.com）检索「西宁市住房公积金缴存基数调整 通知 2026」，命中结果全部为腾讯新闻 news.qq.com（2026-07-01「西宁市2026年度住房公积金缴存基数自7月1日起调整」）、南方财富 shebao.southmoney.com（社保网）、ai.so.com 聚合页，无任何 .gov.cn 官方页面；上述媒体来源按既定规则一律排除。结论：未取得任何官方来源，不报告数值，仓库值 2080~31995 维持不变、不作修改。",
+          "mismatch": ""
+        },
+        {
+          "city": "海北",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "已核查海北藏族自治州人民政府门户网站 https://www.haibei.gov.cn/ （首页可取 70083 字节，政府网站标识码 6322000011）：1) 站内检索 GET /site/search/6796541（参数 siteId=6796541、platformCode=haibei_sys1、isAllSite=true、fuzzySearch=false、sort=intelligent、orderType=0、typeCode=all、keywords=住房公积金缴存基数）返回 HTTP 200 / 76029 字节，但正文只有「结果分类/时间范围/搜索范围/结果排序/匹配度：正在加载，请稍候...」，结果区为 JS 渲染，curl 取不到任何条目；页面内暴露的 AJAX 端点 /search/new/queryDatas（GET 与 POST 两种方式、pageNum/pageIndex 两种分页参数均已试）一律返回 {\"desc\":\"抱歉，网络系统繁忙，请稍后再试\",\"status\":0}，无法取得真实检索结果。2) 「通知公告」栏目 /xwzx/tzgg/index.html 与「政府信息公开」/public/column/6616331?type=2&nav=1 的文章列表同样为 JS 渲染，curl 取不到文章链接。3) 全省统一检索路径 /so/s?tab=all&siteCode=6322000011&qt=公积金 返回 404。4) 信用中国（青海海北）子站 https://hb.qhcredit.gov.cn/ 为静态页站，但未检索到缴存基数类文章。5) 公开网页搜索仅命中社保网/本地宝/12333 等商业与聚合站点（按规则排除）。结论：未取得任何官方来源，不报告数值，仓库值 1700~25472 维持不变、不作修改。",
+          "mismatch": ""
+        },
+        {
+          "city": "海南州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "已核查海南藏族自治州人民政府门户网站 https://www.hainanzhou.gov.cn/ （首页可取 112106 字节）：1) 导航中的「通知公告」/xwzx/tzgg 与「政府信息公开」/zwgk（含 /zwgk/zfxxgkzn、/zwgk/zfxxgkzd、/zwgk/zfxxgknb、/zwgk/fdzdgknr）栏目列表页可取，但文章条目为 JS 动态渲染，curl 提取到的均为栏目/导航链接，取不到任何通知条目，因此无法确认是否有住房公积金缴存基数通知。2) 门户首页「州政府部门网站」列出的各县站（共和县 www.gonghe.gov.cn、贵德县 www.guide.gov.cn、贵南县 www.guinan.gov.cn、同德县 www.tongde.gov.cn、兴海县 www.xinghai.gov.cn）仅为链接，未逐一取得缴存基数文件；县级站点转载市级公积金通知的概率虽存在，但本轮未能定位到具体文章链接。3) 公开网页搜索「青海 海南州 住房公积金 缴存基数」命中玉树本地宝 ys.bendibao.com、南方财富社保网、m12333.cn 等，均按规则排除，无 .gov.cn 来源。结论：未取得任何官方来源，不报告数值，仓库值 2080~28976 维持不变、不作修改。",
+          "mismatch": ""
+        },
+        {
+          "city": "黄南",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "已核查黄南藏族自治州人民政府门户网站 www.huangnan.gov.cn：https 与 http 两种协议、curl 默认 UA 与浏览器 UA 均被反爬拦截（分别返回 HTTP 412 反爬页 22857 字节与 code=000），页面正文无法取得，栏目与检索入口均无法使用。可能的中心/部门自有域名（gjj.huangnan.gov.cn、zjj.huangnan.gov.cn 等）未做臆造尝试。替代渠道：信用中国（青海黄南）子站 http://credit.huangnan.gov.cn/ 可访问，为静态页站，但未检索到住房公积金缴存基数类文章。公开网页搜索「黄南州住房公积金 缴存基数调整 通知」命中结果为南方财富社保网（黄南州公积金缴存基数及比例调整 2024 年最新）、m12333.cn（黄南自治州关于调整2023年度住房公积金缴存基数的通知）、金融界转载等，全部为商业或聚合站点，按规则排除；其中 m12333.cn 转载的为 **2023 年度**旧文，即使采信也不满足「生效日期」这一关。结论：未取得任何官方来源，不报告数值，仓库值 2080~28652 维持不变、不作修改。",
+          "mismatch": ""
+        },
+        {
+          "city": "果洛",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "已核查果洛藏族自治州人民政府门户网站 https://www.guoluo.gov.cn/ ：首次访问首页可取（94027 字节，标题「果洛州人民政府—网站首页」），随后连续访问即被反爬拦截（HTTP 412，2537 字节），未能取得任何栏目列表或文章页。信用中国（青海果洛）子站 https://gl.qhcredit.gov.cn/ 可访问，为静态页站，未检索到住房公积金缴存基数类文章。公开网页搜索「果洛州住房公积金 缴存基数 site:gov.cn」命中「通知公告_果洛藏族自治州人民政府」栏目页与「青海要闻-海西州人民政府」，但均为栏目/频道首页而非具体通知正文，未能在其中定位到缴存基数数值；其余命中（南方财富 12333si.com 等）按规则排除。结论：未取得任何官方来源，不报告数值，仓库值 2080~35935 维持不变、不作修改。",
+          "mismatch": ""
+        },
+        {
+          "city": "玉树",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "已核查玉树藏族自治州人民政府门户网站 www.yushu.gov.cn ：https 协议 curl 返回 code=000（连接不通），http 协议可取（39487 字节），但页面「政府信息公开」链接错误指向 http://zwgk.changchun.gov.cn/ys （指向长春市政务公开网），且「通知公告」栏目未出现在提取到的链接中，未能定位到缴存基数通知；站内无可用检索入口。替代渠道：信用中国（青海玉树州）子站 http://ys.qhcredit.gov.cn/ 可访问，为静态页站，未检索到住房公积金缴存基数类文章。公开网页搜索命中「玉树公积金缴存基数及比例」页面（ys.bendibao.com，本地宝）与南方财富社保网，均按规则排除。结论：未取得任何官方来源，不报告数值，仓库值 2080~24402 维持不变、不作修改。",
+          "mismatch": ""
+        }
+      ]
+    }
+  ]
+}

@@ -2,12 +2,12 @@
   "generatedAt": "2026-10-10",
   "checked": 337,
   "coverage": "100.0%",
-  "confirmed": 167,
-  "partial": 106,
-  "notFound": 64,
-  "urls": 416,
+  "confirmed": 175,
+  "partial": 103,
+  "notFound": 59,
+  "urls": 445,
   "missingCities": [],
-  "mismatchCount": 140,
+  "mismatchCount": 156,
   "mismatches": [
     {
       "file": "G7.json",
@@ -848,5 +848,6 @@
     }
   ],
   "note": "判定逻辑与 docs/verification-report-final.md 一致：有 url 或 confirms 有实质内容才算「已填」；不再依赖特定占位字符串（历史上出现过 待核查 / 空串 / （尚未核查，占位） 三种写法）。",
-  "round6Note": "2026-10-10 第六轮（U1.json）：补入粤府函〔2026〕188号广东省最低工资标准调整（自 2026-09-01 起，三类地区 2040 元）与其对各市公积金下限的「过渡条款」口径；新增官方原文件：乌鲁木齐 xjgjj.xjjs.gov.cn（2070~35071）、惠州 惠市公积金〔2026〕28号（1850~34290）、肇庆 zhaoqing.gov.cn（1850~28220）、汕尾 swchengqu.gov.cn（1750，2040 仅适用新开户）、北海 beihai.gov.cn（仅口径件，数值未载）。四城数值均与仓库一致、不改值；北海 hf 1990~24248 仍未证实。"
+  "round6Note": "2026-10-10 第六轮（U1.json）：补入粤府函〔2026〕188号广东省最低工资标准调整（自 2026-09-01 起，三类地区 2040 元）与其对各市公积金下限的「过渡条款」口径；新增官方原文件：乌鲁木齐 xjgjj.xjjs.gov.cn（2070~35071）、惠州 惠市公积金〔2026〕28号（1850~34290）、肇庆 zhaoqing.gov.cn（1850~28220）、汕尾 swchengqu.gov.cn（1750，2040 仅适用新开户）、北海 beihai.gov.cn（仅口径件，数值未载）。四城数值均与仓库一致、不改值；北海 hf 1990~24248 仍未证实。",
+  "round8Note": "2026-10-10 第八轮：U2.json 山西 11 市（5 城 official-confirmed + 3 城由 official-partial 升级为 official-confirmed + 2 城 not-found）、W1.json（北海/汕头/汕尾）、U4.json（河北 10 市）、U5.json（重庆/上海/桂林/九江）。阳泉/晋中/临汾三市的扫描件经 Windows.Media.Ocr（zh-Hans-CN）读出正文：阳住管发〔2026〕37号 上限 23643、市房金管发〔2026〕12号 上限 23855、临市房金〔2026〕27号 上限 24789，三市上限已写回计算器（另有大同 23543 / 长治 25359+下限 2350 / 运城 21324）。"
 }

@@ -1,0 +1,376 @@
+{
+  "group": "W1",
+  "generatedAt": "2026-10-11",
+  "note": "第七轮：把三个并行子 Agent 的产出（北海、汕头、汕尾）收编为标准分组文件。子 Agent 的原始文件以 _ 开头会被 tools/source-records.js 排除，必须改名合并才进入覆盖率统计。本文件同时是本人复核后的结论记录：北海 1990~24248 已被 .gov.cn 原文证实（但官方定名为 2025 缴存年度）；汕尾补入市中心自己发布的下限通知原件（此前只录了城区住建局转发件）；潮州 26043 经复核并非汕尾串值，详见 docs/sources/README.md 第八轮。",
+  "provinces": [
+    {
+      "province": "广西",
+      "provinceWideUrls": [],
+      "provinceWideNote": "",
+      "cities": [
+        {
+          "city": "北海",
+          "status": "official-partial",
+          "urls": [
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t23363301.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/ztzl_14/gjjndbg/t27393326.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t18587375.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t27067336.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t19484610.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t16683015.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t15036500.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t15017647.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t15011667.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t17434038.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t17434084.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/bmfw/t15943362.shtml",
+            "http://rst.gxzf.gov.cn/zwgk/xxgkzcfg/xxgkwjjd/tw/t27755172.shtml",
+            "http://www.beihai.gov.cn/xxgkbm/bhsylbzj/tzgg_50/t26033007.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "页面未标注文号（历年同类文件均为「北海市住房公积金管理中心」署名，未见文号；对比可考的 2023年度 核定通知为『北房金通〔2023〕1号』，但该文号仅见于第三方镜像 PDF，官方页面未标注文号）",
+          "confirms": "【官方已证实——2025缴存年度（非2026）】主证据：《北海市住房公积金管理中心关于设定北海市2025年度住房公积金缴存基数上下限的通知》（http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t23363301.shtml ，2025-07-29 17:54）原文逐字：『根据统计部门提供的数据，2024年度北海市城镇非私营单位在岗职工年平均工资为96992元，据此，北海市2025年度住房公积金月缴存基数上限为24248元，单位和职工个人的住房公积金月缴存额上限各为2910元，合计为5820元。』『根据《广西壮族自治区人民政府关于调整全区最低工资标准的通知》（桂政发〔2023〕24号）的规定，北海市的最低工资标准为1990元，据此，北海市2025年度住房公积金缴存基数下限为1990元，单位和职工个人的住房公积金月缴存额下限各为100元，合计为200元。』『另外，根据《广西壮族自治区人民政府关于调整全区最低工资标准的通知》（桂政发〔2025〕16号）规定，自2025年7月1日起，新参加工作或新调入职工以及新开户的灵活就业缴存人，其住房公积金缴存基数不得低于2200元，即新参加工作或新调入职工的月缴存额不得低于220元；新开户的灵活就业缴存人月缴存额不得低于440元。』旁证：《北海市住房公积金2025年年度报告》（http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/ztzl_14/gjjndbg/t27393326.shtml ，2026-03-25）原文：『当年月缴存基数上限为24248元，按统计部门公布的上一年度职工月平均工资的3倍来确定……当年月缴存基数下限为1990元』，与上述通知完全一致。\n【2024缴存年度】《北海市住房公积金管理中心关于设定北海市2024年度住房公积金月缴存额上下限的通知》（t18587375.shtml，2024-06-21）原文：『2023年度北海市城镇非私营单位在岗职工年平均工资为97879元，据此，北海市2024年度住房公积金月缴存基数上限为24469元……北海市的最低工资标准为1990元，据此，北海市2024年度住房公积金缴存基数下限为1990元』。\n【下限依据】广西人社厅官方页面（rst.gxzf.gov.cn，2025-07-02）原文：『本次调整月最低工资标准由原来1990元、1840元、1690元调整到2200元、2040元、1870元……一类地区为南宁、柳州、桂林、梧州、北海、防城港、钦州等市的城区』——北海城区属一类地区，现行最低工资标准 2200 元/月。\n【未取到】2026缴存年度的缴存基数下限与上限金额：官方无任何文件载明。",
+          "mismatch": "数值上无差异：仓库 hf {min:1990, max:24248} 与官方 t23363301.shtml 原文『月缴存基数上限为24248元』『月缴存基数下限为1990元』逐位一致（此前『无官方来源』的状态应予纠正，现已有 .gov.cn 一手文件支撑）。差异在年度归属：官方明确把 1990~24248 定为 2025 缴存年度（依据 2024年度北海市城镇非私营单位在岗职工年平均工资 96992 元），而非 2026 缴存年度。2026 缴存年度应以上一年度（2025年度）北海市职工月平均工资×3、以及桂政发〔2025〕16号一类地区最低工资 2200 元重新核定，官方尚未发文，本次未取到其数值——不能据此认定 2026年度仍为 1990~24248。另需注意官方自 2025-07-01 起对新参加工作/新调入职工及新开户灵活就业缴存人另有 2200 元的特殊下限规定，仓库当前模型未表达这一分支。",
+          "searchLog": [
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t23363301.shtml → HTTP 200。命中《关于设定北海市2025年度住房公积金缴存基数上下限的通知》（2025-07-29），拿到上限24248、下限1990、96992元、平均工资3倍口径、桂政发〔2023〕24号与〔2025〕16号依据。本次检索的决定性文件。",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/ztzl_14/gjjndbg/t27393326.shtml → HTTP 200（70,875 字节）。《北海市住房公积金2025年年度报告》，发布 2026-03-25，独立印证 1990/24248 属 2025年度。",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/t27067336.shtml → HTTP 200。《关于2026年度住房公积金缴存基数调整核定的通知》（2025-12-30 11:24，来源：北海市住房公积金管理中心，页面未标注文号），已读全文五条：通篇不含任何上下限金额；第三条为『本年新的缴存基数上下限标准公布后，如职工的缴存基数未按新的缴存上下限调整到位的，可对相应职工再次进行调整并补缴相应差额』。",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/ 通知公告栏目 → HTTP 200。分页规律由 /jsq/fenye.js 确认为 index.shtml / index_N.shtml（N=页码-1），共 8 页、157 条（index.shtml 内 createPageHTML(8,0,\"index\",\"shtml\",\"157\")）。已抓取 index.shtml 与 index_1..7.shtml 全部 8 页，解析出全部 157 条标题+日期。",
+            "★全量穷尽扫描结论：157 条公告中，标题含『上限/下限』的仅 8 条，年度依次为 2018(t17434084) 2019(t17434038) 2020(t15011667) 2021(t15017647) 2022(t15036500) 2023(t16683015) 2024(t18587375) 2025(t23363301)，全部集中在每年 6—8 月发布。2026-01-01 至 2026-09-28 区间内没有任何上下限文件，2026年度通知截至今日（2026-10-10）未发布。",
+            "同栏目其它相关但无用的文件：t19484610.shtml（2025-01-07，2025年度基数调整核定，无金额）、t16683043.shtml（2023-06-20，2023年度核定，附件 PDF 原文为『北房金通〔2023〕1号』，见下）、t17808162.shtml（2024年度核定）、t15036498/t15017646/t15011664（历年核定，均无金额）。",
+            "https://si12333.cn/upfile/download/95936c96-54fc-e5c9-c8d9-c0fcac533eb4.pdf → HTTP 200（125,754 字节，PDF 可解析）。第三方镜像，内容为《北房金通〔2023〕1号》2023年度核定通知全文，北海市住房公积金管理中心，2023年6月20日。**非官方站点，仅用于识别文号格式，官方页面未标注文号。**",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/tzgg_46/P020230620643611800323.pdf → HTTP 404（搜索引擎收录的上述 2023年度通知官方 PDF 原址，带 UA+Referer 重试仍 404，https 版 HTTP 000），官方附件已失效。",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/zcfg_38/ 政策法规栏目 → HTTP 200，两页共约 40 条已逐条看过，全为贷款/提取/使用政策（t28178574 二手房贷款房龄、t28148549 提取政策、t27440401 使用政策、t25886529 贷款额度、t25886530 商转公、t19775582 办理条件等），无缴存基数上下限文件。",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/bmfw/t15943362.shtml 公积金缴存办事指南 → HTTP 200，页面 2026-05-09 更新。缴存基数条款原文为举例式旧文：『不能低于北海市上一年度最低工资标准。如，2017年北海市最低工资标准为1400元／月，即2018年度个人自愿缴存的月缴存基数最低为1400元』——不含 2025/2026 现行数值。",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/ 中心首页 → HTTP 200（38,066 字节）。导航仅 3 项：jgsz/ 机构设置、qtzyxxgk_57/ 政府信息公开、ztzl_14/ 专题专栏。政务新媒体矩阵 /hdjl/zwzs/ 与 /zipv6/ 镜像站未取得有效内容。",
+            "http://www.beihai.gov.cn/xxgkbm/bhszfgjjglzx/ztzl_14/gjjndbg/ 公积金年度报告 → HTTP 200，单页 createPageHTML(1,0,...)，最新为 2025 年度（2026-03-25）。2023/2022/2021 年度报告及年度财务报告、解读页全部抓取，无 2026 年度报告（正常，每年 3 月发布，2026 年度报告应在 2027-03）。",
+            "http://rst.gxzf.gov.cn/zwgk/xxgkzcfg/xxgkwjjd/tw/t27755172.shtml → HTTP 200（32,035 字节）。广西人社厅官网《广西壮族自治区人民政府关于调整全区最低工资标准的通知》文字版，2025-07-02。确认一类地区 2200 元/月，北海城区属一类地区。未检索到广西 2026 年再有新的最低工资调整文件，即现行仍为 2200 元。",
+            "http://www.beihai.gov.cn/xxgkbm/bhsylbzj/tzgg_50/t26033007.shtml → HTTP 200。《北海市医疗保障事业管理中心关于公布2025年度职工基本医疗保险缴费基数上下限的通知》原文：『按上年度全区全口径城镇单位就业人员平均工资82860元（6905元/月）……缴费基数上限为20715元/月，缴费基数下限为4143元/月』。用于判断广西口径=自治区全口径（82860元/年），而北海公积金口径=北海市城镇非私营单位在岗职工工资（96992元/年），两者不可混用。",
+            "北海市 2025 年国民经济和社会发展统计公报（第三方转载 tjgb.hongheiku.com/xjtjgb/xj2020/75009.html 已抓取全文）→ 全文不含任何职工平均工资数据；未在 beihai.gov.cn 上定位到该公报官方页，故 2025 年度北海市在岗职工年平均工资（2026年度公积金上限的基数）本次未取到。",
+            "北海市人民政府门户站内搜索（/irs-common-search/search?...&searchWord=...&dataTypeId=5604）→ 该路由为 Vue SPA，curl 直连只得 1,109 字节壳；试 /api/search、/searchApi/search、/rest/search 均返回同一壳；Chrome --headless=new --virtual-time-budget=45000 --dump-dom 渲染后正文仍只有『北海市人民政府』，结果未能渲染出来，站内搜索最终不可用。",
+            "北海市统计局栏目路径探测：http://www.beihai.gov.cn/xxgkbm/ 下仅列出『北海市住房公积金管理中心』一个部门；/xxgkbm/bhswtjj/、/bhsj/、/bhswtj/、/bhswjj/ 及 /bhswtjj/、/bhstats/ 等路径全部 HTTP 404，未找到北海市统计局栏目。",
+            "二手转载（不合格来源，仅备注）：m.shebao.southmoney.com 2026-08 文章称『本年度缴存基数下限为1990元』——与官方 2025年度 下限一致但未标年度、且忽略桂政发〔2025〕16号 的 2200 元新规，属过时/错误表述，不予采信。si12333.cn 政策库有 t23363301 的镜像条目，来源同样非官方。",
+            "web_search 多轮（『北海 公积金 2026 缴存基数 上限 下限』『2026年北海市住房公积金缴存基数上下限 分别为』『北海市住房公积金管理委员会 关于公布 缴存基数上下限』等）未检索到任何官方 2026 年度数值文件。"
+          ],
+          "domainProbe": [
+            {
+              "host": "www.beihai.gov.cn",
+              "result": "A Record 202.103.252.132，HTTP 200 可访问"
+            },
+            {
+              "host": "beihai.gov.cn",
+              "result": "A Record 202.103.252.132"
+            },
+            {
+              "host": "gjj.beihai.gov.cn",
+              "result": "NXDOMAIN（阿里 DoH 返回 Status 3，该域名不存在）"
+            },
+            {
+              "host": "bhzfgjj.gjj.beihai.gov.cn",
+              "result": "A Record 180.142.128.84，域名真实存在且可用：/netface/ 、/netface/index.do 均 HTTP 200 并 302 到 /netface/login.do，页面标题『北海市住房公积金管理中心网上服务大厅』；/netface/down.do 下载中心 HTTP 200 但只有浏览器/插件/操作手册，无政策文件。仅根路径 / 为 HTTP 404——父代理『该域名不可用』的结论不成立，只是根路径没有页面。"
+            },
+            {
+              "host": "bhzfgjj.gjj.beihai.gov.cn（征求意见稿样本）",
+              "result": "HTTP 200，application/pdf，61,566 字节，但响应被截断，pypdf 报 pypdf.errors.PdfStreamError: Stream has ended unexpectedly / EOF marker not found"
+            },
+            {
+              "host": "bhzfgjj--gjj--beihai--gov--cn-6b28c3cb5d.zipv6.gxzf.gov.cn",
+              "result": "阿里 DoH 返回 Status 0 但无 A 记录（NODATA）；HTTP 403/502，HTTPS 502 —— 门户『网上办事』菜单指向的 IPv6 升级镜像站，不可用"
+            },
+            {
+              "host": "zjj.beihai.gov.cn",
+              "result": "NXDOMAIN"
+            },
+            {
+              "host": "bhzfgjj.beihai.gov.cn",
+              "result": "NXDOMAIN"
+            },
+            {
+              "host": "gjjglzx.beihai.gov.cn",
+              "result": "NXDOMAIN"
+            },
+            {
+              "host": "zjt.gxzf.gov.cn",
+              "result": "A Record 202.103.252.132，域名存在；HTTP 200，HTTPS HTTP 000"
+            },
+            {
+              "host": "www.gxzf.gov.cn",
+              "result": "A Record 202.103.252.132"
+            },
+            {
+              "host": "www.gxzfgjj.gov.cn",
+              "result": "NXDOMAIN（不存在）"
+            },
+            {
+              "host": "gjj.gxzf.gov.cn",
+              "result": "NXDOMAIN（不存在）"
+            },
+            {
+              "host": "gxgjj.cn",
+              "result": "NXDOMAIN（不存在）"
+            },
+            {
+              "host": "www.gxgjj.cn",
+              "result": "NXDOMAIN（不存在）"
+            },
+            {
+              "host": "zfgjj.gxzf.gov.cn",
+              "result": "NXDOMAIN（不存在）"
+            },
+            {
+              "host": "gjjzx.gxzf.gov.cn",
+              "result": "NXDOMAIN（不存在）"
+            },
+            {
+              "host": "gjj.nanning.gov.cn",
+              "result": "A Record 202.103.240.11（广西其他市公积金中心确有独立域名，此模式存在）"
+            },
+            {
+              "host": "zfgjj.qinzhou.gov.cn",
+              "result": "A Record 221.7.196.145（同上）"
+            },
+            {
+              "host": "bhswtjj / bhsj / bhswtj / bhswjj / bhswtjju / bhstats（beihai.gov.cn 下探测北海市统计局栏目）",
+              "result": "全部 HTTP 404，北海市统计局栏目未在 /xxgkbm/ 下暴露"
+            },
+            {
+              "host": "bhswzdlyqglwyh",
+              "result": "A 记录存在，HTTP 200，实际为『北海市涠洲岛旅游区管理委员会』，非统计局；其 tzgg_11/P020260922554760007624.pdf 是涠洲岛旅游区材料，与全市工资数据无关"
+            }
+          ],
+          "arithmeticSelfCheck": [
+            "2025缴存年度上限 24248 = 96992 ÷ 12 × 3。官方原文给出的 2024年度北海市城镇非私营单位在岗职工年平均工资 96992 元 ÷ 12 = 8082.67 元/月（即上文『统计部门公布的上一年度职工月平均工资』），8082.67 × 3 = 24248.00 —— 完全吻合。",
+            "2025缴存年度下限 1990 = 北海市最低工资标准（桂政发〔2023〕24号一类地区 1990 元/月）。非乘算口径。",
+            "月缴存额自洽：上限 24248 × 12% = 2909.76 → 官方取整 2910（单位+个人合计 5820）；下限 1990 × 5% = 99.5 → 官方取整 100（合计 200）。",
+            "2024缴存年度反算校验：上限 24469 = 97879 ÷ 12 × 3，其中 97879 ÷ 12 = 8156.58，8156.58 × 3 = 24469.75，官方值 24469 为向下取整（存在 0.75 元舍入），属正常取整差异，不影响结论。",
+            "年度归属算式校验：官方 2025年度报告（2026-03-25 发布）仍写『当年月缴存基数上限为24248元』，而该报告描述的是 2025 年度 —— 与 t23363301（2025-07-29 发文，定为 2025 年度）互相印证 24248 属 2025 年度。",
+            "2026缴存年度上限无法算式校验：需『2025年度北海市城镇非私营单位在岗职工年平均工资』，该数值本次未在官方渠道取到（2025年北海市国民经济和社会发展统计公报不含工资项，北海市统计局栏目未找到）。因此 2026年度上限不做任何推算。"
+          ]
+        }
+      ]
+    },
+    {
+      "province": "广东",
+      "provinceWideUrls": [],
+      "provinceWideNote": "",
+      "cities": [
+        {
+          "city": "汕头",
+          "status": "official-partial",
+          "urls": [
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/content/2/2524/post_2524683.html",
+            "https://www.shantou.gov.cn/cnst/gkml/zwgk/gzwj/gfxwj/bm/content/post_2306755.html",
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/content/2/2510/post_2510755.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "《汕头市住房公积金2025年年度报告》页面未标注文号（正文引用《汕头市住房公积金归集管理办法》汕房金〔2024〕1号）；《汕头市住房公积金归集管理办法》文号 汕房金〔2024〕1号",
+          "confirms": "【已确认，但属 2025 缴存年度，不是任务要的 2026 缴存年度】《汕头市住房公积金2025年年度报告》原文：「按照市统计局2024年度我市在岗职工月平均工资有关数据，确定我市（含区县）2025年度（2025年7月1日至2026年6月30日）职工最高缴存基数为25145.50元，职工个人缴存和单位为职工缴存的住房公积金月最高缴存额各为3017.46元（最高缴存基数×最高缴存比例，即25145.50元×12%）」「下限同步由1720元调整为1850元」。算式自校验：25145.50×12%=3017.46（与原文月最高缴存额一致）；25145.50÷3=8381.83（对应 2024 年度在岗职工月平均工资，符合办法的 3 倍口径）。制度依据原文（汕房金〔2024〕1号）：「职工住房公积金缴存基数不得低于当地上一年度最低工资标准，不得高于本市统计部门公布的上一年度职工月平均工资的3倍」「缴存基数每年7月份调整一次」。【2026 缴存年度上下限：未取到任何官方文件】",
+          "mismatch": "2026 缴存年度上限/下限均未取到官方来源，无法比对。另需提示：仓库 hf min=1750 与汕头官方口径不符——汕头 2025 缴存年度下限为 1850 元（1750 元是汕尾 2025 缴存年度下限），疑似仓库串值，建议核查。仓库 max 未取到。",
+          "searchLog": [
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/content/2/2524/post_2524683.html → HTTP 200，看到 2025 年度最高缴存基数 25145.50 元、月最高缴存额 3017.46 元、下限 1850 元",
+            "https://www.shantou.gov.cn/cnst/gkml/zwgk/gzwj/gfxwj/bm/content/post_2306755.html → HTTP 200，看到「不得高于本市统计部门公布的上一年度职工月平均工资的3倍」",
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/api/all/0?page=1..8&sid=754022 → 全部 HTTP 200；该接口返回住建局/公积金中心全站文章，已逐页枚举至「汕头市住房公积金管理中心 章程」等 2022 年条目，**没有任何 2026 年度缴存基数调整通知**",
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/api/all/3197?page=1..N&sid=754022&t=1 → HTTP 200，「文件通知」栏目约 120 条全量枚举，无缴存基数通知",
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/api/all/3201|3196|3198 → HTTP 404（栏目 id 不可用）",
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/content/2/2571/post_2571993.html（汕房金法规函〔2026〕300号）→ HTTP 200，内容为职工胡超投诉补缴 33800 元，与基数无关",
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/content/2/2560/post_2560016.html、post_2560028.html（汕房金法规函〔2026〕245/246号）→ HTTP 200，均无缴存基数字样",
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/content/2/2510/post_2510755.html（公积金中心现行有效行政规范性文件目录）→ HTTP 200，仅列 5 件办法/规定，无缴存基数调整通知",
+            "https://www.shantou.gov.cn/cnst/ → HTTP 200（156176 字节，实为汕头市主门户「城市频道」首页），全站链接中公积金相关仅 2 条资讯",
+            "https://www.shantou.gov.cn/cnst/ywdt/bmzx/content/post_2570220.html、post_2572978.html → HTTP 200，公积金惠民举措/装修物业费提取业务，均不含缴存基数金额",
+            "https://www.shantou.gov.cn/cnst/gkml/zwgk/gzwj/gfxwj/ → HTTP 200，全市规范性文件列表（最新至 2026-10-08），无公积金缴存基数文件",
+            "https://www.shantou.gov.cn/cnst/gkml/zwgk/gzwj/gfxwj/bm/index.html → HTTP 200 但仅 272 字节（跳首页），栏目索引取不到",
+            "https://www.shantou.gov.cn/gkmlpt/api/all/0?page=1&sid=754001（主门户 SID=754001）→ HTTP 200，仅最新文章，无公积金缴存基数件",
+            "https://www.shantou.gov.cn/tjj/ → HTTP 200（汕头市统计局），/tjj/tjzl/tjgb/content/post_2532926.html《2025年汕头国民经济和社会发展统计公报》→ HTTP 200，全文检索「工资/职工/平均工资」**未出现任何平均工资数据**",
+            "https://www.shantou.gov.cn/sitemap.xml → HTTP 200（1000 条 loc，仅路径无标题），无公积金专项路径",
+            "https://search.gd.gov.cn/jsonp/search/all（POST，含 CSRF token）→ HTTP 200 但返回 {\"errcode\":40002,\"errmessage\":\"CSRF Token Mismatch\"}；GET 旧接口 → 空响应，本环境无法使用广东统一搜索",
+            "https://12345.shantou.gov.cn/kmDetail.html?klpId=1106222 → curl HTTP 405；web_fetch 可打开但内容 JS 渲染、表格为空；直接取 HTML 仅得 4644 字节的 NWAF 拦截页，无法取得数据",
+            "https://zfcxjst.gd.gov.cn/xxgk/zdlyxx/zfbz/ 与 /gkmlpt/api/all/0?page=1..3&sid=233 → HTTP 200，省住建厅公积金栏目仅有《广东省住房公积金2025年年度报告》等，无汕头 2026 缴存基数数据",
+            "二手源（**来源不合格，仅作线索**）：本地宝 m.st.bendibao.com/live/26568.shtm 标题为《关于调整2026年度汕头市职工住房公积金最高缴存额有关事项的通知》，说明 2026 年确有该通知，但未找到任何 .gov.cn 原文页面，故不采用其数值"
+          ],
+          "domainProbe": [
+            {
+              "host": "www.shantou.gov.cn",
+              "result": "EXISTS（DoH Status:0），HTTP 200，可抓取"
+            },
+            {
+              "host": "shantou.gov.cn",
+              "result": "EXISTS（DoH Status:0）"
+            },
+            {
+              "host": "stszjj.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在（住建局与公积金中心只能作为 www 下的路径 /stszjj/、/cnst/ 访问）"
+            },
+            {
+              "host": "ststjj.shantou.gov.cn",
+              "result": "DoH 未单独探测；实际 https://www.shantou.gov.cn/ststjj/gkmlpt/api/all/0?page=1&sid=754022 返回 HTTP 200（统计局子站挂 www 下）"
+            },
+            {
+              "host": "gjj.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "zjj.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "jsj.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "zj.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "gjjgl.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "zjjjsj.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "stzj.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "tjj.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在（统计局在 www.shantou.gov.cn/tjj/）"
+            },
+            {
+              "host": "stats.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "sthrss.shantou.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "gjjst.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "stgjj.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "gdzwfw.gov.cn",
+              "result": "DoH EXISTS（A→210.76.73.x），但 https://www.gdzwfw.gov.cn/ HTTP 000 不可达；static.gdzwfw.gov.cn 的办事指南 PDF 同样 HTTP 000"
+            }
+          ]
+        },
+        {
+          "city": "汕尾",
+          "status": "official-partial",
+          "urls": [
+            "https://www.shanwei.gov.cn/swszfjj/gkmlpt/content/1/1237/post_1237017.html",
+            "http://www.swchengqu.gov.cn/swcqzfjj/gkmlpt/content/1/1272/post_1272441.html",
+            "http://www.shanwei.gov.cn/swszfjj/gkmlpt/content/1/1056/post_1056389.html",
+            "https://www.shanwei.gov.cn/swzfjs/zwgk/0200/0201/content/post_1056388.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "《汕尾市住房公积金2025年年度报告》页面未标注文号；《汕尾市住房公积金管理中心关于调整我市住房公积金缴存基数下限的通知》汕尾市城区住建局公开件索引号 11441502007243996E/2026-00080（页面未标注发文字号），依据 粤府函〔2026〕188号；《汕尾市住房公积金缴存管理实施细则》汕公积金管委〔2024〕9号（据办事指南 PDF 引用，本环境该 PDF 不可达）",
+          "confirms": "【已确认 2025 缴存年度，不是任务要的 2026 缴存年度上限】《汕尾市住房公积金2025年年度报告》原文：「2025年7月，调整年度全市职工住房公积金月缴存基数上限为本市统计部门公布的2024年度在岗职工月平均工资的3倍（最高月缴存基数为26043元），月缴存基数下限为本市现行最低工资标准1750元（如市政府公布新的最低工资标准，按新的标准执行）」。算式自校验：26043÷3=8681（对应 2024 年度在岗职工月平均工资 8681 元，与原文「3 倍」口径一致）。【已确认 2026 下限】汕尾市城区住建局公开件原文：「根据…《广东省人民政府关于调整我省最低工资标准的通知》（粤府函〔2026〕188号）…自2026年9月1日起调整…缴存基数下限为2040元」「2040×5%=102元…每月合计最低缴存额：204元」（算式自校验 2040×5%=102 ✓），且「已完成2026缴存年度基数调整以及尚未开展基数调整的缴存单位、缴存职工仍按原缴存基数标准执行，不执行本次2040元新下限」。该文只讲下限，不含上限数值。【2026 缴存年度上限：未取到任何官方文件】",
+          "mismatch": "仓库值 max=27849 **未取得官方来源**。27849÷3=9283，即假设 2025 年汕尾在岗职工月平均工资为 9283 元——此除法自洽只说明数字内部一致，不构成证实，未在任何官方页面看到 9283 或 27849。仓库下限 1750 与官方 2025 缴存年度一致；2026 年度下限官方件为 2040 元（自 2026-09-01 起，但已完成 2026 年度调整的单位仍按原标准执行）。",
+          "searchLog": [
+            "http://www.shanwei.gov.cn/swszfjj/gkmlpt/content/1/1237/post_1237017.html → HTTP 200，看到 2025 年 7 月上限 26043 元、下限 1750 元",
+            "http://www.swchengqu.gov.cn/swcqzfjj/gkmlpt/content/1/1272/post_1272441.html → HTTP 200，看到 2026 下限 2040 元（自 2026-09-01），全文无上限数值",
+            "https://www.shanwei.gov.cn/swszfjj/gkmlpt/api/all/0?page=1..6&sid=660044 → 全部 HTTP 200，汕尾市住建局/公积金中心全站文章逐页枚举至 2020 年，**无任何缴存基数上限通知**",
+            "https://www.shanwei.gov.cn/swszfjj/gkmlpt/api/all/379?page=1..N&sid=660044&t=1（其他文件，约 100 条全量）→ HTTP 200，无缴存基数通知",
+            "https://www.shanwei.gov.cn/swszfjj/gkmlpt/api/all/378?page=1&sid=660044&t=1（规范性文件）→ HTTP 200，仅《住房公积金管理办法/缴存/提取/贷款实施细则》等制度文件，无金额",
+            "https://www.shanwei.gov.cn/swszfjj/gkmlpt/api/all/368|382|374 → 无公积金/基数相关条目",
+            "https://www.shanwei.gov.cn/swzfjs/yaowen/tzgg/index_2.html ~ index_20.html（通知公告共 20 页）→ 全部 HTTP 200，逐页正则抽取 post 链接并过滤，**只有公积金制度文件，无缴存基数通知**",
+            "https://www.shanwei.gov.cn/swzfjs/zwgk/0200/0202/（其他文件）→ HTTP 200，仅《关于优化我市住房公积金使用政策的通知》等使用政策类，无缴存基数",
+            "http://www.shanwei.gov.cn/swcqzfjj/gkmlpt/api/all/0?page=1..6&sid=660063（汕尾市城区住建局全站）→ HTTP 200，枚举至 2021 年，**无缴存基数上限通知**（只有下限通知与使用政策）",
+            "https://www.shanwei.gov.cn/shanwei/swzdly/zfbz/ 及 .../zfbz/zfbzdt/index.html（重点领域信息公开-住房保障/公积金）→ HTTP 200，内容为保障房与公积金提取类，无缴存基数",
+            "https://www.shanwei.gov.cn/swzfjs/fuwu/swgjj/ → HTTP 200 但页面无列表内容（壳页）；https://www.shanwei.gov.cn/swgjj/ 仅返回跳转脚本",
+            "http://www.luhe.gov.cn/swlhzfjj/gkmlpt/api/all/0?page=1&sid=660063（陆河县住建局）→ HTTP 200，公积金相关均为转载他市政策，无汕尾缴存基数",
+            "https://www.shanwei.gov.cn/swzfjs/yaowen/tzgg/content/post_1260108.html（主动公开基本目录2026版）→ HTTP 200，未见缴存基数条目",
+            "https://www.shanwei.gov.cn/swszfjj/gkmlpt/content/1/1230/post_1230735.html（2026年住房公积金管理中心部门预算）→ HTTP 200，检索「缴存基数/基数上限/在岗职工/平均工资」**无命中**",
+            "汕尾主门户 /shanwei/swtjj/、/shanwei/tjj/、/shanwei/sjtjj/ → HTTP 404（未找到统计局栏目路径）；/swjsj/ → HTTP 403",
+            "https://www.lufengshi.gov.cn/ → HTTP 200；https://www.gdhf.gov.cn/、https://www.hhw.gov.cn/、https://www.swxq.gov.cn/、https://www.luhe.gov.cn/ 首页 → curl HTTP 000 不可达（本环境出口限制）",
+            "https://static.gdzwfw.gov.cn/portal/wk-pdf?code=12441500075109529M344201427100103&template=guide-v2 → HTTP 000 不可达（该 PDF 引用 汕公积金管委〔2024〕9号 第二十七条第一款）",
+            "二手源（**来源不合格，仅作线索**）：hr668.com 广东各地公积金基数调整汇总、本地宝、搜狐/新浪转载等均未给出可回溯的 .gov.cn 原文链接，故不采用"
+          ],
+          "domainProbe": [
+            {
+              "host": "www.shanwei.gov.cn",
+              "result": "EXISTS（DoH Status:0），HTTP 200，可抓取"
+            },
+            {
+              "host": "shanwei.gov.cn",
+              "result": "EXISTS（DoH Status:0）"
+            },
+            {
+              "host": "www.swchengqu.gov.cn",
+              "result": "EXISTS，HTTP 200，汕尾市城区住建局站点（汕尾公积金中心通知由其公开）"
+            },
+            {
+              "host": "www.lufengshi.gov.cn",
+              "result": "EXISTS，HTTP 200，陆丰市政府"
+            },
+            {
+              "host": "gjj.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "zjj.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "zjjgl.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "swzjj.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "gjjglc.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "zcjjs.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "swzjjgl.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "haishui.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "chengqu.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在（实际为 www.swchengqu.gov.cn）"
+            },
+            {
+              "host": "swhf.gov.cn / www.swhf.gov.cn",
+              "result": "NXDOMAIN 域名不存在（海丰县实际站点为 www.gdhf.gov.cn）"
+            },
+            {
+              "host": "swlufeng.gov.cn / www.swlufeng.gov.cn",
+              "result": "NXDOMAIN 域名不存在（陆丰实际为 www.lufengshi.gov.cn）"
+            },
+            {
+              "host": "swhonghai.gov.cn / www.swhonghai.gov.cn",
+              "result": "NXDOMAIN 域名不存在（红海湾实际为 www.hhw.gov.cn）"
+            },
+            {
+              "host": "tjj.shanwei.gov.cn / stats.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            },
+            {
+              "host": "hrss.shanwei.gov.cn / swrsj.shanwei.gov.cn",
+              "result": "NXDOMAIN 域名不存在（人社局在 www.shanwei.gov.cn/swrsj/ 路径下，HTTP 200）"
+            },
+            {
+              "host": "swgjj.gov.cn",
+              "result": "NXDOMAIN 域名不存在"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
