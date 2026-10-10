@@ -16,7 +16,7 @@
 | ✅ 已核实（来源 + 数值一致） | 167 |
 | 🟡 部分核实 | 106 |
 | ⚠️ 有来源但未覆盖该项 | 64 |
-| 收录链接 | 445 条 |
+| 收录链接 | 455 条 |
 
 ### 逐省汇总
 
@@ -51,20 +51,19 @@
 | **青海** | 8 | 1 | 3 | 4 | 4 | 8 |
 | **黑龙江** | 13 | 8 | 1 | 4 | 0 | 15 |
 
-> **两处「链接数」口径不同，勿混读**：上表「链接数」= 该省明细表内实际列出的 URL 条数（28 省合计 **393** 条）；总览的「收录链接 ? 条」= `docs/sources/` 记录库中各城**胜出记录**的 URL 总数。记录库保留了历史各轮核查中取得、但本轮明细表未复用的链接，故记录库口径略大于明细口径。
+> **两处「链接数」口径不同，勿混读**：上表「链接数」= 该省明细表内实际列出的 URL 条数（28 省合计 **403** 条）；总览的「收录链接 455 条」= `docs/sources/` 记录库中各城**胜出记录**的 URL 总数。记录库保留了历史各轮核查中取得、但本轮明细表未复用的链接，故记录库口径略大于明细口径。
 
 ---
 
-### 公积金侧专项缺口（21 城）
+### 公积金侧专项缺口（19 城）
 
 上面的「已核实 / 部分 / 未找到」是**整城口径**（社保 + 医保 + 公积金任一有官方件即可）。但本项目的硬要求是
 「**每个城市的社保公积金政策都有官方链接作为支撑**」，公积金是独立一支，故此处单列一遍：
-以下 21 城的**公积金缴存基数上下限，至今没有任何官方来源支撑**（胜出记录的 `confirms` / `docNumber` / `urls` 中
+以下 19 城的**公积金缴存基数上下限，至今没有任何官方来源支撑**（胜出记录的 `confirms` / `docNumber` / `urls` 中
 均未出现「公积金 / 缴存基数 / 缴存限额 / 月缴存额」等字样）。这些值是历史遗留值，不可当作已核实数据引用。
 
 | 省级单位 | 城市 | 仓库 hf 值 | 来源状态 | 已有 URL 数 |
 |---|---|---|---|---:|
-| 福建 | 漳州 | 2195~25569 | official-confirmed | 1 |
 | 甘肃 | 白银 | 1960~24207 | official-partial | 1 |
 | 甘肃 | 酒泉 | 2020~26246.49 | official-partial | 1 |
 | 甘肃 | 庆阳 | 1910~27275 | official-confirmed | 1 |
@@ -77,7 +76,6 @@
 | 江西 | 鹰潭 | 2100~24866.67 | official-confirmed | 1 |
 | 青海 | 海北 | 1700~25472 | official-partial | 2 |
 | 青海 | 西宁 | 2080~31995 | official-partial | 2 |
-| 山西 | 晋中 | 2150~23855 | official-confirmed | 2 |
 | 山西 | 吕梁 | 2150~23793 | official-confirmed | 1 |
 | 四川 | 阿坝 | 2200~30642 | official-partial | 1 |
 | 四川 | 广元 | 2200~23493 | official-confirmed | 3 |
@@ -86,13 +84,72 @@
 | 四川 | 雅安 | 2200~24979 | official-confirmed | 2 |
 | 直辖市 | 上海 | 2740~37731 | official-confirmed | 2 |
 
-**优先级**：其中 **0 城一条 URL 都没有**（），应最优先补；
-另有 0 城 `status` 为 `not-found`（）。
+**优先级**：本轮已无「零 URL」的城市——每一城至少还有社保或医保侧的官方链接，公积金侧待补。
 
 > 生成方式：`node tools/source-records.js` 的 `readRecords()` 取每城**胜出记录**，
 > 与 `tools/calc-harness.js` 的 `CITIES` 交叉比对。判定是**保守字符串匹配——会漏判也会误判**
 > （例如某城官网正文用「住房公积金缴存比例调整公告」这类措辞而记录里只抄了摘要），
 > 本表只作下一轮检索的起点，不作结论。
+
+
+## 云南（16 城：已核实 4 / 部分 10 / 未找到 2 / 未取得 2）
+
+| 城市 | 状态 | 数据来源文号 | 来源链接 |
+|------|------|-------------|---------|
+| 临沧 | 🟡 部分 | 临医保联发〔2019〕35号 | <https://www.lincang.gov.cn/file/lcoldData/_local/2/7A/5B/D45EB3F60657FF7E7CE658CAF60_007A7CDD_578760.pdf> |
+| 丽江 | 🟡 部分 | — | <https://lijiang.gov.cn/ljsrmzf/c102219/202212/fbb61beb66ea4c099e6390733dc721bb.shtml> |
+| 保山 | 🟡 部分 | — | <https://baoshan.gov.cn/info/28876/10311604.htm> |
+| 大理 | ⚠️ 未找到 | — | — |
+| 德宏 | 🟡 部分 | — | <http://www.dh.gov.cn/ylbzj/Attach/2207/28D00DG2L62207181450251ED54ABA.pdf> |
+| 怒江 | 🟡 部分 | — | <https://www.nujiang.gov.cn/xxgk/015279139/info/2010-161327.html> |
+| 文山 | ✅ 已核实 | 文政规〔2023〕4号 | <https://www.ynws.gov.cn/wszzf/xzgfx/1855137429650239488/oyok7cCT.pdf> |
+| 昆明 | 🟡 部分 | 昆公积金〔2026〕69号 | <https://ybj.km.gov.cn/c/2024-07-25/4882692.shtml><br><https://zfgjj.km.gov.cn/c/2026-09-04/5109614.shtml> |
+| 昭通 | ✅ 已核实 | — | <http://www.cnyl.gov.cn/yiliang/upload/files/2023/8/92ec27e009a427ca.pdf> |
+| 普洱 | 🟡 部分 | — | <https://www.puershi.gov.cn/__local/D/65/BD/C56C8FA1A6CB5BFD1B1B2775CF8_4BA38C78_41C9F.pdf> |
+| 曲靖 | ⚠️ 未找到 | — | — |
+| 楚雄 | ✅ 已核实 | — | <https://ynlf.gov.cn/info/3876/90596.htm> |
+| 玉溪 | 🟡 部分 | 玉医保规〔2019〕1号；玉市金发〔2026〕20号 | <http://www.huaning.gov.cn/u/cms/yxszfxxgk/202112/17200927fqf8.pdf><br><https://www.yuxi.gov.cn/yxszfxxgk/szbmgfxwj/20211217/1314669.html> |
+| 红河 | 🟡 部分 | — | <https://www.hh.gov.cn/info/1241/591962.htm> |
+| 西双版纳 | ✅ 已核实 | — | <https://www.xsbn.gov.cn/zybj/media/2023/09/51bdc882-a35c-4c1e-a6d3-73b5cc48008c1694511567025892895909.pdf><br><https://www.xsbn.gov.cn/media/2023/08/27a1138c-23ad-4997-b47f-389454c467871691650901310-646105851.pdf> |
+| 迪庆 | 🟡 部分 | — | <http://diqing.gov.cn/file/diqing/dqzzf_zfbgs/file/20220628/1656406677753052102.pdf><br><https://hrss.yn.gov.cn/jyj/Print.aspx?ClassID=756&newsid=27319> |
+
+
+## 内蒙古（12 城：已核实 5 / 部分 3 / 未找到 4 / 未取得 4）
+
+| 城市 | 状态 | 数据来源文号 | 来源链接 |
+|------|------|-------------|---------|
+| 乌兰察布 | ✅ 已核实 | 乌政办发〔2024〕10号 | <https://www.wulanchabu.gov.cn/rmt/userfiles/ueditor/upload/file/20240322/1711099430852080496.docx> |
+| 乌海 | ✅ 已核实 | — | <https://www.whsgjj.com/zxdt/2042.jhtml> |
+| 兴安盟 | ⚠️ 未找到 | — | — |
+| 包头 | ⚠️ 未找到 | — | — |
+| 呼伦贝尔 | ✅ 已核实 | 呼政办发〔2024〕66号 | <https://www.hlbe.gov.cn/OpennessGazette/show/8914.html> |
+| 呼和浩特 | 🟡 部分 | — | <https://www.nmg.gov.cn/zwgk/gzk/msgz/hhht/202112/P020211229531096842917.docx> |
+| 巴彦淖尔 | 🟡 部分 | — | <http://zjj.bynr.gov.cn/zjwtzgg/202607/t20260701_296643.html> |
+| 赤峰 | ✅ 已核实 | — | <https://ybj.chifeng.gov.cn/zzllms/zzYbyw/202603/t20260305_2738432.html> |
+| 通辽 | 🟡 部分 | — | <https://ylbzj.tongliao.gov.cn/xwzx/tzgg/202607/t20260706_1058433.html> |
+| 鄂尔多斯 | ✅ 已核实 | — | <http://ordos.gov.cn/zzms/slh_zcjd/202401/t20240111_3554347.html> |
+| 锡林郭勒盟 | ⚠️ 未找到 | — | — |
+| 阿拉善盟 | ⚠️ 未找到 | — | — |
+
+
+## 吉林（9 城：已核实 2 / 部分 3 / 未找到 4 / 未取得 4）
+
+| 城市 | 状态 | 数据来源文号 | 来源链接 |
+|------|------|-------------|---------|
+| 吉林市 | 🟡 部分 | — | <http://xxgk.jlcity.gov.cn/qtdw/gjjglzx_1/xbgkml/202608/t20260814_1332244.html><br><http://xxgk.jlcity.gov.cn/qtdw/gjjglzx_1/xbgkml/202608/t20260814_1332245.html> |
+| 四平 | ✅ 已核实 | — | <http://gjj.siping.gov.cn/tzgg/202607/t20260717_771109.html> |
+| 延边 | 🟡 部分 | — | <http://zfxxgk.yanbian.gov.cn/cyqzf/xxgkml/202201/t20220107_371243.html><br><http://zfxxgk.yanbian.gov.cn/cyqzf/zcjd/202201/t20220107_371283.html> |
+| 松原 | ⚠️ 未找到 | — | — |
+| 白城 | ⚠️ 未找到 | — | — |
+| 白山 | ⚠️ 未找到 | — | — |
+| 辽源 | ⚠️ 未找到 | — | — |
+| 通化 | ✅ 已核实 | 通市政办发〔2022〕25号 | <https://gjj.tonghua.gov.cn/views/CNewsDetail?id=a591a100773b44b1bac5e3305e7f26f4><br><http://www.jlrd.gov.cn/jlsjk/202311/P020231102773790005143.pdf> |
+| 长春 | 🟡 部分 | — | <http://zwgk.changchun.gov.cn/zcbm/szfgjj/gjjxxgkml/202607/t20260729_3503280.html> |
+
+
+## 四川（21 城：已核实 11 / 部分 4 / 未找到 6 / 未取得 6）
+| 乐山 | ✅ 已核实 | — | <https://www.leshan.gov.cn/lsswszf/zzzqgsgg/827244580835397.html><br><https://www.leshan.gov.cn/lsswszf/shbzssqk/92337841/f1377a4cad7644128c0302de3.html> |
+
 | 内江 | 🟡 部分 | （内江市医保局/财政局/税务局关于2026年度灵活就业人员参加职工医保缴费标准等有关情况的通知，2025-12-19，页面未显示文号） | <https://www.neijiang.gov.cn/njs/xgzc2/202601/0cce51fac6fe4a79baf175ac4115c736.shtml> |
 | 凉山 | ⚠️ 未找到 | — | — |
 | 南充 | ⚠️ 未找到 | — | — |

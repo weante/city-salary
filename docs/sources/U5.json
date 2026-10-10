@@ -88,6 +88,83 @@
       ]
     },
     {
+      "province": "四川",
+      "provinceWideUrls": [],
+      "provinceWideNote": "四川五险已于 2026 年度统一（川人社办发〔2026〕50号），但公积金缴存基数由各市州自定，无省级统一文件；省住房城乡建设厅门户 jst.sc.gov.cn 首页亦未提供各市州公积金缴存基数汇总栏目。故以下 5 市州均为各自核查。",
+      "cities": [
+        {
+          "city": "阿坝",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "【未找到官方件，未取得任何数值】阿坝州公积金中心自有站点已完整扫描：https://www.abgjj.org.cn/abzzfgjjglzx/c100004/ts_list.shtml（通知公告栏目）与 https://www.abgjj.org.cn/abzzfgjjglzx/c103757/ts_list.shtml（住房公积金信息公开栏目），两栏全量条目逐条核对，仅有《严正声明》《2026年8月数据快报》《2026年7月数据快报》《2026年上半年数据快报》《关于短时关闭线上服务窗口的通知》以及部门决算、预算、数据快报类材料，**站内不存在任何年度缴存基数调整通知**。另试：阿坝州政府门户 https://www.abazhou.gov.cn/ 首页可访问（200，标题「阿坝藏族羌族自治州人民政府」），首页全量链接扫描未命中公积金相关栏目；阿坝州住建/公积金在州府的域名 zfgjj.abazhou.gov.cn 经 curl 返回 HTTP 418（WAF 拦截），未能取得内容。按四关纪律第4条，abgjj.org.cn 为中心自有域名（officialDomain 记 false），但该站确无相关文件。结论：不改仓库值。算式自校验（仅供人工后续核对，非官方值）：仓库上限 30642 若成立，30642÷3 = 10214 元/月、年 122568 元，对应阿坝州上年度城镇非私营单位在岗职工年平均工资；AGENTS.md 第9条已自行标注「阿坝2200~30642（2026上限未公布暂用省平3倍待核实）」，与本轮「查无官方件」的结论方向一致。",
+          "mismatch": ""
+        },
+        {
+          "city": "广元",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "【未找到官方件，未取得任何数值】广元市本轮所有官方渠道均被技术手段阻断：(1)广元市人民政府门户 https://www.cngy.gov.cn/ 经带浏览器 UA 的 curl 请求返回 HTTP 405、响应正文仅为「加载中」三个字，判定为 JS 反爬/前端框架站，curl 无法取得任何栏目内容（已尝试多次、含 http 与 https、含 Referer，均 405 或空）。(2)广元市住房和城乡建设局/公积金中心的可能域名 zfgjj.cngy.gov.cn、gjj.cngy.gov.cn 经 223.5.5.5 解析均 NXDOMAIN（Status:3），已排除。(3)四川省住房和城乡建设厅门户 http://jst.sc.gov.cn/ 可访问（200），但首页及扫描结果中未出现广元市公积金缴存基数相关文件，亦无各市州公积金基数汇总栏目。(4)四川省政策文件库 www.sc.gov.cn/10462/scszcwjkss/ 首页扫描仅见通用政策库入口，未命中公积金缴存基数条目。结论：既未证实也未否证仓库值 2200~23493，不改仓库值。算式自校验（仅供人工核对）：23493×12/3 = 93972，即 2025 年广元市上年度在岗职工年平均工资 93972 元——注意 23493 恰好等于四川省 2026 年度社保统一基数上限（川人社办发〔2026〕50号 中「4699~23493」的上限），而 93972 ÷ 4 = 23493，说明该值来自「省平 3 倍」推算路径而非广元本地社平，**这一点本身就说明仓库上限缺官方依据**，与 AGENTS.md 第9条自注「2026上限未公布暂用省平3倍待核实」吻合。",
+          "mismatch": ""
+        },
+        {
+          "city": "眉山",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "【未找到官方件，未取得任何数值】眉山市本轮尝试：(1)眉山市人民政府门户 https://www.ms.gov.cn/ HTTP 200、标题确认「眉山市人民政府」，首页全量链接扫描命中「市住房城乡建设局」入口 http://www.ms.gov.cn/xxgkpt/xxgk-list-bm.jsp?urltype=tree.TreeTempUrl&wbtreeid=5674&pubid=1024&wbdeptcode=szjj —— 该页为依 wbtreeid 动态展开的政务公开树，本轮未能在其中定位到公积金缴存基数条目；(2)眉山市政府政策文件库入口 http://www.ms.gov.cn/zwgk/zfwj.htm 与 https://www.ms.gov.cn/ss/zcwjk.htm 可访问，但均未见公积金基数通知；(3)眉山公积金中心可能域名 www.mszfgjj.org.cn、www.mszfgjj.cn 经 223.5.5.5 解析均 NXDOMAIN，www.meishan.gov.cn 已 NXDOMAIN（用户已验证）；(4)四川省门户 www.sc.gov.cn 与省住建厅 jst.sc.gov.cn 均未提供各市州公积金基数汇总。结论：记 not-found，不改仓库值 2200~24490。算式自校验（仅供人工核对）：24490÷3 = 8163.33 元/月、年 97960 元；若该上限确为省平 3 倍推算，则 24490 与省平 23493 不等，说明可能来自眉山本地社平但仍无官方件佐证。AGENTS.md 第9条已自注「眉山2200~24490（2026上限未公布待核实）」。",
+          "mismatch": ""
+        },
+        {
+          "city": "内江",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "【未找到官方件，未取得任何数值】内江市本轮尝试：(1)内江市人民政府门户 https://www.neijiang.gov.cn/ HTTP 200、标题「内江市人民政府」，首页全量链接扫描结果：政务公开入口 https://www.neijiang.gov.cn/njs/zwgk/zwgk.shtml、政策文件库 https://www.neijiang.gov.cn/njs/zfzc/newzcwjk_index.shtml、市住房城乡建设局 https://www.neijiang.gov.cn/zjj/xxgk/xxgkzn/zfxxgk_xxgkzn.shtml（市公积金中心的对外入口为 https://www.neijiang.gov.cn/javascript:; 即纯 JS 空链接，实际指向四川政务服务网 http://www.sczwfw.gov.cn/jiq/front/item/bmft_index?deptCode=3830960518110826496&areaCode=511000000000 的在线办理页，非政策发布页）；(2)抓取内江市住建局政务公开页 https://www.neijiang.gov.cn/zjj/xxgk/xxgkzn/zfxxgk_xxgkzn.shtml 返回 HTTP 200，但页面链接清单中关键词 公积金|缴存|基数 命中 0 条；(3)抓取内江市政策文件库 https://www.neijiang.gov.cn/njs/zfzc/newzcwjk_index.shtml 未命中公积金条目；(4)内江公积金中心可能域名 www.njzfgjj.org.cn、zfgjj.neijiang.gov.cn、www.neijiangzfgjj.org.cn 经 223.5.5.5 解析均 NXDOMAIN，已排除。结论：记 not-found，不改仓库值 2200~25172。算式自校验（仅供人工核对）：25172÷3 = 8390.67 元/月、年 100688 元，对应内江市上年度在岗职工年平均工资，数值本身合理但无官方来源支撑。",
+          "mismatch": ""
+        },
+        {
+          "city": "雅安",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "【未找到官方件，未取得任何数值——本城被技术手段完全阻断】(1)雅安市住房公积金管理委员会自有站点 https://www.yaszfgjjzx.org.cn/ HTTP 200，但 HTML 仅 1766 字节，是天方电信政务云的单页应用（SPA）外壳，页面唯一的 href 是 /ct_outlink_displace=c2NoZW1lX2Nhc2U9MSUyMHNlbGZfb3V0bGluayZzaWc9NWJkYWZlNjJlNTRhYzE3NTIwNzUzZDM2MzRiNmRiNmUmaG9zdD1hcGkudGlhbmRhdHUuZ292LmNuJmhyZWY9MCZ0aW1lcz0xJnNjaGVtZT1odHRw/api?v=4.0&tk=... 即跳转到 api.tianfadianit.gov.cn 的单点登录接口，**curl 无法取得任何业务内容或列表**。(2)雅安市住房和城乡建设局 https://zfhcxjsj.yaan.gov.cn/ HTTP 200，为政务云同源 SPA；其「政策法规」列表 https://zfhcxjsj.yaan.gov.cn/xinwen/list/22adb82a-de0d-4e42-9610-ece93531ce7f.html 与「通知公告」列表 https://zfhcxjsj.yaan.gov.cn/xinwen/list/d4a3713c-8577-4e69-ab17-eca30abc5d9b.html 均返回 200 但内容由 JS 渲染（HTML 各约 15.2KB，`<a>` 标签文本正则提取结果中 公积金|缴存|基数 命中 0 条）。(3)雅安市政府门户 https://www.yaan.gov.cn/ 首页全量链接扫描：命中「市住房城乡建设局」https://zfhcxjsj.yaan.gov.cn/、「市政府政策文件库」https://www.yaan.gov.cn/zfxxgk/zcwj.html、「政策法规」https://www.yaan.gov.cn/credit/webContent/moreLevelList?columnCode=top_zcfg、「政策文件」https://www.yaan.gov.cn/gongkai/kuozhan/10381.html，均为 SPA 或需登录，未能定位公积金缴存基数文件。(4)雅安中心可能域名 zfgjj.yaan.gov.cn 经 223.5.5.5 解析 NXDOMAIN，已排除。结论：记 not-found，不改仓库值 2200~24979。算式自校验（仅供人工核对）：24979÷3 = 8326.33 元/月、年 99916 元，对应雅安市上年度在岗职工年平均工资。",
+          "mismatch": ""
+        }
+      ]
+    },
+    {
+      "province": "河南",
+      "provinceWideUrls": [],
+      "provinceWideNote": "河南 2026 缴费年度社保仍暂用 2024 年度全口径月均 6385（豫人社办〔2025〕67号 + 河南省税务局 2026-05-09 缴费指南），社保与公积金基数为两套体系，本轮仅核查公积金。",
+      "cities": [
+        {
+          "city": "安阳",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "【未找到官方件，未取得任何数值】(1)域名核实与纠错——常见的 www.ay.gov.cn 经抓取标题验证实为「安远县人民政府」（江西赣州安远县），并非安阳市，属域名误配，已排除；安阳市正确门户为 https://www.anyang.gov.cn/ （HTTP 200，标题确认「安阳市人民政府」）。(2)抓取安阳市行政规范性文件库 https://www.anyang.gov.cn/zwgk/fgwj/xzgfxwj/ 返回 HTTP 200，全量链接清单中关键词 公积金|缴存|基数 命中 0 条；安阳全市门户首页全量链接扫描亦仅命中「通知公告」https://www.anyang.gov.cn/ywdt/tzgg、「政务公开」https://www.anyang.gov.cn/zwgk/、「政策文件」https://www.anyang.gov.cn/zwgk/fgwj/xzgfxwj/、「公积金查询」https://www.hnzwfw.gov.cn/portal/guide/589972ED50B2CE79EB57571FC773FB96?region=410500000000 与 https://www.hnzwfw.gov.cn/portal/personal/index?region=410500000000&theme=15 —— 后两个是河南政务服务网的**在线查询入口**（查个人/单位缴存信息），不是政策发布页，无法据以取得上下限数值。(3)安阳公积金中心可能域名 zfgjj.anyang.gov.cn、www.ayzfgjj.cn、www.anyanggjj.cn、aygjj.cn 经 223.5.5.5 解析：前三者 NXDOMAIN，aygjj.cn 虽非 NXDOMAIN 但根路径返回 HTTP 404「404 Not Found」（空站），无公积金政策内容。(4)安阳市通知公告栏 https://www.anyang.gov.cn/ywdt/tzgg 未逐条扫（时间所限），但政策文件库与全站链接扫描均无公积金条目。结论：记 not-found，不改仓库值 2350~19903。算式自校验（仅供人工核对）：19903÷3 = 6634.33 元/月、年 79612 元，对应安阳市上年度在岗职工年平均工资；下限 2350 与 AGENTS.md 第18条所记河南 17 市统一下限 2350 一致（河南各市下限同值，上限因市而异）。",
+          "mismatch": ""
+        },
+        {
+          "city": "洛阳",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "【官方通知页已定位，但正文为扫描件 PDF、无 OCR，取不到数值 → 仍记 not-found】(1)已找到洛阳市住房公积金管理中心的 2026 年度通知页面：https://zfgjj.ly.gov.cn/2026/08-10/1078581.html，《关于2026年度调整住房公积金缴存基数的通知》，发布 2026-08-10，域名 zfgjj.ly.gov.cn 为 .gov.cn，officialDomain 记 true；已用浏览器 UA 成功抓取该页，**但页面正文只有一个 PDF 附件，没有任何文字**。(2)附件地址 https://oss.ly.gov.cn/20260811/25384d77f0bb42659d1a98c6a8a6f1d0.PDF 已成功下载，HTTP 200、大小 4,111,130 字节；用 `py`（注意：系统 `python` 是 WindowsApps 桩程序，退出码 9009，必须用 `py`）配合 pypdf 6.19.0 抽取全文，**返回空行、零可提取文字**，判定为扫描图片型 PDF。(3)环境无任何 OCR 能力：本模型不支持图片输入（read_image 报 does not declare image input），tesseract 未安装，pytesseract/easyocr/cnocr/rapidocr_onnxruntime/paddleocr/onnxruntime/PIL/cv2 全部不可用，Windows.Media.Ocr WinRT 类型无法加载，pip install rapidocr-onnxruntime 被沙箱拒绝（exit 1，无输出）——因此**无法读取该 PDF 的实际数值**。(4)为寻找纯文字版本，另扫了洛阳中心的相关栏目：通知公告 https://zfgjj.ly.gov.cn/xwzx/tzgg?page=N、政策文件/其他文件 https://zfgjj.ly.gov.cn/zfxxgk/zc/qtwj、政策解读 https://zfgjj.ly.gov.cn/zfxxgk/zc/zcjd、公积金管理委员会 https://zfgjj.ly.gov.cn/zwgk/zfgjjglwyh，以及洛阳市行政规范性文件库 https://www.ly.gov.cn/xzgfxwjk/ —— 其中「其他文件」栏中最新的一份缴存基数文件是《关于调整2023年度住房公积金缴存基数下限的补充通知》（2023 年度，非 2026 年度）；洛阳市人民政府门户 www.ly.gov.cn 经 223.5.5.5 解析 NXDOMAIN。结论：**官方件确实存在且已定位 URL，但数值无法读取**；按任务纪律「绝对不许编造或推算一个数值当官方值」，故 status 记 not-found、urls 记 []（未取得的页面不作为有效来源登记），同时在此完整记录页面地址与附件地址供后续人工查证。不改仓库值 2350~23914。算式自校验（仅供人工核对）：23914÷3 = 7971.33 元/月、年 95656 元，对应洛阳市上年度在岗职工年平均工资；下限 2350 与河南 17 市统一下限一致。",
+          "mismatch": ""
+        }
+      ]
+    },
+    {
       "province": "江西",
       "provinceWideUrls": [],
       "provinceWideNote": "",
@@ -101,6 +178,52 @@
           "officialDomain": false,
           "docNumber": "无文号（落款「九江市住房公积金管理中心 2026年6月26日」）",
           "confirms": "【官方件已确认，与仓库值完全一致】来源：九江市住房公积金管理中心官网（jjszfgjj.cn，中心自有域名，非 .gov.cn，officialDomain 记 false；页面页脚署「地址：九江市长虹西大道366号 电话：0792-12329 赣公网安备36040102000016」，确认为官方站点）。文档：《关于调整2026年度九江市住房公积金缴存基数、比例和月缴存额的通知》，发布时间 2026-06-26，路径 /tzgg_108399/202606/t20260626_7262575.html。原文摘录：「缴存基数不得高于本市上年度在岗职工月平均工资的3倍，即24467元/月；不得低于本市最低工资标准，即2090元/月。」「（二）住房公积金月缴存额上限：2026年度九江市住房公积金月缴存额上限为5872元（单位和职工合计）。」「（三）住房公积金月缴存额下限：2026年度九江市住房公积金月缴存额下限为210元（单位和职工合计）。」「四、执行时间 2026年度住房公积金缴存基数、比例和月缴存额标准执行时间自2026年7月1日起至2027年6月30日止，原则上只能调整一次。」「二、缴存比例 住房公积金缴存比例不应高于12%且不应低于5%」。依据引用：「《江西省人民政府办公厅关于调整最低工资标准的通知》（赣府厅字〔2025〕42号）」。四关核验：(1)口径——原文写明上限为「本市上年度在岗职工月平均工资的3倍」，属城镇非私营/在岗职工口径，未混入私营口径，也未单独区分机关事业单位；下限为最低工资标准，与之匹配；(2)生效日期——自 2026-07-01 至 2027-06-30，已生效，非征求意见稿；(3)数字歧义——全市统一，无分区域分档；(4)来源官方性——中心自有域名，可接受。算式自校验：24467 ÷ 3 = 8155.67 元/月（九江市2025年在岗职工月平均工资），×12 ≈ 97868 元/年，校验成立；24467×12% = 2936.04 → 单方 2936，合计 5872 ✓ 与官方「5872元（单位和职工合计）」一致；下限 2090×5% = 104.5 → 单方按元取整 105，合计 210 ✓ 与官方「210元（单位+职工合计）」一致（官方合计取的是两个取整后单方之和，不是 2090×5%×2=209）。与仓库值比较：仓库 hf 值 2090~24467，官方 2026 年度 2090~24467，**完全一致**。结论：不改仓库值。",
+          "mismatch": ""
+        },
+        {
+          "city": "鹰潭",
+          "status": "official-partial",
+          "urls": [
+            "https://www.ytgjj.com.cn/tzgg/2161.jhtml"
+          ],
+          "officialDomain": false,
+          "docNumber": "鹰住公字【2026】15号",
+          "confirms": "【官方通知页与文号已确认，但正文为扫描件 PDF、无法读取数值】来源：鹰潭市住房公积金管理中心自有站点 www.ytgjj.com.cn（中心自有域名，非 .gov.cn，officialDomain 记 false；站点栏目结构为 /zxwj/index.jhtml 中心文件、/zzq/index.jhtml 省/市文件、/tzgg/index.jhtml 通知公告、/zecjd/index.jhtml 政策解读，文章地址形如 https://www.ytgjj.com.cn:443/tzgg/2161.jhtml）。已抓取页面：《关于调整2026年度住房公积金缴存基数和月缴存额上、下限的通知》，路径 https://www.ytgjj.com.cn/tzgg/2161.jhtml，发布日期 2026-07，**文号由其 PDF 附件的文件名直接确认：鹰住公字【2026】15号**（URL 为 /u/cms/www/202607/01164706iwx4.pdf）。**正文取不到数值的原因**：该 PDF 附件已成功下载，HTTP 200、大小 957,322 字节，但用 `py` + pypdf 6.19.0 抽取全文只返回 3 个字符（空白），判定为扫描图片型 PDF；本会话模型不支持图片输入（read_image 报 does not declare image input），环境无 tesseract/rapidocr/paddleocr/easyocr/cnocr/PIL/cv2/onnxruntime，Windows.Media.Ocr 类型无法加载，pip install rapidocr-onnxruntime 被沙箱拒绝（exit 1，无输出），**因此未取得任何官方数值**。四关核验因数值缺失无法完成，故只记部分结论：口径、生效日期（标题即 2026 年度、附件路径 202607 说明 2026 年 7 月发布，为已生效文件）、来源官方性（中心自有域名，可接受）三项过关，**数字关（第三关）未过**。仓库值 2100~24866.67 的状态：既未被证实也未被否证。注意 AGENTS.md 第23条另记鹰潭 2026 年度医保基数为 4110~20550（鹰医保字〔2026〕27号，2026-08-01 起），说明该市 2026 年度数据确有落地文件，但公积金件为扫描件，无法据医保数推算公积金数（口径不同：上限=在岗职工年平均工资×3，下限=最低工资标准，二者与医保全口径社平无换算关系）。算式自校验（仅供人工后续核对，非官方值）：仓库上限 24866.67 ÷ 3 = 8288.89 元/月、年 99466.7 元——**该上限带小数位，明显不是「月平均工资×3 取整到元」的直接结果**（一般官方上限均为整数），提示仓库值可能是由某年社平数据反算或四舍五入产生，属可疑值，建议后续人工核对时优先复查此处。结论：不改仓库值。",
+          "mismatch": ""
+        }
+      ]
+    },
+    {
+      "province": "湖北",
+      "provinceWideUrls": [],
+      "provinceWideNote": "湖北社保基数为省级分 3 档（鄂人社发〔2025〕28号），随州属第 2 档；公积金缴存基数由各市州自定，无省级统一文件。",
+      "cities": [
+        {
+          "city": "随州",
+          "status": "not-found",
+          "urls": [],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "【未找到官方件，未取得任何数值】(1)随州市人民政府门户**只能走 http**：https://www.suizhou.gov.cn/ 返回 HTTP 000（TLS 不可用），http://www.suizhou.gov.cn/ 返回 200。(2)抓取随州市政府门户「市政府文件 / 市本级文件」栏目 http://www.suizhou.gov.cn/zwgk/zfwj/szbf/szf/ ，提取 98 条链接，逐条核对关键词 公积金|缴存|基数，命中 0 条。(3)抓取随州市门户「其他 - 通知公告」栏目 http://www.suizhou.gov.cn/zwgk/zfwj/qt_5744/tzgg/ ，同样无公积金缴存基数调整通知。(4)随州公积金中心/住建局可能域名 zfgjj.suizhou.gov.cn、gjj.suizhou.gov.cn 经 223.5.5.5 解析均 NXDOMAIN（Status:3），已排除；随州本地未发现独立的公积金中心自有域名站点。四关与结论：可抓取的官方渠道（市政府门户的政策文件与公告公示两栏）均已扫描，未见 2026 年度住房公积金缴存基数上下限的官方通知，记 not-found。仓库值 1800~27700 未获证实也未获否证。算式自校验（仅供人工后续核对，非官方值）：27700÷3 = 9233.33 元/月、年 110800 元，对应随州市上年度城镇非私营单位在岗职工年平均工资；下限 1800 与 AGENTS.md 第19条所记湖北公积金下限（随州/恩施同为 1800）一致，说明 1800 这一下限在本轮虽无本省件但有同省横向佐证，上限 27700 则本轮完全无官方依据。结论：不改仓库值。",
+          "mismatch": ""
+        }
+      ]
+    },
+    {
+      "province": "福建",
+      "provinceWideUrls": [],
+      "provinceWideNote": "福建社保为省级统筹（闽人社文〔2025〕45号 / 闽医保函〔2026〕65号），但公积金缴存基数与下限按市县分档，各市自行公布，无省级统一文件。",
+      "cities": [
+        {
+          "city": "漳州",
+          "status": "official-confirmed",
+          "urls": [
+            "http://gjj.zhangzhou.gov.cn/cms/html/zzszfgjjglzx/2026-06-29/514904703.html",
+            "https://www.zhangzhou.gov.cn/cms/html/zzsrmzf/2026-10-10/1548029616.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "《漳州市住房公积金管理委员会关于调整2026年度漳州市住房公积金缴存基数的批复》（政策解读页未显示文号）",
+          "confirms": "【官方件已确认，与仓库值完全一致】来源：漳州市住房公积金管理委员会自有站点 gjj.zhangzhou.gov.cn（**.gov.cn 域名，officialDomain 记 true**；注意 https 直连被拒返回 000，必须走 http:// 访问，加浏览器 UA + --http1.1 后返回 200、46156 字节；站群根域为 www.zhangzhou.gov.cn，同源 /cms/html/ 路径下亦有 czszfgjj 频道）。已抓取正文页：《漳州市住房公积金管理委员会关于调整2026年度漳州市住房公积金缴存基数的批复》政策解读，路径 /cms/html/zzszfgjjglzx/2026-06-29/514904703.html，发布日期 2026-06-29。原文摘录：「按照漳州市统计局公布的2025年漳州市城镇非私营单位就业人员月平均工资的3倍确定为25569元。」「测算方法：2025年漳州市城镇非私营单位就业人员年平均工资102271元÷12个月（计算结果四舍五入）×3倍=25569元。」「由于2026年我省未公布新的最低工资标准，2026年缴存基数下限不进行调整。芗城区、龙文区为2195元；龙海区、长泰区、漳浦县、云霄县、东山县、诏安县、平和县、南靖县、华安县、漳州开发区、古雷开发区、漳州台商投资区为2045元。」「2026年缴存上限标准由上年的5910元调整为6136元。」「25569×12%=3068元（四舍五入），单位和个人承担叠加计算为3068×2=6136元。」（该批复即由 漳府复〔2026〕 号批复后发布，页面未列文号，按原文如实记录为无文号）。交叉印证：漳州市人民政府门户 https://www.zhangzhou.gov.cn/cms/html/zzsrmzf/2026-10-10/1548029616.html《我市2026年度住房公积金缴存基数调整完成》（2026-10-10，来源闽南日报）载「7—9月全市累计完成5163家单位、22.47万名职工缴存基数调整，调增月缴存额2122.84万元」——**该稿只有业务量没有上下限数值**，仅可佐证 2026 年度调整已落地。四关核验：(1)口径——原文写明为「城镇非私营单位就业人员」年平均工资×3，非私营口径，未混入私营；下限直接引用省最低工资标准，未与机关事业单位口径混用；(2)生效日期——2026-06-29 发布，属 2026 年度已生效文件，非征求意见稿；(3)数字歧义——**下限分档**：芗城区、龙文区（市区）2195 元，其余各县区与开发区 2045 元；计算器 hf 取市区值 2195 元，正确；(4)来源官方性——.gov.cn，最硬。算式自校验：上限 102271÷12 = 8522.58 元/月，×3 = 25567.75 元；官方按「计算结果四舍五入」先对月平均工资取整（8523×3 = 25569），与官方 25569 一致 ✓；25569×12% = 3068.28 → 3068 ✓，单位与个人合计 3068×2 = 6136 ✓ 与官方「由上年的5910元调整为6136元」一致（上年 23526×12%=2823.12→2823×2=5646…注：官方 5910 对应上年基数 24625×12%=2955×2=5910，属上年度口径，不影响本轮结论）。下限月缴存额校验：芗城/龙文 2195×5%×2 = 219.5 → 220 ✓；其余县区 2045×5%×2 = 204.5 → 204 ✓。与仓库值比较：仓库 hf 值 2195~25569，官方 2026 年度 **2195（芗城、龙文市区档）~25569**，**完全一致**。结论：不改仓库值。另注：同站另有 https://zz.fjszgjj.com/wsyyt/yyt.html（福建省住房公积金网上业务办理，域名非 .gov.cn）与 https://www.zhangzhou.gov.cn/cms/html/zzsrmzf/2026-09-28/506142992.html（住建局政务访谈）、/normativedocumentlist/388774715.html（废止失效文件检索），均无新增数值。",
           "mismatch": ""
         }
       ]
