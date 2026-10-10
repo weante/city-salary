@@ -55,6 +55,72 @@
 
 ---
 
+### 公积金侧专项缺口（47 城）
+
+上面的「已核实 / 部分 / 未找到」是**整城口径**（社保 + 医保 + 公积金任一有官方件即可）。但本项目的硬要求是
+「**每个城市的社保公积金政策都有官方链接作为支撑**」，公积金是独立一支，故此处单列一遍：
+以下 47 城的**公积金缴存基数上下限，至今没有任何官方来源支撑**（胜出记录的 `confirms` / `docNumber` / `urls` 中
+均未出现公积金、缴存基数、缴存限额、月缴存额等字样）。这些城市的仓库 `hf` 值目前是**无来源的历史值**，
+四关复核一条都没过，**不可当作已核实数据引用**。
+
+| 省级单位 | 城市 | 仓库 `hf` 值 | 该城现有来源状态 | 已有 URL 数 |
+|---|---|---|---|---:|
+| 福建 | 漳州 | 2195~25569 | official-confirmed | 1 |
+| 甘肃 | 白银 | 1960~24207 | official-partial | 1 |
+| 甘肃 | 酒泉 | 2020~26246.49 | official-partial | 1 |
+| 甘肃 | 庆阳 | 1910~27275 | official-confirmed | 1 |
+| 广东 | 揭阳 | 1750~24618 | official-partial | 1 |
+| 广东 | 汕头 | 1850~27698 | official-partial | 1 |
+| 广西 | 桂林 | 1990~23131 | official-confirmed | 2 |
+| 广西 | 南宁 | 2200~28020 | official-partial | 1 |
+| 河北 | 保定 | 2380~24345 | official-confirmed | 1 |
+| 河北 | 沧州 | 2380~25581 | official-confirmed | 2 |
+| 河北 | 承德 | 2230~23008 | official-partial | 1 |
+| 河北 | 邯郸 | 2200~23229 | not-found | 2 |
+| 河北 | 衡水 | 2230~22086 | not-found | 1 |
+| 河北 | 廊坊 | 2380~30261 | official-partial | 1 |
+| 河北 | 秦皇岛 | 2200~25746 | official-confirmed | 1 |
+| 河北 | 唐山 | 2380~25635 | official-confirmed | 2 |
+| 河北 | 邢台 | 2000~20672 | official-confirmed | 1 |
+| 河北 | 张家口 | 2000~21771 | official-confirmed | 1 |
+| 河南 | 安阳 | 2350~19903 | official-partial | 1 |
+| 河南 | 洛阳 | 2350~23914 | official-partial | 1 |
+| 湖北 | 随州 | 1800~27700 | official-partial | 1 |
+| 江西 | 九江 | 2090~24467 | official-confirmed | 2 |
+| 江西 | 鹰潭 | 2100~24866.67 | official-confirmed | 1 |
+| 青海 | 果洛 | 2080~35935 | not-found | 0 |
+| 青海 | 海北 | 1700~25472 | official-partial | 2 |
+| 青海 | 海南州 | 2080~28976 | not-found | 0 |
+| 青海 | 黄南 | 2080~28652 | not-found | 0 |
+| 青海 | 西宁 | 2080~31995 | official-partial | 2 |
+| 青海 | 玉树 | 2080~24402 | not-found | 0 |
+| 山西 | 大同 | 2150~22736 | official-partial | 1 |
+| 山西 | 晋城 | 2150~24183 | not-found | 0 |
+| 山西 | 晋中 | 2150~23125 | official-partial | 1 |
+| 山西 | 临汾 | 1950~23754 | not-found | 1 |
+| 山西 | 吕梁 | 2150~23793 | official-confirmed | 1 |
+| 山西 | 朔州 | 1930~21680 | not-found | 0 |
+| 山西 | 太原 | 2150~29100 | official-partial | 2 |
+| 山西 | 忻州 | 2150~22975 | not-found | 0 |
+| 山西 | 阳泉 | 2150~23106 | official-confirmed | 1 |
+| 山西 | 运城 | 2150~20054 | official-confirmed | 1 |
+| 山西 | 长治 | 2150~24057 | official-confirmed | 1 |
+| 四川 | 阿坝 | 2200~30642 | official-partial | 1 |
+| 四川 | 广元 | 2200~23493 | official-confirmed | 3 |
+| 四川 | 眉山 | 2200~24490 | official-confirmed | 1 |
+| 四川 | 内江 | 2200~25172 | official-partial | 1 |
+| 四川 | 雅安 | 2200~24979 | official-confirmed | 2 |
+| 直辖市 | 重庆 | 2330~31393 | official-partial | 3 |
+| 直辖市 | 上海 | 2740~37731 | official-confirmed | 2 |
+
+**优先级**：其中 **7 城一条 URL 都没有**（果洛、海南州、黄南、玉树、晋城、朔州、忻州），应最优先补；
+另有 10 城 `status` 为 `not-found`（邯郸、衡水、果洛、海南州、黄南、玉树、晋城、临汾、朔州、忻州）。
+
+> 生成方式：`node tools/source-records.js` 的 `readRecords()` 取每城**胜出记录**，
+> 再与 `calc-harness.js` 的 `CITIES` 交叉比对，判定正则 `/公积金|缴存基数|缴存限额|月缴存额/`。
+> 该判定是**保守的字符串匹配**，可能漏判（官方件用别的措辞时），也可能误判（提到公积金但没给数值时算有证据）。
+> 因此本清单是**下一轮检索的起点**，不是最终结论；补录时请仍按四关复核逐条核对原文。
+
 ## 云南（16 城：已核实 4 / 部分 10 / 未找到 2 / 未取得 0）
 
 | 城市 | 状态 | 数据来源文号 | 来源链接 |
