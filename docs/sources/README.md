@@ -890,3 +890,54 @@ https://www.shcn.gov.cn/col5943/20260629/1313166.html
 - **教训**：拼接章节的终止条件必须是**章节自身的稳定锚点**（`> 本表只作下一轮检索的起点，不作结论。`），不是「下一个标题」。新脚本 `cs-hfgap3.js` 已改为锚点式 splice，并在落盘前后各断言一次明细行数必须等于 337。
 
 **公积金侧专项缺口 47 城 → 19 城**（漳州/九江/上海/晋中等已由 U5、U2 补齐），零 URL 城与 not-found 城均归零。
+
+## 第九轮（2026-10-10）—— Windows OCR 打通扫描件死路，五城公积金定案
+
+### 本轮最重要的方法论突破：扫描件/PDF 不再是死路
+
+前三轮把「官方正文是扫描图片 / 无文字层 PDF」一律记成 `official-partial`，等于放弃了整批城市的官方来源。实际上本机有可用的 OCR 链路，四步：
+
+1. **取内嵌图**（唯一可行栅格化手段）：
+   ```python
+   from pypdf import PdfReader
+   for im in PdfReader(path).pages[i].images: open(f'p{i}.jpg','wb').write(im.data)
+   ```
+   本环境 **无 fitz / pdf2image / pypdfium2 / pytesseract**，pypdf 是唯一解；`python` 命令是坏的，必须用绝对路径
+   `C:\Users\weant\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe`（设 `$env:PYTHONIOENCODING='utf-8'`）。
+2. **旋转 270°**（`cs-rot.ps1 -Deg 270`）：政府扫描件多为横排 3507×2480，不旋转 OCR 全是乱码。**270° 是对的，90° 出乱码**。
+3. **二值化 + 放大**（`cs-bin.ps1 -Scale 2 -Thresh 175`，`LockBits` + Marshal 逐像素）：用于浅色/泛黄扫描件。
+4. **OCR**：`powershell.exe -NoProfile -File cs-ocr.ps1 -PathList "a.jpg;b.jpg"`
+   —— **必须用 Windows PowerShell 5.1（`powershell.exe`），不能用 pwsh 7**；pwsh 报「找不到类型 [Windows.Media.Ocr.OcrEngine]」。
+   `Add-Type -AssemblyName System.Runtime.WindowsRuntime` + `[Windows.Media.Ocr.OcrEngine,Windows.Foundation,ContentType=WindowsRuntime]`，
+   语言 `New-Object Windows.Globalization.Language 'zh-Hans-CN'`，**图片高 >1400px 必须按 1400px 切片**，否则识别率骤降。
+
+OCR 输出有噪声（「公积金」常被读成「公私金」「公稆金」），**必须算式自校验**，不能直接采信。
+
+### 五城结果
+
+| 城 | 结论 | 关键官方原文 | 算式自校验 |
+|---|---|---|---|
+| 石家庄 | confirmed（值不改） | 石公积金〔2026〕10号：上限 27938，下限为市最低工资；2025 年全市城镇单位就业人员年平 111750 元 | 111750÷12×3=27937.5 → 27938 ✓ |
+| 洛阳 | confirmed（值不改） | 洛公积金规〔2026〕6号：上限 23914（2025 非私营**在岗职工**月均 7971.42×3）；下限一类 2350 / 二类 2150（豫政〔2025〕25号） | 7971.42×3=23914.26 → 23914 ✓ |
+| 随州 | confirmed（值不改，**解除待核实**） | 随公管委〔2025〕3号：月缴存额上限 6648、下限 180（含单位+个人），2026-01-01 起 | 6648÷2÷12%=27700 ✓；180÷2÷5%=1800 ✓（双向整除） |
+| 重庆 | 下限 confirmed + **文号更正** | 渝公积金发〔2025〕7号：主城 26 区 2330、城口等 12 县 2200（渝人社发〔2024〕22号） | — |
+| 鹰潭 | confirmed + **数值修正** | 鹰住公字〔2026〕15号：上限 24863（2025 在岗月均 8287.67×3）、下限 2090（赣府厅字〔2025〕42号）；月缴存额上限 5968、下限 210 | 24863×12%→2984、×2=5968 ✓；2090×5%→105、×2=210 ✓ |
+
+### 两条关键教训
+
+**① 反推方向会骗过算式自校验。** 鹰潭仓库原值 `hf 2100~24866.67` 是上一轮「从月缴存额反算」得来的
+（5968÷24%=24866.67、210÷10%=2100），当时**算式自校验完美通过**，但方向是反的：
+官方先独立确定缴存基数（24863 = 8287.67×3、2090 = 最低工资），再对「基数×比例」四舍五入得到月缴存额。
+本轮读到官方原文才发现差 3.67 元（上限）和 10 元（下限）。
+→ **算式自校验只在「官方值 = 由官方另两个值算出」时有效；如果某个值本身就是从目标值反推的，自校验必然通过，等于没校验。**
+
+**② 域名猜错就下「not-found」是过早结论。** 随州此前只试了 `zfgjj.suizhou.gov.cn` 与 `gjj.suizhou.gov.cn` 两个 NXDOMAIN 就记 not-found，
+真实域名是 `www.suizhougjj.cn`。→ **not-found 记录必须写清「试过哪些域名」，并至少覆盖 `<市拼音>zfgjj` / `<市拼音>gjj` / `<市拼音缩写>gjj` / 中心自有域名 四种构词法。**
+
+### 其他
+
+- 文号更正：重庆 `渝公积金发〔2026〕51号`（不存在）→ `渝公积金发〔2025〕7号`
+- U5 子 Agent 交付的上海（沪公积金管委会〔2026〕3号）、桂林、九江、漳州、内江、雅安 6 城全部 confirmed，值均与仓库一致
+- U5 的 not-found 4 城：揭阳（住建局 228 条 + gkmlpt API 1100 条全查，公积金命中 0）、广元（门户 412/405 反爬）、安阳（`gjj.anyang.gov.cn` SPA 后端 API 全 404；`www.ay.gov.cn` 实为江西安远县）、眉山（`ms.gov.cn/info/6881/1198476.htm` 只有规则无年度数值）
+- 「目标站不可达」这条线索的价值被反复验证：雅安站点是 Vue SPA，必须调 `/app-api/app/index-news/get?id=…&menuId=…` 才能拿到正文 JSON
+- `docs/sources/U5-notes.md`、`U2-notes.md`、`U3-U4-notes.md` 均移到 `%TEMP%` 不入库（临时脚本/笔记不该进仓库）

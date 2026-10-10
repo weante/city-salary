@@ -2,12 +2,12 @@
   "generatedAt": "2026-10-10",
   "checked": 337,
   "coverage": "100.0%",
-  "confirmed": 175,
-  "partial": 103,
+  "confirmed": 180,
+  "partial": 98,
   "notFound": 59,
-  "urls": 455,
+  "urls": 457,
   "missingCities": [],
-  "mismatchCount": 169,
+  "mismatchCount": 181,
   "mismatches": [
     {
       "file": "G7.json",
