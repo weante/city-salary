@@ -87,7 +87,7 @@ city-salary/
 │   └── index.html           # 计算器镜像副本（Cloudflare Pages 的部署产物，线上 https://city-salary.pages.dev/）
 ├── tools/                   # 零依赖 Node 脚本：测试与维护
 │   ├── calc-harness.js      #   测试脚手架：最小 DOM 桩 + 加载器（各测试脚本共用）
-│   ├── test-calc.js         #   6855 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径/起始月边界
+│   ├── test-calc.js         #   6862 项断言：税率表/年终奖陷阱/端到端算例/D1D2 回归/年度口径/起始月边界
 │   ├── check-golden.js      #   黄金用例：16 用例 × 4 面板逐字节比对（重构安全网）
 │   ├── golden-cases.json    #   黄金用例快照（由 check-golden.js --update 生成）
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
