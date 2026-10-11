@@ -2,12 +2,12 @@
   "generatedAt": "2026-10-12",
   "checked": 337,
   "coverage": "100.0%",
-  "confirmed": 192,
-  "partial": 114,
-  "notFound": 31,
-  "urls": 548,
+  "confirmed": 193,
+  "partial": 117,
+  "notFound": 27,
+  "urls": 557,
   "missingCities": [],
-  "mismatchCount": 212,
+  "mismatchCount": 216,
   "round12Note": "第十二轮（2026-10-12）新增 Z1.json 收录 6 城官方件：龙岩（龙住公〔2026〕14号）、宁德（宁房金管〔2026〕4号）、南平（南房金委〔2026〕5号上限/〔2025〕2号下限）、莆田（莆房金委〔2026〕6号）、白山（白山金管发〔2023〕6号，仅上限→official-partial）、南充（南公积金〔2026〕32号）。六城仓库值与官方原文零偏差，均不改值。关键突破：用宁德公积金中心页脚「市级公积金系统网站」一次性反查出福建 9 市公积金真实域名。OCR 流程打通：cs-img.py（pypdf+PIL，TIFF→PNG）→ powershell.exe 5.1 跑 cs-ocr.ps1（>1400px 自动切片）。",
   "mismatches": [
     {
