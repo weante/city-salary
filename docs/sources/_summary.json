@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T10:20:00.000Z",
+  "generatedAt": "2026-10-12T11:05:00Z",
   "checked": 337,
   "coverage": "100.0%",
   "confirmed": 207,
@@ -1257,5 +1257,65 @@
   "round15Note": "2026-10-11 第十五批：11 个 not-found 城市补一手来源（梅州 / 娄底已落地，not-found 11 -> 9）。新增 docs/sources/Z4.json（2 城：广东梅州 official-partial 3 urls、湖南娄底 official-partial 4 urls）。① 梅州：官方件为扫描图片型 PDF（4 页 4193052 字节，pypdf 每页 textlen=0），用「pypdf 抽内嵌图转 PNG -> Windows.Media.Ocr zh-Hans-CN（1400px 分片）-> 算式自校验」四步法取证，得 梅市医保函〔2025〕156号（2025-11-28 印发）全文要点：2024 年度全口径月均 7189 元、2026 年度基数上限 21567 / 下限 4313、用人及在职职工费率统一 6.5%（含生育 0.5%）、大额补助用人单位 8 元 + 个人 5 元 = 13 元、2026-01-01 起恢复降费前费率。算式自校验 7189×3=21567、round(7189×0.6)=4313、8+5=13 全部成立，故 OCR 数字可信。据此改 calculator.html 两处：med.comp .055 -> .065、新增 medFixEmp:8；公积金 1750~26315 仍无一手来源故新增 warn:true。② 娄底：官网 https://www.ldgjj.com/ 此前被记为「全站 000」，实因只试了 http；https 才通。列表由 JS 加载，走 POST /page/get_contentAllList 拿全量条目（8 个 categoryId 共 148 条逐条枚举），正文 URL 规律 /detailsList/<contentId>.html（/details.html?id= 只得空壳）。穷举确认娄底中心从未在官网发布缴存基数上下限通知（通知公告栏最后一篇缴存文件为 2024-07-01），取到三份可引件：娄公积金发〔2022〕21号、《娄底市住房公积金管理办法》（2026-05-28，无文号，第二十条只说「每年 7 月核定调整 1 次并向社会公布上下限」，全文无任何数值）、《关于做好2024年度住房公积金缴存核定工作的通知》。1800~21100 维持估算、保留 warn。本轮最大教训：docs/verification-report-final.md 是 CRLF+LF 混合文件，用 indexOf(\\n\\n) 作区间锚点会返回 -1 并把表头之后全部内容截断（869 行 -> 447 行）；已改用 split(/\\r?\\n/) 行数组定位，改前必须 Copy-Item 备份。剩余 not-found 9 城：大庆、伊春、七台河、大兴安岭、烟台、荆州、常德、益阳、舟山。",
   "round16Note": "第十六批（2026-10-11）· 常德 / 益阳 / 舟山：三城 not-found -> official-confirmed，改值 3 处（常德上限 28011->30225、益阳下限 2400->2000、益阳上限 21321->23031），舟山删无据文号「舟公积金〔2026〕9号」，常德取消 warn、舟山保留 warn（指向社保）。关键突破：益阳 2026-2027 年度件正文是 4 张扫描 PNG，父代理用 Windows OCR 读出（子代理无视觉能力）；省厅最低工资档次表（docx 附件）用 python zipfile 读 word/document.xml 取出，用于交叉验证下限推算值。notFound 11 -> 6（剩 大庆/伊春/七台河/大兴安岭/烟台/荆州）。",
   "round17Note": "第十七批（2026-10-12）新增 Z6.json 收录 6 城并收尾最后 6 个 status=not-found 的城市：大庆 / 伊春 / 七台河 / 大兴安岭 / 烟台 / 荆州。关键结论 —— 这 6 城其实都已有官方链接（来自 Q2/Q5/Q6 组），缺的是「缴存基数通知」这一层文件，不是「找不到官网」。烟台（烟住〔2026〕26号，无文本层扫描 PDF，用 Referer 抓取 + Windows OCR 读出）与荆州（无文号，http 站 + iframe 包裹的有文本层 PDF，pypdf 直读）各取到一手件且**数值零偏差**；七台河一手件与仓库 2010~20598 逐字一致。大庆 / 伊春 / 大兴安岭三城经穷举确认：中心无独立官网、政府门户全栏目无公积金件、省级政务服务网专区 dq/yc/dxal.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/ 全部 404（渠道本身不存在），维持估算、note 如实标注并新增 warn:true。三城由 not-found 升 official-confirmed，三城保留 not-found 并登记为「官方渠道缺失、已穷举」，建议不再重复检索。",
-  "statsSource": "tools/source-records.js readRecords()（唯一权威口径：每城取 scoreOf 最高分的「胜出记录」，confirmed/partial/notFound 与 urls 均按胜出记录统计）"
+  "statsSource": "tools/source-records.js readRecords()（唯一权威口径：每城取 scoreOf 最高分的「胜出记录」，confirmed/partial/notFound 与 urls 均按胜出记录统计）",
+  "permanentNotFound": {
+    "note": "第十七批收尾：以下 3 城已穷举全部官方渠道并确认「渠道本身不存在」，判定为永久 not-found，不再重复检索。判定依据见 docs/sources/Z6.json 的 rawQuotes / checks 字段与 docs/sources/README.md 第十七批小节。",
+    "cities": [
+      {
+        "city": "大庆",
+        "key": "dq",
+        "province": "黑龙江",
+        "portals": [
+          "http://daqing.gov.cn/",
+          "https://www.zwfw.hlj.gov.cn/oldzq/gjjfwzq/index.html",
+          "https://zfcxjst.hlj.gov.cn/zfcxjst/c114760/public_list.shtml"
+        ],
+        "decisiveEvidence": "dq.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/ 返回 404，而齐齐哈尔 qqhr.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/ 可打开并挂有 2026 年度通知 —— 该市公积金业务未在政务服务网侧上线。",
+        "knownValues": "hf 2270~32701（note 已如实标注为估算，warn=true）",
+        "excludedPaths": [
+          "政府门户全部公开栏目/政府公报/住建局 c100332 无公积金件",
+          "自研 search5 检索 POST /search5/search/s 返回 200+0 字节",
+          "黑龙江省住房公积金 2025 年度报告 docx 415 行命中 19 处全为表彰名单",
+          "dqgjj.cn / www.dqgjj.cn 为废弃占位主机（有 A 记录但 404/403/Tomcat 错误页）",
+          "dqzgjj.com 为 nginx 停放页",
+          "首页「公积金查询」外链指向省直中心 https://www.hljszgjj.org.cn/，不覆盖各市"
+        ]
+      },
+      {
+        "city": "伊春",
+        "key": "yc",
+        "province": "黑龙江",
+        "portals": [
+          "http://www.yc.gov.cn/",
+          "https://www.zwfw.hlj.gov.cn/oldzq/gjjfwzq/index.html"
+        ],
+        "decisiveEvidence": "yc.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/ 返回 404，同上。",
+        "knownValues": "hf 1910~21189（note 标注估算，warn=true）；医保单位费率 8.5% 待核实",
+        "excludedPaths": [
+          "首页零个「公积金」链接",
+          "c102008 法定主动公开 / c102233、c102001 政务公开总目录 / c102108 政策文件（2026 年仅 2 件）均无公积金件",
+          "医保 8.5% 检索命中的全是 2019 年背景件与 2022 年阶段性缓缴件，均不含具体费率",
+          "域名撞车：www.yichun.gov.cn / gjj.yichun.gov.cn / www.ycgjj.gov.cn 全是江西省宜春市（赣ICP备）",
+          "ycgjj.cn 注册但无 A 记录；ycgjj.org.cn 是 Vue 空 SPA 无法确认归属"
+        ]
+      },
+      {
+        "city": "大兴安岭",
+        "key": "dxal",
+        "province": "黑龙江",
+        "portals": [
+          "https://www.dxal.gov.cn/"
+        ],
+        "decisiveEvidence": "dxal.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/ 返回 404，同上。",
+        "knownValues": "hf 2010~22929（note 标注「暂用 2025 年度上限」，warn=true）；医保费率待核实",
+        "excludedPaths": [
+          "首页仅 3 栏目（政务公开 c100016、住房保障 c100100、机构设置 c100060）且零个公积金链接",
+          "/so/s 检索 404",
+          "政府门户「机构设置」页不列直属事业单位",
+          "dxalgjj.cn / dxalgjj.com / dxalzfgjj.cn / dxalgjj.org.cn / dxalzgjj.cn / dxalhousefund.cn 六域全部 NXDOMAIN"
+        ]
+      }
+    ]
+  },
+  "round18Note": "第十八批（2026-10-12）：不新增城市数据，只做状态收口 —— 把大庆 / 伊春 / 大兴安岭三城从「检索未果」正式登记为「永久 not-found（渠道不存在）」，写进 _summary.json 的 permanentNotFound 字段（城市、真实门户、决定性证据、已知值、已排除路径五要素），使后续任何统计脚本都能直接读出「这 3 城不必再查」。至此 status=not-found 城市全部收口，docs/sources 侧完成 337/337 城市有官方链接的登记。"
 }
