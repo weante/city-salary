@@ -1077,3 +1077,80 @@ pwsh -NoProfile -File "$env:TEMP\cs-find.ps1" -Query "包头市住房公积金 �
 本轮尝试开 5 个并行 subagent 分批攻 48 城，**全部因宿主内存压力中途崩溃、无一落盘**（与前几轮 DSH 崩溃同因）。
 改为**前台小批次自己做**更可靠：每批 2~4 城、查完立刻写 `docs/sources/*.json`、当批落盘。
 另记：失败时也要清理——Agent 会把 `.z2-*.ps1` 之类草稿留在仓库根目录，须移出。
+
+---
+
+## 第十二轮（2026-10-12）——零链接缺口攻坚：福建 4 城 + 吉林白山 + 四川南充
+
+本轮目标：48 城「零官方链接」缺口（`readRecords().best[city].urls` 为空）。策略仍是**前台小批次自己做**（并行 subagent 已连续两轮全军覆没）。
+
+### 1. 关键突破：门户页脚反查真实域名
+
+宁德市住房公积金管理中心（`https://gjj.ningde.gov.cn/`，网站标识码 3509000039）页脚有「市级公积金系统网站」一栏，**一次性列出福建全部 9 市公积金真实域名**：
+
+| 城市 | 域名 |
+|---|---|
+| 福建省直 | `https://www.fjszgjj.com/` |
+| 漳州 | `http://gjj.zhangzhou.gov.cn/` |
+| 泉州 | `http://qzgjj.quanzhou.gov.cn/` |
+| 南平 | `http://www.npgjj.com/` |
+| 三明 | `http://www.sm.gov.cn/zw/ztzl/smszfgjjzt/` |
+| 龙岩 | `http://www.longyan.gov.cn/zt/rdzt/zfgjjzx/` |
+| 莆田 | `http://www.putian.gov.cn/ptgjj/` |
+| 福州 | `http://zfgjj.fuzhou.gov.cn/` |
+| 厦门 | `http://gjj.xm.gov.cn/` |
+
+48 城缺口里的 4 个福建城（南平/龙岩/莆田/宁德）靠这一条全部定位成功，是本轮最高产的单一发现。
+
+### 2. 本轮落盘的 6 城（`Z1.json`）
+
+| 城市 | 状态 | 文号 | 仓库 hf | 结论 |
+|---|---|---|---|---|
+| 龙岩 | official-confirmed | 龙住公〔2026〕14号 | 2195~28559 | 值一致，不改 |
+| 宁德 | official-confirmed | 宁房金管〔2026〕4号 | 2045~27166 | 值一致，不改；**note 文号由「宁公积金〔2026〕10号」改为实证的 4 号** |
+| 南平 | official-confirmed | 南房金委〔2026〕5号（上限）/〔2025〕2号（下限） | 2045~23617 | 值一致，不改；note 文号补全 |
+| 莆田 | official-confirmed | 莆房金委〔2026〕6号 | 2045~23985 | 值一致，不改 |
+| 白山 | official-partial | 白山金管发〔2023〕6号 | 2020~19272.5 | **上限逐字一致**，下限 2020 该件未载 |
+| 南充 | official-confirmed | 南公积金〔2026〕32号 | 2200~26757 | 值一致，不改 |
+
+六城**全部不改值**。算式自校验全部通过：
+- 龙岩 `114234÷12×3 = 28558.5 → 28559`
+- 宁德 `27166×12% = 3259.92 → 3260，×2 = 6520`
+- 南平 `94466÷12×3 ≈ 23617`
+- 莆田 `7995×3 = 23985；23985×12%×2 = 5756.4 → 5756`
+- 南充 `8919×3 = 26757（精确整除）；26757×12%×2 = 6421.68 → 6422；2200×5%×2 = 220`
+
+### 3. 域名探测结论：不存在 `gjj.<省>.gov.cn` 模式
+
+DoH（`https://223.5.5.5/resolve?name=X&type=A`）实测 NXDOMAIN：
+`gjj.nmg.gov.cn`、`zfgjj.nmg.gov.cn`、`www.jlzfgjj.gov.cn`、`gjj.jl.gov.cn`、`gjj.hunan.gov.cn`、`gjj.fujian.gov.cn`、`www.jszfgjj.gov.cn`、`gjj.beihai.gov.cn`、`gjj.haikou.gov.cn`、`zfgjj.sanya.gov.cn`、`www.hzgjj.com`、`swzfgjj.cn`（DNS 存在但 HTTP 000）。
+**同名错站需警惕**：`ganzi.gov.cn` 是甘孜**县**、`liangshan.gov.cn` 是梁山**县**、`gannan.gov.cn` 是甘南**县**。
+
+### 4. OCR 流程（本轮打通，Windows 无图像输入环境专用）
+
+四步：`cs-img.py`（pypdf 取内嵌图 + PIL 把 TIFF 统一转 PNG）→ 可选 `cs-rot.ps1 -Deg 270`（横排扫描件必转，90° 出乱码）→ `cs-bin.ps1` → `powershell.exe -NoProfile -File "$env:TEMP\cs-ocr.ps1" -PathList "a.png;b.png"`。
+
+- **必须用 `powershell.exe` 5.1，不能 `pwsh` 7**：后者报 `Operation is not supported on this platform. (0x80131539)`。
+- **必须转 TIFF → PNG**：`cs-rot.ps1` 用 `System.Drawing.Image.FromFile` 读 TIFF 返回 null → `InvokeMethodOnNull`。
+- **`cs-img.py` 不可写死文件名**：旧 `cs-pdfimg.py` 把 `["sjz2026","ly2026","yt2161"]` 硬编码，导致第一次提龙岩 PDF 时拿到的全是鹰潭旧图。新签名 `python cs-img.py <pdf路径> [输出前缀]`。
+- **低分辨率 PDF 必须先放大**：莆田 PDF 内嵌图仅 905×1282（约 109 DPI），须 PIL 灰度 + 3 倍 LANCZOS 放大到 2715×3846 再 OCR，否则识别率极差。
+- 图片高 >1400px 时 `cs-ocr.ps1` 自动切片（3296×4648 切 4 片）。
+
+### 5. ⭐ 挖到一条通用取整口径（龙岩官方原文，建议进白皮书）
+
+> 「月缴存额的统一计算方法：月工资基数乘以缴存比例，计算结果**先四舍五入，保留整数，再乘以 2**」
+
+官方示例：2572 元 × 12% = 308.64 → 四舍五入为 309 元 → 309 × 2 = 618 元。
+龙岩三档下限的月缴存额同理：2195×5% = 109.75 → 110，×2 = 220；2045×5% = 102.25 → 102，×2 = 204；1895×5% = 94.75 → 95，×2 = 190。
+
+### 6. 其他踩坑
+
+- `www.npgjj.com` 根路径只返 193 字节框架页、`/index` 返 404，**必须直接打栏目路径** `/cms/html/npszfgjjglzx/<YYYY-MM-DD>/<id>.html`（该路径模式由搜索引擎命中的 2022 年旧页面推出）。
+- 白山市公积金旧版站 `bsgjj.cbs.gov.cn/bszfgjjlnb/` 是「老年版」，列表页 593 字节无条目，别在那里找；正式站根路径是 `http://bsgjj.cbs.gov.cn/`（站点标识码 2206000010）。
+- 南充公积金中心不是独立域名，而是挂在市府门户下的 `/zfgjjglzx/` 栏目。
+- 南充大量公告指向 `mp.weixin.qq.com`（官微），按来源标准不可采信，须走「政策文件/地方政策」栏目。
+
+### 7. 本轮统计
+
+`readRecords().stats`：checked 337 / confirmed **187** / partial **97** / notFound **53** / urls **475** / mismatchCount **190**。
+零链接缺口从 48 城降到 **42 城**。
