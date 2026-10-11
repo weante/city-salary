@@ -1,0 +1,75 @@
+{
+  "group": "Z2",
+  "generatedAt": "2026-10-11T11:20:00.000Z",
+  "note": "2026-10-11 第十二轮第二批：内蒙古 4 城（包头/兴安盟/锡林郭勒盟/阿拉善盟）。本批的价值主要在「零链接」突破——4 城此前均无任何官方 URL，现全部落地到各自公积金中心官网。关键路径：内蒙古自治区住房资金管理中心（www.nmgzfgjj.com.cn）页脚「省市公积金」区块一次性列出全区 12 个盟市公积金真实域名，据此定位到 www.alszfgjj.com.cn（阿拉善）、www.xlglgjj.org.cn（锡林郭勒盟）、www.btgjj.com→www.btgjj.cn（包头）；兴安盟 www.xamzfgjj.cn 由搜索引擎直接命中。本批 4 城均未取得本市 2026 年度缴存基数上下限通知，故全部记 official-partial，仓库值一律不改。",
+  "provinces": [
+    {
+      "province": "内蒙古",
+      "provinceWideUrls": [
+        "http://www.nmgzfgjj.com.cn/",
+        "http://www.nmgzfgjj.com.cn/website/index.html"
+      ],
+      "provinceWideNote": "内蒙古自治区住房资金管理中心（自治区本级）。根路径仅 924 字节框架页，JS 跳转到 /website/index.html；该页页脚「省市公积金」区块是本轮最高产的单条线索，列出：巴彦淖尔 bynrgjj.org.cn、赤峰 cfszfgjj.cn、呼和浩特 hhhtgjj.org.cn、呼市旧域 huhhot.gov.cn、鄂尔多斯 ordosgjj.org.cn、通辽 tlzfgjj.org.cn、乌兰察布 wlcbgjj.org.cn、乌海 whsgjj.com、锡林郭勒盟 xlglgjj.org.cn、阿拉善 alszfgjj.com.cn、包头 btgjj.com、兴安盟 xamzfgjj.cn。⚠️ 该站 title 正确但 meta keywords/description 残留「榆林住房公积金中心」模板文案（疑由陕西榆林模板改造），引用时以正文与备案号（蒙公网安备）为准。全区制度依据：内政办发〔2022〕92号《内蒙古自治区住房公积金缴存管理办法》、内政办发〔2024〕46号《关于调整自治区最低工资标准的通知》（乌兰浩特 2200 元、其余旗县市 2140 元）。注意：www.nmgzfgjj.com（无 .cn）为 NXDOMAIN，www.nmgzfgjj.com.cn 才是真域名。",
+      "cities": [
+        {
+          "city": "兴安盟",
+          "status": "official-partial",
+          "urls": [
+            "http://www.xamzfgjj.cn/",
+            "http://www.xamzfgjj.cn/tzgg/index.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/3080.jhtml"
+          ],
+          "officialDomain": false,
+          "docNumber": "无文号（兴安盟住房公积金中心 2025-07-17 发布）",
+          "confirms": "《关于确定2025年度职工住房公积金月缴存基数上限、下限的通知》全文（HTTP 200，纯 HTML，无附件）。原文：「缴存基数上限不得超过兴安盟统计部门公布的上一年度城镇非私营单位就业人员月平均工资的 3 倍，根据兴安盟统计局公布的 2024 年度相关数据计算，2025 年度兴安盟住房公积金缴存基数上限为 22,685 元」；「缴存基数下限不得低于本地区上一年度月最低工资标准。根据《内蒙古自治区人民政府办公厅关于调整自治区最低工资标准的通知》（内政办发〔2024〕46号）计算，2025 年度兴安盟住房公积金缴存基数下限为乌兰浩特市 2200 元、其他旗县市 2140 元」。比例 5%~12%（hfRateMax=12 与仓库一致）。依据《住房公积金管理条例》《住房公积金归集业务标准》《内蒙古自治区住房公积金缴存管理办法》（内政办发〔2022〕92号）《兴安盟住房公积金缴存业务操作规程》。算式自校验：22685÷3=7561.67（2024 年月均工资），与「×3 倍」口径一致。结论：仓库兴安盟 hf 2140~22685 与本件逐字一致，值不改（仓库取的是「其他旗县市 2140」这一档，未取乌兰浩特 2200，属口径选择而非错值）。",
+          "mismatch": "无冲突。缺口：该站通知公告栏目（/tzgg/index.jhtml）最新一条为 2025-08 的 3147 号《兴安盟住房公积金新增四项住房消费提取业务》，未见 2026 年度缴存基数上下限通知；仓库 note 已自述「公积金2026年度通知未找到，暂用2025年度 2140~22685」，本轮取证与该自述一致。站内另有 3001 号《关于确定2025年度职工住房公积金月缴存基数下限的通知》与 2906 号《…2024年度…上限、下限的通知》，可见该市下限/上限曾分开发文。",
+          "method": "搜索引擎命中站点域名 → 逐个探测 .jhtml 栏目路径（/tzgg/ 目录本身 404，必须打 /tzgg/index.jhtml 列表页）→ 正则抽取 /tzgg/<id>.jhtml 条目标题定位 2026/2025 基数组 → curl 直连抓全文逐句摘录 + 算式自校验。DoH 223.5.5.5 验证 www.xamzfgjj.cn A 记录 6 条（111.48.131.181/182、183.232.173.40/41、223.86.123.228/229），与 www.xlgl.gov.cn 同机房，非臆造。"
+        },
+        {
+          "city": "锡林郭勒盟",
+          "status": "official-partial",
+          "urls": [
+            "http://www.xlglgjj.org.cn/",
+            "http://www.xlglgjj.org.cn/xlglgjj/zwgk/ldj/index.html",
+            "http://www.xlglgjj.org.cn/xlglgjj/flbz/fg/index.html",
+            "http://www.xlglgjj.org.cn/xlglgjj/xwdt/tt/index.html"
+          ],
+          "officialDomain": false,
+          "docNumber": "无",
+          "confirms": "锡林郭勒盟住房公积金中心官网（HTTP 200）。备案标识齐全：蒙公网安备 15250202000390 号、蒙ICP备19004155号、政府网站标识码 1525000023、主办单位电话 0479-12329。可取到的官方数据为存贷款利率：首套房五年以下（含）2.35%、五年以上 2.85%；二套房五年以下（含）2.78%、五年以上 3.33%。单位业务 https://ssl.xlglgjj.org.cn/wt-web-dw/login；内蒙古政务服务事项 http://zwfw.nmg.gov.cn/OrgItem_index?regionCode=152500000000&orgCode=12152500460770065E。栏目结构：新闻动态 /xlglgjj/bmdt/gwxx/、存贷款利率 /xlglgjj/flbz/fg/、通知公告（政务公开）/xlglgjj/zwgk/ldj/、政策法规 /xlglgjj/zwgk/zfxxgk/dfwj/、机构介绍 /xlglgjj/jggk/。",
+          "mismatch": "官方未公布缴存基数数值。逐条浏览通知公告栏目（2025-07 封存账户清理第一至十批、征信授权、十一假期暂停、2025 年终决算暂停、2026 年度结息暂停、手机 APP 刷脸认证调整、装修提取征求意见、国庆假期暂停）与存贷款利率栏目，均无本市 2026 年度缴存基数上下限；政策法规栏目亦未命中基数文件。仓库 hf 2380~30498 中「下限按一类最低工资 2380」「上限按自治区本级 2026 年度 30498 估算」仍属估算，本轮未取得可证实件，值不改。",
+          "method": "由自治区住房资金管理中心页脚反查域名 → DoH 验证 www.xlglgjj.org.cn A 记录与 www.xlgl.gov.cn 完全一致（同一盟市机房）→ 首页抽栏 → 网站地图页 /xlglgjj/xwdt/tt/index.html 列全部栏目 → 逐栏目列表页枚举文章标题。"
+        },
+        {
+          "city": "阿拉善盟",
+          "status": "official-partial",
+          "urls": [
+            "http://www.alszfgjj.com.cn/",
+            "http://www.alszfgjj.com.cn/col/col4015/index.html",
+            "http://www.alszfgjj.com.cn/col/col4016/index.html"
+          ],
+          "officialDomain": false,
+          "docNumber": "无",
+          "confirms": "阿拉善盟住房公积金中心官网（HTTP 200）。栏目：中心动态 /col/col4015/、政策法规 /col/col4016/、采购公示 /col/col4017/、党建 /col/col4018/、政府信息公开 /col/col4005/。单位业务 http://61.240.128.22:3332/wt-web，个人业务 .../wt-web-gr/grlogin。DoH 验证 www.alszfgjj.com.cn → 116.113.251.191，与 zjj.als.gov.cn 同 IP 段。政策法规栏目可取的制度性文件包括《住房公积金管理条例》《阿拉善盟住房公积金归集管理实施细则》《提取管理实施细则》《贷款业务管理实施细则》《阿拉善盟农牧民个人缴存住房公积金规定》《关于印发〈阿拉善盟自由职业者个人缴存住房公积金规定〉和〈关于进一步提高…〉的通知》《关于贯彻落实住房公积金阶段性支持政策实施意见的通知》（2022-07-12）。",
+          "mismatch": "官方未公布缴存基数数值。政策法规栏目最新文件为 2026-04-03《【重要通知】关于〈优化住房公积金使用惠民措施〉的通知》，属使用政策而非缴存基数；中心动态栏目 2025-11 至 2026-09 共 40 余条（党建、宣讲、结息、暂停办理、警示教育等）无基数调整通知。仓库 hf 1980~26508 note 已自述「公积金2026年度未发布，暂用2024年度」，本轮取证与该自述一致，值不改。",
+          "method": "由自治区住房资金管理中心页脚反查域名 → DoH 验证 → 首页抽栏目 → 逐栏目列表页枚举文章标题与日期。"
+        },
+        {
+          "city": "包头",
+          "status": "official-partial",
+          "urls": [
+            "https://www.btgjj.cn/",
+            "http://www.btgjj.com/",
+            "http://zfhcxjsj.baotou.gov.cn/",
+            "https://www.btgjj.cn/#/website/navList/84"
+          ],
+          "officialDomain": false,
+          "docNumber": "无",
+          "confirms": "包头市住房公积金中心官网为 https://www.btgjj.cn（蒙公网安备 15020402000610 号、蒙ICP备16004293号-2）。该归属有三重官方印证：(1) 包头市人民政府门户网站 www.baotou.gov.cn 页脚/相关链接区出现 www.btgjj.cn；(2) 内蒙古自治区住房资金管理中心页脚「省市公积金」列 https://www.btgjj.com/，而该 .com 域名当前只返回一个「系统访问提示 - 包头市住房公积金」跳转页，正文写明「立即访问新网址」并指向 https://www.btgjj.cn；(3) 包头市住房和城乡建设局门户（http://zfhcxjsj.baotou.gov.cn/，根路径 301，需 -L 跟随）相关链接同时列出 https://www.btgjj.cn/#/main_index 与网上业务大厅 https://wt.btgjj.com:7431/wt-web-gr/grlogin，以及房屋维修资金查询 https://www.btzhwy.cn:8003/...。",
+          "mismatch": "官方内容不可抓取，缴存基数数值无法证实。www.btgjj.cn 是 RuoYi 单页应用：首页仅 14 KB 外壳，正文全部由 /static/js/chunk-366c35a2.e4d55085.js 运行时渲染；该 chunk 暴露的接口 /appraisal/content/getMenuList|getRoute|getTitleList|getFrontNextById 直连均 404（无 /prod-api 前缀），加 /prod-api、/api 前缀则连接层直接失败（000）。用 headless Chrome 渲染后可拿到 hash 路由与文章 id（#/website/navList/84 政策法规、#/website/navList/87 运行公报、#/website/article/<id>），但政策法规栏目仅 10 篇且全部为国标/自治区文件（国令第844号《住房公积金管理条例》修改、住房城乡建设部基础数据标准公告、房地产稳定措施等），无本市缴存基数通知。搜索引擎亦未索引该站任何内容页。仓库 hf 2380~29284（土右旗/达茂旗/固阳 2310）本轮未取得可证实件，值不改。",
+          "method": "DoH 验证 www.btgjj.cn→1.180.60.52、www.btgjj.com→同一 IP → curl 抓首页与 app.js 找接口 → 路径探测（/cms /portal /news /tzgg /gggs /zwgk /public /prod-api /api /static/config.js /env.js /config.js 全 404 或 000）→ Start-Process + Chrome headless（--dump-dom，--virtual-time-budget=30000）渲染 SPA 取 hash 路由 → 抓 lazy chunk 找接口前缀（未果）→ 转向包头市住建局与市政府门户反查。"
+        }
+      ]
+    }
+  ]
+}

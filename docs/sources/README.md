@@ -1154,3 +1154,69 @@ DoH（`https://223.5.5.5/resolve?name=X&type=A`）实测 NXDOMAIN：
 
 `readRecords().stats`：checked 337 / confirmed **187** / partial **97** / notFound **53** / urls **475** / mismatchCount **190**。
 零链接缺口从 48 城降到 **42 城**。
+
+---
+
+## 第十二轮第二批（2026-10-12）· 内蒙古 4 城
+
+本批专攻「零官方链接」缺口中的内蒙古 4 城：**包头、兴安盟、锡林郭勒盟、阿拉善盟**。
+
+### 1. 结果概览
+
+| 城市 | 官方入口 | 本轮取到什么 | 状态 | 仓库值 |
+|---|---|---|---|---|
+| 兴安盟 | `www.xamzfgjj.cn` | **2025 年度缴存基数通知全文**（上限 22685、下限 乌兰浩特 2200 / 其他旗县市 2140） | official-partial | 2140~22685 ✅ 一致，不改 |
+| 锡林郭勒盟 | `www.xlglgjj.org.cn` | 官网 + 存贷款利率（首套 2.35%/2.85%，二套 2.78%/3.33%）+ 备案号 | official-partial | 2380~30498（估算），不改 |
+| 阿拉善盟 | `www.alszfgjj.com.cn` | 官网 + 归集/提取/贷款实施细则等制度文件 | official-partial | 1980~26508（2024 年度值），不改 |
+| 包头 | `https://www.btgjj.cn` | 官网归属三重官方印证 | official-partial | 2380~29284，未改 |
+
+**四城均未取得本市 2026 年度缴存基数上下限通知。** 这一点必须与「已落地官方链接」分开看：前者（站点归属）达成，后者（数值证实）未达成。
+
+### 2. 关键路径：上级中心官网页脚反查下级域名（第二次验证有效）
+
+`http://www.nmgzfgjj.com.cn/`（内蒙古自治区住房资金管理中心，根路径 924 字节框架页，JS 跳 `/website/index.html`）页脚的「省市公积金」区块一次性列出**全区 12 个盟市公积金真实域名**：
+
+```
+巴彦淖尔 bynrgjj.org.cn   赤峰 cfszfgjj.cn   呼和浩特 hhhtgjj.org.cn（旧域 huhhot.gov.cn）
+鄂尔多斯 ordosgjj.org.cn  通辽 tlzfgjj.org.cn   乌兰察布 wlcbgjj.org.cn   乌海 whsgjj.com
+锡林郭勒盟 xlglgjj.org.cn  阿拉善 alszfgjj.com.cn  包头 btgjj.com  兴安盟 xamzfgjj.cn
+```
+
+这就是本轮定位阿拉善、锡林郭勒盟、包头三城的唯一有效路径——搜索���擎对这些 `.org.cn` / `.com.cn` 域名的覆盖极差。
+
+⚠️ 该站 `<title>` 正确（内蒙古自治区住房资金管理中心），但 `meta keywords` / `description` 残留「**榆林**住房公积金中心」模板文案（疑由陕西榆林模板改造）。引用时以正文与备案号为准，不要因为模板串站就整个丢弃，也不要因为标题正确就放松核对。
+
+### 3. 域名真伪实测
+
+| 域名 | DoH 状态 | IP | curl |
+|---|---|---|---|
+| `www.xamzfgjj.cn` | 0 | 111.48.131.181/182、183.232.173.40/41、223.86.123.228/229 | 200（与 `www.xlgl.gov.cn` 同机房） |
+| `www.xlglgjj.org.cn` | 0 | 同上 6 条 | 200 |
+| `www.alszfgjj.com.cn` | 0 | 116.113.251.191 | 200（与 `zjj.als.gov.cn` 同段） |
+| `www.btgjj.com` | 0 | 1.180.60.52 | 仅 https 200，内容是跳转页指向 `www.btgjj.cn` |
+| `www.btgjj.cn` | 0 | 1.180.60.52（同上） | https 200，http 000 |
+| `www.nmgzfgjj.com` | **3 NXDOMAIN** | — | — |
+| `gjj.baotou.gov.cn` / `zjj.baotou.gov.cn` / `gjj.xam.gov.cn` / `zfgjj.xam.gov.cn` / `gjj.xlgl.gov.cn` / `zjj.xlglnmg.gov.cn` / `xlglnmg.gov.cn` / `gjj.als.gov.cn` | **3 NXDOMAIN** | — | — |
+
+### 4. 包头：SPA 型官网的完整探路记录（失败但有价值的负结果）
+
+1. `https://www.btgjj.cn/` 首页只有 14 KB 外壳，`<title>包头市住房公积金</title>`；资产只有 `app.89fdd11c.js` / `chunk-elementUI` / `chunk-libs`。
+2. `app.89fdd11c.js`（295 KB）里所有 `url:` 都是 RuoYi 后台接口（`/system/**`、`/monitor/**`、`/captchaImage`、`/login`、`/getRouters`、`/appraisal/visits/`），公开内容不在其中。路径探测 `/cms` `/portal` `/news` `/tzgg` `/gggs` `/zwgk` `/public` `/prod-api` `/api` `/static/config.js` `/env.js` `/config.js` 全部 404 或 000。
+3. **headless Chrome 渲染成功**：用 `Start-Process` + `chrome.exe --headless=new --dump-dom --virtual-time-budget=30000` 拿到 4.3 MB 的渲染后 DOM，暴露出 hash 路由 `#/website/navList/{84,87,94,95,96,97}` 与 `#/website/article/<id>`。⚠️ 直接 `& $chrome ... > file` 会得到 0 字节且文件被占用，必须走 `Start-Process -RedirectStandardOutput`。
+4. lazy chunk `chunk-366c35a2.e4d55085.js`（4168 字节）暴露接口 `/appraisal/content/getMenuList|getRoute|getTitleList|getFrontNextById`，但**没有 `/prod-api` 前缀**——直连 404，加 `/prod-api` `/api` 前缀则连接层失败（000）。
+5. 渲染后的「政策法规」栏目（navList/84）只有 10 篇文章，全是国标/自治区文件（国令第 844 号《住房公积金管理条例》修改、住房城乡建设部《住房公积金基础数据标准》公告等），**无本市缴存基数通知**。
+6. 搜索引擎（Bing/搜狗/360 三路）对 `site:btgjj` 零内容索引。
+7. 换路：包头市住建局 `http://zfhcxjsj.baotou.gov.cn/`（根路径 301，**必须 `curl -L` 跟随**）相关链接区同时列出 `https://www.btgjj.cn/#/main_index`、`https://wt.btgjj.com:7431/wt-web-gr/grlogin`、`https://www.btzhwy.cn:8003/...` 房屋维修资金查询 —— 构成第三重官方印证。
+
+**结论**：这类站点只能拿到「站点归属」，拿不到「数值」。以后遇到 SPA 型官网，直接按「official-partial + 站点 URL」收口，不要继续挖接口。
+
+### 5. 逐栏目枚举的方法差异
+
+- **兴安盟**（JSite CMS，`.jhtml` 后缀）：`/tzgg/` 目录本身 404，**必须打 `/tzgg/index.jhtml` 列表页**才能拿到 17 条公告；文章页 `/tzgg/<id>.jhtml`。最新一条 3147 号（2025-08），**没有 2026 年度基数通知**。
+- **锡林郭勒盟**：栏目命名不直观，`/xlglgjj/zwgk/ldj/` 才是「通知公告」（`ldj` 显然不是「领导之窗」），站点地图页在 `/xlglgjj/xwdt/tt/index.html`。存贷款利率页 `/xlglgjj/flbz/fg/index.html` 只有贷款数据，无缴存基数。
+- **阿拉善盟**：浙报系 CMS，`/col/col40XX/index.html` 是栏目页，`/art/<YYYY>/<M>/<D>/art_<col>_<id>.html` 是文章页。政策法规栏目最新为 2026-04-03，属**使用**政策（惠民措施）非**基数**政策。
+
+### 6. 本轮统计
+
+`readRecords().stats`：checked 337 / confirmed **187** / partial **101**（+4） / notFound **49**（−4） / urls **489**（+14） / mismatchCount **194**（+4）。
+零链接缺口从 42 城降到 **38 城**：云南 2（曲靖、大理）、吉林 3（辽源、松原、白城）、四川 5（德阳、广安、资阳、甘孜、凉山）、甘肃 5（嘉峪关、武威、张掖、临夏、甘南）、西藏 4（昌都、山南、那曲、阿里）、辽宁 3（锦州、阜新、铁岭）、陕西 1（铜川）、青海 4（黄南、海南州、果洛、玉树）、江西 2（景德镇、萍乡）、江苏 3（徐州、南通、淮安）、山东 1（枣庄）、湖南 4（衡阳、邵阳、张家界、郴州）、山西 1（朔州）。
