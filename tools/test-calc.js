@@ -776,8 +776,8 @@ eq('丽水·公积金上限暂用2025年度36405', A.CITIES.lish.hf.max, 36405);
 eq('天津/江苏/浙江·生育并入医保(mat.comp=0)', A.CITIES.tj.mat.comp + A.CITIES.nanj.mat.comp + A.CITIES.hangz.mat.comp, 0);
 
 /* 河南 / 湖北 / 湖南 / 安徽 / 福建 / 江西 参数抽查（对照官方文件） */
-eq('河南·基数下限(豫人社办〔2025〕67号)', A.CITIES.zzheng.pension.min, 3831);
-eq('河南·基数上限', A.CITIES.zzheng.pension.max, 19155);
+eq('河南·基数下限(豫人社办〔2026〕62号)', A.CITIES.zzheng.pension.min, 3912);
+eq('河南·基数上限(豫人社办〔2026〕62号)', A.CITIES.zzheng.pension.max, 19560);
 eq('河南·失业单位0.7%', A.CITIES.zzheng.unemp.comp, 0.007);
 eq('河南·工伤一类0.2%', A.CITIES.zzheng.inj.comp, 0.002);
 eq('郑州·医保单位8%', A.CITIES.zzheng.med.comp, 0.08);
@@ -788,6 +788,38 @@ eq('郑州·房租扣除1500', A.CITIES.zzheng.rent, 1500);
 eq('洛阳·医保单位7.5%(含生育)', A.CITIES.luoy.med.comp, 0.075);
 eq('商丘·医保单位6%', A.CITIES.sqiu.med.comp, 0.06);
 eq('南阳·公积金上限18553.5', A.CITIES.ny.hf.max, 18553.5);
+
+/* ---------- 河南 17 城 2026 年度正式上下限（豫人社办〔2026〕62号，2026-10-12） ----------
+   原文：http://hrss.henan.gov.cn/2026/10-10/3435886.html
+   「自2026年7月1日起，全省社会保险（含基本养老保险、基本医疗保险、工伤保险、失业保险、生育保险）
+     缴费基数以6520元/月确定个人缴费基数上下限，缴费基数下限为3912元（60%），缴费基数上限为19560元（300%）。」
+   四关复核：①口径——明文含五险、全省统一；②生效——自 2026-07-01 起，已生效；
+   ③数字——同件三数互洽；④来源——省人社厅/省医保局/省财政厅/省税务局四部门联合发文，.gov.cn，主动公开。
+   算式自校验（官方同件给出三个独立数字，属强校验而非反推）：3912÷0.6 = 19560÷3 = 6520。 */
+const HN = ['zzheng', 'kf', 'luoy', 'pds', 'ay', 'hbi', 'xx', 'jzuo', 'py', 'xc', 'lh', 'smx', 'ny', 'sqiu', 'xiny', 'zk', 'zmd'];
+eq('河南 17 城齐备', HN.length, 17);
+for (const k of HN) {
+  eq(A.CITIES[k].name + '·社保基数下限3912', A.CITIES[k].pension.min, 3912);
+  eq(A.CITIES[k].name + '·社保基数上限19560', A.CITIES[k].pension.max, 19560);
+  eq(A.CITIES[k].name + '·五险统一走同一基数（养老口径）', A.CITIES[k].pension.max, 19560);
+}
+eq('河南·下限3912=6520×60%', 3912 / 0.6, 6520);
+eq('河南·上限19560=6520×300%', 19560 / 3, 6520);
+/* 口径陷阱护栏：6520 是【全口径】月平均工资（×12=78240 元/年），
+   与省统计局公布的城镇非私营 91023 元/年（7585.25 元/月）不是同一口径，不可互推。 */
+eq('河南·未误用城镇非私营口径', Math.round(91023 / 12 * 100) / 100, 7585.25);
+eq('河南·社保基准与城镇非私营口径确实不同', 6520 !== Math.round(91023 / 12 * 100) / 100, true);
+/* 正式件到手后 13 城解除 warn（note 已无「未找到/暂用/待核实」类措辞） */
+for (const k of ['luoy', 'pds', 'ay', 'hbi', 'xx', 'jzuo', 'py', 'xc', 'smx', 'sqiu', 'xiny', 'zk', 'zmd']) {
+  eq(A.CITIES[k].name + '·已解除 warn', A.CITIES[k].warn, undefined);
+}
+/* 仍存 4 类未决问题，warn 保留 */
+eq('郑州·保留 warn（医保基数市级口径与省级口径并存）', A.CITIES.zzheng.warn, true);
+eq('开封·保留 warn（医保费率仍是征求意见稿）', A.CITIES.kf.warn, true);
+eq('漯河·保留 warn（公积金 2026 年度件未找到）', A.CITIES.lh.warn, true);
+eq('南阳·保留 warn（大额 0.6% 与 19.16 元/月不自洽）', A.CITIES.ny.warn, true);
+eq('南阳·大额个人月额19.16暂不改（若按比例应为19.56）', A.CITIES.ny.medFixEmp, 19.16);
+eq('河南·暂保留 warn 的恰好 4 城', ['zzheng', 'kf', 'lh', 'ny'].filter(k => A.CITIES[k].warn).length, 4);
 eq('湖北·第1档武汉下限(鄂人社发〔2025〕28号)', A.CITIES.wuha.pension.min, 4498);
 eq('湖北·第1档武汉上限', A.CITIES.wuha.pension.max, 22488);
 eq('湖北·第2档十堰下限', A.CITIES.shiy.pension.min, 4299);
@@ -1326,7 +1358,7 @@ section('12. 省份年度口径与页脚文案');
   /* 12.3 受影响 9 省逐省抽查 + 未受影响省份不得被误改 */
   const CASES = [
     ['heb', '哈尔滨', '2026', null], ['nanj', '南京', '2025', '2026'],
-    ['hangz', '杭州', '2025', '2026'], ['zzheng', '郑州', '2025', '2026'],
+    ['hangz', '杭州', '2025', '2026'], ['zzheng', '郑州', '2026', null],
     ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2025', '2026'],
     ['haik', '海口', '2025', '2026'],
     ['cc', '长春', '2025-2026', null], ['fz', '福州', '2025-2026', null],
