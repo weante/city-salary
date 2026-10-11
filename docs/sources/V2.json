@@ -1,0 +1,91 @@
+{
+  "group": "V2",
+  "generatedAt": "2026-10-12T12:10:00.000Z",
+  "note": "第十二轮第五批 · 湖南 4 城（衡阳/邵阳/张家界/郴州）。四城全部 official-partial：只取得官方入口或与缴存基数无关的官方件，缴存基数上下限一律未证实，数值不改。核心发现：湖南省政府门户与各市门户统一接湖南省统一搜索（searching.hunan.gov.cn），但省级库只收录省级文件、不含各市州公积金缴存基数通知；衡阳、郴州两个门户整体被 JS 挑战型 WAF 拦截（本环境 curl 412 / headless Chrome 返回 510），张家界、邵阳门户 curl 200 但公积金中心无独立内容站。邵阳是唯一取到与公积金直接相关的一手官方件的城市。",
+  "provinces": [
+    {
+      "province": "湖南",
+      "provinceWideUrls": [
+        "https://www.hunan.gov.cn/",
+        "http://www.hunan.gov.cn/hnszf/xxgk/wjk/szbm/szfzcbm_19689/srlshbzt/gfxwj_19835//202603/t20260326_33941963.html",
+        "http://www.hunan.gov.cn/hnszf/xxgk/wjk/szbm/szfzcbm_19689/srlshbzt/gfxwj_19835//202202/t20220225_22489725.html",
+        "https://searching.hunan.gov.cn/hunan/001000000/file"
+      ],
+      "provinceWideNote": "省级来源四条：(1) 湖南省人民政府门户 https://www.hunan.gov.cn/（curl 200，122940 字节）。(2)《湖南省人力资源和社会保障厅 湖南省财政厅 国家税务总局湖南省税务局关于公布2025年社会保险缴费基准值和计发基数的通知》——全省社保基数统一口径，四城 note 中「2026年度基数4106~20529」即出自此件。(3)《湖南省人力资源和社会保障厅 国家税务总局湖南省税务局关于统一企业职工基本养老保险缴费比例和缴费基数的通知》。(4) 湖南省统一检索接口 https://searching.hunan.gov.cn/hunan/001000000/file?q=<URL编码关键词>（参数名是 q，不是 keyword；keyword= 只返回壳页）。已验证：省级库检索「住房公积金缴存基数」「住房公积金缴存比例」只返回中央/省级文件，不收录各市州公积金缴存基数通知，故不能用于本批城市级数值取证。湖南省住房和城乡建设厅 zjj.hunan.gov.cn 的 DoH status=0 但无 A 记录（NODATA），curl 返回 000，不可用；湖南省住房公积金管理中心独立域名候选 www.hnsgjj.com / www.hnsgjj.gov.cn / hnszfgjj.cn / hnsgjj.com.cn / hnszfgjj.hunan.gov.cn / gjj.hunan.gov.cn 全部 NXDOMAIN，www.hnsgjj.cn 为 NODATA，本轮未找到。",
+      "cities": [
+        {
+          "city": "邵阳",
+          "status": "official-partial",
+          "urls": [
+            "https://www.shaoyang.gov.cn/shaoyang/szbmgfxwj/202606/cae8af265d994a4a987d6bf1b104165a.shtml",
+            "https://www.shaoyang.gov.cn/shaoyang/szbmgfxwj/202606/a778f01f30494b3aabf146454624d8dd.shtml",
+            "https://www.shaoyang.gov.cn/shaoyang/sbjgfxwj/gfxwjlist.shtml",
+            "https://www.shaoyang.gov.cn/shaoyang/gfxwjjd/202606/057612b8cd3f4b28bca43616fe49380b.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "邵金管字〔2026〕2号（索引号 4305000001/2026-32552，统一登记号 SYCR-2026-69001）；邵金管字〔2026〕3号（索引号 4305000001/2026-32549，统一登记号 SYCR-2026-69002）",
+          "confirms": "证实邵阳市住房公积金管理委员会为独立发文机构并现行有效：所属机构「邵阳市住房公积金管理委员会」，发文日期 2026-05-28，自 2026-06-01 起执行；件内引用上级文件 湘建房〔2026〕41号《湖南省进一步促进房地产市场平稳健康发展若干措施》，并引用邵金管字〔2024〕1号《邵阳市住房公积金提取操作实施细则（2024年修订）》、邵金管字〔2024〕5号《邵阳市住房公积金个人住房贷款实施细则》。2 号文为提取/贷款政策优化（提取范围拓宽、装修提取或贷款试行、初婚初育家庭最高贷款额度 80/90 万元、首套认定、代际互助、人才留邵），3 号文为装修提取与贷款试行办法（按每平方米不超过 2000 元核算、提取不超过 40 万元、贷款不超过装修总费用 85% 且不超过 40 万元、试行期两年）。",
+          "mismatch": "两件均不含缴存基数上下限数值。邵阳市住房公积金管理中心的缴存基数调整通知不在「市直部门规范性文件」栏目（该栏目 gfxwjlist.shtml 全量枚举后，公积金相关仅此两件），推测发布在中心自有渠道或市人社局/住建局渠道，本轮未取得。仓库 1800~22333 维持不变并新增 warn:true（原无 warn，与同批衡阳/张家界/郴州口径不一致）。",
+          "method": "门户栏目全量枚举 → 逐篇直连读原文",
+          "rawQuotes": [
+            "所属机构：邵阳市住房公积金管理委员会；发文日期：2026-05-28；文号：邵金管字〔2026〕2号；统一登记号：SYCR-2026-69001；公开方式：主动公开",
+            "按照省住房和城乡建设厅等9部门下发的关于印发《湖南省进一步促进房地产市场平稳健康发展若干措施》的通知(湘建房〔2026〕41号)文件精神",
+            "本通知自2026年6月1日起执行。本通知由邵阳市住房公积金管理中心负责解释。此前的相关规定与本通知不一致的，以本通知为准。",
+            "邵阳市住房公积金管理委员会 2026年5月28日"
+          ],
+          "checks": "四关未全过：口径（提取/贷款政策，非缴存基数）与待核字段不符 → 按纪律只记录不改值。"
+        },
+        {
+          "city": "张家界",
+          "status": "official-partial",
+          "urls": [
+            "https://www.zjjzfgjj.com/wt-web/login",
+            "https://www.zjjzfgjj.com/wt-web-gr/grlogin",
+            "https://www.zjj.gov.cn/",
+            "https://www.zjj.gov.cn/c2283/index.html"
+          ],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "只证实机构与入口存在：张家界市住房公积金管理中心的网上服务大厅与个人业务大厅均可达（/wt-web/login 200/61963 字节、/wt-web-gr/grlogin 200/47285 字节，IP 110.53.54.16），张家界市政府门户首页「公积金网上服务厅」即指向该域名。门户 DFS 模板栏目形如 /c<栏目id>/index.html、文章 /c<栏目id>/<yyyymmdd>/i<id>.html。",
+          "mismatch": "中心站点根路径只返回 612 字节「Welcome to nginx!」，只有业务大厅、无内容站，门户首页 19 个 /c<id>/ 栏目中无公积金专栏，故未取得缴存基数上下限。仓库 2000~24932 维持不变并保留 warn:true（上限为 2025 年度 8310.75×3 的估算，下限按最低工资 2000 计）。",
+          "method": "DoH 域名核验 + curl 可达性探测 + 门户栏目枚举",
+          "rawQuotes": [],
+          "checks": "四关第 4 关只过一半：域名 zjjzfgjj.com 为事业单位自有域名（非 .gov.cn），按既定来源标准记 officialDomain:false。"
+        },
+        {
+          "city": "衡阳",
+          "status": "official-partial",
+          "urls": [
+            "https://www.hengyang.gov.cn/hyszfgjj/",
+            "https://www.hengyang.gov.cn/hyszfgjj/xxgk/gzdt/tzgg/",
+            "https://www.hengyang.gov.cn/hyszfgjj/bgxz/",
+            "https://www.hengyang.gov.cn/hyszfgjj/xxgk/gzdt/tzgg/20210322/i2330746.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "只证实栏目结构存在：衡阳市住房公积金管理中心专区路径 /hyszfgjj/，下辖工作动态>通知公告 /hyszfgjj/xxgk/gzdt/tzgg/ 与办事指南 /hyszfgjj/bgxz/，文章形如 /hyszfgjj/xxgk/gzdt/tzgg/20210322/i2330746.html（由 360 与搜狗两路搜索引擎索引交叉确认）。",
+          "mismatch": "衡阳市门户整体被 JS 挑战型 WAF 拦截，本环境完全无法读取正文：curl 对根路径与任意文章路径一律返回 HTTP 412（响应体是 <script src=\"/MMB1_a903e90a6546e4a6378f21a34d183e12/ZYbKRgIknL7izCT.js\"></script> 挑战页）；补齐 sec-ch-ua / Sec-Fetch-* / Accept-Encoding: br 等完整浏览器头后仍 412；web_fetch 同样 412；headless Chrome --virtual-time-budget=60000 只得 4111 字节且 TITLE 为「510」。因此本轮只能确认栏目存在，不能证实缴存基数上下限，仓库 1700~21142 维持不变并保留 warn:true。另注：www.hyzfgjj.com / hyzfgjj.com（IP 23.225.70.217）实为盗版影视站「2026热播电影电视剧免费VIP在线看 - 第一影院」，与公积金无关，hyszfgjj.hengyang.gov.cn 与 zfgjj.hengyang.gov.cn 均 NXDOMAIN。",
+          "method": "搜索引擎交叉定位栏目路径 + 三路抓取（curl/web_fetch/headless Chrome）均被 WAF 拦截",
+          "rawQuotes": [],
+          "checks": "四关第 4 关不通过（来源虽为 .gov.cn 但不可达且未取得原文），按纪律只记录不改值。"
+        },
+        {
+          "city": "郴州",
+          "status": "official-partial",
+          "urls": [
+            "https://gjj.czs.gov.cn/",
+            "https://zjj.czs.gov.cn/",
+            "https://www.czs.gov.cn/"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "只证实子域存在：DoH 解析 gjj.czs.gov.cn → 115.231.24.234、zjj.czs.gov.cn → 115.231.24.105/115.231.24.46，与门户 www.czs.gov.cn 同属 115.231.24.0/24 段，可判定为郴州市政府真实子域（非第三方停放页）。",
+          "mismatch": "与衡阳同型 WAF：gjj/zjj/www 三个主机 curl 一律 HTTP 412（246 字节挑战页），headless Chrome --virtual-time-budget=45000 得 4072 字节、TITLE 为「510」。zfgjj.czs.gov.cn 与 czgjj.czs.gov.cn 均 NXDOMAIN；www.czzfgjj.com / czzfgjj.com（IP 103.115.48.48）curl 000 不可达；www.cz.gov.cn NXDOMAIN。未取得缴存基数上下限，仓库 1550~23205 维持不变并保留 warn:true（note 已自述为 2024 年度数值）。",
+          "method": "DoH 批量域名解析 + curl 可达性探测 + headless Chrome 渲染",
+          "rawQuotes": [],
+          "checks": "四关第 4 关不通过（同衡阳）。"
+        }
+      ]
+    }
+  ]
+}
