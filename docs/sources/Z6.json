@@ -1,0 +1,166 @@
+{
+  "group": "Z6",
+  "generatedAt": "2026-10-12T09:40:00.000Z",
+  "note": "第十七批：大庆 / 伊春 / 七台河 / 大兴安岭 / 烟台 / 荆州 —— 收尾 readRecords() 里最后 6 个 status=not-found 的城市。关键结论：这 6 城其实都已有官方链接（来自 Q2/Q5/Q6 组），缺的是「缴存基数通知」这一层文件。烟台与荆州各取到一手件且数值零偏差；七台河一手件与仓库值逐字一致；大庆/伊春/大兴安岭三城经穷举确认中心无独立官网、省级政务服务网专区未上线，属「渠道本身不存在」，维持估算并如实标注。三城由 not-found 升 official-confirmed，三城保留 not-found 并在报告中登记为「官方渠道缺失、已穷举」。",
+  "provinces": [
+    {
+      "province": "山东",
+      "provinceWideUrls": [],
+      "provinceWideNote": "鲁人社字〔2026〕75号（2026 年度全省社保基数）与鲁政字〔2025〕140号（最低工资，烟台下限件直接引用），见 AGENTS.md 第 11 条。",
+      "cities": [
+        {
+          "city": "烟台",
+          "status": "official-confirmed",
+          "urls": [
+            "http://gjj.yantai.gov.cn/col/col4103/art/2026/art_657f50be3e25423a8574676332528ac8.html",
+            "http://gjj.yantai.gov.cn/cms_files/filemanager/48634/attach/20267/D5F750BF64312E758FEAD2E5F799FEDF.pdf",
+            "https://gjj.yantai.gov.cn/",
+            "http://zjt.shandong.gov.cn/"
+          ],
+          "officialDomain": true,
+          "docNumber": "烟住〔2026〕26号《关于确定2026年度住房公积金最高和最低缴存基数的通知》（依据 国务院令第350号、建金管〔2005〕5号、建金〔2018〕45号；落款 烟台市住房公积金管理中心 2026年7月7日印发，本件主动公开；页面发布 2026-07-08）",
+          "confirms": "2026年7月1日至2027年6月30日，全市住房公积金最高月缴存基数调整为 28692 元，最高缴存比例 12%，单位和个人最高月缴存额分别为 3443 元；下限：莱阳市、栖霞市、海阳市 2210 元，最低缴存比例 5%，单位和个人最低月缴存额分别为 111 元；市直及其他区市 2400 元，单位和个人最低月缴存额分别为 120 元；依据《山东省人民政府关于调整全省最低工资标准的通知》（鲁政字〔2025〕140号）；2026年7月起灵活就业人员月缴存额上限 6886 元、下限 222 元（莱阳/栖霞/海阳）/240 元（市直及其他区市）。",
+          "mismatch": "数值零偏差（2400~28692）。仓库原记的「2026-07-07」是成文日期、页面发布日为 07-08，子代理报的「日期差一天」是误判。缺口是 note 缺文号与分档口径。",
+          "method": "一手件是无文本层扫描 PDF：curl 必须带 Referer（不带只回 162 字节空壳），再用 cs-img.py 导出 page.images 交给 Windows.Media.Ocr（powershell.exe 5.1，1400px 自动切片）读出。CMS 列表可用 /api-gateway/jpaas-publish-server/front/page/build/unit（只收 GET，webId=109 / tplSetId=GIXBawKsDDGordSdo5sZaf / tagId=信息列表）。",
+          "rawQuotes": [
+            "2026年7月1日至2027年6月30日，全市住房公积金最高月缴存基数调整为28692元，最高缴存比例为12％，单位和个人最高月缴存额分别为3443元。",
+            "2026年7月1日至2027年6月30日，住房公积金最低月缴存基数为：莱阳市、栖霞市、海阳市2210元，最低估存比例5％，单位和个人最低月缴存额分别为111元；市直及其他区市为2400元，单位和个人最低月缴存额分别为120元。",
+            "2026年7月起，灵活就业人员住房公积金月缴存额上限为6886元，下限为莱阳市、栖霞市、海阳市222元，市直及其他区市240元。"
+          ],
+          "checks": [
+            "28692 × 12% = 3443.04 → floor 3443 ✅ 与官方「最高月缴存额 3443」吻合",
+            "2400 × 5% = 120 ✅ 官方写 120",
+            "2210 × 5% = 110.5 → ceil 111 ✅ 官方写 111（⚠️ 烟台下限用 ceil、上限用 floor，两处取整口径不同）",
+            "28692 × 24% = 6886.08 → floor 6886 ✅ 灵活就业上限",
+            "2210 × 10% = 221 → ceil 222 ✅ 灵活就业下限",
+            "下限分档与鲁政字〔2025〕140号 最低工资档次（莱阳/栖霞/海阳 2210、市直及其他区市 2400）逐档闭合"
+          ]
+        }
+      ]
+    },
+    {
+      "province": "黑龙江",
+      "provinceWideUrls": [
+        "https://zfcxjst.hlj.gov.cn/zfcxjst/c114760/public_list.shtml",
+        "https://qqhr.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/",
+        "https://www.zwfw.hlj.gov.cn/oldzq/gjjfwzq/index.html",
+        "https://zfcxjst.hlj.gov.cn/zfcxjst/c114789/202604/31936330/files/黑龙江省住房公积金2025年年度报告-20260428152145947.docx"
+      ],
+      "provinceWideNote": "省住建厅「地市动态」c114760（338 条链接）只有齐齐哈尔/双鸭山/牡丹江/七台河的公积金新闻，无大庆/伊春/大兴安岭；页脚只给三个门户域名 www.daqing.gov.cn / www.yc.gov.cn / www.dxal.gov.cn。省级政务服务网公积金服务专区 https://www.zwfw.hlj.gov.cn/oldzq/gjjfwzq/index.html 列出全省 17 个中心条目并证实三家机构全名（大庆市住房公积金管理中心、伊春市住房公积金经办中心、大兴安岭住房公积金管理中心），但全部链接是 #aaa（JS 驱动），无任何数值。黑龙江省住房公积金 2025 年度报告 docx（217354 字节）共 415 行，命中四城名 19 处但全是表彰名单，无各市缴存基数上下限表。",
+      "cities": [
+        {
+          "city": "七台河",
+          "status": "official-confirmed",
+          "urls": [
+            "http://www.qthgjj.org.cn/qthsgjj/c101102/202607/09ac12e876584309b512bffbc6a0be72.shtml",
+            "https://www.qth.gov.cn/"
+          ],
+          "officialDomain": true,
+          "docNumber": "无文号（中心 2026-07-09 发布《关于调整2026年度住房公积金缴存基数上限及下限标准的通知》类文件，依据 国务院《住房公积金管理条例》、住建部《住房公积金归集业务标准》GB/T 51271-2017、黑龙江省人民政府《关于调整我省最低工资标准的通知》黑政规〔2025〕1号）",
+          "confirms": "缴存基数上限 20598 元；缴存基数下限分两档：第一档七台河市区 2010 元，第二档勃利县 1910 元；单位和职工缴存比例不低于 5%、不高于 12%；灵活就业人员不低于 10%、不高于 24%；本缴存基数标准执行期 2026 年 7 月 1 日至 2027 年 6 月 30 日。",
+          "mismatch": "数值零偏差（2010~20598），仅补文号缺失说明与下限分档。算式自校验不适用：通知未给月平均工资，20598÷3=6866 属反推。",
+          "method": "子代理定位、父代理 curl 复抓逐字复核（200/22926 B utf-8，黑ICP备18005173号-1）；域名由七台河市政府门户页脚给出。CMS 列表走 POST /common/search/<channelId>，channelId 必须取栏目页 <meta name=\"channelId\"> 的 32 位 hex。",
+          "rawQuotes": [
+            "1. 缴存基数上限为20598元。",
+            "2. 缴存基数下限分两档：第一档，七台河市区为2010元；第二档，勃利县1910元",
+            "本缴存基数标准执行期为2026年7月1日至2027年6月30日。"
+          ],
+          "checks": [
+            "通知未给月平均工资，故不做 ÷3 自校验（20598÷3=6866 是从目标反推，自校验等于没校验）",
+            "下限 2010/1910 与同省鸡西官方件引用的 黑政规〔2025〕1号 档次互证",
+            "上限 20598÷3=6866、月 6866 属 2025 年城镇非私营口径形态，与哈尔滨 28430÷3=9476.67 同型"
+          ]
+        },
+        {
+          "city": "大庆",
+          "status": "not-found",
+          "urls": [
+            "http://daqing.gov.cn/",
+            "https://zfcxjst.hlj.gov.cn/",
+            "https://www.zwfw.hlj.gov.cn/oldzq/gjjfwzq/index.html",
+            "https://dqgjj.cn/"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "官方网站 https://www.daqing.gov.cn/（黑ICP备06001830号-1）可达，但法定主动公开 / 机构设置 / 部门信息 / 政府公报逐栏枚举无任何公积金缴存基数件；住建局栏目 c100332 同样无公积金件；2026 年政府公报 daqing/2026d2q/zfgb.shtml 无公积金件；站内检索是自研 search5（POST /search5/search/s，单/双百分号编码均返回 200 + 0 字节）不可用；首页「公积金查询」外链指向 https://www.hljszgjj.org.cn/（黑龙江省直住房公积金中心，不覆盖各市）。大庆市政务服务网 dq.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/ 返回 404 —— 该市公积金业务连省级政务服务网专区都没上线。",
+          "mismatch": "仓库值 2270~32701 无任何官方文件支撑。32701÷3=10900.33，是「城镇非私营月均×3」的典型小数形态（哈尔滨 28430÷3=9476.67 可比），且大庆用城镇非私营口径（10900）而社保用全口径口径（23115÷3=7705），差异属正常，因此数值形态合理但**无法认定正确**。四关全缺，按纪律不改值，改为如实标注「现值为估算」并新增 warn:true。",
+          "method": "已穷举：政府门户全栏目 + 政府公报 + 住建局栏目 + 省住建厅地市动态 + 省级政务服务网专区 + 6 个候选域名。结论是渠道本身不存在，不是检索方法问题。",
+          "rawQuotes": [],
+          "checks": [
+            "四关复核：①口径无从判断 ②生效期未知 ③数字有歧义（无月平均工资可对照）④无官方来源 —— 0/4 关通过，只记录不改值"
+          ]
+        },
+        {
+          "city": "伊春",
+          "status": "not-found",
+          "urls": [
+            "http://www.yc.gov.cn/",
+            "https://zfcxjst.hlj.gov.cn/",
+            "https://www.zwfw.hlj.gov.cn/oldzq/gjjfwzq/index.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "正确门户是 http://www.yc.gov.cn/（200/91579 B，黑ICP备05005429号-1，site_code=2307000004）——推翻了此前「黑龙江所有门户在 210.76.63.10 超时」的结论。但首页零个「公积金」链接；c102008 法定主动公开、c102233/c102001 政务公开总目录、c102108 政策文件（2026 年仅 2 件）均无公积金件。yc.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/ 404。机构全称为「伊春市住房公积金经办中心」（不是管理中心），电话 0458-3971148，铁力市由伊春中心代管。",
+          "mismatch": "仓库值 1910~21189 无官方文件支撑，医保单位 8.5% 亦无据。省级 so-gov 检索命中全是 2019 年黑医保发〔2019〕38号背景件与 2022 年阶段性缓缴件，均不含 8%/8.5% 具体费率，且阶段性降费件按纪律不能作费率依据 → 维持待核实。",
+          "method": "⚠️ 拼音域名撞车：www.yichun.gov.cn / gjj.yichun.gov.cn / www.ycgjj.gov.cn 全部是江西省宜春市（赣ICP备），黑龙江伊春只有 www.yc.gov.cn；ycgjj.cn 注册但无 A 记录，ycgjj.org.cn 是 Vue 空 SPA 无法确认归属；yc.hlj.gov.cn / ycs.hlj.gov.cn 全部 exit=28 超时。",
+          "rawQuotes": [],
+          "checks": [
+            "四关复核：0/4 关通过，只记录不改值"
+          ]
+        },
+        {
+          "city": "大兴安岭",
+          "status": "not-found",
+          "urls": [
+            "https://www.dxal.gov.cn/",
+            "https://zfcxjst.hlj.gov.cn/",
+            "https://www.zwfw.hlj.gov.cn/oldzq/gjjfwzq/index.html"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "https://www.dxal.gov.cn/（黑ICP备05005329号）首页仅 3 栏目（政务公开 c100016、住房保障 c100100、机构设置 c100060），零个公积金链接；/so/s 检索 404；dxal.zwfw.hlj.gov.cn/tsfwzq/gjjfwzq/ 404。机构全称为「大兴安岭住房公积金管理中心」。",
+          "mismatch": "仓库值 2010~22929 无官方文件支撑（上限暂用 2025 年度）。四关全缺，不改值，note 如实标注并保留 warn:true。",
+          "method": "⚠️ 政府门户「机构设置」页不列直属事业单位（本轮新发现的通用教训），所以「页面上没有中心」不等于「没有中心」。域名 dxalgjj.cn / dxalgjj.com / dxalzfgjj.cn / dxalgjj.org.cn / dxalzgjj.cn / dxalhousefund.cn 全部 NXDOMAIN。",
+          "rawQuotes": [],
+          "checks": [
+            "四关复核：0/4 关通过，只记录不改值"
+          ]
+        }
+      ]
+    },
+    {
+      "province": "湖北",
+      "provinceWideUrls": [
+        "https://zw.jingzhou.gov.cn/",
+        "https://rst.hubei.gov.cn/"
+      ],
+      "provinceWideNote": "鄂人社发〔2025〕28号（2025 年度全省社保基数三档）与鄂政办发〔2025〕44号（荆州区/沙市区最低工资，荆州公积金下限件直接引用），见 AGENTS.md 第 19 条。",
+      "cities": [
+        {
+          "city": "荆州",
+          "status": "official-confirmed",
+          "urls": [
+            "http://gjj.zwgk.jingzhou.gov.cn/35063/106220263/t126220263064/706794.shtml",
+            "https://zw.jingzhou.gov.cn/upload/default/bigfile/2026/06/26/20260626_361a649f9a8daaa41bbe0222b922fdc3.pdf",
+            "https://zw.jingzhou.gov.cn/api/content_center/PublishTask/download?file_path=/upload/default/bigfile/2026/06/26/20260626_361a649f9a8daaa41bbe0222b922fdc3.pdf&file_name=x",
+            "https://zw.jingzhou.gov.cn/"
+          ],
+          "officialDomain": true,
+          "docNumber": "无文号（索引号 420169849/2026-00095，效力「有效」，落款 荆州住房公积金中心 2026年6月25日，页面发布 2026-06-26 08:53，依据 国务院《住房公积金管理条例》、统制字〔1990〕1号）",
+          "confirms": "上限：按 2025 年荆州市城镇非私营单位就业人员月平均工资的 3 倍确定为 22446 元；下限：按 鄂政办发〔2025〕44号 文中荆州市市辖荆州区、沙市区最低工资标准执行为 2130 元；驻荆中央企业、省管单位缴存基数可参照武汉市标准执行。缴存比例：行政机关、公益一类事业单位单位及个人各 12%；公益二类事业单位、企业单位、灵活就业人员可在 5%—12% 区间自主确定。执行期 2026 年 7 月 1 日至 2027 年 6 月 30 日，7 月 1 日至 8 月 31 日为集中调整期。",
+          "mismatch": "数值零偏差（2130~22446）。缺口是口径与执行期未记入 note。",
+          "method": "⚠️ 站点必须用 http（https code=000）。正文页本身是空壳，全文在 iframe 里：pdfframe_449746 → zw.jingzhou.gov.cn/.../viewer.html?file=...pdf。该 PDF 有文本层，pypdf extract_text() 直读 5 页即可，无需 OCR。湖北省级政务公开检索走 POST /api/content_center/document/list-data-new。",
+          "rawQuotes": [
+            "（二）基数标准 上限：按2025年荆州市城镇非私营单位就业人员月平均工资的3倍确定，上限为22,446元。下限：按鄂政办发〔2025〕44号文中荆州市市辖荆州区、沙市区最低工资标准执行，下限为2,130元。",
+            "（一）行政机关、公益一类事业单位：单位及个人缴存比例均为12%。（二）公益二类事业单位、企业单位、灵活就业人员：可在5%—12%区间自主确定比例",
+            "本次调整执行期为2026年7月1日至2027年6月30日"
+          ],
+          "checks": [
+            "算式自校验不适用：通知只给上限值，未给月平均工资，22446÷3=7482 属从目标反推",
+            "旁证：公积金上限 22446（城镇非私营口径）≠ 社保上限 21462（全口径口径），两套口径各自自洽，不可混用"
+          ]
+        }
+      ]
+    }
+  ]
+}
