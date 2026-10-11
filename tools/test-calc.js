@@ -1030,6 +1030,23 @@ eq('赤峰·租金1100（市辖区约128万）', A.CITIES.chif.rent, 1100);
 eq('鄂尔多斯·公积金上限36108', A.CITIES.eerds.hf.max, 36108);
 eq('通辽·租金800（科尔沁区70.62万）', A.CITIES.tongliao.rent, 800);
 eq('锡林郭勒盟·医保单位6.5%', A.CITIES.xlgl.med.comp, 0.065);
+/* 内蒙古第十四批（2026-10-11）：4 城零数值改动，只补来源 + 包头新增 warn。
+   内人社办发〔2026〕85号 原文同时给出 8430/5058/25290 三个数，故 8430×0.6 与 8430×3 是
+   有效的强算式自校验（非从目标反推）。 */
+eq('内蒙古·全口径月均8430×60%=5058（内人社办发〔2026〕85号）', Math.round(8430 * 0.6), A.CITIES.baot.pension.min);
+eq('内蒙古·全口径月均8430×300%=25290（同件自校验）', Math.round(8430 * 3), A.CITIES.baot.pension.max);
+eq('包头·warn=true（无本市缴存基数件，29284待核实）', A.CITIES.baot.warn, true);
+eq('包头·公积金下限2380', A.CITIES.baot.hf.min, 2380);
+eq('包头·公积金上限29284（无件支撑，待核实）', A.CITIES.baot.hf.max, 29284);
+eq('兴安盟·公积金下限2140（2025年度件，其他旗县市档）', A.CITIES.xam.hf.min, 2140);
+eq('兴安盟·公积金上限22685=7561.67×3（2025年度件）', A.CITIES.xam.hf.max, 22685);
+eq('兴安盟·warn=true（2026年度件已穷举确认未发布）', A.CITIES.xam.warn, true);
+eq('锡林郭勒盟·公积金下限2380', A.CITIES.xlgl.hf.min, 2380);
+eq('锡林郭勒盟·公积金上限30498（与呼和浩特同值，疑似串值待核实）', A.CITIES.xlgl.hf.max, 30498);
+eq('锡林郭勒盟·warn=true', A.CITIES.xlgl.warn, true);
+eq('阿拉善盟·公积金下限1980', A.CITIES.alsm.hf.min, 1980);
+eq('阿拉善盟·公积金上限26508（2024年度，无件支撑）', A.CITIES.alsm.hf.max, 26508);
+eq('阿拉善盟·warn=true', A.CITIES.alsm.warn, true);
 eq('新疆·基数下限', A.CITIES.wlmq.pension.min, 5246);
 eq('新疆·基数上限', A.CITIES.wlmq.pension.max, 26231);
 eq('乌鲁木齐·医保单位9.8%', A.CITIES.wlmq.med.comp, 0.098);

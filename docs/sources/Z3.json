@@ -1,0 +1,89 @@
+{
+  "group": "Z3",
+  "generatedAt": "2026-10-11T21:30:00.000Z",
+  "note": "2026-10-11 第十三批（补数值）：内蒙古 4 城（包头/兴安盟/锡林郭勒盟/阿拉善盟）。零官方链接缺口已于上一批（32588d2）归零，本批目标改为「把仍是估算的数值补上官方依据」。结论先说：4 城的市级缴存基数上下限数值一件都没取到，本批不产生任何数值改动，价值全部在三层自治区级共用依据与四份可复核的「官网确实未发布」穷举证据。已落地的自治区级依据：(1) 内蒙古自治区统计局 2026-06-18 发布件，2025 年城镇非私营单位就业人员年平均工资 117113 元；(2) 内人社办发〔2026〕85号，2025 年全口径城镇单位就业人员月平均工资 8430 元，2026 年养老/工伤缴费基数下限 8430×60%=5058、上限 8430×300%=25290 —— 与仓库内蒙古 12 城社保 {min:5058,max:25290} 逐字一致，首次拿到文号；(3)《内蒙古自治区住房公积金缴存管理办法》第三十九条，明确上限用「盟市统计部门公布的本地区上一年度城镇非私营单位就业人员月平均工资的3倍」这一市级口径，因此自治区级 117113 绝对不能用来推任何盟市上限 —— 这是本批最重要的口径纪律。据此逐城反推：12 城 hf.max 反推出的年均工资散布在 90740~144432 之间（包头 117136 最接近区级 117113，锡林郭勒 121992 与呼和浩特完全相同且 note 自述「暂按自治区本级2026年度估算」），说明 12 城是跨年度混合数据，在没有各市通知的前提下无法统一也不能修正。",
+  "provinces": [
+    {
+      "province": "内蒙古",
+      "provinceWideUrls": [
+        "https://tj.nmg.gov.cn/tjyw/fbyjd_11654/202606/t20260618_2918026.html",
+        "https://rst.nmg.gov.cn/zfxxgk/fdzdgknr/zhengcewenjian/202608/t20260828_2945897.html",
+        "https://rst.nmg.gov.cn/zfxxgk/fdzdgknr/zhengcejiedu/202608/t20260828_2946204.html",
+        "http://www.xamzfgjj.cn/gjjdfwj/1026.jhtml",
+        "http://www.nmgzfgjj.com.cn/website/index.html",
+        "http://zjt.nmg.gov.cn/"
+      ],
+      "provinceWideNote": "【依据一·统计局】《2025年内蒙古城镇单位就业人员年平均工资情况》（tj.nmg.gov.cn，发布与解读栏目，2026-06-18 17:43，HTTP 200 / 91442 字节）原文：「2025 年，内蒙古 城镇非私营单位就业人员年平均工资 117113 元，比上年增加 3941 元，名义增长 3.5%，扣除价格因素实际增长 3.5%。」私营单位 60256 元，规模以上企业 117081 元。表1 只按东部 105502 / 中部 122632 / 西部 111246 分区，无盟市明细，故 117113 只能当区级参考值（÷12×3=29278.25）。同日解读件 t20260618_2918027.html。【依据二·人社厅】内人社办发〔2026〕85号《关于2026年社会保险缴费基数有关问题的通知》（索引号 11150000011512968L/2026-03424，成文 2026-08-26、发布 2026-08-28 09:31，落款「内蒙古自治区人力资源和社会保障厅 内蒙古自治区财政厅 国家税务总局内蒙古自治区税务局」）原文：「2025 年自治区全口径城镇单位就业人员月平均工资为 8430 元。2026 年自治区城镇职工基本养老保险（包括机关事业单位基本养老保险、企业职工基本养老保险）个人缴费基数和工伤保险缴费基数的下限为 8430 元的 60%，即 5058 元；上限为 8430 元的 300%，即 25290 元。」失业保险缴费基数与养老保险保持一致。配套解读件 t20260828_2946204.html 引国办发〔2019〕13号的全口径定义。算式自校验：8430×0.6=5058、8430×3=25290，两者均与文件给出的数值逐字相同，且 8430 是文件同时给出的第三个数（非从目标反推），强校验成立。【依据三·法定口径】《内蒙古自治区住房公积金缴存管理办法》（兴安盟中心站转载全文 http://www.xamzfgjj.cn/gjjdfwj/1026.jhtml，200 / 69314 字节）第三十七条「缴存年度为每年7月1日至次年的6月30日」；第三十八条「单位和职工缴存比例下限 5%、上限 12%」；第三十九条「月缴存基数下限不得低于盟市人力资源社会保障部门规定的本地区上一年度月最低工资标准；缴存基数上限不得超过盟市统计部门公布的本地区上一年度城镇非私营单位就业人员月平均工资的3倍」；第五十九条「各盟市可以根据本办法制定本地区实施细则」。⚠️ 第三十九条把上限口径钉死在「盟市」，这是本批最关键的口径纪律：自治区级 117113 绝不可用于推任何盟市上限。【站点结构】自治区住房资金管理中心 www.nmgzfgjj.com.cn（⚠️ 不带 www 的裸域 DoH 为 NODATA，无 A 记录）：政策文件列表页全部 JS 驱动（./new/regulation-list.html 的 0601~0604 四个 tab、./new/working-dynamic.html 的 0301~0303、./new/government-info-public.html 的 0102~0109），/resource/js/interface.js 声明走 ../appapi70001.json 与 ../appapi70012.json，但 /website/appapi70001.json 与 /website/new/appapi70001.json 均 404（Error 404: SRVE0295E），加 Referer/X-Requested-With 头无效；headless Chrome 渲染后的四个 tab 全部无文档条目（后端接口已失效）。该站页脚「省市公积金」区块一次性列出全区 12 个盟市公积金真实域名（本项目第 5 次验证「上级中心页脚反查下级机构域名」有效，前四次：宁德中心页脚列福建 9 市、内蒙古自治区中心页脚列 12 盟市、吉林省住建厅页脚列 9 市州、辽宁省/湖南省同类尝试）。⚠️ 站点 meta description 残留「榆林住房公积金中心、统一服务电话 12345」模板文案（疑由陕西榆林模板改造），引用时以正文与备案号为准。【站内检索失败留档】www.nmg.gov.cn/nmsearch/openSearch/search?q= 与 /nmsearch/trssearch/search?searchword= 都只回 2436 字节 JS 空壳页；getRelatedPolicy?glcode= 返回 70 字节空；/was5/web/search?channelid= 需要 channelid，而 ta.js?mpid= 的 mpid（rst.nmg.gov.cn=4933、tjj.baotou.gov.cn=6598、www.nmg.gov.cn=4643、zjt.nmg.gov.cn=4944）并不等于 channelid，未能反查出。",
+      "cities": [
+        {
+          "city": "包头",
+          "status": "official-partial",
+          "urls": [
+            "https://www.btgjj.cn/",
+            "https://www.btgjj.com/",
+            "https://www.baotou.gov.cn/",
+            "http://zfhcxjsj.baotou.gov.cn/",
+            "https://www.btgjj.cn/robots.txt"
+          ],
+          "officialDomain": true,
+          "docNumber": "无（站点未取得本市缴存基数文件）",
+          "confirms": "本轮只确认了站点归属与「无本市缴存基数件」这一负面结论，未确认任何数值。站点归属三重官方印证：(1) 包头市人民政府门户 https://www.baotou.gov.cn/（TITLE=包头市人民政府，HTTP 200）；(2) 内蒙古自治区住房资金管理中心页脚「省市公积金」区块列 https://www.btgjj.com/；(3) 包头市住房和城乡建设局 http://zfhcxjsj.baotou.gov.cn/（根路径 301，须 curl -L 跟随）相关链接区同时列 https://www.btgjj.cn/#/main_index、https://wt.btgjj.com:7431/wt-web-gr/grlogin、https://www.btzhwy.cn:8003/.../home-house-maintenance-fund.html。真实站点是 https://www.btgjj.cn（IP 1.180.60.52，蒙公网安备 15020402000610 号、蒙ICP备16004293号-2）；https://www.btgjj.com/ 与其同 IP，但当前只返回一个跳转页（<title>系统访问提示 - 包头市住房公积金</title>，正文「立即访问新网址」）。三路穷举结论：本轮 curl 全部 6 个 SPA 接口前缀（/appraisal/content/getRoute、/prod-api/…、/api/…、/gateway/…、getTitleList、getFrontNextById）均返回 0 字节连接级失败；/robots.txt 返回「User-agent: * Disallow: /」；/sitemap.xml 返回 0 字节。此前用 headless Chrome 渲染过 https://www.btgjj.cn/#/website/navList/84（政策法规栏，DOM 4,320,134 字符），该栏只有 10 篇文件且全是国标/自治区级文件（国令第844号《住房公积金管理条例》修改、司法部住建部答记者问、住建部《住房公积金基础数据标准》公告、建办厅函〔2026〕187号、《内蒙古自治区着力稳定房地产市场的若干措施》等），页面全文 grep「基数」零命中，即该站未发布任何本市缴存基数文件。本轮 headless Chrome 因本环境沙箱禁止命名管道而两次返回 0 字节，无法复现那次渲染，故按已有证据记录。仓库值 hf 2380~29284 保持不变，并已加 warn:true。",
+          "mismatch": "仓库 hf.min 2380 / hf.max 29284 都没有本市官方件支撑。反推：29284÷3 = 9761.33 元/月，即年 117136 元，与自治区 2025 年 117113 元仅差 23 元；但《内蒙古自治区住房公积金缴存管理办法》第三十九条明确上限口径是「盟市统计部门公布的本地区上一年度城镇非私营单位就业人员月平均工资的3倍」，包头用的是本市口径，区级值只是数值上巧合，不可互推，也不可用区级值去「验证」它。hf.min 2380 对应内蒙古一类地区最低工资（内政办发〔2024〕46号），土右旗/达茂旗/固阳 2310 对应其他旗县市档，同样无本市公积金件。按四关第①②③关（口径/生效/数字须有件）均不过，本轮只记录不改值，并在 note 中标注待核实。",
+          "method": "上级中心页脚反查 → DoH 223.5.5.5 验证 → curl -L 跟随跳转定位真实站 → 静态首页 HTML 取 SPA 资源清单 → 逐个探测前端调用的后端接口前缀（六个全 0 字节）→ 查 robots.txt/sitemap.xml → 早前用 headless Chrome 渲染 hash 路由 #/website/navList/84 逐条读栏目内容。DoH 实测：www.btgjj.com 与 www.btgjj.cn 同 IP 1.180.60.52 均 ALIVE；gjj.baotou.gov.cn、zjj.baotou.gov.cn、btgjj.cn（裸域）NXDOMAIN 或 NODATA。失败留档：搜索引擎对 btgjj 零内容索引（Bing/搜狗/360 三路）。"
+        },
+        {
+          "city": "兴安盟",
+          "status": "official-partial",
+          "urls": [
+            "http://www.xamzfgjj.cn/",
+            "http://www.xamzfgjj.cn/tzgg/index.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/index_2.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/3080.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/3001.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/2906.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/3147.jhtml",
+            "http://www.xamzfgjj.cn/gjjdfwj/1026.jhtml",
+            "https://xxgk.jl.gov.cn/szf/gkml/202511/t20251126_9360748.html"
+          ],
+          "officialDomain": false,
+          "docNumber": "无文号（兴安盟住房公积金中心 2025-07-17 发布）；自治区依据 内人社办发〔2026〕85号、内政办发〔2024〕46号、内政办发〔2022〕92号",
+          "confirms": "《关于确定2025年度职工住房公积金月缴存基数上限、下限的通知》（/tzgg/3080.jhtml，2025-07-17 16:00:08 发布，纯 HTML 无附件，HTTP 200）原文：「住房公积金缴存基数上限不得超过兴安盟统计部门公布的上一年度城镇非私营单位就业人员月平均工资的 3 倍，根据兴安盟统计局公布的 2024 年度相关数据计算，2025 年度兴安盟住房公积金缴存基数上限为 22,685 元。」「住房公积金缴存基数下限不得低于本地区上一年度月最低工资标准。根据《内蒙古自治区人民政府办公厅关于调整自治区最低工资标准的通知》（内政办发〔2024〕46号）计算，2025 年度兴安盟住房公积金缴存基数下限为乌兰浩特市 2200 元、其他旗县市 2140 元。」依据《住房公积金管理条例》《住房公积金归集业务标准》《内蒙古自治区住房公积金缴存管理办法》（内政办发〔2022〕92号）《兴安盟住房公积金缴存业务操作规程》。算式自校验：22685÷3 = 7561.67（2024 年月均工资），与「×3 倍」口径一致，且 7561.67 不是整数、无法由 22685 反推回一个官方整数，属有效自校验。仓库 hf {min:2140,max:22685} 与本件逐字一致（仓库取的是「其他旗县市 2140」这一档，未取乌兰浩特 2200，属口径选择而非错值），值不改。社保 {min:5058,max:25290} 本轮首次取得文号依据（内人社办发〔2026〕85号）。",
+          "mismatch": "无冲突，但 2026 年度缺件已从「未找到」升级为「已穷举确认未发布」。可复核的穷举证据（中心站 JeeCMS，五个栏目逐条枚举）：(1) 通知公告 /tzgg/index.jhtml + /tzgg/index_2.jhtml 共 2 页全部条目，最新为 id=3147（2025-08）《兴安盟住房公积金新增四项住房消费提取业务》，其余为结息暂停、征信授权、使用政策、2025 春节放假等；(2) 历年基数件序列 2025年度上限下限 3080（2025-07-17）、2025年度下限 3001（2024-12-31）、2024年度上限下限 2906 —— 该市历来上限件 7 月发、下限件 12 月底发，2026 年度的两个位置都空着；(3) 中心文件 /zxwj/index.jhtml 仅 3 篇廉政/三重一大/学习制度；(4) 政策法规 /zcfg/index.jhtml 与国家及地方法规文件 /gjjdfwj/index.jhtml 共 18 篇，2026 年新增的只有《内蒙古自治区住房公积金缴存管理办法》1026 号，其余为自治区办法与国标，无基数件；(5) 政务公开规划计划 /zwgk/index.jhtml 仅 8 篇年度工作总结（2016~2023）。warn 保留并在 note 写明该穷举结论。",
+          "method": "中心站 JeeCMS 逐栏目枚举 + curl 直连抓全文逐句摘录 + 算式自校验。DoH 223.5.5.5 验证 www.xamzfgjj.cn 有 6 条 A 记录（111.48.131.181/182、183.232.173.40/41、223.86.123.228/229），与 www.xlgl.gov.cn 同机房，非臆造。坑：/tzgg/ 目录本身 404，必须打列表页 /tzgg/index.jhtml 才能枚举。"
+        },
+        {
+          "city": "锡林郭勒盟",
+          "status": "official-partial",
+          "urls": [
+            "http://www.xlglgjj.org.cn/",
+            "http://www.xlglgjj.org.cn/xlglgjj/zwgk/ldj/index.html",
+            "http://www.xlglgjj.org.cn/xlglgjj/flbz/fg/index.html",
+            "https://www.xlgl.gov.cn/",
+            "https://tjj.xlgl.gov.cn/"
+          ],
+          "officialDomain": false,
+          "docNumber": "无（该盟至今未发布缴存基数通知）",
+          "confirms": "本轮只确认站点归属与负面结论。中心站 http://www.xlglgjj.org.cn/（<title> 锡林郭勒盟住房公积金中心 </title>，HTTP 200，蒙公网安备 15250202000390 号、蒙ICP备19004155 号、政府网站标识码 1525000023、咨询电话 0479-12329）。栏目命名反直觉：「通知公告」是 /xlglgjj/zwgk/ldj/index.html（ldj 不是「领导之窗」）；「存贷款利率」是 /xlglgjj/flbz/fg/index.html；「政策法规」是 /xlglgjj/zwgk/zfxxgk/dfwj/index.html；网站地图页在 /xlglgjj/xwdt/tt/index.html。存贷款利率页只有贷款数据：首套五年以下（含）2.35%、五年以上 2.85%；二套 2.78% / 3.33%。锡林郭勒盟政府门户 https://www.xlgl.gov.cn/（eportal CMS，文章路径 /xlgl/zx/<col>/<yyyymmddhhmmss>/index.html，栏目 qnyw/mnyw/bmdt/qxdt/ttxw/zdgz）首页无公积金关键词。仓库值 hf {min:2380,max:30498} 保持不变。",
+          "mismatch": "hf 2380~30498 无任何官方件支撑，且 30498 与呼和浩特完全相同、note 自述「上限暂按自治区本级2026年度30498估算待核实」。反推 30498÷3 = 10166 元/月即年 121992 元，比自治区 2025 年 117113 元高 4879 元，说明它连「区级口径」都不是，而是照抄了呼和浩特市本级的值（呼和浩特 30498 同值、同反推结果）—— 这是一个跨市串值的错误来源，虽无反证但足以判定不可信。⚠️ 按《内蒙古自治区住房公积金缴存管理办法》第三十九条，上限口径是盟市统计部门公布值，不得用他市或区级数据替代，故本轮不改值（改成什么都需要官方件支撑，没有件就不动），但已在 note 中如实标注「暂按…估算待核实」并保留 warn。负面穷举证据：通知公告栏目从 2025-07 到 2026-09-29 共 21 条全部是 国庆/结息/年底决算暂停办理、手机 APP 刷脸认证、装修提取征求意见稿、贷款期房准入征求意见稿、「十一」假期暂停、封存账户清理第一~十批、补签征信授权书、八项规定整改公示 —— 15 个月里没有任何一条缴存基数通知。失败留档：锡林郭勒盟统计局「2024年度锡盟主要数据指标情况」PDF https://tjj.xlgl.gov.cn/tjj/attachDir/2026/08/2026080711365046657.pdf（5,471,749 字节）下载被截断，pypdf 报 EOF marker not found / PdfStreamError: Stream has ended prematurely；该盟 2025 年统计公报全文无「平均工资」字样。",
+          "method": "中心站栏目枚举（本轮父代理亲自复抓，非依赖子 Agent 报告）+ 州政府门户首页关键词检索 + 统计局 PDF 尝试抽取（失败，留档）。DoH 验证 www.xlglgjj.org.cn 有 6 条 A 记录，与 www.xlgl.gov.cn 同机房。"
+        },
+        {
+          "city": "阿拉善盟",
+          "status": "official-partial",
+          "urls": [
+            "http://www.alszfgjj.com.cn/",
+            "http://www.alszfgjj.com.cn/col/col4016/index.html",
+            "http://www.alszfgjj.com.cn/art/2026/4/3/art_4016_514187.html",
+            "https://www.als.gov.cn/",
+            "https://rsj.als.gov.cn/"
+          ],
+          "officialDomain": false,
+          "docNumber": "无（该盟至今未发布缴存基数通知）",
+          "confirms": "本轮只确认站点归属与负面结论。中心站 http://www.alszfgjj.com.cn/（<title>阿拉善盟住房公积金中心</title>，HTTP 200 / 15545 字节，浙报系 CMS：栏目页 /col/col40XX/index.html，文章页 /art/<YYYY>/<M>/<D>/art_<col>_<id>.html）。中心动态 /col/col4015/、政策法规 /col/col4016/、采购公示 /col/col4017/、党建 /col/col4018/；单位业务 http://61.240.128.22:3332/wt-web、个人业务 .../wt-web-gr/grlogin。社保 {min:5058,max:25290} 本轮首次取得文号依据（内人社办发〔2026〕85号）。仓库值 hf {min:1980,max:26508} 保持不变。",
+          "mismatch": "hf 1980~26508 无官方件支撑，note 自述「公积金2026年度未发布，暂用2024年度」。反推 26508÷3 = 8836 元/月即年 106032 元，落在自治区 2025 年 117113 之下、接近东部 105502，说明它用的是另一个年度的本市数据，但年度与文号均无从确认。负面穷举证据：中心站首页只有 4 个栏目，政策法规栏仅 4 条，最新一条 /art/2026/4/3/art_4016_514187.html《【重要通知】关于〈优化住房公积金使用惠民措施〉的通知》属使用政策而非基数政策，其余为 2022 年阶段性支持政策实施意见与 2021 年两条科普；采购公示栏全是系统运维类。另查阿拉善盟门户 https://www.als.gov.cn/（HTTP 200 / 73509 字节，浙报系 CMS）：全站无 search/jsearch 端点（原文 grep \"search|websiteid|jsearch\" 零命中），通知公告列 /col/col46/index.html 虽返回 24027 字节但文章列表由 JS 渲染，只出 10 条导航链接。失败留档：rsj.als.gov.cn（HTTP 200 / 22225 字节）正文几乎全部发在 mp.weixin.qq.com，按来源标准不予采信；DoH 验证 zfcxjsj.als.gov.cn、www.alazfgjj.cn 为 NXDOMAIN，tjj.als.gov.cn、rsj.als.gov.cn、www.alszfgjj.com.cn 为 ALIVE。按四关纪律，值不改、warn 保留。",
+          "method": "中心站四个栏目逐条枚举 + 盟政府门户站点结构侦察 + DoH 域名验证 + 子 Agent 报告丢失后父代理复抓复核（本子 Agent 的 closing message 为控制字符乱码、整段报告不可用，已改为父代理亲自取证）。"
+        }
+      ]
+    }
+  ]
+}
