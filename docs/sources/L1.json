@@ -1,0 +1,85 @@
+{
+  "group": "L1",
+  "generatedAt": "2026-10-12T16:10:00.000Z",
+  "note": "第十二轮第八批 · 辽宁 锦州/阜新/铁岭 三市。核心路径：先从仓库已有记录反查辽宁 14 市公积金中心的命名规律（沈阳 sygjj.shenyang.gov.cn、鞍山 asgjj.anshan.gov.cn、丹东 ddzfgjj.com、营口 gjj.yingkou.gov.cn、辽阳 lyszfgjj.com、盘锦 pjzfgjj.cn、朝阳 cygjj.com.cn、葫芦岛 hldgjj.com.cn），再用「市政府门户 → 政府机构/部门网站」清单反查缺失三市的入口。锦州据此命中中心站 http://jzsgjj.cn/；阜新命中市政府门户「政府机构」页中的「市住房公积金管理中心」机构条目；铁岭命中铁岭政务服务网公积金事项页。三市均未取得当期（2026 缴存年度）缴存基数上下限数值，按四关第 3、4 关不通过处理，**数值一律不改**。⚠️ 域名陷阱：www.tlgjj.com 是 4.cn 停放页（www.tlgjj.com-官网首页 / 域名一口价 6497 元）；www.tlzfgjj.com 是色情站（Cloudflare 隐藏）；www.jzgjj.cn 与 www.jzgjj.com 均 403；www.fxgjj.cn 返回 404 空壳。",
+  "provinces": [
+    {
+      "province": "辽宁",
+      "provinceWideUrls": [
+        "http://zjt.ln.gov.cn/",
+        "https://www.ln.gov.cn/web/ywdt/zymtkln/2026101010360144535/index.shtml",
+        "https://www.ln.gov.cn/",
+        "https://www.lnzwfw.gov.cn/"
+      ],
+      "provinceWideNote": "省级来源：(1) 辽宁省住房和城乡建设厅 http://zjt.ln.gov.cn/（与 www.ln.gov.cn 同 IP 111.32.153.124/126，curl 200/175334 字节，TITLE=辽宁省住房和城乡建设厅），站内栏目为 /zjt/zwgk2/...、/zjt/zfxxgk/fdzdgknr/jyta/index.shtml（解读文件）；**页脚未列出各市公积金中心域名**，全站与公积金相关的仅 3 条链接：沈阳公积金新政支持「以旧换新」报道 https://www.ln.gov.cn/web/ywdt/zymtkln/2026101010360144535/index.shtml，以及《辽宁省住房公积金2022年年度报告》解读 /zjt/zcjd/2023042613155984312/index.shtml、2021 年度年报解读 /zjt/zcjd/943DCDF5034D49BE966F2C8738D2C192/index.shtml。(2) 省级住建子域候选 zfcxjst.ln.gov.cn / zfcxjsj.ln.gov.cn / gjj.ln.gov.cn / lnzfgjj.ln.gov.cn / www.lnzfgjj.cn / www.lngjj.cn / jzgjj.ln.gov.cn 全部 NXDOMAIN（DoH Status 3），辽宁省住房资金管理中心未找到独立域名。(3) 辽宁省政务服务网 https://www.lnzwfw.gov.cn/（218.60.145.133/221.180.201.133），统一身份认证 http://www.lnzwfw.gov.cn/api。",
+      "cities": [
+        {
+          "city": "锦州",
+          "status": "official-partial",
+          "urls": [
+            "http://jzsgjj.cn/",
+            "http://jzsgjj.cn/newslistnew.jsp?navid=4&listid=25",
+            "http://jzsgjj.cn/newsDetailsnew.jsp?newsid=31939&navid=4",
+            "http://zjj.jz.gov.cn/",
+            "http://zwfw.jz.gov.cn/"
+          ],
+          "officialDomain": false,
+          "docNumber": "",
+          "confirms": "取得锦州市住房公积金管理中心官方站：http://jzsgjj.cn/（curl 200/46515 字节，**页面为 GB2312 编码**，须用 [System.Text.Encoding]::GetEncoding('GB2312').GetString(bytes) 解码；TITLE=锦州市住房公积金管理中心，keywords=锦州市住房公积金管理中心）。站点为 JSP CMS：indexnew.jsp 首页，栏目 newslistnew.jsp?navid=&listid=，文章 newsDetailsnew.jsp?newsid=&navid=。一级栏目：机构简介(2/15)、新闻动态(1/1)、政务公开重点工作(3/19)、业务指南(5/5)、涉企行政检查公示栏(50/50)、互动栏目(9/9)、常用下载(10/10)；政策类为 navid=4，下分 市级政策(listid=25)、省级政策(listid=26)、国家政策(listid=27)。**市级政策栏最新一条基数件为《关于调整2023年度住房公积金缴存基数的通知》（newsid=31939）**，2024—2026 三个缴存年度的基数通知未在该站发布。站内新闻动态中 2026 年有《公积金三项新政落地，小金帮你划重点~》《李强签署国务院令 公布〈国务院关于修改〈住房公积金管理条例〉的决定〉》，均为转载/解读类。另有锦州市住房和城乡建设局 http://zjj.jz.gov.cn/（200/21236 字节，栏目 xwdt/xwdt.htm、xxgk/fdzdgknr/bszn.htm、gsgg.htm，**无公积金专栏**）与锦州政务服务网 http://zwfw.jz.gov.cn/（jeesaas 平台，全站搜索 POST /jeesaas/f/globalsearch 参数名 keyword，结果为 JS 渲染 curl 抓不到条目）。",
+          "mismatch": "**未取得锦州市 2026 缴存年度（或 2024—2026 任一年度）的缴存基数上下限数值**。仓库值 1930~20610 维持不变，其中上限 20610 系暂用 2025 年度值（仓库 note 已自述），下限 1930 来自锦人社〔2025〕15号。中心站只公开到 2023 年度基数通知。",
+          "method": "从仓库已有辽宁记录反查命名规律 → DoH 批量探测候选域名 → curl 直连抓站（GBK 解码）→ 栏目逐条枚举",
+          "rawQuotes": [
+            "锦州市住房公积金管理中心",
+            "市级政策 最新：《关于调整2023年度住房公积金缴存基数的通知》"
+          ],
+          "checks": "四关第 3、4 关不通过：取得官方站点归属（域名 jzsgjj.cn 意为「锦州市公积金」，经市住建局 zjj.jz.gov.cn 与市政务服务网 zwfw.jz.gov.cn 同段 IP 旁证），但未取得当期数值件，按纪律只记录不改值。officialDomain 记 false——域名非 .gov.cn，属事业单位自有域名（与盘锦 pjzfgjj.cn、朝阳 cygjj.com.cn 同类）。"
+        },
+        {
+          "city": "阜新",
+          "status": "official-partial",
+          "urls": [
+            "https://www.fuxin.gov.cn/channel/10911/index.html",
+            "https://www.fuxin.gov.cn/content/2025/1027978.html",
+            "http://zwfw.fuxin.gov.cn/epoint-web-zwdt/fxzwdt/pages/indextab/index_ztjcfwlist.html?serviceCombo=169&name=%E4%BD%8F%E6%88%BF%E5%85%AC%E7%A7%AF%E9%87%91",
+            "http://zjj.fuxin.gov.cn/zwgkjgjj.thtml?id=15675",
+            "http://zjj.fuxin.gov.cn/",
+            "https://www.fuxin.gov.cn/"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "通过阜新市人民政府门户「政府机构」页 https://www.fuxin.gov.cn/channel/10911/index.html（curl 200/66728 字节）取得**市住房公积金管理中心机构条目页** https://www.fuxin.gov.cn/content/2025/1027978.html（TITLE=市住房公积金管理中心，页面底部含该中心独立的公安备案号 recordcode=21091102000041 与事业单位网站备案 bszs.conac.cn/sitename?method=show&id=1FD95B2D6D093107E053012819AC9BDC，证明该中心有独立网站身份；正文为门户模板空壳，未挂独立域名）。另在阜新政务服务网（epoint 平台）取得三条公积金事项入口：serviceCombo=169「住房公积金」（同时挂「住房服务」别名）、serviceCombo=170「公积金自愿缴存」、serviceCombo=171「公积金账户」。阜新市住房和城乡建设局 http://zjj.fuxin.gov.cn/（200/134827 字节，辽ICP备2021000280号、辽公网安备 21091102000097号、网站标识码 2109000039）机构简介页 http://zjj.fuxin.gov.cn/zwgkjgjj.thtml?id=15675 显示局属中心仅有「住房和基础设施建设服务中心」「城市公用设施服务中心」两项，**不含住房公积金管理中心**，说明阜新公积金中心为独立事业单位、不在该局系统内。",
+          "mismatch": "**未取得阜新市住房公积金管理中心的 2026 缴存年度基数上下限数值，也未找到其独立官网域名**。仓库值 1930~21201 维持不变（上限 21201 为仓库 note 自述的 2026-07-21 值但链接从未落盘；下限 1930 按最低工资计）。已确认「阜新市住房公积金管理中心」为独立事业单位并给出官方机构条目与政务服务事项入口，链接缺口因此关闭，数值缺口保留 warn。",
+          "method": "门户「政府机构」目录页枚举机构条目 → 机构条目页核对备案号 → 政务服务网事项页枚举",
+          "rawQuotes": [
+            "市住房公积金管理中心",
+            "住房和城乡建设服务中心 / 城市公用设施服务中心（局属中心，未含住房公积金管理中心）",
+            "住房公积金 / 公积金自愿缴存 / 公积金账户"
+          ],
+          "checks": "四关第 3、4 关不通过：来源官方性过关（.gov.cn 门户机构条目 + 事业单位独立备案号 + 政务服务网事项），但无当期数值件，按纪律只记录不改值。域名字段探测结论：zfgjj.fuxin.gov.cn NXDOMAIN、gjj.fuxin.gov.cn 无响应、fxgjj.cn 返回 404 空壳、fxgjj.com/fxsgjj.cn/fxsgjj.com/fxzfgjj.cn/fxszfgjj.cn 全 NXDOMAIN。"
+        },
+        {
+          "city": "铁岭",
+          "status": "official-partial",
+          "urls": [
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=d2b3b081-729c-44de-a050-d2f322aeef03",
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=9d96a978-a4a6-46ae-b01d-d303ae54b484",
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=a5a14e2c-dec9-4704-86cf-8dd641495291",
+            "http://www.tieling.gov.cn/tieling/ywdt/bmdt/index.html",
+            "http://www.tieling.gov.cn/tieling/zwgk/zfwj/index.html",
+            "http://www.tieling.gov.cn/"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "铁岭市人民政府门户 http://www.tieling.gov.cn/（curl 200/98217 字节，TITLE=铁岭市人民政府- 铁岭市人民政府）首页「便民服务」区直接给出铁岭市政务服务中心 epoint 平台的三条**住房公积金事项**入口：taskguid=d2b3b081-729c-44de-a050-d2f322aeef03「住房公积金缴存」、taskguid=9d96a978-a4a6-46ae-b01d-d303ae54b484「住房公积金贷款」、taskguid=a5a14e2c-dec9-4704-86cf-8dd641495291「住房公积金提取」，均在 http://sxzspzx.tieling.gov.cn/ 下。门户站型为 /tieling/<col>/index.html，文章 /tieling/<col>/<yyyymmddN>/index.html；与公积金最相关的发布渠道为「部门动态」/tieling/ywdt/bmdt/index.html、「政府文件」/tieling/zwgk/zfwj/index.html、「公示公告」/tieling/gsgg/index.html。",
+          "mismatch": "**未取得铁岭市住房公积金管理中心官网，也未取得 2026 缴存年度基数上下限的官方件原文**。仓库值 1930~22056 维持不变（note 已载文号「铁公积金函〔2026〕40号」，但该件链接从未落盘）。搜索「铁公积金函〔2026〕40号」与「铁岭市住房公积金管理中心 缴存基数」仅返回商业站、本地宝与微信公众号，按来源标准不予采信。",
+          "method": "门户首页枚举事项入口 → DoH 批量探测子域 → epoint 事项页 headless Chrome 渲染尝试（未渲染出内容，JS 依赖过重）",
+          "rawQuotes": [
+            "住房公积金缴存 / 住房公积金贷款 / 住房公积金提取（铁岭市政务服务中心 epoint 事项入口）",
+            "铁岭市人民政府"
+          ],
+          "checks": "四关第 3、4 关不通过：来源官方性过关（.gov.cn 政务服务网事项 + 市政府门户），但无当期数值件，按纪律只记录不改值。域名字段探测结论：tlgjj.com 为 4.cn 停放页（域名一口价 6497 元）、tlzfgjj.com 为色情站、tlzfgjj.cn/tlsgjj.cn/fxzfgjj.cn/tlgjj.cn/gjj.tieling.gov.cn/zfgjj.tieling.gov.cn/zjj.tieling.gov.cn/zfcxjst.tieling.gov.cn 全 NXDOMAIN；铁岭政务服务网根路径 zwfw.tieling.gov.cn curl 000。"
+        }
+      ]
+    }
+  ]
+}

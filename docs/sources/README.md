@@ -1737,3 +1737,85 @@ curl 返回 412，但 headless Chrome 渲染出 59767 字符 DOM，`<title>` 为
 4. **站点的内容维护年代本身就是证据**：那曲住建局法定主动公开止于 2022 年，说明短期内不可能在那里取到 2026 年度基数件，应直接按 official-partial 收口，不要反复重试。
 5. 360 搜索必须设 `HTTPS_PROXY=http://127.0.0.1:7897`，否则返回空结果。
 
+## 第十二轮第八批（2026-10-12）· 辽宁 3 城
+
+### 1. 结果概览
+
+| 城市 | 旧状态 | 新状态 | 官方入口 | 数值处理 |
+|------|--------|--------|----------|----------|
+| 锦州 | ⚠️ 未找到（零链接） | 🟡 部分 | `http://jzsgjj.cn/` 中心官网 + 市住建局 + 市政务服务网 | 不改（1930~20610，保留 warn） |
+| 阜新 | ⚠️ 未找到（零链接） | 🟡 部分 | 市政府门户「政府机构」页 + 中心机构条目页 + 政务服务网三条公积金事项 | 不改（1930~21201，保留 warn） |
+| 铁岭 | ⚠️ 未找到（零链接） | 🟡 部分 | 市政府门户 + 铁岭政务服务网 epoint 三条公积金事项 | 不改（1930~22056，保留 warn） |
+
+零链接缺口 **16 → 13 城**（辽宁清零）。
+
+### 2. 关键路径：从仓库已有记录反查同省命名规律
+
+这是本项目第 6 条「反查」路径（前 5 条：上级中心页脚反查下级域名、内蒙古自治区中心页脚列 12 盟市、宁德中心页脚列福建 9 市、西藏市政府门户首页给出住建局子域、湖南省门户「直属单位政府网站」清单）。
+
+辽宁已有 8 市公积金中心的官方域名已在本仓库记录中：
+
+```
+沈阳 sygjj.shenyang.gov.cn   鞍山 asgjj.anshan.gov.cn
+丹东 ddzfgjj.com             营口 gjj.yingkou.gov.cn
+辽阳 lyszfgjj.com            盘锦 pjzfgjj.cn
+朝阳 cygjj.com.cn            葫芦岛 hldgjj.com.cn
+```
+
+规律是「拼音简称 + sgjj / zfgjj」，据此批量 DoH 探测缺失三市，一次命中 **jzsgjj.cn**（211.140.203.22，与 `www.jz.gov.cn` / `zjj.jz.gov.cn` 同段）。这条路径不依赖搜索引擎，也就不受搜狗反爬与 360 验证页影响。
+
+### 3. 锦州：中心官网在手，但内容停在 2023 年度
+
+- 站点 `http://jzsgjj.cn/`，curl 200 / 46515 字节，**整站 GB2312 编码**（PowerShell 里必须 `[System.Text.Encoding]::GetEncoding("GB2312").GetString(bytes)` 解码，直接 ReadAllText 会得到乱码）。
+- TITLE 与 keywords 均为「锦州市住房公积金管理中心」，站点为 JSP CMS：栏目 `newslistnew.jsp?navid=&listid=`，文章 `newsDetailsnew.jsp?newsid=&navid=`。一级栏目含机构简介(2/15)、新闻动态(1/1)、政务公开重点工作(3/19)、业务指南(5/5)、互动栏目(9/9)、常用下载(10/10)；政策类 navid=4 下分 **市级政策 listid=25** / 省级 26 / 国家 27。
+- **市级政策栏枚举结果**：最新一条基数件是《关于调整2023年度住房公积金缴存基数的通知》（newsid=31939），此后全是贷款/提取/电子印章类文件。**2024—2026 三个缴存年度的通知未在该站发布** → 仓库值 1930~20610 不改，保留 warn。
+- 旁证：`http://zjj.jz.gov.cn/`（锦州市住房和城乡建设局，200/21236 字节）栏目为 xwdt/xwdt.htm、xxgk/fdzdgknr/bszn.htm、gsgg.htm，**无公积金专栏**；`http://zwfw.jz.gov.cn/`（锦州政务服务网，jeesaas 平台）全站搜索为 POST `/jeesaas/f/globalsearch`、参数名 `keyword`，返回页 200/48668 字节但结果由 JS 渲染，curl 抓不到条目。
+
+### 4. 阜新：靠公安备案号证明「独立事业单位」
+
+- 阜新市人民政府门户「政府机构」页 `https://www.fuxin.gov.cn/channel/10911/index.html`（200/66728 字节）中，机构条目链接直接列出「市住房公积金管理中心」→ `https://www.fuxin.gov.cn/content/2025/1027978.html`。
+- 该条目页正文是门户模板空壳（抓出来是首页内容），但**页脚保留了中心的独立备案信息**：公安备案 `recordcode=21091102000041`、事业单位网站备案 `bszs.conac.cn/sitename?method=show&id=1FD95B2D6D093107E053012819AC9BDC`。这足以证明阜新公积金中心是独立事业单位、有独立网站身份，只是官网域名未公开。
+- 交叉印证：阜新市住建局机关简介 `http://zjj.fuxin.gov.cn/zwgkjgjj.thtml?id=15675` 的「局属中心」只有**住房和基础设施建设服务中心**、**城市公用设施服务中心**两项，**不含住房公积金管理中心** → 中心不在住建局系统内，其文件不会出现在住建局站。
+- 另取得阜新政务服务网（epoint 平台）三条公积金事项入口：`serviceCombo=169`「住房公积金」（同 URL 另挂「住房服务」别名）、`serviceCombo=170`「公积金自愿缴存」、`serviceCombo=171`「公积金账户」。
+
+### 5. 铁岭：政务服务网事项页即官方入口
+
+- 铁岭市人民政府门户 `http://www.tieling.gov.cn/`（200/98217 字节）首页「便民服务」区直接给出铁岭市政务服务中心 epoint 平台的三条**住房公积金事项**：
+  - `taskguid=d2b3b081-729c-44de-a050-d2f322aeef03` 住房公积金**缴存**
+  - `taskguid=9d96a978-a4a6-46ae-b01d-d303ae54b484` 住房公积金**贷款**
+  - `taskguid=a5a14e2c-dec9-4704-86cf-8dd641495291` 住房公积金**提取**
+- 三条均在 `http://sxzspzx.tieling.gov.cn/` 下。事项页正文由 JS 驱动（curl 只得 1419 字节「浏览器存在安全隐患」提示页，headless Chrome `--virtual-time-budget=30000` 仍只渲染出同一段，JS 依赖过重），故只能作为**官方入口**而非数值来源。
+- 站型：栏目 `/tieling/<col>/index.html`，文章 `/tieling/<col>/<yyyymmddN>/index.html`。与公积金最相关的发布渠道是「部门动态」`/tieling/ywdt/bmdt/index.html`、「政府文件」`/tieling/zwgk/zfwj/index.html`、「公示公告」`/tieling/gsgg/index.html`，三者列表均为 JS 渲染，curl 抓不到条目。
+
+### 6. 域名探测与排除清单
+
+| 域名 | 结果 |
+|------|------|
+| `jzsgjj.cn` | ✅ 锦州市住房公积金管理中心 |
+| `www.jzgjj.cn` / `www.jzgjj.com` | ❌ 403 Forbidden |
+| `www.jzzfgjj.com` | DoH 存在（61.136.221.89），curl 000 |
+| `www.fxgjj.cn` | 404，仅 21 字节空壳 |
+| `www.tlgjj.com` | ⚠️ **4.cn 域名停放页**（"域名一口价 6497 元"） |
+| `www.tlzfgjj.com` | ⚠️ **色情站**（Cloudflare 隐藏 IP，标题"欧美玛伦伦理片"） |
+| `zfgjj.tieling.gov.cn` / `gjj.tieling.gov.cn` / `zjj.tieling.gov.cn` / `zfcxjst.tieling.gov.cn` / `tlzfgjj.cn` / `tlsgjj.cn` / `fxsgjj.cn` / `fxszfgjj.cn` | NXDOMAIN |
+| `zfgjj.fuxin.gov.cn` | NXDOMAIN |
+
+⚠️ **域名抢注第 6 例**（`tlgjj.com` 停放页）与第 7 例（`tlzfgjj.com` 色情站）。累计已排除：`www.xzgjj.cn`（湖南省直公积金网）、`www.hngjj.cn`（德甲直播）、`www.glgjj.cn`（色情）、`www.ysgjj.cn`（成都益善阁家具）、`www.hyzfgjj.com`（盗版影视）、`www.tlgjj.com`（停放页）、`www.tlzfgjj.com`（色情）。
+
+### 7. 省级来源
+
+- 辽宁省住房和城乡建设厅 `http://zjt.ln.gov.cn/`（与 `www.ln.gov.cn` 同 IP 111.32.153.124/126，200/175334 字节）**页脚未列各市公积金中心域名**，全站公积金相关仅 3 条链接：沈阳公积金新政支持「以旧换新」报道，以及《辽宁省住房公积金2022年年度报告》解读、2021 年度年报解读。
+- 省级子域候选 `zfcxjst.ln.gov.cn`、`zfcxjsj.ln.gov.cn`、`gjj.ln.gov.cn`、`lnzfgjj.ln.gov.cn`、`jzgjj.ln.gov.cn`、`www.lnzfgjj.cn`、`www.lngjj.cn` **全部 NXDOMAIN**，辽宁省住房资金管理中心无独立域名。
+
+### 8. 本轮统计与教训
+
+- `readRecords()` 实算：checked 337 / confirmed **193** / partial **120** / notFound **24** / urls **574** / mismatchCount 219。
+- 仓库侧：`calculator.html` 只改 note（三城均补记站点/障碍说明），**数值一个没动**，故 warn 数仍 191、断言数仍 6823。
+
+**本轮新增教训**：
+
+1. **「从仓库已有记录反查同省命名规律」是最省力的一条路径**，成本只有一次批量 DoH，且完全不依赖搜索引擎。本轮搜索引擎全线失灵（360 返回无 `data-mdurl` 的验证页、搜狗结果全是商业站、`web_search` 工具报 HTTP 429），却仍然靠这条路径拿下锦州。
+2. **站点编码要第一时间确认**。`jzsgjj.cn` 是 GB2312，`ReadAllText` 直接读会得到乱码标题，若只看乱码极易误判成「站点不可用」而放弃。
+3. **机构条目页即使正文是空壳，页脚备案信息也可能是关键证据**。阜新中心条目页正文抓出来是门户首页，但独立公安备案号 + 事业单位网站备案 ID 恰好证明了它的独立法人身份。
+4. **判断一个机构归属哪个部门，要看它的「局属中心」清单**，而不是看它域名挂在哪个子域下。阜新住建局局属中心不含公积金中心，直接排除了「去住建局站找基数件」这条整条路径。
+5. **搜索文号不是可靠路径**。「铁公积金函〔2026〕40号」在仓库 note 里已有，但搜这个文号只返回本地宝与微信公众号 —— 文号是内部检索用编号，搜索引擎对它没有索引。
