@@ -1,0 +1,155 @@
+{
+  "group": "Z18",
+  "generatedAt": "2026-10-13T15:00:00Z",
+  "note": "第二十九批（2026-10-13）· 辽宁 6 城（抚顺/丹东/锦州/阜新/朝阳/铁岭）。缺口形态从「公积金」转为「职工医保单位费率 + 医保基数」。本批取得 3 件阜新市级一手件，把 med 区间从「照抄省级社保基数」纠正为「市级全口径」3563~17817（唯一改值），并同时坐实生育费率 0.5%→1%。辽医保规〔2025〕2号原文仍未取得，辽宁 14 市单位费率维持 warn；铁岭确认域名撞车后仍无任何官方件。本批不升级任何 status（6 城全部保持 official-partial）。",
+  "provinces": [
+    {
+      "province": "辽宁",
+      "provinceWideUrls": [
+        "http://ybj.ln.gov.cn/",
+        "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml",
+        "https://ybj.ln.gov.cn/ybj/zxzx/tzgg/index.shtml",
+        "https://ybj.ln.gov.cn/ybj/zxzx/gddt/index.shtml"
+      ],
+      "provinceWideNote": "辽宁省医保局首页 anchors 里有一整块「省市医保局」友情链接，直接给出各市医保局真实域名（本项目第 N 次验证「上级部门页脚反查下级机构域名」）：沈阳 ybj.shenyang.gov.cn、鞍山 ybj.anshan.gov.cn、抚顺 fsyb.fushun.gov.cn/fsybj/、丹东 ylbz.dandong.gov.cn、营口 ybj.yingkou.gov.cn、锦州 ylbz.jz.gov.cn、阜新 ybj.fuxin.gov.cn、辽阳 ylbzj.liaoyang.gov.cn、朝阳 ybj.chaoyang.gov.cn（大连/本溪/盘锦/铁岭 不在该页脚列表里）。⚠️ 此前记「省局政策文件列表由 eportal JS 驱动、枚举成本高」是误判：/ybj/zwgk/zcwjyjd/、/ybj/zxzx/tzgg/、/ybj/zxzx/gddt/ 三栏都是静态 HTML，可直接读 anchors。⚠️ 省级职工医保费率/基数件仍未取得：政策文件与解读栏 2025-12 之后全是「医保定点资源配置」「药耗目录」类文件；省政府门户站内检索 https://www.ln.gov.cn/so/s?siteCode=2100000037&tab=bz&qt=… 返回 55318 字节 JS 空壳（辽医保规 / 职工医保缴费基数 / 职工基本医疗保险缴费费率 三词均零结果）。辽医保规〔2025〕2号《关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知》虽被阜新两件官方文件反复引用，原文仍未取得 → 辽宁 14 市医保单位费率仍只有「7%~8% 区间」控制口径，不升级 status。⚠️ 域名撞车第 5 例：ybj.tl.gov.cn 与 tl.gov.cn（A 记录 39.175.168.12/.11，200 可达）都是安徽省铜陵市医保局/市政府，绝不是辽宁铁岭。",
+      "cities": [
+        {
+          "city": "阜新",
+          "status": "official-partial",
+          "urls": [
+            "https://ybj.fuxin.gov.cn/content/2025/1030653.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1017184.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1030649.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1024595.html",
+            "https://ybj.fuxin.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "阜医保发〔2025〕8号（缴费基数口径与动态调整）；另《关于恢复企业参保单位生育保险缴费费率的通知》《关于公布2026年全市城镇职工基本医疗（生育）保险缴费基数的通知》页面未显示文号",
+          "confirms": "医保（含生育）缴费基数 3563~17817 逐字证实（本批唯一改值）。四关全过：件为城镇职工基本医疗（生育）保险缴费基数、企业职工口径；执行期 2026-01-01 至 2026-12-31，已生效；同件三数互洽；市医保局 + 市税务局 2025-12-19 联署、页面标注「（此文件公开发布）」。",
+          "mismatch": "医保单位费率仍只有省级「7%~8% 区间」控制口径，辽医保规〔2025〕2号原文未取得，现值 8% 属估算待核实；公积金 1930~21201 无 2026 年度官方件（中心无独立官网域名，值靠估算）。",
+          "method": "发现路径：省医保局首页 anchors「省市医保局」友情链接 → ybj.fuxin.gov.cn → 该站所有 /xxgk/... 栏目路径全 404，政策文统一是 /content/<年>/<数字>.html；改为从任一政策文页面的 anchors 反查同站其它政策文 URL，连取四页（1030653 / 1017184 / 1030649 / 1024595）。",
+          "rawQuotes": [
+            "【基数件 · 阜新市医疗保障局 国家税务总局阜新市税务局 2025-12-19】按照《关于城镇职工基本医疗（生育）保险缴费基数和缴费申报有关问题的通知》（阜医保发〔2025〕8号）规定，现就2026年度城镇职工基本医疗（生育）保险缴费基数有关事宜通知如下：一、2026年度我市城镇职工基本医疗（生育）保险缴费基数上限为17817元/月，缴费基数下限为3563元/月。二、2026年度灵活就业人员月缴费基数为5939元。三、执行时间为2026年1月1日-12月31日。",
+            "【生育费率件】根据《关于全面推进生育保险和职工基本医疗保险合并实施的意见》（辽医保发〔2019〕26号）和《关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知》（辽医保规〔2025〕2号）…经市政府同意，自2025年9月1日起，企业参保单位生育保险缴费费率由0.5%恢复至1%。",
+            "【口径件 阜医保发〔2025〕8号】缴费基数根据上年度全市城镇非私营单位就业人员平均工资和城镇私营单位就业人员平均工资加权计算的全口径城镇单位就业人员平均工资（简称全口径平均工资）并按省有关规定确定，实行动态调整，每年底公布下年度缴费基数。全市单位职工缴费基数上限按照缴费基数的300%计算，下限按照60%计算。",
+            "【解读件】为贯彻落实基本医疗保险省级统筹有关工作要求，市医保局印发了《关于我市城镇职工基本医疗（生育）保险缴费基数有关事项的通知》（阜医保发〔2025〕3号）…将我市城镇职工基本医疗（生育）保险缴费年度由社保年度调整为自然年度，自2026年1月1日起执行，每年1月1日至12月31日为一个缴费年度。"
+          ],
+          "checks": [
+            "四关复核（1）口径：件名与正文均为「城镇职工基本医疗（生育）保险缴费基数」，企业职工口径，非机关事业口径，通过。",
+            "四关复核（2）生效：明写执行时间 2026-01-01 至 2026-12-31，当前 2026-10-13 已生效，通过。",
+            "四关复核（3）数字：官方同件给出上限 17817、下限 3563、灵活就业月基数 5939 三个独立数字，互洽无歧义，通过。",
+            "四关复核（4）来源：阜新市医疗保障局 + 国家税务总局阜新市税务局 2025-12-19 联署，ybj.fuxin.gov.cn（.gov.cn），页面标注「（此文件公开发布）」，通过。",
+            "算式自校验（强校验，同件三个独立数字，非反推）：5939×3 = 17817 ✅；round(5939×60%) = round(3563.4) = 3563 ✅。",
+            "医保单位费率：生育 0.5%→1%（自2025-09-01）+ 医疗 7% = 8%，与仓库 medComp 0.08 零偏差；但「医疗 7%」本身无本市件（辽医保规〔2025〕2号原文未取得），故仍列 mismatch。",
+            "⭐ 结构性发现：辽宁医保基数是市级全口径，不是省级。仓库 14 市社保基数 4533~22665 来自辽人社〔2026〕19号（省级，全口径月均 7555：round(7555×0.6)=4533、7555×3=22665），而医保基数按「上年度全市全口径加权平均」各市自定，阜新 2025 年度月均仅 5939。这是「医保基数单独口径」的第二个实证（前两例：新疆 AGENTS 第 33 条、揭阳失业险）。calculator.html 的 CIU 用 Object.assign(opt) 覆盖，readInputs 里 mB 与 pB 各自独立夹取，故 med 与 pension 区间允许不同 —— 已为阜新单独写入 med:{min:3563,max:17817,comp:.08,emp:.02}。",
+            "旧值作废：原 med 区间 4533~22665 是照抄省级社保基数，非医保口径，已改；已在 test-calc.js 把既有 14 市「五险基数下限4533/上限22665」断言收窄为 pension，另加阜新 med 与「其余 13 市 med 仍等于 pension」两组断言。"
+          ]
+        },
+        {
+          "city": "抚顺",
+          "status": "official-partial",
+          "urls": [
+            "https://fsyb.fushun.gov.cn/001/001001/20260319/58559cdd-dd82-4c31-82ea-9299094567da.html",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "抚政办规〔2026〕3号",
+          "confirms": "职工医保单位费率 8% 零偏差（自 2026-04-01 由 7% 调为 8%），但官方明写「不含生育」，仓库按辽宁统一口径处理，生育是否另计未证实。",
+          "mismatch": "医保基数仍照省级 4533~22665，抚顺是否有市级全口径基数件未查得；医保基数下限档（抚顺县/清原/新宾）与公积金 2080~23016 均无官方件。",
+          "method": "省级友情链接给出 fsyb.fushun.gov.cn/fsybj/ 返回 404，改用裸域 fsyb.fushun.gov.cn 的 /001/001001/ 栏目已取到 2026-03-19 通告原文。",
+          "rawQuotes": [
+            "依据《抚顺市人民政府办公室关于调整抚顺市城镇职工基本医疗保险单位缴费费率的通知》（抚政办规〔2026〕3号）…自2026年4月1日起，职工医保单位缴费费率（不含生育）由7%调整为8%。"
+          ],
+          "checks": [
+            "四关复核（1）口径：企业职工医保单位费率，通过。（2）生效：自2026-04-01，已生效，通过。（3）数字：单一数值无歧义，通过。（4）来源：抚顺市医保局 + 市税务局，.gov.cn，通过。",
+            "口径提示：官方 8% 明文「不含生育」，而辽宁把生育并入 medComp（mat.comp=0）→ 8% 的构成是否含生育未证实，warn 保留。"
+          ]
+        },
+        {
+          "city": "丹东",
+          "status": "official-partial",
+          "urls": [
+            "http://www.ddzfgjj.com/tzgg/38310.jhtml",
+            "https://ylbz.dandong.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "公积金件页面未显示文号；医保无件",
+          "confirms": "公积金 2080~22141 已在第二十二批 official-confirmed（2026-08-04 无文号通知）。",
+          "mismatch": "医保单位费率与医保基数均无丹东市官方件；ylbz.dandong.gov.cn 首页 anchors 只有一条微信解读，无政策文链接。",
+          "method": "省局友情链接给出 ylbz.dandong.gov.cn（200/23143 B），首页 anchors 穷举后确认无职工医保缴费基数/费率政策文。",
+          "rawQuotes": [],
+          "checks": [
+            "四关复核：第3关无数字可复核、第4关无可引用官方件 → 0/4 通过，只记录不改值。",
+            "已排除路径：ylbz.dandong.gov.cn 全部栏目无职工医保件；www.ddzfgjj.com/gzdt/38255.jhtml 实为「工作动态」栏目页而非文章页（TITLE 是栏目名），anchors 按 2026 过滤 0 命中。"
+          ]
+        },
+        {
+          "city": "锦州",
+          "status": "official-partial",
+          "urls": [
+            "http://jzsgjj.cn/",
+            "https://ylbz.jz.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "无",
+          "confirms": "公积金中心站存在（jzsgjj.cn，GB2312 + JSP CMS），但市级政策栏最新仍是 2023 年度件。",
+          "mismatch": "医保单位费率与医保基数无锦州市官方件；ylbz.jz.gov.cn（200/28745 B）首页只有城乡居民医保与大学生参保件。",
+          "method": "省局友情链接给出 ylbz.jz.gov.cn，首页 anchors 逐条读过，无职工医保缴费基数/费率文件。",
+          "rawQuotes": [],
+          "checks": [
+            "四关复核 0/4 通过，只记录不改值。",
+            "已排除：中心站 jzsgjj.cn 市级政策栏最新为 2023 年度件；ybj.jz.gov.cn / ylbj.jz.gov.cn 等变体未见。"
+          ]
+        },
+        {
+          "city": "朝阳",
+          "status": "official-partial",
+          "urls": [
+            "https://www.cygjj.com.cn/tzgg2/1398.jhtml",
+            "https://ybj.chaoyang.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "公积金件落款为「朝文备注6101」市级文件备案编号，非发文字号",
+          "confirms": "公积金上限 21816 与缴存额上限 5234 已在第二十二批 official-confirmed（2026-06-25 印发，3 张扫描 JPEG 经 Windows OCR 读出）。",
+          "mismatch": "医保单位费率与医保基数无朝阳市官方件；ybj.chaoyang.gov.cn（200/32714 B）只有朝医保发〔2025〕32号（特困人员居民医保），与职工医保无关。",
+          "method": "省局友情链接给出 ybj.chaoyang.gov.cn，首页 anchors 穷举后确认无职工医保缴费基数/费率件。",
+          "rawQuotes": [],
+          "checks": [
+            "四关复核 0/4 通过，只记录不改值。",
+            "算式自校验（公积金，供交叉参考）：floor(21816×12%)=2617、2617×2=5234 ✅ → 官方是两侧各自向下取整再相加。"
+          ]
+        },
+        {
+          "city": "铁岭",
+          "status": "official-partial",
+          "urls": [
+            "http://www.tieling.gov.cn/",
+            "http://www.tl.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml"
+          ],
+          "officialDomain": true,
+          "docNumber": "无",
+          "confirms": "无。铁岭是 6 城中唯一连一条职工医保官方 URL 都没有的城市。",
+          "mismatch": "医保单位费率与医保基数完全无官方件；tl.gov.cn / ybj.tl.gov.cn 是安徽省铜陵市（域名撞车第 5 例），绝不可当铁岭官网；ylbz.tieling.gov.cn / ybj.tieling.gov.cn / ylbzj.tieling.gov.cn 全部 NXDOMAIN。",
+          "method": "先用 DoH（https://223.5.5.5/resolve）批量验证候选域名，发现 tl 两字母缩写全部撞车，改按「省政府友情链接 → 市政府门户 → 部门链接」路径；www.tieling.gov.cn 200/98044 B 可达但全站唯一医保相关链接是省外的国家医保局。",
+          "rawQuotes": [],
+          "checks": [
+            "四关复核 0/4 通过，只记录不改值。",
+            "⚠️ 域名撞车第 5 例（本项目累计第 5 例）：ybj.tl.gov.cn（A 39.175.168.12）与 tl.gov.cn（A 39.175.168.11）200 可达，TITLE 分别是「铜陵市医疗保障局」「铜陵市人民政府」，页面含安徽省税务局 tl.ahzwfw.gov.cn 链接 → 安徽铜陵，不是辽宁铁岭。两字拼音缩写（tl/tj/ly/cc/yj…）撞车率极高，命中后必须核对 TITLE 与 ICP 备案号。",
+            "已排除：www.tlgjj.com 是 4.cn 停放页、www.tlzfgjj.com 是色情站（此前记录）。"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1270,12 +1270,53 @@ eq('吉林·五险基数全省一致下限 4393.2', A.CITIES.jl.pension.min, 439
 eq('吉林·五险基数全省一致上限 21966', A.CITIES.jl.pension.max, 21966);
 eq('吉林块内「省级区间8%」无据表述已清零', '0', 0);
 eq('吉林块内引用吉医保规〔2026〕1号的 note 条数', '7', 7);
+/* ---- 第二十九批（辽宁·阜新）：市级全口径医保基数 3563~17817 + 生育费率恢复 1% ----
+   一手件 1：阜新市医保局 + 国家税务总局阜新市税务局 2025-12-19《关于公布2026年全市城镇职工基本医疗（生育）保险缴费基数的通知》
+     https://ybj.fuxin.gov.cn/content/2025/1030653.html（页面日期 2025-12-26）
+     「2026年度我市城镇职工基本医疗（生育）保险缴费基数上限为17817元/月，缴费基数下限为3563元/月」
+     「2026年度灵活就业人员月缴费基数为5939元」「执行时间为2026年1月1日-12月31日」
+     算式自校验（同件给出三个独立数字，强校验非反推）：5939x3=17817；round(5939x60%)=round(3563.4)=3563
+   一手件 2：同局 + 阜新市财政局 + 市税务局 2025-08-29《关于恢复企业参保单位生育保险缴费费率的通知》
+     https://ybj.fuxin.gov.cn/content/2025/1017184.html
+     「自2025年9月1日起，企业参保单位生育保险缴费费率由0.5%恢复至1%」
+   口径要点：医保基数是**市级全口径**（阜医保发〔2025〕8号：按上年度全市城镇非私营与私营加权计算），
+     与省级社保基数 4533~22665 不是同一口径，所以 阜新 的 med 区间必须与 pension 区间不同。
+     缴费年度自 2026-01-01 起由社保年度改为自然年度（阜医保发〔2025〕3号）。
+   未取得项：辽医保规〔2025〕2号（省级 7%~8% 区间）原文 —— 省局政策文件栏 2025-12 后无相关件，
+     省政府门户站内检索 https://www.ln.gov.cn/so/s?siteCode=2100000037 返回 JS 空壳 → 费率仍为估算，warn 保留。
+   域名陷阱：ybj.tl.gov.cn 与 tl.gov.cn 是**安徽省铜陵市**，不是辽宁铁岭；铁岭医保局域名仍未找到。 */
+eq('阜新·医保基数下限3563', A.CITIES.fx.med.min, 3563);
+eq('阜新·医保基数上限17817', A.CITIES.fx.med.max, 17817);
+ok('阜新·自校验 5939x3===17817（官方同件给出全口径月均 5939）', 5939*3, 17817);
+ok('阜新·自校验 round(5939x60%)===3563', Math.round(5939*0.6), 3563);
+eq('阜新·医保基数口径为市级全口径，与省级社保基数 4533~22665 不同', A.CITIES.fx.med.min!==A.CITIES.fx.pension.min, true);
+eq('阜新·社保基数仍为省级 4533~22665（本次不动）', A.CITIES.fx.pension.max, 22665);
+eq('阜新·医保单位费率仍 8%（辽医保规〔2025〕2号 7%~8% 区间上限，含生育 1%）', A.CITIES.fx.med.comp, .08);
+eq('阜新·医保个人费率 2%', A.CITIES.fx.med.emp, .02);
+ok('阜新·生育 1% + 医疗 7% = 单位 8%（0.5% 恢复至 1% 自 2025-09-01）', (0.08-0.01).toFixed(2), '0.07');
+eq('阜新·warn 仍为 true（医保单位费率无原文 + 公积金下限无件）', A.CITIES.fx.warn, true);
+/* 辽宁 14 市：社保基数全省统一 4533~22665；医保基数除阜新外仍沿用社保口径 */
+const _LN_MED_FX = ['sy','dl','as','fsh','bx','dd','jk2','yk','jz','pj','fx','lyo','tl','cy','hld'];
+const _LN_REAL = _LN_MED_FX.filter(function(k){ return A.CITIES[k]; });
+eq('辽宁实际城市数 14', _LN_REAL.length, 14);
+for (const k of _LN_REAL) {
+  eq('辽宁·社保基数上限 22665 · '+k, A.CITIES[k].pension.max, 22665);
+  eq('辽宁·社保基数下限 4533 · '+k, A.CITIES[k].pension.min, 4533);
+}
+for (const k of _LN_REAL.filter(function(k){ return k!=='fx'; })) {
+  eq('辽宁·医保基数仍沿用社保口径 · '+k, A.CITIES[k].med.max, 22665);
+}
+eq('辽宁·医保基数已按市级全口径改写的城市数', _LN_REAL.filter(function(k){ return A.CITIES[k].med.max===17817; }).length, 1);
 const _LN = ['sy','dl','as','fsh','bx','dd','jz','yk','fx','lyo','pj','tl','cy','hld'];
 eq('辽宁·14 市全部纳入省级断言集合', _LN.length, 14);
 for (const _k of _LN) {
-  eq('辽宁·' + A.CITIES[_k].name + '·五险基数下限4533', A.CITIES[_k].med.min, 4533);
-  eq('辽宁·' + A.CITIES[_k].name + '·五险基数上限22665', A.CITIES[_k].med.max, 22665);
+  eq('辽宁·' + A.CITIES[_k].name + '·社保基数下限4533', A.CITIES[_k].pension.min, 4533);
+  eq('辽宁·' + A.CITIES[_k].name + '·社保基数上限22665', A.CITIES[_k].pension.max, 22665);
 }
+/* 阜新医保基数是市级全口径 3563~17817，不与省级社保基数同值 */
+eq('辽宁·阜新·医保基数下限 3563（市级全口径）', A.CITIES.fx.med.min, 3563);
+eq('辽宁·阜新·医保基数上限 17817（市级全口径）', A.CITIES.fx.med.max, 17817);
+eq('辽宁·13 市医保基数仍与社保基数同值', _LN.filter(function(k){ return k!=='fx'; }).filter(function(k){ return A.CITIES[k].med.max===A.CITIES[k].pension.max; }).length, 13);
 eq('贵州·基数下限(黔人社发〔2026〕7号)', A.CITIES.guiy.pension.min, 4426.05);
 eq('贵州·基数上限', A.CITIES.guiy.pension.max, 22130.25);
 eq('贵州·医保基数下限5901.4（80%口径）', A.CITIES.guiy.med.min, 5901.4);
