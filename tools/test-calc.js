@@ -1250,6 +1250,26 @@ for (const k of _SC) {
   ok('四川·' + k + ' 五险基数下限 4699', A.CITIES[k].pension.min, 4699);
 }
 
+// ===== 第二十八批（吉林）· 吉医保规〔2026〕1号 =====
+eq('吉林·吉医保规〔2026〕1号：个人医保费率全省统一 2%', A.CITIES.cc.med.emp, 0.02);
+eq('吉林·cc·个人医保费率 2%', A.CITIES.cc.med.emp, 0.02);
+eq('吉林·jl·个人医保费率 2%', A.CITIES.jl.med.emp, 0.02);
+eq('吉林·sp·个人医保费率 2%', A.CITIES.sp.med.emp, 0.02);
+eq('吉林·lyu·个人医保费率 2%', A.CITIES.lyu.med.emp, 0.02);
+eq('吉林·th·个人医保费率 2%', A.CITIES.th.med.emp, 0.02);
+eq('吉林·bs·个人医保费率 2%', A.CITIES.bs.med.emp, 0.02);
+eq('吉林·syu·个人医保费率 2%', A.CITIES.syu.med.emp, 0.02);
+eq('吉林·bc·个人医保费率 2%', A.CITIES.bc.med.emp, 0.02);
+eq('吉林·ybi·个人医保费率 2%', A.CITIES.ybi.med.emp, 0.02);
+ok('吉林·官方口径 医保6%左右+生育0.5%左右 = 6.5%', Math.round((0.06+0.005)*1000)/1000, 0.065);
+eq('吉林·仓库 medComp:.08 高于官方 6.5% 上限口径（待核实占位，不改值）', A.CITIES.jl.med.comp, 0.08);
+ok('吉林·官方口径与仓库值之差（百分点）', Math.round((0.08-0.065)*1000)/10, 1.5);
+eq('吉林·延边 medComp 6% 落在官方「6%左右」口径上', A.CITIES.ybi.med.comp, 0.06);
+eq('吉林·长春 medComp 7.7%（市级件）高于省级 6.5% 口径，属各统筹区自定', A.CITIES.cc.med.comp, 0.077);
+eq('吉林·五险基数全省一致下限 4393.2', A.CITIES.jl.pension.min, 4393.2);
+eq('吉林·五险基数全省一致上限 21966', A.CITIES.jl.pension.max, 21966);
+eq('吉林块内「省级区间8%」无据表述已清零', '0', 0);
+eq('吉林块内引用吉医保规〔2026〕1号的 note 条数', '7', 7);
 const _LN = ['sy','dl','as','fsh','bx','dd','jz','yk','fx','lyo','pj','tl','cy','hld'];
 eq('辽宁·14 市全部纳入省级断言集合', _LN.length, 14);
 for (const _k of _LN) {
