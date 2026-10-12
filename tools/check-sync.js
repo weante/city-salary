@@ -433,6 +433,10 @@ if (!testOk) {
     { re: /(\d+)\s*条\s*断言/g, label: 'N 条断言', arrow: false },
     { re: /断言数\s*(?:为|是|：|:)?\s*\**\s*(\d+)/g, label: '断言数 N', arrow: true },
     { re: /断言总数\s*(?:为|是|：|:)?\s*\**\s*(\d+)/g, label: '断言总数 N', arrow: true },
+    /* 括号包裹的「N 项」：README「断言的是**具体数值**（6802 项）」长期逃过 D 检查，
+       因为上面四种句式都要求「项」后面紧跟「断言」或「条断言」，而这里「项」后面是「）」。
+       这一类只在前文出现「断言」二字时才认，避免把「改值（2 项）」「详见第 6 项」等普通计数误伤。 */
+    { re: /断言[^）)\n]{0,20}[（(]\s*(\d+)\s*项/g, label: '断言（N 项）', arrow: false },
   ];
   let countHits = 0;
   for (const f of COUNT_FILES) {
