@@ -1,0 +1,128 @@
+{
+  "group": "Z13",
+  "generatedAt": "2026-10-13T03:10:00Z",
+  "note": "第二十四批 · 海南 4 市：琼人社发〔2026〕71号落地。社保/医保/失业/工伤/生育五险统一基数 4952.4~24762，公积金早已 official-confirmed（四城零偏差）。数值改动 4 城五险基数 + dataYear/dataNext；4 市 warn 全部保留（医保阶段性降费 2026-12-31 到期）。",
+  "provinces": [
+    {
+      "province": "海南",
+      "provinceWideUrls": [
+        "http://hrss.hainan.gov.cn/hrss/0503/202610/efba4207598e47908b632e2d6bc4577c.shtml",
+        "http://hrss.hainan.gov.cn/hrss/0500/zcwj.shtml",
+        "https://ybj.hainan.gov.cn/",
+        "https://zjt.hainan.gov.cn/",
+        "https://gjj.hainan.gov.cn/"
+      ],
+      "provinceWideNote": "省人社厅真实域名是 hrss.hainan.gov.cn（无 www；www.hrss.hainan.gov.cn / rst.hainan.gov.cn / ylbzj.hainan.gov.cn 均 NXDOMAIN）。文章路径形如 /hrss/{栏目}/2026{10}/{hash}.shtml，栏目 0500=政策文件、0400=公示公告。医保局 ybj.hainan.gov.cn 的 /xxgk/{zcwj,zcfg,tzgg}/ 必须带尾斜杠。公积金 2026 年度件挂在省住建厅/省公积金管理中心的 gjj.hainan.gov.cn（2026-06 公告，正文是表格图片，2025 年第十批已 OCR 取值）。",
+      "cities": [
+        {
+          "city": "海口",
+          "key": "haik",
+          "status": "official-confirmed",
+          "urls": [
+            "http://hrss.hainan.gov.cn/hrss/0503/202610/efba4207598e47908b632e2d6bc4577c.shtml",
+            "http://gjj.hainan.gov.cn/hngjj/0400/202606/6c0e853d7a0e4df1a06eb2e66534de94.shtml",
+            "http://hrss.hainan.gov.cn/hrss/0500/zcwj.shtml",
+            "https://ybj.hainan.gov.cn/xxgk/zcfg/"
+          ],
+          "officialDomain": true,
+          "docNumber": "琼人社发〔2026〕71号",
+          "indexNo": "00817367-8/2026-58957",
+          "published": "2026-10-10",
+          "confirms": "五险缴费基数 4952.4~24762（基准月均 8254）；公积金 2250~30452.67（省住建厅 2026-06 公告表格逐行给出，零偏差）；医保单位费率 6.5%（含生育 0.5%）依琼医保〔2024〕48号阶段性降费，有效期至 2026-12-31（仍在有效期内，故 warn 保留）；工伤一类基准 0.15%（琼人社规〔2026〕2号，全国最低）；租金扣除 1500 元/月",
+          "mismatch": "⚠️ 医保单位费率 6.5% 无 2026 年度新件，仅为琼医保〔2024〕48号阶段性降费值，有效期至 2026-12-31，到期后是否恢复原费率未证实 → warn 保留。工伤一类 0.15% 依琼人社规〔2026〕2号，本轮未另行取证。",
+          "method": "检索路径：①DoH 验真（https://223.5.5.5/resolve）确认 hrss.hainan.gov.cn 真实存在（无 www，与河南同形），rst.hainan.gov.cn / ylzj.hainan.gov.cn / ylbzj.hainan.gov.cn 均 NXDOMAIN；②省人社厅首页 anchors 按「缴费基数|基数|上下限」只命中 3 条外链 → 改为逐条打开政策文件列表页 /hrss/0500/zcwj.shtml（与河南「列表标题不含关键词」是同一教训）才发现该件；③医保局三栏目穷举排除费率件。",
+          "rawQuotes": [
+            "2026年度我省城镇职工社会保险缴费基数上限为24762元，下限为4952.4元。"
+          ],
+          "checks": [
+            "四关复核 4/4 通过：①口径——五部门联署（人社厅+财政厅+医保局+省税务局+省社保服务中心），明文含养老/医疗/工伤/失业/生育五险，全省统一基数，与 2025 年度同形态；②生效——成文/发布 2026-10-10，2026 年度已启用；③数字——同件给出上下限两个独立数字且精确互洽，无歧义；④来源——hrss.hainan.gov.cn（.gov.cn）、「此件主动公开」",
+            "⭐ 算式自校验（强校验，非反推）：4952.4 ÷ 0.6 = 8254，24762 ÷ 3 = 8254 → 精确相等。基准月均 8254 元/月（×12 = 99048 元/年）。旧值 4912.8~24564 对应基准 8188（×0.6 = 4908 ≠ 4912.8），已作废。",
+            "⚠️ 医保费率 dead-end：海南省医保局三个栏目 https://ybj.hainan.gov.cn/xxgk/{zcwj,zcfg,tzgg}/（路径必须带尾斜杠，无斜杠 404）全部翻过，无任何职工医保费率件；zcfg 2026 年 6 篇全是信息平台/基金监管/长护险。6.5%（含生育 0.5%）仍依琼医保〔2024〕48号阶段性降费，有效期至 2026-12-31 → 费率不变，但保留 warn。",
+            "status 与 warn 是两个独立维度：有官方件支撑 → status 升 official-confirmed；有确切到期日的风险 → warn 保留，note 与 docs/baseline-year-map.md 均写明 2026-12-31。"
+          ]
+        },
+        {
+          "city": "三亚",
+          "key": "sanya",
+          "status": "official-confirmed",
+          "urls": [
+            "http://hrss.hainan.gov.cn/hrss/0503/202610/efba4207598e47908b632e2d6bc4577c.shtml",
+            "http://gjj.hainan.gov.cn/hngjj/0400/202606/6c0e853d7a0e4df1a06eb2e66534de94.shtml",
+            "http://hrss.hainan.gov.cn/hrss/0500/zcwj.shtml",
+            "https://ybj.hainan.gov.cn/xxgk/zcfg/"
+          ],
+          "officialDomain": true,
+          "docNumber": "琼人社发〔2026〕71号",
+          "indexNo": "00817367-8/2026-58957",
+          "published": "2026-10-10",
+          "confirms": "五险缴费基数 4952.4~24762（基准月均 8254）；公积金 2250~30099.27（省住建厅 2026-06 公告表格逐行给出，零偏差）；医保单位费率 6.5%（含生育 0.5%）依琼医保〔2024〕48号阶段性降费，有效期至 2026-12-31（仍在有效期内，故 warn 保留）；工伤一类基准 0.15%（琼人社规〔2026〕2号，全国最低）；租金扣除 800 元/月",
+          "mismatch": "⚠️ 医保单位费率 6.5% 无 2026 年度新件，仅为琼医保〔2024〕48号阶段性降费值，有效期至 2026-12-31，到期后是否恢复原费率未证实 → warn 保留。工伤一类 0.15% 依琼人社规〔2026〕2号，本轮未另行取证。",
+          "method": "检索路径：①DoH 验真（https://223.5.5.5/resolve）确认 hrss.hainan.gov.cn 真实存在（无 www，与河南同形），rst.hainan.gov.cn / ylzj.hainan.gov.cn / ylbzj.hainan.gov.cn 均 NXDOMAIN；②省人社厅首页 anchors 按「缴费基数|基数|上下限」只命中 3 条外链 → 改为逐条打开政策文件列表页 /hrss/0500/zcwj.shtml（与河南「列表标题不含关键词」是同一教训）才发现该件；③医保局三栏目穷举排除费率件。",
+          "rawQuotes": [
+            "2026年度我省城镇职工社会保险缴费基数上限为24762元，下限为4952.4元。"
+          ],
+          "checks": [
+            "四关复核 4/4 通过：①口径——五部门联署（人社厅+财政厅+医保局+省税务局+省社保服务中心），明文含养老/医疗/工伤/失业/生育五险，全省统一基数，与 2025 年度同形态；②生效——成文/发布 2026-10-10，2026 年度已启用；③数字——同件给出上下限两个独立数字且精确互洽，无歧义；④来源——hrss.hainan.gov.cn（.gov.cn）、「此件主动公开」",
+            "⭐ 算式自校验（强校验，非反推）：4952.4 ÷ 0.6 = 8254，24762 ÷ 3 = 8254 → 精确相等。基准月均 8254 元/月（×12 = 99048 元/年）。旧值 4912.8~24564 对应基准 8188（×0.6 = 4908 ≠ 4912.8），已作废。",
+            "⚠️ 医保费率 dead-end：海南省医保局三个栏目 https://ybj.hainan.gov.cn/xxgk/{zcwj,zcfg,tzgg}/（路径必须带尾斜杠，无斜杠 404）全部翻过，无任何职工医保费率件；zcfg 2026 年 6 篇全是信息平台/基金监管/长护险。6.5%（含生育 0.5%）仍依琼医保〔2024〕48号阶段性降费，有效期至 2026-12-31 → 费率不变，但保留 warn。",
+            "status 与 warn 是两个独立维度：有官方件支撑 → status 升 official-confirmed；有确切到期日的风险 → warn 保留，note 与 docs/baseline-year-map.md 均写明 2026-12-31。"
+          ]
+        },
+        {
+          "city": "三沙",
+          "key": "ssha",
+          "status": "official-confirmed",
+          "urls": [
+            "http://hrss.hainan.gov.cn/hrss/0503/202610/efba4207598e47908b632e2d6bc4577c.shtml",
+            "http://gjj.hainan.gov.cn/hngjj/0400/202606/6c0e853d7a0e4df1a06eb2e66534de94.shtml",
+            "http://hrss.hainan.gov.cn/hrss/0500/zcwj.shtml",
+            "https://ybj.hainan.gov.cn/xxgk/zcfg/"
+          ],
+          "officialDomain": true,
+          "docNumber": "琼人社发〔2026〕71号",
+          "indexNo": "00817367-8/2026-58957",
+          "published": "2026-10-10",
+          "confirms": "五险缴费基数 4952.4~24762（基准月均 8254）；公积金 2250~39621.87（省住建厅 2026-06 公告表格逐行给出，零偏差）；医保单位费率 6.5%（含生育 0.5%）依琼医保〔2024〕48号阶段性降费，有效期至 2026-12-31（仍在有效期内，故 warn 保留）；工伤一类基准 0.15%（琼人社规〔2026〕2号，全国最低）；租金扣除 800 元/月",
+          "mismatch": "⚠️ 医保单位费率 6.5% 无 2026 年度新件，仅为琼医保〔2024〕48号阶段性降费值，有效期至 2026-12-31，到期后是否恢复原费率未证实 → warn 保留。工伤一类 0.15% 依琼人社规〔2026〕2号，本轮未另行取证。",
+          "method": "检索路径：①DoH 验真（https://223.5.5.5/resolve）确认 hrss.hainan.gov.cn 真实存在（无 www，与河南同形），rst.hainan.gov.cn / ylzj.hainan.gov.cn / ylbzj.hainan.gov.cn 均 NXDOMAIN；②省人社厅首页 anchors 按「缴费基数|基数|上下限」只命中 3 条外链 → 改为逐条打开政策文件列表页 /hrss/0500/zcwj.shtml（与河南「列表标题不含关键词」是同一教训）才发现该件；③医保局三栏目穷举排除费率件。",
+          "rawQuotes": [
+            "2026年度我省城镇职工社会保险缴费基数上限为24762元，下限为4952.4元。"
+          ],
+          "checks": [
+            "四关复核 4/4 通过：①口径——五部门联署（人社厅+财政厅+医保局+省税务局+省社保服务中心），明文含养老/医疗/工伤/失业/生育五险，全省统一基数，与 2025 年度同形态；②生效——成文/发布 2026-10-10，2026 年度已启用；③数字——同件给出上下限两个独立数字且精确互洽，无歧义；④来源——hrss.hainan.gov.cn（.gov.cn）、「此件主动公开」",
+            "⭐ 算式自校验（强校验，非反推）：4952.4 ÷ 0.6 = 8254，24762 ÷ 3 = 8254 → 精确相等。基准月均 8254 元/月（×12 = 99048 元/年）。旧值 4912.8~24564 对应基准 8188（×0.6 = 4908 ≠ 4912.8），已作废。",
+            "⚠️ 医保费率 dead-end：海南省医保局三个栏目 https://ybj.hainan.gov.cn/xxgk/{zcwj,zcfg,tzgg}/（路径必须带尾斜杠，无斜杠 404）全部翻过，无任何职工医保费率件；zcfg 2026 年 6 篇全是信息平台/基金监管/长护险。6.5%（含生育 0.5%）仍依琼医保〔2024〕48号阶段性降费，有效期至 2026-12-31 → 费率不变，但保留 warn。",
+            "status 与 warn 是两个独立维度：有官方件支撑 → status 升 official-confirmed；有确切到期日的风险 → warn 保留，note 与 docs/baseline-year-map.md 均写明 2026-12-31。"
+          ]
+        },
+        {
+          "city": "儋州",
+          "key": "danz",
+          "status": "official-confirmed",
+          "urls": [
+            "http://hrss.hainan.gov.cn/hrss/0503/202610/efba4207598e47908b632e2d6bc4577c.shtml",
+            "http://gjj.hainan.gov.cn/hngjj/0400/202606/6c0e853d7a0e4df1a06eb2e66534de94.shtml",
+            "http://hrss.hainan.gov.cn/hrss/0500/zcwj.shtml",
+            "https://ybj.hainan.gov.cn/xxgk/zcfg/"
+          ],
+          "officialDomain": true,
+          "docNumber": "琼人社发〔2026〕71号",
+          "indexNo": "00817367-8/2026-58957",
+          "published": "2026-10-10",
+          "confirms": "五险缴费基数 4952.4~24762（基准月均 8254）；公积金 2250~30806.07（省住建厅 2026-06 公告表格逐行给出，零偏差）；医保单位费率 6.5%（含生育 0.5%）依琼医保〔2024〕48号阶段性降费，有效期至 2026-12-31（仍在有效期内，故 warn 保留）；工伤一类基准 0.15%（琼人社规〔2026〕2号，全国最低）；租金扣除 1100 元/月",
+          "mismatch": "⚠️ 医保单位费率 6.5% 无 2026 年度新件，仅为琼医保〔2024〕48号阶段性降费值，有效期至 2026-12-31，到期后是否恢复原费率未证实 → warn 保留。工伤一类 0.15% 依琼人社规〔2026〕2号，本轮未另行取证。",
+          "method": "检索路径：①DoH 验真（https://223.5.5.5/resolve）确认 hrss.hainan.gov.cn 真实存在（无 www，与河南同形），rst.hainan.gov.cn / ylzj.hainan.gov.cn / ylbzj.hainan.gov.cn 均 NXDOMAIN；②省人社厅首页 anchors 按「缴费基数|基数|上下限」只命中 3 条外链 → 改为逐条打开政策文件列表页 /hrss/0500/zcwj.shtml（与河南「列表标题不含关键词」是同一教训）才发现该件；③医保局三栏目穷举排除费率件。",
+          "rawQuotes": [
+            "2026年度我省城镇职工社会保险缴费基数上限为24762元，下限为4952.4元。"
+          ],
+          "checks": [
+            "四关复核 4/4 通过：①口径——五部门联署（人社厅+财政厅+医保局+省税务局+省社保服务中心），明文含养老/医疗/工伤/失业/生育五险，全省统一基数，与 2025 年度同形态；②生效——成文/发布 2026-10-10，2026 年度已启用；③数字——同件给出上下限两个独立数字且精确互洽，无歧义；④来源——hrss.hainan.gov.cn（.gov.cn）、「此件主动公开」",
+            "⭐ 算式自校验（强校验，非反推）：4952.4 ÷ 0.6 = 8254，24762 ÷ 3 = 8254 → 精确相等。基准月均 8254 元/月（×12 = 99048 元/年）。旧值 4912.8~24564 对应基准 8188（×0.6 = 4908 ≠ 4912.8），已作废。",
+            "⚠️ 医保费率 dead-end：海南省医保局三个栏目 https://ybj.hainan.gov.cn/xxgk/{zcwj,zcfg,tzgg}/（路径必须带尾斜杠，无斜杠 404）全部翻过，无任何职工医保费率件；zcfg 2026 年 6 篇全是信息平台/基金监管/长护险。6.5%（含生育 0.5%）仍依琼医保〔2024〕48号阶段性降费，有效期至 2026-12-31 → 费率不变，但保留 warn。",
+            "status 与 warn 是两个独立维度：有官方件支撑 → status 升 official-confirmed；有确切到期日的风险 → warn 保留，note 与 docs/baseline-year-map.md 均写明 2026-12-31。"
+          ]
+        }
+      ]
+    }
+  ]
+}

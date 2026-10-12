@@ -907,6 +907,49 @@ eq('三明·租金800（市辖区户籍28.10万）', A.CITIES.sm.rent, 800);
 eq('南昌·租金1500（省会）', A.CITIES.nanch.rent, 1500);
 eq('赣州·租金1100（总局名单）', A.CITIES.ganzh.rent, 1100);
 eq('景德镇·租金800（总局名单）', A.CITIES.jdz.rent, 800);
+/* 海南 4 市（第二十四批，2026-10-12）：琼人社发〔2026〕71号 —— 省人社厅 + 财政厅 + 省医保局 + 税务局 + 省社保服务中心
+   五部门联署，索引号 00817367-8/2026-58957，成文/发布 2026-10-10。
+   原文全文只有一句数据：「2026年度我省城镇职工社会保险缴费基数上限为24762元，下限为4952.4元。」
+   算式自校验（同件两个独立数字，强校验非反推）：4952.4/0.6 = 24762/3 = 8254（基准月均工资）精确相等。
+   2025 年度旧值 4912.8~24564（基准 8188）已作废。 */
+const _HN = ['haik', 'sanya', 'ssha', 'danz'];
+for (const k of _HN) {
+  eq('海南·' + A.CITIES[k].name + ' 养老基数下限 4952.4（琼人社发〔2026〕71号）', A.CITIES[k].pension.min, 4952.4);
+  eq('海南·' + A.CITIES[k].name + ' 养老基数上限 24762', A.CITIES[k].pension.max, 24762);
+  eq('海南·' + A.CITIES[k].name + ' 医保基数同口径 4952.4', A.CITIES[k].med.min, 4952.4);
+  eq('海南·' + A.CITIES[k].name + ' 医保基数同口径 24762', A.CITIES[k].med.max, 24762);
+  eq('海南·' + A.CITIES[k].name + ' dataYear 2026（71号文已落地）', A.CITIES[k].dataYear, '2026');
+  eq('海南·' + A.CITIES[k].name + ' dataNext null（无待公布年度）', A.CITIES[k].dataNext, null);
+  eq('海南·' + A.CITIES[k].name + ' 医保单位 6.5%（含生育0.5%，琼医保〔2024〕48号阶段性降费）', A.CITIES[k].med.comp, 0.065);
+  eq('海南·' + A.CITIES[k].name + ' 工伤一类基准 0.15%（琼人社规〔2026〕2号，全国最低）', A.CITIES[k].inj.comp, 0.0015);
+  eq('海南·' + A.CITIES[k].name + ' warn 保留（降费件 2026-12-31 到期）', A.CITIES[k].warn, true);
+}
+/* 自校验：71号文同件给出上下限两个独立数字，除以 300%/60% 必须精确相等 */
+eq('海南·下限/60% = 基准月均 8254', 4952.4 / 0.6, 8254);
+eq('海南·上限/300% = 基准月均 8254', 24762 / 3, 8254);
+eq('海南·上下限自校验精确相等（非 ±1 容差）', 4952.4 / 0.6 === 24762 / 3, true);
+eq('海南·下限恰为上限的 20%（60%/300%）', Math.round(24762 * 0.2 * 100) / 100, 4952.4);
+/* 2025 年度旧值必须已彻底退出（四关第 2 关：生效日期） */
+eq('海南·无城市仍用 2025 年度旧基数下限',
+  Object.keys(A.CITIES).filter(k => A.CITIES[k].region === '海南' && A.CITIES[k].pension.min === 4912.8).length, 0);
+eq('海南·无城市仍用 2025 年度旧基数上限',
+  Object.keys(A.CITIES).filter(k => A.CITIES[k].region === '海南' && A.CITIES[k].pension.max === 24564).length, 0);
+/* 公积金：省住建厅 2026-06 公告表格逐行核实，四市零偏差 */
+eq('海口·公积金 2250~30452.67', A.CITIES.haik.hf.min, 2250);
+eq('海口·公积金上限30452.67', A.CITIES.haik.hf.max, 30452.67);
+eq('三亚·公积金 2250~30099.27', A.CITIES.sanya.hf.min, 2250);
+eq('三亚·公积金上限30099.27', A.CITIES.sanya.hf.max, 30099.27);
+eq('三沙·公积金 2250~39621.87', A.CITIES.ssha.hf.min, 2250);
+eq('三沙·公积金上限39621.87', A.CITIES.ssha.hf.max, 39621.87);
+eq('儋州·公积金 2250~30806.07', A.CITIES.danz.hf.min, 2250);
+eq('儋州·公积金上限30806.07', A.CITIES.danz.hf.max, 30806.07);
+eq('海南·四市公积金下限统一 2250', new Set(_HN.map(k => A.CITIES[k].hf.min)).size, 1);
+/* 租金档位 */
+eq('海口·租金1500（省会）', A.CITIES.haik.rent, 1500);
+eq('三亚·租金800（户籍80.3万）', A.CITIES.sanya.rent, 800);
+eq('三沙·租金800（常住0.27万）', A.CITIES.ssha.rent, 800);
+eq('儋州·租金1100（户籍109.55万，不设区直筒子市争议已标注）', A.CITIES.danz.rent, 1100);
+
 /* 江西 2 城（第十二轮第十三批）：萍乡公积金 2026 年度件逐字证实；景德镇 2026 年度件官网查无，保留 warn */
 eq('萍乡·公积金下限1950（市最低工资标准）', A.CITIES.px.hf.min, 1950);
 eq('萍乡·公积金上限23260', A.CITIES.px.hf.max, 23260);
@@ -1323,8 +1366,9 @@ eq('海南州·warn（2026年度公积金基数未取得官方件）', A.CITIES.
 eq('果洛·warn（2026年度公积金基数未取得官方件）', A.CITIES.glz.warn, true);
 eq('玉树·warn（缴存基数仅2020年度数值）', A.CITIES.ysz.warn, true);
 eq('玉树·公积金上限24402（仅2020年度）', A.CITIES.ysz.hf.max, 24402);
-eq('海南·基数下限(琼人社发〔2025〕67号)', A.CITIES.haik.pension.min, 4912.8);
-eq('海南·基数上限', A.CITIES.haik.pension.max, 24564);
+eq('海南·基数下限(琼人社发〔2026〕71号)', A.CITIES.haik.pension.min, 4952.4);
+eq('海南·基数上限', A.CITIES.haik.pension.max, 24762);
+eq('海南·下限/60% 与上限/300% 精确相等（同件自校验）', 4952.4 / 0.6 === 24762 / 3, true);
 eq('海南·工伤一类0.15%（全国最低）', A.CITIES.haik.inj.comp, 0.0015);
 eq('海口·医保单位6.5%（全省统一）', A.CITIES.haik.med.comp, 0.065);
 eq('海口·公积金上限30452.67', A.CITIES.haik.hf.max, 30452.67);
@@ -1543,7 +1587,7 @@ section('12. 省份年度口径与页脚文案');
     ['heb', '哈尔滨', '2026', null], ['nanj', '南京', '2025', '2026'],
     ['hangz', '杭州', '2025', '2026'], ['zzheng', '郑州', '2026', null],
     ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2025', '2026'],
-    ['haik', '海口', '2025', '2026'],
+    ['haik', '海口', '2026', null],
     ['cc', '长春', '2025-2026', null], ['fz', '福州', '2025-2026', null],
   ];
   for (const [key, name, y, next] of CASES) {
