@@ -839,6 +839,77 @@ eq('湖南·大病15元/月', A.CITIES.chsh.medFixEmp, 15);
 eq('长沙·公积金下限2200', A.CITIES.chsh.hf.min, 2200);
 eq('长沙·公积金上限32744', A.CITIES.chsh.hf.max, 32744);
 eq('怀化·公积金上限22317', A.CITIES.huaih.hf.max, 22317);
+/* 第三十批（2026-10-13）· 湖南：职工医保费率三件省级官方件坐实 + 株洲/邵阳 2026 年度公积金一手件
+   ① 湘政办发〔2022〕66号 第八条（ybj.hunan.gov.cn，2023-01-01 施行）：单位 8%（不含生育）、个人 2%，上限 300% 下限 60%；
+   ② 湘医保发〔2025〕3号（2025-03-01 起）：全省生育保险费率统一调整为 0.7%；
+   ③ 2026-07-20 省医保局灵活就业参保件：单位 8% + 生育 0.7% = 8.7%，大病 180元/年 = 15元/月；
+   ④ 株洲市住房公积金管理委员会办公室 2026-07-10《关于调整2026年度住房公积金缴存基数和月缴存额上、下限的通知》：2200~32744，
+      依据长沙市 2025 年在岗职工年平均工资 130975 元（长株潭一体化参照长沙标准），自 2026-01-01 起；
+   ⑤ 邵阳市住房公积金管理委员会 2026-07-17《关于调整2026年度住房公积金缴存比例及缴存基数的通知》：1800~22333，依据 2025 年在岗职工年平均工资 89331 元；
+   ⚠️ 湘人社规〔2025〕30号 给出湖南三项社保基准值 6787、上下限 4072~20361，与仓库 4106~20529（隐含 6843）不一致，
+      且该件「有效期为1年」已于 2026-09-21 届满、无 2026 年度继任件 → 四关第 2 关不过，本批不改社保基数，只记录 */
+eq('湖南·省级件自校验：单位8%+生育0.7%=8.7%', 0.08 + 0.007, 0.087);
+eq('湖南·省级件自校验：大病180元/年=15元/月', 180 / 12, 15);
+eq('湖南·邵阳件自校验：round(89331/12*3)=22333', Math.round(89331 / 12 * 3), 22333);
+eq('湖南·邵阳件自校验：round(22333*12%)=2680', Math.round(22333 * 0.12), 2680);
+eq('湖南·邵阳件自校验：2680*2=5360', 2680 * 2, 5360);
+eq('湖南·邵阳件自校验：1800*5%=90', 1800 * 0.05, 90);
+eq('湖南·邵阳件自校验：90*2=180', 90 * 2, 180);
+eq('湖南·株洲件自校验：130975/12=10914.58', 130975 / 12, 10914.583333333334);
+eq('湖南·株洲件自校验：10914.58*3=32743.74（官方取32744）', 10914.58 * 3, 32743.74);
+eq('湖南·株洲件自校验：round(32744*12%)=3929', Math.round(32744 * 0.12), 3929);
+eq('湖南·株洲件自校验：3929*2=7858', 3929 * 2, 7858);
+eq('湖南·株洲件自校验：2200*5%=110', 2200 * 0.05, 110);
+eq('湖南·株洲件自校验：110*2=220', 110 * 2, 220);
+eq('湖南·湘人社规〔2025〕30号自校验：6787*3=20361', 6787 * 3, 20361);
+eq('湖南·湘人社规〔2025〕30号自校验：round(6787*0.6)=4072', Math.round(6787 * 0.6), 4072);
+eq('湖南·株洲公积金下限2200（2026年度通知）', A.CITIES.zhuz.hf.min, 2200);
+eq('湖南·株洲公积金上限32744（2026年度通知）', A.CITIES.zhuz.hf.max, 32744);
+eq('湖南·株洲与长沙2026年度公积金完全一致', A.CITIES.zhuz.hf.max === A.CITIES.chsh.hf.max, true);
+eq('湖南·邵阳公积金下限1800（2026年度通知）', A.CITIES.shaoy.hf.min, 1800);
+eq('湖南·邵阳公积金上限22333（2026年度通知）', A.CITIES.shaoy.hf.max, 22333);
+eq('湖南·chsh·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.chsh.med.comp, 0.087);
+eq('湖南·chsh·医保个人2%', A.CITIES.chsh.med.emp, 0.02);
+eq('湖南·chsh·大病固定额15元/月', A.CITIES.chsh.medFixEmp, 15);
+eq('湖南·zhuz·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.zhuz.med.comp, 0.087);
+eq('湖南·zhuz·医保个人2%', A.CITIES.zhuz.med.emp, 0.02);
+eq('湖南·zhuz·大病固定额15元/月', A.CITIES.zhuz.medFixEmp, 15);
+eq('湖南·xt·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.xt.med.comp, 0.087);
+eq('湖南·xt·医保个人2%', A.CITIES.xt.med.emp, 0.02);
+eq('湖南·xt·大病固定额15元/月', A.CITIES.xt.medFixEmp, 15);
+eq('湖南·hengy·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.hengy.med.comp, 0.087);
+eq('湖南·hengy·医保个人2%', A.CITIES.hengy.med.emp, 0.02);
+eq('湖南·hengy·大病固定额15元/月', A.CITIES.hengy.medFixEmp, 15);
+eq('湖南·shaoy·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.shaoy.med.comp, 0.087);
+eq('湖南·shaoy·医保个人2%', A.CITIES.shaoy.med.emp, 0.02);
+eq('湖南·shaoy·大病固定额15元/月', A.CITIES.shaoy.medFixEmp, 15);
+eq('湖南·yy·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.yy.med.comp, 0.087);
+eq('湖南·yy·医保个人2%', A.CITIES.yy.med.emp, 0.02);
+eq('湖南·yy·大病固定额15元/月', A.CITIES.yy.medFixEmp, 15);
+eq('湖南·chde·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.chde.med.comp, 0.087);
+eq('湖南·chde·医保个人2%', A.CITIES.chde.med.emp, 0.02);
+eq('湖南·chde·大病固定额15元/月', A.CITIES.chde.medFixEmp, 15);
+eq('湖南·yiy·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.yiy.med.comp, 0.087);
+eq('湖南·yiy·医保个人2%', A.CITIES.yiy.med.emp, 0.02);
+eq('湖南·yiy·大病固定额15元/月', A.CITIES.yiy.medFixEmp, 15);
+eq('湖南·chenz·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.chenz.med.comp, 0.087);
+eq('湖南·chenz·医保个人2%', A.CITIES.chenz.med.emp, 0.02);
+eq('湖南·chenz·大病固定额15元/月', A.CITIES.chenz.medFixEmp, 15);
+eq('湖南·yzh·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.yzh.med.comp, 0.087);
+eq('湖南·yzh·医保个人2%', A.CITIES.yzh.med.emp, 0.02);
+eq('湖南·yzh·大病固定额15元/月', A.CITIES.yzh.medFixEmp, 15);
+eq('湖南·huaih·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.huaih.med.comp, 0.087);
+eq('湖南·huaih·医保个人2%', A.CITIES.huaih.med.emp, 0.02);
+eq('湖南·huaih·大病固定额15元/月', A.CITIES.huaih.medFixEmp, 15);
+eq('湖南·loud·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.loud.med.comp, 0.087);
+eq('湖南·loud·医保个人2%', A.CITIES.loud.med.emp, 0.02);
+eq('湖南·loud·大病固定额15元/月', A.CITIES.loud.medFixEmp, 15);
+eq('湖南·zjj·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.zjj.med.comp, 0.087);
+eq('湖南·zjj·医保个人2%', A.CITIES.zjj.med.emp, 0.02);
+eq('湖南·zjj·大病固定额15元/月', A.CITIES.zjj.medFixEmp, 15);
+eq('湖南·xiangx·医保单位8.7%（省级统一，8%+生育0.7%）', A.CITIES.xiangx.med.comp, 0.087);
+eq('湖南·xiangx·医保个人2%', A.CITIES.xiangx.med.emp, 0.02);
+eq('湖南·xiangx·大病固定额15元/月', A.CITIES.xiangx.medFixEmp, 15);
 eq('安徽·基数下限(皖人社秘〔2026〕113号)', A.CITIES.hef.pension.min, 4354);
 eq('安徽·基数上限', A.CITIES.hef.pension.max, 21772);
 eq('安徽·失业单位0.5%', A.CITIES.hef.unemp.comp, 0.005);
@@ -1383,9 +1454,10 @@ eq('酒泉·大额5元/月（固定额）', A.CITIES.jiuq.medFixEmp, 5);
 eq('甘南·医保单位8.5%', A.CITIES.gn.med.comp, 0.085);
 eq('临夏·公积金数值通知未取得，保留 warn', A.CITIES.lx.warn, true);
 eq('嘉峪关·公积金上限估算值28422.24', A.CITIES.jyg.hf.max, 28422.24);
-eq('邵阳·公积金下限1800（缴存基数件未取得，保留 warn）', A.CITIES.shaoy.hf.min, 1800);
-eq('邵阳·公积金上限22333（缴存基数件未取得，保留 warn）', A.CITIES.shaoy.hf.max, 22333);
-eq('邵阳·官方件为提取贷款政策、缴存基数未证实，标 warn', A.CITIES.shaoy.warn, true);
+eq('邵阳·公积金下限1800（2026年度缴存基数通知，2026-07-17）', A.CITIES.shaoy.hf.min, 1800);
+eq('邵阳·公积金上限22333（2026年度缴存基数通知，2026-07-17）', A.CITIES.shaoy.hf.max, 22333);
+eq('邵阳·2026年度缴存基数件已取得，warn 已解除', !A.CITIES.shaoy.warn, true);
+eq('株洲·2026年度缴存基数件已取得，warn 已解除', !A.CITIES.zhuz.warn, true);
 eq('衡阳·门户WAF拦截未取得缴存基数件，保留 warn', A.CITIES.hengy.warn, true);
 eq('张家界·中心仅有网厅无内容站，保留 warn', A.CITIES.zjj.warn, true);
 eq('郴州·门户WAF拦截未取得缴存基数件，保留 warn', A.CITIES.chenz.warn, true);
