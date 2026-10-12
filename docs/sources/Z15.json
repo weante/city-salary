@@ -1,0 +1,121 @@
+{
+  "group": "Z15",
+  "generatedAt": "2026-10-13T08:20:00Z",
+  "note": "第二十六批：广东 汕头 / 深圳 / 梅州 / 揭阳 四城。改值 2 处（汕头 unemp.min 2520->2040、梅州 hf.min 1750->2040），深圳与揭阳零改值、只补 note 与 warn。汕头件为 2 页扫描 PDF，经 Windows OCR 读出；梅州全站 HTTP 521，改用广东省统一搜索索引 search.gd.gov.cn 取得官方摘要。",
+  "provinces": [
+    {
+      "province": "广东省",
+      "provinceWideUrls": [
+        "https://search.gd.gov.cn/jsonp/site/753001?callback=cb&pagesize=30&text=%E7%BC%B4%E5%AD%98%E5%9F%BA%E6%95%B0%E4%B8%8B%E9%99%90&page=1",
+        "https://www.gd.gov.cn/zwgk/wjk/qbwj/yfh/content/post_4942177.html"
+      ],
+      "provinceWideNote": "粤府函〔2026〕188号（广东省人民政府关于调整我省最低工资标准的通知，成文 2026-08-12 / 发布 2026-08-13，`https://www.gd.gov.cn/zwgk/wjk/qbwj/yfh/content/post_4942177.html`）正文只写「一、从 2026 年 9 月 1 日起，对我省全日制就业劳动者月最低工资标准和非全日制小时最低工资标准进行调整」，**分市档次表是图片附件** `https://www.gd.gov.cn/img/1/1656/1656016/4942177.jpg`，本环境 http/https/gkmlpt 三种形式全部 code=000（网络层不可达），故各市具体档次本批仍未取得。汕头 2040 与梅州 2040 均由市级件直接给出，未依赖该附件。同页「媒体解读」给出广州 2680 / 深圳 2700，属解读稿，不可作一手来源。",
+      "cities": [
+        {
+          "city": "汕头",
+          "status": "official-partial",
+          "urls": [
+            "https://www.shantou.gov.cn/stsrlsbj/gkmlpt/content/2/2566/post_2566831.html",
+            "https://www.shantou.gov.cn/stsrlsbj/attachment/0/159/159105/2566831.pdf",
+            "https://www.shantou.gov.cn/stszjj/gkmlpt/content/2/2524/post_2524683.html",
+            "https://search.gd.gov.cn/jsonp/site/754001?callback=cb&pagesize=30&text=%E7%BC%B4%E5%AD%98%E5%9F%BA%E6%95%B0&page=1"
+          ],
+          "officialDomain": true,
+          "docNumber": "汕人社〔2026〕65号",
+          "confirms": "失业保险缴费工资下限 2040 元（自 2026-09-01 起）；失业人员领取失业保险金标准 1836 元/月。医保 3953~19764 与公积金 1850~27698 的 2026 年度市级件未取得。",
+          "mismatch": "",
+          "method": "一手件页面正文为空，全部内容在附件 PDF（2 页，1766116 字节，pypdf extract_text() 长度 0 = 扫描件，本项目第 11 例）。curl 必须带 Referer 下载，否则只回 162 字节空壳。cs-img.py 用 pypdf 抽 page.images 导出两张 PNG（2498×3540 / 2495×3518），再 powershell.exe -File cs-ocr.ps1 -PathList 分号分隔调用 Windows.Media.Ocr（zh-Hans-CN）读出。",
+          "rawQuotes": [
+            "根据《广东省失业保险条例》和《广东省人民政府关于调整我省最低工资标准的通知》（粤府函〔2026〕188号）等规定",
+            "失业保险缴费工资下限调整为 2040 元。",
+            "失业人员领取失业保险金标准调整为每人每月 1836 元。",
+            "一、本通知自 2026 年 9 月 1 日起执行。",
+            "汕头市人力资源和社会保障局办公室 2026 年 8 月 31 日 印发"
+          ],
+          "checks": [
+            "四关①口径：件只调失业保险缴费工资下限，不涉养老/医保，明确。",
+            "四关②生效：自 2026-09-01 起，已生效（今天 2026-10-13）。",
+            "四关③数字：2040 单值，OCR 噪声已由「汕人社〔2026〕65号」抬头与「自 2026 年 9 月 1 日起执行」两句交叉确认；⚠️ 官方未给算式，故不算式自校验。",
+            "四关④来源：汕人社局+财政局+税务局联合发文，.gov.cn，主动公开。",
+            "⚠️ 仓库原值 unemp.min=2520 来自 CI() 省级默认值，非市级核定值；市级件到手后按 2040 修正。"
+          ]
+        },
+        {
+          "city": "深圳",
+          "status": "official-partial",
+          "urls": [
+            "https://zjj.sz.gov.cn/ztfw/zfgjj/",
+            "https://search.gd.gov.cn/jsonp/site/755029?callback=cb&pagesize=30&text=%E7%BC%B4%E5%AD%98%E5%9F%BA%E6%95%B0&page=1",
+            "https://search.gd.gov.cn/jsonp/site/755001?callback=cb&pagesize=30&text=%E5%85%AC%E7%A7%AF%E9%87%91&page=1"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "医保 6727~33633 与深圳市医保局 2026 年度件一致。公积金下限 2520、上限 48471 未取得官方来源。",
+          "mismatch": "公积金 2520~48471 来源不明：深住建局住房公积金频道历年缴存基数通知只检索到 2015 至 2023 年度，2024 至 2026 年度缺失；48471 与 2520 在深圳门户(sid=755001)与住建局(sid=755029)官方索引中检索计数均为 0。按四关第④关不通过，**不改值**，补 note 并新增 warn。",
+          "method": "深住建局公积金频道公告与法规栏目逐页枚举；广东省统一搜索索引按关键词检索计数为 0。",
+          "rawQuotes": [],
+          "checks": [
+            "四关①口径：n/a（无件）。",
+            "四关②生效：n/a。",
+            "四关③数字：48471÷3=16157 为整数，算术形态无异常，但这不能替代官方来源 —— 数值形态像城镇非私营口径不等于来源正确。",
+            "四关④来源：**不通过**，全网官方渠道均无 2024—2026 年度件。",
+            "结论：零改值 + 新增 warn:true。"
+          ]
+        },
+        {
+          "city": "梅州",
+          "status": "official-partial",
+          "urls": [
+            "https://www.meizhou.gov.cn/zwgk/zfjg/sgjjzx/tzgg/content/post_2918831.html",
+            "https://www.meizhou.gov.cn/zwgk/zfjg/sgjjzx/tzgg/content/post_2939398.html",
+            "https://www.meizhou.gov.cn/gkmlpt/content/4/3097/post_3097396.html",
+            "https://search.gd.gov.cn/jsonp/site/753001?callback=cb&pagesize=30&text=%E7%BC%B4%E5%AD%98%E5%9F%BA%E6%95%B0%E4%B8%8B%E9%99%90&page=1"
+          ],
+          "officialDomain": true,
+          "docNumber": "",
+          "confirms": "2026 缴存年度（2026-07-01~2027-06-30）公积金上限 26315；下限自 2026-09-01 起由 1750 调整为 2040。医保 4313~21567、单位 6.5%、大额补助单位 8 元/月（梅市医保函〔2025〕156号，前批已证）。",
+          "mismatch": "",
+          "method": "⭐ `www.meizhou.gov.cn` 全站 HTTP 521（IP/CDN 层拒绝，非 WAF 页面）。破解法：从 `/jsonp/search/all` 返回项的 site 字段反查站点 sid=753001，再请求 `https://search.gd.gov.cn/jsonp/site/753001?callback=cb&pagesize=30&text=<关键词>&page=1`，解析 JSONP 外壳 cb({...}) 中的 results[] 与 count 字段，取 title / content 摘要 / url / pub_time。⚠️ **该索引只对标题做词匹配**，搜 1750、26315、过渡、新开户 等正文数字一律 count=0，所以「搜不到数字」不能用来否定过渡条款存在。",
+          "rawQuotes": [
+            "关于做好2026年度住房公积金缴存基数及比例调整工作的通知（2026-06-30）：2026年度（2026年7月1日至2027年6月30日）缴存基数上限 26315",
+            "关于调整梅州市住房公积金缴存基数下限的通知（2026-08-28）：根据《广东省人民政府关于调整我省最低工资标准的通知》（粤府函〔2026〕188号）等相关规定…一、缴存基数下限　缴存基数不得低于我市全日制就业劳动者月最低工资标准",
+            "9月起梅州公积金缴存基数下限调整为2040元（2026-08-31，部门动态稿）"
+          ],
+          "checks": [
+            "四关①口径：上限用本市城镇非私营单位在岗职工（含劳务派遣）月平均工资×3，与其他城市口径一致。",
+            "四关②生效：上限件缴存年度 2026-07-01~2027-06-30；下限件自 2026-09-01 起，均已生效。",
+            "四关③数字：26315÷3=8771.67 属**反推**（官方未写出月平均工资金额），不得自称自校验；下限 2040 由市级件直接给出。",
+            "四关④来源：市政府门户 gkmlpt 栏目 .gov.cn。",
+            "改值：hf.min 1750 -> 2040（hf.max 26315 零偏差未改）。"
+          ]
+        },
+        {
+          "city": "揭阳",
+          "status": "official-partial",
+          "urls": [
+            "http://www.jieyang.gov.cn/jyrsj/gkmlpt/content/0/907/post_907695.html",
+            "http://www.jieyang.gov.cn/jyybj/gkmlpt/content/0/982/post_982242.html",
+            "https://www.jygjj.cn/jyweb/website/index.html",
+            "https://search.gd.gov.cn/jsonp/site/753002?callback=cb&pagesize=30&text=%E7%BC%B4%E5%AD%98%E5%9F%BA%E6%95%B0&page=1"
+          ],
+          "officialDomain": true,
+          "docNumber": "揭市人社〔2024〕154号",
+          "confirms": "医保 3727~18636 与揭医保〔2025〕67号一致。2024 社保年度企业养老 4492~27501、失业上限 21384（市级口径）。公积金 2026 缴存年度件未取得。",
+          "mismatch": "① 揭市人社〔2024〕154号显示揭阳失业保险缴费基数上限 21384 = 本市 2023 年城镇非私营单位在岗职工月平均工资 7128×300%，与养老所用的全省全口径 9167 不同源；仓库仍取广东省级 44265，影响全部广东 21 城，**须单独立项逐城取证，本批不改值**。② 该件为 2024 社保年度（2024-07-01 至 2025-06-30）已过期。③ 公积金最近官方件为揭市公积金〔2025〕6号（2025 缴存年度上限 22596，2025-07-01 至 2026-06-30 已届满），与仓库 24618 冲突但 2026 年度件未取得，不改值。",
+          "method": "揭阳市人社局 gkmlpt 一手件亲抓全文；公积金中心真实入口为 https://www.jygjj.cn/jyweb/website/index.html（应用挂在 /jyweb 子路径），列表 API `/jyweb/appapi70001.json?classification=1902&buzType=5521&pagenum=0&pagerows=50`，详情 `appapi70002.json?titleId=<id>&buzType=5521`；通知公告全量 50 条枚举，最新到 2026-09-23，无 2026 缴存年度基数通知。⚠️ 该站需重试 2~5 次。",
+          "rawQuotes": [
+            "一、全市企业职工基本养老保险 2024 社保年度缴费基数上限统一调整为 27501 元（2023 年全省全口径城镇单位就业人员月平均工资 9167 元的 300%），下限为 4492 元；执行时间 2024 年 7 月 1 日至 2025 年 6 月 30 日。",
+            "四、全市失业保险缴费基数上限调整为 21384 元（揭阳市 2023 年城镇非私营单位在岗职工月平均工资 7128 元的 300%），执行时间 2024 年 7 月 1 日至 2025 年 6 月 30 日；下限暂按我市最低工资标准 1620 元执行。",
+            "落款：揭阳市人力资源和社会保障局、揭阳市财政局、国家税务总局揭阳市税务局、揭阳市统计局，2024 年 12 月 25 日"
+          ],
+          "checks": [
+            "算式自校验（同件三个独立基准数，强校验非反推）：9167×3=27501 ✅、9167×0.6=5500.2→5500 ✅、7128×3=21384 ✅。",
+            "⭐ 口径冲突实证：27501≠21384，说明揭阳失业保险上限用本市城镇非私营在岗职工月均，养老用全省全口径，两者不同源。",
+            "四关②生效：该件已过期（2024 社保年度），2026 社保年度市级件未取得，故不改值。",
+            "结论：零改值 + 新增 warn:true + 待立项「广东失业保险上限是否应逐市取值」。"
+          ]
+        }
+      ]
+    }
+  ]
+}
