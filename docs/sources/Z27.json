@@ -1,0 +1,118 @@
+{
+  "group": "Z27",
+  "generatedAt": "2026-10-14T06:20:00Z",
+  "note": "辽宁医保基数按各市全口径月均分别确定（省级社保基数为 4533~22665），下限比例逐市不同：阜新/锦州/朝阳=60%，丹东=100%；多数市从未公布上限。本批改值 2 城（锦州、朝阳），公积金 6 市来源全部不可达故零改动。",
+  "provinces": [
+    {
+      "province": "辽宁",
+      "provinceWideUrls": [
+        "https://ybj.ln.gov.cn/",
+        "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml",
+        "https://ybj.ln.gov.cn/ybj/zxzx/tzgg/index.shtml",
+        "https://ybj.ln.gov.cn/ybj/zwgk/"
+      ],
+      "provinceWideNote": "省局首页「省市医保局」友情链接块给出各市医保局真实域名（沈阳 ybj.shenyang.gov.cn、鞍山 ybj.anshan.gov.cn、抚顺 fsyb.fushun.gov.cn、丹东 ylbz.dandong.gov.cn、营口 ybj.yingkou.gov.cn、锦州 ylbz.jz.gov.cn、阜新 ybj.fuxin.gov.cn、辽阳 ylbzj.liaoyang.gov.cn、朝阳 ybj.chaoyang.gov.cn）。三栏政策文件 grep 费率/缴费基数/辽医保规〔2025〕2号 全零命中，/ybj/zwgk/zfxxgkzl/ 404。辽医保规〔2025〕2号 全名《关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知》（取自抚顺 2026-06-29 转发件），原文至今未取得。⚠ ybj.tl.gov.cn 与 gjj.tl.gov.cn 可解析但属安徽铜陵，铁岭四种医保局命名全 NXDOMAIN。",
+      "cities": [
+        {
+          "city": "抚顺",
+          "status": "official-partial",
+          "urls": [
+            "https://fsyb.fushun.gov.cn/001/001001/20260319/58559cdd-dd82-4c31-82ea-9299094567da.html",
+            "https://fsyb.fushun.gov.cn/",
+            "https://gjj.dl.gov.cn/",
+            "http://zjt.ln.gov.cn/",
+            "http://fsyb.fushun.gov.cn/govxxgk/ybj/2026-06-29/147bf604-8d38-4912-8ebb-5f4234cf0a53.html",
+            "https://ybj.ln.gov.cn/"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "抚顺市医保局+财政局+税务局 2026-06-29《关于调整职工基本医疗（生育）保险缴费年度的通知》（页面无文号）逐字：将我市城镇职工基本医疗（生育）保险缴费年度由社保年度调整为自然年度；自2027年1月1日起执行；2026年7月1日至2026年12月31日参保单位和灵活就业人员职工医保（生育）保险缴费基数按现行缴费基数5306元执行。该件只给一个数字且未写全口径与上下限比例，无法分辨5306是下限还是唯一基数，故不改值。这是本项目首次拿到 辽医保规〔2025〕2号 的完整题名。",
+          "mismatch": "域名 fsyb.fushun.gov.cn 裸域可读、/fsybj/ 报 502、https 一律 SSL 失败；所有 dynamic 栏目走 /EWB-FRONT/rest/lightfrontaction/getsearchgovinfolist2，GET/POST 皆 405，headless Chrome 亦 ERR_HTTP_RESPONSE_CODE_FAILURE，列表不可枚举。"
+        },
+        {
+          "city": "丹东",
+          "status": "official-partial",
+          "urls": [
+            "http://www.ddzfgjj.com/tzgg/38310.jhtml",
+            "http://www.ddzfgjj.com:80/tzgg/index.jhtml",
+            "https://www.ddzfgjj.com/",
+            "http://zjt.ln.gov.cn/",
+            "https://ylbz.dandong.gov.cn/html/YLBZJ/202512/0176464445475411.html"
+          ],
+          "docNumber": "丹医保发〔2025〕89号",
+          "officialDomain": true,
+          "confirms": "丹医保发〔2025〕89号（丹东市医保局+税务局，件挂「履职依据」栏目）逐字：2024年我市城镇非私营与私营单位加权计算的全口径城镇单位就业人员月平均工资为5654元；自2026年1月1日起，我市职工基本医疗保险最低缴费基数按照5654元/月执行。⚠ 该市下限=全口径月均的100%（不是60%），连续两年 5480→5480、5654→5654，不是笔误；与阜新/锦州/朝阳的60%并存，不可套用统一比例。该件与2024年度件均只给一个数字、从未公布上限，故不设独立医保区间。",
+          "mismatch": "ylbz.dandong.gov.cn 必须 https、http 会 502。"
+        },
+        {
+          "city": "锦州",
+          "status": "official-partial",
+          "urls": [
+            "http://jzsgjj.cn/",
+            "http://jzsgjj.cn/newslistnew.jsp?navid=4&listid=25",
+            "http://jzsgjj.cn/newsDetailsnew.jsp?newsid=31939&navid=4",
+            "http://zjj.jz.gov.cn/",
+            "http://zwfw.jz.gov.cn/",
+            "http://ylbz.jz.gov.cn/info/1029/3355.htm",
+            "http://ylbz.jz.gov.cn/info/1029/3085.htm"
+          ],
+          "docNumber": "锦医保〔2025〕79号",
+          "officialDomain": true,
+          "confirms": "锦医保〔2025〕79号（锦州市医保局+财政局+税务局，落款 2025-12-26）逐字：2026年度我市职工基本医疗保险和生育保险缴费基数为71136元；2026年1月1日-2026年12月31日；上、下限分别按300%、60%确定，即213408元、42681.6元；2026年度灵活就业人员月缴费基数为5928元。算式自校验：71136×3=213408、71136×0.6=42681.6、71136÷12=5928，除12得月值上限17784、下限3556.8。对照件 锦医保〔2024〕35号 数字完全相同，可确认惯例。",
+          "mismatch": ""
+        },
+        {
+          "city": "阜新",
+          "status": "official-partial",
+          "urls": [
+            "https://ybj.fuxin.gov.cn/content/2025/1030653.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1017184.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1030649.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1024595.html",
+            "https://ybj.fuxin.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml"
+          ],
+          "docNumber": "阜医保发〔2025〕8号",
+          "officialDomain": true,
+          "confirms": "阜医保发〔2025〕8号及配套件已在前批取得，2026年度上限 17817、自校验 5939×3=17817、round(5939×60%)=3563，本批复核零偏差、零改动。",
+          "mismatch": ""
+        },
+        {
+          "city": "铁岭",
+          "status": "official-partial",
+          "urls": [
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=d2b3b081-729c-44de-a050-d2f322aeef03",
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=9d96a978-a4a6-46ae-b01d-d303ae54b484",
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=a5a14e2c-dec9-4704-86cf-8dd641495291",
+            "http://www.tieling.gov.cn/tieling/ywdt/bmdt/index.html",
+            "http://www.tieling.gov.cn/tieling/zwgk/zfwj/index.html",
+            "http://www.tieling.gov.cn/",
+            "https://www.tieling.gov.cn/"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "ybj/ylbz/ylbzj/ylj.tieling.gov.cn 四种医保局命名全部 NXDOMAIN，铁岭市政府门户全站子域仅 gaj/jyj/scjg/sxzspzx 四个、无医保局子站，属结构性缺失。⚠ ybj.tl.gov.cn 与 gjj.tl.gov.cn 虽可解析但属安徽铜陵，禁用。",
+          "mismatch": "四子站穷举无任何医保局渠道，属结构性 not-found（渠道本身不存在），但已取到铁岭政务服务网公积金缴存/贷款/提取事项页，故 status 仍为 official-partial。"
+        },
+        {
+          "city": "朝阳",
+          "status": "official-partial",
+          "urls": [
+            "https://www.cygjj.com.cn/tzgg2/1398.jhtml",
+            "https://www.cygjj.com.cn/",
+            "https://www.cygjj.com.cn/tzgg2/index.html",
+            "http://zjt.ln.gov.cn/",
+            "https://ybj.chaoyang.gov.cn/html/CYYBJ/202512/0176524130882496.html",
+            "https://ybj.chaoyang.gov.cn/html/CYYBJ/202512/0176524130882496.html?type=",
+            "https://files.chaoyang.gov.cn/files/ueditor/CYYBJ/jsp/upload/image/20251209/1765241972547097456.jpg"
+          ],
+          "docNumber": "朝医保发〔2025〕36号",
+          "officialDomain": true,
+          "confirms": "朝医保发〔2025〕36号（朝阳市医疗保障局 2025-12-08 印发，信息公开形式：主动公开）逐字（正文为 2 张扫描 JPG，经 Windows OCR 读出）：2026年朝阳市职工基本医疗保险缴费基数为 5624元/月；参保单位职工基本医疗保险个人月缴费基数为个人上年月平均工资，最高为 16872元/月，最低为 3374元/月；二、执行时间 自2026年1月1日起至2026年12月31日止。算式自校验：5624×3=16872、Math.round(5624×0.6)=3374（原文已取整，非3374.4）。",
+          "mismatch": "⭐件挂在「履职依据」栏目 cysylbzj/zfxxgk/fdgknr/lzyj/glist.html 而非通知公告 —— 上一轮据此误判该市只有特困人员文件。图片须带 Referer 下载，页面正文本身只有8477字节无文本层。"
+        }
+      ]
+    }
+  ]
+}

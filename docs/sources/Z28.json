@@ -1,0 +1,115 @@
+{
+  "group": "Z28",
+  "generatedAt": "2026-10-14T06:30:00Z",
+  "note": "本批 6 市州公积金上限 5 城官方坐实且零偏差，仅白城 20676 无官方件。⚠ 吉人社联〔2025〕97号 的两块执行期写法不同：养老/失业/工伤 4393.2~21966 写「2025年7月1日至2026年6月30日」（已于 2026-06-30 届满，2026 年度新上下限至今未发布），医保写「2025年10月1日至下次公布社会保险缴费基数之前」（今天仍然有效）—— 同组数字的社保与医保时效必须分开判。",
+  "provinces": [
+    {
+      "province": "吉林",
+      "provinceWideUrls": [
+        "https://xxgk.jl.gov.cn/szf/gkml/202511/t20251126_9360748.html",
+        "http://xxgk.jl.gov.cn/zcbm/fgw_97992/xxgkmlqy/202509/t20250922_9681370.html",
+        "http://xxgk.jl.gov.cn/zcbm/fgw_97992/xxgkmlqy/202609/t20260903_9698417.html",
+        "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+        "https://jst.jl.gov.cn/",
+        "https://hrss.jl.gov.cn/"
+      ],
+      "provinceWideNote": "吉政函〔2025〕59号（最低工资三档：长春2230/松原2020/白城等1870，自2025-12-01）；吉人社联〔2025〕97号（缴费基数4393.2~21966，社保与医保执行期写法不同）；吉人社联〔2026〕74号（2025年全口径年均89778元，仅发布工资不含上下限）；吉医保规〔2026〕1号（个人费率全省统一2%，单位费率由各统筹区确定）。⚠ 域名更正：rst.jl.gov.cn NXDOMAIN，真为 hrss.jl.gov.cn；8 个市级医保局子域全 NXDOMAIN，故单位费率除延边外均属估算。吉林省站点 https 普遍 000，一律用 http://。",
+      "cities": [
+        {
+          "city": "长春",
+          "status": "official-partial",
+          "urls": [
+            "http://zwgk.changchun.gov.cn/zcbm/szfgjj/gjjxxgkml/202607/t20260729_3503280.html",
+            "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+            "http://ybj.jl.gov.cn/",
+            "http://zfgjj.changchun.gov.cn/xxfb/zcfg/zcwj/202607/t20260729_3503277.html",
+            "http://zfgjj.changchun.gov.cn/xxfb/zcfg/zcwj/202511/t20251128_3443785.html",
+            "http://zfgjj.changchun.gov.cn/xxfb/zcfg/zcwj/202601/t20260104_3457851.html"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "长春市公积金中心 2026-07-29《关于对长春市2026年住房公积金缴存基数上限进行调整的通知》逐字：现将我市（含双阳区、九台区、榆树市、德惠市、农安县、公主岭市）2026年度住房公积金职工缴存基数上限调整为30505元；铁路电力分中心辖区内中国铁路沈阳局集团有限公司所属各单位按铁路沈阳局统一标准执行。2025-11-28 下限件逐字：一、长春市区（含双阳区、九台区）住房公积金缴存基数下限调整至2230元；二、榆树市、德惠市、公主岭市、农安县调整至1870元；自2025年12月1日起执行至下一个调整日。仓库 2230~30505 零偏差。",
+          "mismatch": ""
+        },
+        {
+          "city": "吉林市",
+          "status": "official-partial",
+          "urls": [
+            "http://xxgk.jlcity.gov.cn/qtdw/gjjglzx_1/xbgkml/202608/t20260814_1332244.html",
+            "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+            "http://ybj.jl.gov.cn/",
+            "http://gjj.jlcity.gov.cn/xwpd/tzgg/202608/t20260814_1332240.html",
+            "http://gjj.jlcity.gov.cn/zcfg/zcjd/202608/t20260814_1332242.html"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "吉林市公积金中心 2026-08-14《关于对吉林市2026年度住房公积金缴存基数上限进行调整的通知》逐字：吉林市2026年度住房公积金缴存基数上限按照我市2025年度职工月平均工资的3倍核定，标准为22734.75元；自发布之日起开始调整，2026年1月1日至基数调整日期间的缴存额差额应予以补缴。解读页明写「按照2025年度吉林市城镇非私营单位就业人员年平均工资标准计算，月平均工资的3倍为22734.75元」。⭐本批唯一算式自校验成立的城市：22734.75÷3=7578.25元/月、×12=90939元/年。",
+          "mismatch": "下限 2020 仅适用吉林市区，永吉县/蛟河市/桦甸市/舒兰市按吉政函〔2025〕59号属「其他县（市）」1870 档。"
+        },
+        {
+          "city": "辽源",
+          "status": "official-partial",
+          "urls": [
+            "http://zwgk.liaoyuan.gov.cn/zsjg/fgw_97992/xxgkml/202601/t20260115_730085.html",
+            "http://zwgk.liaoyuan.gov.cn/zsjg/fgw_97992/xxgkml/202601/t20260115_730073.html",
+            "http://zwgk.liaoyuan.gov.cn/zsjg/fgw_97992/gkzn/",
+            "https://xxgk.jl.gov.cn/szf/gkml/202511/t20251126_9360748.html",
+            "http://jst.jl.gov.cn",
+            "http://www.lygjj.cn/tzgg2/2018.jhtml"
+          ],
+          "docNumber": "无",
+          "officialDomain": false,
+          "confirms": "辽源市住房公积金管理中心《关于2026年度调整职工住房公积金缴存基数上限的通知》（2026-09-21 署名、2026-09-24 发布）逐字：二、缴存基数确定 2026年度职工住房公积金缴存基数上限调整为22444元。该件正文不含任何文号——旧 note 写的「辽公积金管发〔2026〕4号」经查并不存在，已删。件内口径是本市上年度职工月平均工资×3，与省全口径 89778÷12×3=22444.5 的吻合属巧合旁证，不是算式自校验。",
+          "mismatch": "⚠ 推翻旧结论：www.lygjj.cn 并非 tarpitting WAF，实测 HTTP 200 稳定可读，已从死路清单移除。"
+        },
+        {
+          "city": "白山",
+          "status": "official-partial",
+          "urls": [
+            "http://bsgjj.cbs.gov.cn/zcfg/zxzc/202601/t20260113_865179.html",
+            "http://bsgjj.cbs.gov.cn/sy/tzgg/202601/t20260113_865181.html",
+            "http://bsgjj.cbs.gov.cn/zcfg/zxzc/202510/t20251029_858880.html",
+            "https://bsgjj.cbs.gov.cn/zcfg/zxzc/202601/t20260113_865179.html"
+          ],
+          "docNumber": "白山金管发〔2023〕6号（依据）",
+          "officialDomain": true,
+          "confirms": "白山市公积金中心 2025-12-25《关于2026年度缴存单位年审、职工住房公积金缴存基数及比例调整工作的通知》逐字：现将我市2026年度住房公积金职工缴存基数上限调整为19272.5元；2026年我市单位和职工住房公积金缴存比例上限为12%，下限为5%；调整时间自2026-01-04起至2026-03-31。站点三重核验通过（.gov.cn + 吉ICP备2021003213号 + 网站标识码2206000010 + 主办单位署名）。",
+          "mismatch": "该件含兜底条款：吉林省统计局公布2025年城镇非私营单位年平均工资后，对已按19272.5元核定但2025年月平均工资更高的职工须重新调整并自2026-01-01起补缴。下限 2020 仅适用白山市区（含浑江区和江源区），其余县市属1870档。年度基数通知只在「中心政策」栏 ./zcfg/zxzc/，通知公告与动态栏都没有。"
+        },
+        {
+          "city": "白城",
+          "status": "official-partial",
+          "urls": [
+            "http://www.jlbc.gov.cn/hdjl_3211/xszxx/xszxx_1/202508/t20250803_1018642.html",
+            "http://www.jlbc.gov.cn/qzqd/szfgjj/index.html",
+            "http://zj.jlbc.gov.cn/",
+            "https://xxgk.jl.gov.cn/szf/gkml/202511/t20251126_9360748.html",
+            "http://jst.jl.gov.cn",
+            "http://xxgk.jlbc.gov.cn/zsjg/tjj/xxgkml/",
+            "http://xxgk.jlbc.gov.cn/zsjg/tjj/xxgkml/202603/t20260320_1032902.html"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "2026-10-13 穷举 7 条渠道全部无命中：①白城市公积金中心法定主动公开目录 67 条/5 页，全为使用政策/提取/年度报告类；②住建局「住房公积金管理」子栏目 trs_js_subcatId=2061，?stit=2061&num=2 经 headless Chrome 渲染后为空列表，分页 index_2.html→404、?page=2 返回第1页；③住建局政策法规栏仅 1 篇加装电梯文件；④住建局 2026-08-10《顺应需求更好发挥住房公积金作用》通读为国务院条例评论稿无任何数值；⑤市长信箱栏渲染后无条目；⑥2025-11-03 中心具名答复只讲提取材料与流程；⑦2025年年度报告只披露缴存额20.57亿/缴存余额76.38亿/贷款上限70万。",
+          "mismatch": "结构性原因：gjj.jlbc.gov.cn 与 zfgjj.jlbc.gov.cn 均 NXDOMAIN，中心无独立域名、文件全挂住建局下且不发基数类。且 20676÷3=6892元 与省全口径 89778÷12=7481.5、省计发基数 87865÷12=7322.08 三者互不相符，几乎确定不是「上年度职工月平均工资×3」。下限 1870 已由吉政函〔2025〕59号坐实。"
+        },
+        {
+          "city": "延边",
+          "status": "official-partial",
+          "urls": [
+            "http://zfxxgk.yanbian.gov.cn/cyqzf/xxgkml/202201/t20220107_371243.html",
+            "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+            "http://ybj.jl.gov.cn/",
+            "http://zfxxgk.yanbian.gov.cn/cyqzf/zcjd/202201/t20220107_371283.html",
+            "https://www.ybzfgjj.cn/gonggaotongzhi/2026/0807/2506.html",
+            "https://www.ybzfgjj.cn/gonggaotongzhi/2026/0129/2480.html"
+          ],
+          "docNumber": "无",
+          "officialDomain": false,
+          "confirms": "延边朝鲜族自治州住房公积金管理中心 2026-08-06《关于调整延边州2026年住房公积金缴存基数上限的通知》逐字：根据相关部门提供的2025年度延边州城镇非私营单位就业人员年平均工资标准，现将我州2026年住房公积金缴存基数上限调整为22955元；缴存单位须在2026年年内为达到上限缴存标准的职工办理缴存基数调整及补缴手续。",
+          "mismatch": "⚠ 域名更正：www.ybzfgjj.com 301 跳转到 https://www.ybzfgjj.cn，真域名是 .cn。下限 2020 仅适用延吉市、珲春市；图们/敦化/龙井/和龙/安图/汪清按吉政函〔2025〕59号属1870档，现值 min:2020 会低估这 6 个县市。单位费率 6% 是延州政办发〔2022〕1号（仓库唯一有吉林市级依据的一城）。"
+        }
+      ]
+    }
+  ]
+}

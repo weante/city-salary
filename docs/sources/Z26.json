@@ -1,0 +1,78 @@
+{
+  "group": "Z26",
+  "generatedAt": "2026-10-14T06:10:00Z",
+  "note": "2026-10-13 已逐栏穷举市级渠道：日喀则住建局政策文件12篇/通知公告11篇/法定主动公开12篇/办事指南0篇（.thtml型CMS不分页）；山南住建局信息公开目录8个栏目（1055政策文件/1053行政规范性文件/27法规文件/35通知公告/1052政府规章/1054地方性法规/28规划计划/30政策解读）全部枚举，仅27法规文件1篇转发件、35通知公告14篇全为建筑与处罚类；那曲住建局部门业务44篇/专题专栏16篇；阿里 zjj./gjj./zfcxjst./zfgjj. 四组域名全部 NXDOMAIN。四市地均无缴存基数件，故其上限属估算或反推值。",
+  "provinces": [
+    {
+      "province": "西藏",
+      "provinceWideUrls": [
+        "https://zjt.xizang.gov.cn/",
+        "https://ylbzj.xizang.gov.cn/zwgk/zcwj/",
+        "https://zjj.rikaze.gov.cn/",
+        "https://zjj.shannan.gov.cn/",
+        "https://zjj.naqu.gov.cn/",
+        "http://xxgk.jlbc.gov.cn/"
+      ],
+      "provinceWideNote": "西藏自治区医保局真域名是 ylbzj.xizang.gov.cn（zlbzj 为 NXDOMAIN），政策文件栏 9 篇无职工医保缴费基数/费率件；自治区住建厅 xxgk/zcfg/ 返回 313 字节空壳、xxgk/zjtwj/ 26 篇无公积金件；西藏公积金平台 zfgjj.zjt.xizang.gov.cn 只有空登录页。⚠ 域名撞车第 8/9 例：gjj.xz.gov.cn 与 ybj.xz.gov.cn 都是徐州市不是西藏；gaj. 前缀在日喀则是公安局、在林芝才是公积金中心，同省不同市同一前缀含义不同必须逐个核 TITLE。",
+      "cities": [
+        {
+          "city": "日喀则",
+          "status": "official-partial",
+          "urls": [
+            "http://zjj.rikaze.gov.cn/news-detail.thtml?cid=393525",
+            "http://zjj.rikaze.gov.cn/",
+            "http://zjj.rikaze.gov.cn/public-policy.thtml?id=14162",
+            "http://zjj.rikaze.gov.cn/news-list.thtml?id=14140",
+            "http://zjj.rikaze.gov.cn/public-policy.thtml?id=14150"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "2026-10-13 逐栏枚举日喀则市住建局全部公开栏目（政策文件12篇、通知公告11篇、法定主动公开12篇、办事指南0篇，加 &pageNum=2/3 无新条目），无任何住房公积金缴存基数件。",
+          "mismatch": "公积金下限 2360 依藏政办函〔2025〕25号全区月最低工资可信；上限 42214 无本地官方来源，系借用拉萨值估算。"
+        },
+        {
+          "city": "山南",
+          "status": "official-partial",
+          "urls": [
+            "http://zjj.shannan.gov.cn/",
+            "https://www.shannan.gov.cn/",
+            "http://zjj.shannan.gov.cn/zwgk/xxgkml/22/1055/list.html",
+            "http://zjj.shannan.gov.cn/zwgk/xxgkml/22/1053/list.html",
+            "http://zjj.shannan.gov.cn/zwgk/xxgkml/22/27/list.html",
+            "http://zjj.shannan.gov.cn/zwgk/xxgkml/22/35/list.html",
+            "http://zjj.shannan.gov.cn/zwgk/xxgkml/22/1052/list.html"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "2026-10-13 逐栏枚举山南市住建局信息公开目录 8 个栏目：1055政策文件/1053行政规范性文件/1052政府规章/1054地方性法规/28规划计划/30政策解读 六栏全部返回 4027 字节空模板；27法规文件仅 1 篇转发件；35通知公告 14 篇（最新 2025-08-06）全为建筑施工与行政处罚类。无任何缴存基数件。",
+          "mismatch": "上限 44202 系由山南灵活就业试点上限（月均工资14734×3）反推、单位职工同规则；本批已补 warn:true，数值不改。"
+        },
+        {
+          "city": "那曲",
+          "status": "official-partial",
+          "urls": [
+            "http://zjj.naqu.gov.cn/",
+            "http://www.naqu.gov.cn/",
+            "http://zjj.naqu.gov.cn/nqsjfhcxjsj/bmyw/list.shtml"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "那曲市住房和城乡建设局真实域名是 zjj.naqu.gov.cn（是 naqu 不是 nagqu），部门业务栏翻 3 页共 44 篇（最新 2026-09）、专题专栏 16 篇，均为新闻与自治区转发件，无公积金缴存基数件。",
+          "mismatch": "上限 42214 无本地官方来源，系借用拉萨值估算。"
+        },
+        {
+          "city": "阿里",
+          "status": "official-partial",
+          "urls": [
+            "http://zjt.xizang.gov.cn/",
+            "https://www.xizang.gov.cn/"
+          ],
+          "docNumber": "无",
+          "officialDomain": true,
+          "confirms": "阿里地区四个住建/公积金候选域名 zjj.ali/zfgjj.ali/ylbzj.ali/zfcxjst.ali 及各种拼音变体全部 NXDOMAIN，阿里无任何可读的官方渠道。",
+          "mismatch": "上限 42214 无任何官方来源，仅见灵活就业办法征求意见稿。"
+        }
+      ]
+    }
+  ]
+}

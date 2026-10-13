@@ -1194,8 +1194,9 @@ eq('朝阳·附件表 9% 档 floor(21816×9%)=1963', Math.floor(A.CITIES.cy.hf.m
 // 反推值：官方件未给出 2025 年度月平均工资，21816÷3=7272 只是形态推断，不得当作算式自校验
 eq('朝阳·反推参考值 round(21816÷3)=7272（非官方数字，仅记录）', Math.round(A.CITIES.cy.hf.max/3), 7272);
 eq('朝阳·warn 保留（医保费率未核实）', A.CITIES.cy.warn, true);
-eq('朝阳·辽宁统一五险基数下限4533', A.CITIES.cy.med.min, A.CITIES.fsh.med.min);
-eq('朝阳·辽宁统一五险基数上限22665', A.CITIES.cy.med.max, A.CITIES.fsh.med.max);
+eq('朝阳·医保基数下限3374已按市级全口径改写（朝医保发〔2025〕36号）', A.CITIES.cy.med.min, 3374);
+eq('朝阳·医保基数上限16872已按市级全口径改写', A.CITIES.cy.med.max, 16872);
+eq('朝阳·医保基数不再等于省级社保基数', A.CITIES.cy.med.max !== A.CITIES.cy.pension.max, true);
 // ===== 抚顺：抚政办规〔2026〕3号（抚顺市医保局+税务局 2026-03-19 通告，自 2026-04-01 起单位费率 7%→8%，不含生育）=====
 eq('抚顺·医保单位费率8%（抚政办规〔2026〕3号，官方8%不含生育）', A.CITIES.fsh.med.comp, 0.08);
 eq('抚顺·医保个人费率2%', A.CITIES.fsh.med.emp, 0.02);
@@ -1307,6 +1308,83 @@ eq('茂名·warn 保留（养老/失业/工伤基数无件）', A.CITIES.mm.warn
    深圳：医保 6727~33633 有 2026 年度件；公积金 2520~48471 深住建局历年只检索到 2015—2023 年度件，
      2024—2026 年度缺失，且 48471 与 2520 在官方索引检索计数均为 0，现值来源不明，保留 warn。
 */
+/* ===== 第三十五批（2026-10-13）· 西藏 4 市地 + 辽宁 6 市 =====
+   西藏：山南补 warn（原缺，违反「note 无据表述即数据失实」纪律）；四市地公积金上限全部无本地官方来源。
+   日喀则住建局政策文件12篇/通知公告11篇/法定主动公开12篇、山南住建局信息公开目录8个栏目、
+   那曲住建局部门业务44篇/专题专栏16篇已逐栏枚举，阿里 zjj./gjj./zfcxjst./zfgjj. 四组域名全 NXDOMAIN。
+   域名撞车第 8/9 例：gjj.xz.gov.cn 与 ybj.xz.gov.cn 都是徐州不是西藏；gaj. 前缀在日喀则是公安局、
+   在林芝才是公积金中心。西藏公积金平台 zfgjj.zjt.xizang.gov.cn 只有空登录页；
+   自治区医保局真域名 ylbzj.xizang.gov.cn（zlbzj 为 NXDOMAIN），政策文件栏 9 篇无职工医保基数费率件。
+
+   辽宁：医保基数是市级全口径，下限比例逐市不同（阜新/锦州/朝阳=60%，丹东=100%），多数市从未公布上限。
+   锦州 锦医保〔2025〕79号：71136 元/年 → 213408/42681.6 元/年 → 月值 17784/3556.8。
+   朝阳 朝医保发〔2025〕36号（扫描件挂「履职依据」栏）：5624 元/月 → 16872/3374。
+   丹东 丹医保发〔2025〕89号只给最低基数 5654（=全口径月均 100%），无上限故不设 med。
+   抚顺 2026-06-29 件只给 5306 单数、不可分辨上下限；铁岭四种医保局命名全 NXDOMAIN。
+   辽医保规〔2025〕2号 全名《关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知》
+   （题名取自抚顺转发件，省局三栏至今零命中）。公积金 6 市全部来源不可达，本批零改动。 */
+const xz35=['rkz','shannan','naqu','ali'];
+xz35.forEach(k=>{
+  eq('西藏·'+A.CITIES[k].name+'·社保基数下限7172.4', A.CITIES[k].pension.min, 7172.4);
+  eq('西藏·'+A.CITIES[k].name+'·社保基数上限35862', A.CITIES[k].pension.max, 35862);
+  eq('西藏·'+A.CITIES[k].name+'·医保单位7%', A.CITIES[k].med.comp, .07);
+  eq('西藏·'+A.CITIES[k].name+'·医保个人2%', A.CITIES[k].med.emp, .02);
+  eq('西藏·'+A.CITIES[k].name+'·公积金下限2360', A.CITIES[k].hf.min, 2360);
+  eq('西藏·'+A.CITIES[k].name+'·warn为真', A.CITIES[k].warn, true);
+  eq('西藏·'+A.CITIES[k].name+'·四市地公积金上限互不相同', new Set(xz35.map(c=>A.CITIES[c].hf.max)).size >= 2, true);
+});
+eq('西藏·山南公积金上限44202（本批未改，仅补warn）', A.CITIES.shannan.hf.max, 44202);
+eq('西藏·山南上限44202系反推14734×3', 14734*3, 44202);
+eq('西藏·山南note声明上限无官方来源', A.CITIES.shannan.note.indexOf('上限44202无官方来源待核实') >= 0, true);
+eq('西藏·山南note记录反推依据', A.CITIES.shannan.note.indexOf('14734×3反推') >= 0, true);
+eq('西藏·日喀则note记录穷举篇数', A.CITIES.rkz.note.indexOf('政策文件12篇') >= 0, true);
+eq('西藏·日喀则note警示gaj是公安局', A.CITIES.rkz.note.indexOf('是市公安局非公积金中心') >= 0, true);
+eq('西藏·那曲note记录naqu域名', A.CITIES.naqu.note.indexOf('zjj.naqu.gov.cn，naqu 而非 nagqu') >= 0, true);
+eq('西藏·阿里note记录四组域名NXDOMAIN', A.CITIES.ali.note.indexOf('全部 NXDOMAIN') >= 0, true);
+eq('西藏·日喀则上限与那曲上限同为42214（估算值共用）', A.CITIES.rkz.hf.max === A.CITIES.naqu.hf.max, true);
+eq('西藏·山南上限高于拉萨42214', A.CITIES.shannan.hf.max > A.CITIES.lasa.hf.max, true);
+
+eq('辽宁·锦州医保基数下限3556.8', A.CITIES.jz.med.min, 3556.8);
+eq('辽宁·锦州医保基数上限17784', A.CITIES.jz.med.max, 17784);
+eq('辽宁·锦州医保单位8%', A.CITIES.jz.med.comp, .08);
+eq('辽宁·锦州医保个人2%', A.CITIES.jz.med.emp, .02);
+eq('辽宁·锦州社保基数仍22665（医保基数市级化不改社保）', A.CITIES.jz.pension.max, 22665);
+eq('辽宁·锦州医保下限≠社保下限（证明已单独设med）', A.CITIES.jz.med.min !== A.CITIES.jz.pension.min, true);
+eq('辽宁·锦州件内71136×3=213408', 71136*3, 213408);
+eq('辽宁·锦州件内71136×60%=42681.6', 71136*0.6, 42681.6);
+eq('辽宁·锦州件内71136÷12=5928', 71136/12, 5928);
+eq('辽宁·锦州年上限÷12=月上限17784', 213408/12, 17784);
+eq('辽宁·锦州按下限反推回年值42681.6', Math.round(3556.8*12*100)/100, 42681.6);
+eq('辽宁·锦州note记录锦医保79号', A.CITIES.jz.note.indexOf('锦医保〔2025〕79号') >= 0, true);
+
+eq('辽宁·朝阳医保基数下限3374', A.CITIES.cy.med.min, 3374);
+eq('辽宁·朝阳医保基数上限16872', A.CITIES.cy.med.max, 16872);
+eq('辽宁·朝阳件内5624×3=16872', 5624*3, 16872);
+eq('辽宁·朝阳件内round(5624×60%)=3374（原文取整）', Math.round(5624*0.6), 3374);
+eq('辽宁·朝阳若不取整应为3374.4（证明原文做了取整）', Math.round(3374.4*10)/10, 3374.4);
+eq('辽宁·朝阳note记录朝医保发36号', A.CITIES.cy.note.indexOf('朝医保发〔2025〕36号') >= 0, true);
+eq('辽宁·朝阳note记录件挂履职依据栏目', A.CITIES.cy.note.indexOf('履职依据') >= 0, true);
+
+eq('辽宁·丹东无独立医保区间，仍回落社保22665（5654只是下限且无上限）', A.CITIES.dd.med.max, A.CITIES.dd.pension.max);
+eq('辽宁·抚顺无独立医保区间，仍回落社保22665（5306单数不可分辨）', A.CITIES.fsh.med.max, A.CITIES.fsh.pension.max);
+eq('辽宁·铁岭无独立医保区间，仍回落社保22665（无医保局域名）', A.CITIES.tl.med.max, A.CITIES.tl.pension.max);
+eq('辽宁·丹东note记录下限5654', A.CITIES.dd.note.indexOf('5654元/月执行') >= 0, true);
+eq('辽宁·丹东note警示下限是全口径月均100%', A.CITIES.dd.note.indexOf('全口径月均的100%（不是60%）') >= 0, true);
+eq('辽宁·抚顺note记录5306单数', A.CITIES.fsh.note.indexOf('5306元执行') >= 0, true);
+eq('辽宁·抚顺note说明无法分辨上下限', A.CITIES.fsh.note.indexOf('无法分辨5306是下限还是唯一基数') >= 0, true);
+eq('辽宁·铁岭note警示tl.gov.cn是铜陵', A.CITIES.tl.note.indexOf('属安徽铜陵，禁用') >= 0, true);
+eq('辽宁·阜新医保基数本批未动', A.CITIES.fx.med.min, 3563);
+eq('辽宁·阜新医保上限本批未动', A.CITIES.fx.med.max, 17817);
+const _LN35=['fsh','dd','jz','fx','tl','cy'];
+let _n35=0;
+_LN35.forEach(k=>{
+  eq('辽宁·'+A.CITIES[k].name+'·社保基数下限4533（辽人社〔2026〕19号省级）', A.CITIES[k].pension.min, 4533);
+  eq('辽宁·'+A.CITIES[k].name+'·社保基数上限22665', A.CITIES[k].pension.max, 22665);
+  if(k!=='fx') _n35++;
+});
+eq('辽宁·6市社保基数省级统一', _n35, 5);
+eq('辽宁·已单独设医保区间的城市数=3（阜新/锦州/朝阳）', ['jz','cy','fx'].filter(k=>A.CITIES[k].med!==undefined).length, 3);
+eq('辽宁·医保下限比例逐市不同：丹东=100%对阜新=60%', 3563/5939 < .61 && 5654/5654 === 1, true);
 eq('汕头·失业保险缴费基数下限2040', A.CITIES.st.unemp.min, 2040);
 eq('汕头·失业保险缴费基数上限仍取广东省级44265', A.CITIES.st.unemp.max, 44265);
 ok('汕头·失业费率 单位0.8%', A.CITIES.st.unemp.comp, .008);
@@ -1551,10 +1629,10 @@ for (const k of _LN_REAL) {
   eq('辽宁·社保基数上限 22665 · '+k, A.CITIES[k].pension.max, 22665);
   eq('辽宁·社保基数下限 4533 · '+k, A.CITIES[k].pension.min, 4533);
 }
-for (const k of _LN_REAL.filter(function(k){ return k!=='fx'; })) {
+for (const k of _LN_REAL.filter(function(k){ return ['fx','jz','cy'].indexOf(k)<0; })) {
   eq('辽宁·医保基数仍沿用社保口径 · '+k, A.CITIES[k].med.max, 22665);
 }
-eq('辽宁·医保基数已按市级全口径改写的城市数', _LN_REAL.filter(function(k){ return A.CITIES[k].med.max===17817; }).length, 1);
+eq('辽宁·医保基数已按市级全口径改写的城市数（阜新/锦州/朝阳）', _LN_REAL.filter(function(k){ return A.CITIES[k].med.max!==22665; }).length, 3);
 const _LN = ['sy','dl','as','fsh','bx','dd','jz','yk','fx','lyo','pj','tl','cy','hld'];
 eq('辽宁·14 市全部纳入省级断言集合', _LN.length, 14);
 for (const _k of _LN) {
@@ -1564,7 +1642,9 @@ for (const _k of _LN) {
 /* 阜新医保基数是市级全口径 3563~17817，不与省级社保基数同值 */
 eq('辽宁·阜新·医保基数下限 3563（市级全口径）', A.CITIES.fx.med.min, 3563);
 eq('辽宁·阜新·医保基数上限 17817（市级全口径）', A.CITIES.fx.med.max, 17817);
-eq('辽宁·13 市医保基数仍与社保基数同值', _LN.filter(function(k){ return k!=='fx'; }).filter(function(k){ return A.CITIES[k].med.max===A.CITIES[k].pension.max; }).length, 13);
+eq('辽宁·11 市医保基数仍与社保基数同值（fx/jz/cy 已市级化）', _LN.filter(function(k){ return ['fx','jz','cy'].indexOf(k)<0; }).filter(function(k){ return A.CITIES[k].med.max===A.CITIES[k].pension.max; }).length, 11);
+eq('辽宁·锦州·医保基数下限3556.8（市级全口径）', A.CITIES.jz.med.min, 3556.8);
+eq('辽宁·锦州·医保基数上限17784（市级全口径）', A.CITIES.jz.med.max, 17784);
 eq('贵州·基数下限(黔人社发〔2026〕7号)', A.CITIES.guiy.pension.min, 4426.05);
 eq('贵州·基数上限', A.CITIES.guiy.pension.max, 22130.25);
 eq('贵州·医保基数下限5901.4（80%口径）', A.CITIES.guiy.med.min, 5901.4);
