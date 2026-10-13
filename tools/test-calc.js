@@ -1416,6 +1416,38 @@ ok('深圳·48471÷3=16157 为整数（算术上像城镇非私营口径，但�
 eq('深圳·48471 来源缺失只由 note 记录，不由数值形态推断', A.CITIES.sz.note.indexOf('未取得官方来源') >= 0, true);
 eq('深圳·warn 新增（公积金无官方来源）', A.CITIES.sz.warn, true);
 ok('深圳·note 声明 48471 无官方来源', A.CITIES.sz.note.indexOf('48471') >= 0, true);
+/* ===== 第三十七批（2026-10-14）· 内蒙古 7 市盟医保费率 dead-end 重新穷举 + 云南省级枚举 ===== */
+// 内蒙古社保险基来自内人社办发〔2026〕85号（全区全口径月均 8430 元）
+eq('内蒙古·社保下限=8430×60%', Math.round(8430*0.6), 5058);
+eq('内蒙古·社保上限=8430×300%', 8430*3, 25290);
+eq('内蒙古·医保下限=8430×80%', 8430*0.8, 6744);
+const _IM = [['呼和浩特','hhht',0.067],['包头','baot',0.065],['通辽','tongliao',0.065],['巴彦淖尔','byne',0.065],['兴安盟','xam',0.07],['锡林郭勒盟','xlgl',0.065],['阿拉善盟','alsm',0.065]];
+_IM.forEach(([nm,k,rate]) => {
+  const c = A.CITIES[k];
+  eq('内蒙古·'+nm+'·社保下限5058', c.pension.min, 5058);
+  eq('内蒙古·'+nm+'·社保上限25290', c.pension.max, 25290);
+  eq('内蒙古·'+nm+'·医保基数下限6744', c.med.min, 6744);
+  eq('内蒙古·'+nm+'·医保基数上限25290', c.med.max, 25290);
+  eq('内蒙古·'+nm+'·医保单位费率未变', c.med.comp, rate);
+  eq('内蒙古·'+nm+'·warn 已置位', Boolean(c.warn), true);
+  eq('内蒙古·'+nm+'·note 含「医保单位费率未找到」', c.note.indexOf('医保单位费率未找到') >= 0, true);
+});
+eq('呼和浩特·生育保险单位费率0.7%已写入note', A.CITIES.hhht.note.indexOf('0.7%') >= 0, true);
+eq('呼和浩特·note 引内医保办发〔2025〕22号', A.CITIES.hhht.note.indexOf('内医保办发〔2025〕22号') >= 0, true);
+eq('呼和浩特·note 声明基本医保6.0%无官方来源', A.CITIES.hhht.note.indexOf('基本医保6.0%无任何官方来源') >= 0, true);
+eq('呼和浩特·6.7%=6.0%+0.7% 自校验', Math.round((0.060+0.007)*1000)/1000, 0.067);
+eq('巴彦淖尔·note 引官方现行有效规范性文件目录', A.CITIES.byne.note.indexOf('现行有效规范性文件目录') >= 0, true);
+eq('巴彦淖尔·note 记录11号不在目录中', A.CITIES.byne.note.indexOf('11号不在其中') >= 0, true);
+eq('巴彦淖尔·note 仍保留文号以便追溯', A.CITIES.byne.note.indexOf('巴政办发〔2020〕11号') >= 0, true);
+eq('通辽·note 记政策解读全文无费率二字', A.CITIES.tongliao.note.indexOf('无「费率」二字') >= 0, true);
+eq('包头·note 记医保局站空壳', A.CITIES.baot.note.indexOf('ybj.baotou.gov.cn') >= 0, true);
+eq('兴安盟·note 记医保局无独立域名', A.CITIES.xam.note.indexOf('无独立域名') >= 0, true);
+eq('锡林郭勒·note 记部门文件栏仅4条', A.CITIES.xlgl.note.indexOf('ybj.xlgl.gov.cn') >= 0, true);
+eq('阿拉善·note 记机构自挂未更新说明', A.CITIES.alsm.note.indexOf('未更新情况说明') >= 0, true);
+eq('保山·医保单位费率未找到仍保留', A.CITIES.baosh.note.indexOf('医保单位费率未找到') >= 0, true);
+eq('临沧·医保单位费率未找到仍保留', A.CITIES.linc.note.indexOf('医保单位费率未找到') >= 0, true);
+eq('德宏·医保单位费率未找到仍保留', A.CITIES.deh.note.indexOf('医保单位费率未找到') >= 0, true);
+eq('昆明·医保单位7.9%仍保留', A.CITIES.km.note.indexOf('医保单位7.9%') >= 0, true);
 // ---------- 第三十三批（湖北 / 河南）：省级域名修正 + 市级公积金件补齐 ----------
 const _HUB = A.CITIES.wuha, _XYF = A.CITIES.xf, _KF = A.CITIES.kf, _SMX = A.CITIES.smx, _SQIU = A.CITIES.sqiu;
 // 湖北 13 市州仍为 2025 年度分 3 档；本轮确认「2026 年度件全量检索无果」，不改值

@@ -1,0 +1,174 @@
+{
+  "group": "Z31",
+  "generatedAt": "2026-10-14T07:30:00Z",
+  "note": "第三十七批 A · 内蒙古 7 市盟医保单位费率取证（数值零改动）。「医保费率制度性 dead-end」经重新穷举后成立且证据强度升级：拿到全部真实机构域名后逐个打开 7 个市盟医保局官网 + 各市政府门户全部政策文件/规范性文件栏目，确认市级同样不公开发布单位费率。唯一数值级突破是呼和浩特生育保险单位费率 0.7%。巴彦淖尔得到官方目录反证。",
+  "provinces": [
+    {
+      "province": "内蒙古",
+      "provinceWideUrls": [
+        "https://ylbzj.nmg.gov.cn/zwgk/zfxxgk/zc/xxyxgfxwj/202601/t20260107_2846007.html",
+        "https://ybj.huhhot.gov.cn/",
+        "https://ybj.baotou.gov.cn/",
+        "https://ylbzj.tongliao.gov.cn/",
+        "https://ybj.xlgl.gov.cn/",
+        "https://ybj.als.gov.cn/",
+        "https://www.bynr.gov.cn/zfxxgk/fdzdgk/xzgfxwj/xzgfxwjml/202605/t20260511_32736.html"
+      ],
+      "provinceWideNote": "第三十七批（2026-10-14）· 内蒙古 7 市盟医保单位费率 dead-end 重新穷举：旧结论仅凭「内医保办发〔2025〕22号 不出逐盟市费率表」；本轮用「上级部门页脚反查下级机构域名」拿到全部真实机构域名后，逐个打开 7 个市盟医保局官网 + 各市政府门户的全部政策文件/规范性文件栏目，确认市级同样不公开发布单位费率——这是证据强度升级而非重复下结论。\n⭐ 机制性根因：政府门户「政策文件」栏只收政府本级文件、不含局发文件，因此局发的医保费率件在市级没有任何公开落点。这解释了内蒙古、云南两省同类 dead-end。\n⭐ 唯一数值级突破（呼和浩特生育保险单位费率 0.7%）：市政府门户 2026-06-09 政策解读稿逐字「我市明确灵活就业人员参加职工医保时，可同步参加生育保险，缴费基数与职工医保一致，缴费费率为0.7%」；内医保办发〔2025〕22号 明定「灵活就业人员缴费费率与当地企业单位生育保险费率保持一致」，故呼和浩特企业单位生育费率同为 0.7%。跨件推导，算式自校验不成立。仓库 medComp .067 不改——只证实生育 0.7%，基本医保 6.0% 无任何官方来源，反推参考值 .067−.007=.060 属分解猜测。\n⭐ 巴彦淖尔官方反证：《巴彦淖尔市现行有效规范性文件目录》（市政府办，页面 2026-09-16）2020 年序列为 1（已废止）、6、14、16、17、18、25、26、30 号，11 号不在其中，且全目录无任何医保/医疗/生育/社会保险费类文件。原 note 引用的「巴政办发〔2020〕11号」不能作为现行有效依据（四关第②关不过），数值不改。\n⚠ 「现行有效规范性文件目录」一页证伪法的法理边界：只收录政府/政府办公厅文件、不含局发文件，故只能用于证伪巴政办发〔2020〕11号、通政发〔2022〕85号这类市政府级文号，不能用于判断包医保发〔2022〕11号、锡医保发〔2021〕111号、阿医保办〔2019〕115号等局发件。\n⚠ 取证纪律新增：403 与 headless Chrome 软 404 都可能只是路径少写 index.html，判 dead-end 前必须试 index.html 变体（锡林郭勒亲证：不带 403/软 404，带 index.html 得 200/44601）。\n⚠ 内蒙古没有安徽那种动态 .js 友情链接文件，页脚是服务端静态 HTML 且只给 7 个盟市、缺通辽/巴彦淖尔/兴安盟/乌兰察布，同时混列 18 个外省省局域名，抓取须过滤。jrobot 检索 API 在内蒙古三市盟全废（bynr 301 / xam 404 / huhhot 000）。\n⚠ web_search 本轮两次 HTTP 429（OpenCode Zen 额度耗尽），全部成果来自直接 curl 官方站点枚举。",
+      "cities": [
+        {
+          "city": "呼和浩特",
+          "status": "official-partial",
+          "docNumber": "市政府门户 2026-06-09 政策解读稿（无文号）+ 内医保办发〔2025〕22号",
+          "confirms": "2026-10-14 复核：唯一数值级突破是生育保险单位费率 0.7%——市政府门户 2026-06-09 政策解读稿逐字「灵活就业人员参加职工医保时可同步参加生育保险，缴费基数与职工医保一致，缴费费率为0.7%」，配合内医保办发〔2025〕22号「灵活就业人员缴费费率与当地企业单位生育保险费率保持一致」，企业口径同为 0.7%。基本医保 6.0% 无任何官方来源，仓库 medComp .067 属分解估算，不改值。社保 5058~25290 依内人社办发〔2026〕85号（全区全口径月均 8430）。",
+          "mismatch": "仅坐实生育保险单位费率 0.7%；基本医保单位费率 6.0% 无任何官方来源，medComp .067 属分解估算",
+          "urls": [
+            "https://www.hhhtgjj.org.cn/website/index.html",
+            "http://ybj.huhhot.gov.cn/xxgk/zcwj/",
+            "http://ybj.huhhot.gov.cn/xxgk/tzgg/",
+            "http://rsj.huhhot.gov.cn/",
+            "http://www.huhhot.gov.cn/bmxxgk/szfzcbm/sylbzj_22432/fdzdgknr_25424/zcjdnew/bmzcjdnew/202606/t20260609_2011957.html",
+            "https://ylbzj.nmg.gov.cn/zwgk/zfxxgk/zc/xxyxgfxwj/202601/t20260107_2846007.html",
+            "https://www.huhhot.gov.cn/"
+          ],
+          "rawQuotes": [
+            "我市明确灵活就业人员参加职工医保时，可同步参加生育保险，缴费基数与职工医保一致，缴费费率为0.7%。",
+            "灵活就业人员……缴费费率与当地企业单位生育保险费率保持一致。（内医保办发〔2025〕22号）"
+          ],
+          "checks": [
+            "①口径：生育保险单位费率，企业口径经「灵活就业＝企业单位」条款推出 —— 部分通过",
+            "②生效：2026-06-09 发布且无有效期限定 —— 通过",
+            "③数字歧义：0.7% 唯一，无第二数字，算式自校验不成立（跨件推导）",
+            "④来源：.gov.cn 市政府门户 + 自治区医保局 —— 通过",
+            "处置：medComp .067 零改动，仅补 note 并新增 warn:true（B 类「医保单位费率未找到」）"
+          ]
+        },
+        {
+          "city": "包头",
+          "status": "official-partial",
+          "docNumber": "内人社办发〔2026〕85号（社保）+ 自治区医保局 dead-end 记录",
+          "confirms": "2026-10-14 复核：医保局站 ybj.baotou.gov.cn 可读但 /zfxxgk/ 仅 135 字节空壳，市政府门户政策文件栏无医保件，原引「包医保发〔2022〕11号」无法验证，medComp .065 维持估算。公积金中心站 www.btgjj.cn 为单页应用，政策法规栏目仅有国标与自治区文件、无本市缴存基数通知，2380~29284 维持估算。",
+          "mismatch": "医保局站 /zfxxgk/ 仅 135 字节空壳；原引「包医保发〔2022〕11号」无法验证，medComp .065 维持估算",
+          "urls": [
+            "https://www.btgjj.cn/",
+            "https://www.btgjj.com/",
+            "https://www.baotou.gov.cn/",
+            "http://zfhcxjsj.baotou.gov.cn/",
+            "https://www.btgjj.cn/robots.txt",
+            "https://ybj.baotou.gov.cn/",
+            "https://ylbzj.nmg.gov.cn/zwgk/zfxxgk/zc/xxyxgfxwj/202601/t20260107_2846007.html"
+          ],
+          "rawQuotes": [],
+          "checks": [
+            "①-④ 医保费率：四关全不过（来源不可验证）→ 数值零改动，仅补 note",
+            "公积金：中心站 www.btgjj.cn 为单页应用，政策法规栏目仅有国标与自治区文件、无本市缴存基数通知 → 2380~29284 维持估算（warn 保留）"
+          ]
+        },
+        {
+          "city": "通辽",
+          "status": "official-partial",
+          "docNumber": "内人社办发〔2026〕85号（社保）",
+          "confirms": "2026-10-14 复核：医保局站 ylzj.tongliao.gov.cn（ylbzj.tongliao.gov.cn）可读，但《通辽市职工医疗保险生育政策解读》全文逐字读完无「费率」二字；原引「通政发〔2022〕85号」未在该市任何公开栏目出现，medComp .065 维持估算。公积金 2310~26661 沿用 2026 年度值。",
+          "mismatch": "《通辽市职工医疗保险生育政策解读》全文逐字读完无「费率」二字；原引「通政发〔2022〕85号」未在该市任何公开栏目出现，medComp .065 维持估算",
+          "urls": [
+            "https://ylbzj.tongliao.gov.cn/xwzx/tzgg/202607/t20260706_1058433.html",
+            "https://rst.nmg.gov.cn/zfxxgk/fdzdgknr/zhengcewenjian/202608/t20260828_2945897.html",
+            "http://www.tlzfgjj.org.cn/",
+            "https://ylbzj.tongliao.gov.cn/",
+            "https://ylbzj.nmg.gov.cn/zwgk/zfxxgk/zc/xxyxgfxwj/202601/t20260107_2846007.html"
+          ],
+          "rawQuotes": [],
+          "checks": [
+            "①-④ 医保费率：四关全不过 → 数值零改动，补 note 并新增 warn:true（B 类）"
+          ]
+        },
+        {
+          "city": "巴彦淖尔",
+          "status": "official-partial",
+          "docNumber": "内人社办发〔2026〕85号（社保）+ 巴彦淖尔市现行有效规范性文件目录（官方反证）",
+          "confirms": "2026-10-14 复核：官方反证——《巴彦淖尔市现行有效规范性文件目录》（市政府办，页面 2026-09-16）2020 年序列为 1（已废止）、6、14、16、17、18、25、26、30 号，11 号不在其中，且全目录无任何医保/医疗/生育/社会保险费类文件。原 note 引用的「巴政办发〔2020〕11号」不能作为现行有效依据，medComp .065 维持估算，数值零改动。",
+          "mismatch": "原引「巴政办发〔2020〕11号」不在市政府办 2026-09-16 公布的现行有效目录内（2020 年序列 1/6/14/16/17/18/25/26/30，11 号空缺），且全目录无任何医保类文件",
+          "urls": [
+            "https://rst.nmg.gov.cn/zfxxgk/fdzdgknr/zhengcewenjian/202608/t20260828_2945897.html",
+            "http://www.nmgzfgjj.com.cn/website/index.html",
+            "http://bynrgjj.org.cn/",
+            "http://rsj.bynr.gov.cn/",
+            "https://www.bynr.gov.cn/zfxxgk/fdzdgk/xzgfxwj/xzgfxwjml/202605/t20260511_32736.html",
+            "https://ylbzj.nmg.gov.cn/zwgk/zfxxgk/zc/xxyxgfxwj/202601/t20260107_2846007.html"
+          ],
+          "rawQuotes": [
+            "2020 年序列：1 号（已废止）、6 号、14 号、16 号、17 号、18 号、25 号、26 号、30 号 —— 11 号不在现行有效清单；全目录无任何医保/医疗/生育/社会保险费类文件"
+          ],
+          "checks": [
+            "④来源：官方目录反证 —— 依据失效，数值零改动，补 note 并新增 warn:true"
+          ]
+        },
+        {
+          "city": "兴安盟",
+          "status": "official-partial",
+          "docNumber": "内人社办发〔2026〕85号（社保）",
+          "confirms": "2026-10-14 复核：兴安盟医保局无独立域名（6 个候选全部 NXDOMAIN），上级部门页脚反查法在此市结构性失效；仅确认生育 0.5%，medComp .07 属估算。公积金中心站五栏逐条枚举，2026 年度通知确认未发布，维持 2025 年度 2140~22685。",
+          "mismatch": "兴安盟医保局无独立域名（6 个候选全部 NXDOMAIN），上级部门页脚反查法在此市结构性失效；仅确认生育 0.5%，medComp .07 属估算",
+          "urls": [
+            "http://www.xamzfgjj.cn/",
+            "http://www.xamzfgjj.cn/tzgg/index.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/index_2.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/3080.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/3001.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/2906.jhtml",
+            "http://www.xamzfgjj.cn/tzgg/3147.jhtml",
+            "http://www.xamzfgjj.cn/gjjdfwj/1026.jhtml",
+            "https://xxgk.jl.gov.cn/szf/gkml/202511/t20251126_9360748.html",
+            "https://ylbzj.nmg.gov.cn/zwgk/zfxxgk/zc/xxyxgfxwj/202601/t20260107_2846007.html"
+          ],
+          "rawQuotes": [],
+          "checks": [
+            "①-④ 医保费率：四关全不过 → 数值零改动，补 note（warn 已为 true）",
+            "公积金：中心站五栏逐条枚举，2026 年度通知确认未发布，维持 2025 年度 2140~22685"
+          ]
+        },
+        {
+          "city": "锡林郭勒盟",
+          "status": "official-partial",
+          "docNumber": "内人社办发〔2026〕85号（社保）",
+          "confirms": "2026-10-14 复核：盟医保局 ybj.xlgl.gov.cn 部门文件栏总共只有 4 条且全是 2023 年，2023 年后再未发过任何部门文件；原引「锡医保发〔2021〕111号」无法验证，medComp .065 维持估算。取证纪律：不带 index.html 得 403/软 404，带 index.html 得 200/44601，判 dead-end 前必须试 index.html 变体。",
+          "mismatch": "盟医保局部门文件栏总共只有 4 条且全是 2023 年，2023 年后再未发过任何部门文件；原引「锡医保发〔2021〕111号」无法验证，medComp .065 维持估算",
+          "urls": [
+            "http://www.xlglgjj.org.cn/",
+            "http://www.xlglgjj.org.cn/xlglgjj/zwgk/ldj/index.html",
+            "http://www.xlglgjj.org.cn/xlglgjj/flbz/fg/index.html",
+            "https://www.xlgl.gov.cn/",
+            "https://tjj.xlgl.gov.cn/",
+            "https://ybj.xlgl.gov.cn/",
+            "https://ylbzj.nmg.gov.cn/zwgk/zfxxgk/zc/xxyxgfxwj/202601/t20260107_2846007.html"
+          ],
+          "rawQuotes": [],
+          "checks": [
+            "①-④ 医保费率：四关全不过 → 数值零改动，补 note（warn 已为 true）",
+            "⚠ 403/软 404 判定纪律：不带 index.html 得 403 或软 404，带 index.html 得 200/44601 —— 判 dead-end 前必须试 index.html 变体"
+          ]
+        },
+        {
+          "city": "阿拉善盟",
+          "status": "official-partial",
+          "docNumber": "内人社办发〔2026〕85号（社保）",
+          "confirms": "2026-10-14 复核：盟医保局 ybj.als.gov.cn 栏目里自挂《未更新情况说明》（2026-08-20），机构自认停更；原引「阿医保办〔2019〕115号」无法验证，medComp .065 维持估算。公积金中心站仅四栏、无 2026 年度基数件，维持 2024 年度 1980~26508。",
+          "mismatch": "盟医保局栏目里自挂《未更新情况说明》（2026-08-20），机构自认停更；原引「阿医保办〔2019〕115号」无法验证，medComp .065 维持估算",
+          "urls": [
+            "http://www.alszfgjj.com.cn/",
+            "http://www.alszfgjj.com.cn/col/col4016/index.html",
+            "http://www.alszfgjj.com.cn/col/col4017/index.html",
+            "https://rst.nmg.gov.cn/zfxxgk/fdzdgknr/zhengcewenjian/202608/t20260828_2945897.html",
+            "http://rsj.als.gov.cn/",
+            "https://ybj.als.gov.cn/",
+            "https://ylbzj.nmg.gov.cn/zwgk/zfxxgk/zc/xxyxgfxwj/202601/t20260107_2846007.html"
+          ],
+          "rawQuotes": [],
+          "checks": [
+            "①-④ 医保费率：四关全不过 → 数值零改动，补 note（warn 已为 true）"
+          ]
+        }
+      ]
+    }
+  ]
+}
