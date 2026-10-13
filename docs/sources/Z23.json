@@ -1,0 +1,241 @@
+{
+ "group": "Z23",
+ "generatedAt": "2026-10-13T23:20:00Z",
+ "note": "第三十二批（河南 6 城 + 湖北 4 城）。父代理逐件复核 subagent 报告中的全部一手件（curl 直抓正文，逐字摘录原文），并按四关复核（口径/生效/数字歧义/来源）。本批数值改动 0 处：商丘公积金 2350~18820、鄂州公积金 1970~24457 与 9.3%、鄂州 medFixEmp 15 元/月均为零偏差坐实；武汉 8% 与 medFixEmp 7 因缺生育与大额官方件而不改；郑州/漯河/三门峡/南阳 因市级门户 HTTP 000 无法取证；开封 medComp 6% 仍只有征求意见稿；孝感因未取到费率原文；恩施因 2025/2026 两年度公积金基数件均未发布。湖北 13 市州社保与医保基数仍为 2025 年度（鄂人社发〔2025〕28号，执行期 2025-07-01~2026-06-30），已过期的可能性须在下一批复核，本批不动。",
+ "provinces": [
+  {
+   "province": "河南",
+   "provinceWideUrls": [
+    "http://hrss.henan.gov.cn/2026/10-10/3435886.html",
+    "http://ylbz.henan.gov.cn/2026/10-13/3436659.html",
+    "http://ylbz.henan.gov.cn/2026/10-10/3435812.html",
+    "http://www.kaifeng.gov.cn/"
+   ],
+   "provinceWideNote": "省级两件可用：①豫人社办〔2026〕62号（人社厅+医保局+财政厅+税务局四部门联署，自 2026-07-01 起，3912~19560，自校验 3912÷0.6=19560÷3=6520）已把 17 市社保基数统一，本批不再逐市找基数件；②ylbz.henan.gov.cn 首页 93 条 anchors 无任何地市医保局链接，友情链接法在河南第二次失效（辽宁那次成功），市级医保渠道只能靠市政府门户反查。③ylbz.henan.gov.cn/2026/10-13/3436659.html 是生育保险费率征求意见稿，转正式后可能一次解决河南 17 市生育费率，值得盯。④同站 2026-10-10/3435812.html 是省直口径，不可外推到各市。⑤search.henan.gov.cn 需 CAS 登录（/login?service=…/callback?client_name=CasClient），匿名不可用。",
+   "cities": [
+    {
+     "city": "郑州",
+     "status": "official-partial",
+     "urls": [
+      "http://hrss.henan.gov.cn/2026/10-10/3435886.html",
+      "http://hrss.henan.gov.cn/2026/07-22/3378143.html",
+      "http://tjj.henan.gov.cn/2026/07-27/3379784.html",
+      "https://zzgjj.zhengzhou.gov.cn/zxindt/10197372.jhtml",
+      "https://public.zhengzhou.gov.cn/D3602Y/10200403.jhtml",
+      "https://public.zhengzhou.gov.cn/?a=zcwdpt&d=1905&page=3"
+     ],
+     "docNumber": "豫人社办〔2026〕62号；历史记录：豫人社办〔2026〕62号（社保五险统一基数）；郑公积金〔2026〕18号，公积金 2350~28849",
+     "officialDomain": true,
+     "confirms": "社保基数 3912~19560 已由省级四部门联署件统一确认（自 2026-07-01 起）。医保单位费率 8% 与大额个人额 10.83 元/月未取到市级件；公积金 2350~28829 的 2026 缴存年度件未找到。",
+     "checks": [
+      "四关第1关：社保基数为省级统一口径，与郑州一致",
+      "四关第2关：2026-07-01 已生效",
+      "四关第4关：省人社厅 .gov.cn 联署件"
+     ],
+     "mismatch": "郑州医保单位费率 8%、大额个人 10.83 元/月无官方来源；公积金 2350~28829 的 2026 缴存年度件未取得"
+    },
+    {
+     "city": "漯河",
+     "status": "official-partial",
+     "urls": [
+      "http://hrss.henan.gov.cn/2026/10-10/3435886.html",
+      "http://hrss.henan.gov.cn/2026/07-22/3378143.html",
+      "http://tjj.henan.gov.cn/2026/07-27/3379784.html",
+      "https://gjj.luohe.gov.cn/zxdt/content_1037477"
+     ],
+     "docNumber": "豫人社办〔2026〕62号；历史记录：豫人社办〔2026〕62号（社保五险统一基数）；2025 年度件，公积金 2350~20132",
+     "officialDomain": true,
+     "confirms": "社保基数 3912~19560 已由省级件统一确认。医保 7%、大额 10 元/月、公积金 2350~20132 均无市级件。",
+     "checks": [
+      "市级渠道 www.luohe.gov.cn curl HTTP 000 完全不可达",
+      "四关第2关：省级件已生效"
+     ],
+     "mismatch": "漯河公积金 2026 缴存年度件未找到；医保费率 7% 无官方来源"
+    },
+    {
+     "city": "三门峡",
+     "status": "official-partial",
+     "urls": [
+      "http://hrss.henan.gov.cn/2026/10-10/3435886.html",
+      "http://hrss.henan.gov.cn/2026/10-10/3435886.html",
+      "http://hrss.henan.gov.cn/2026/07-22/3378143.html",
+      "http://tjj.henan.gov.cn/2026/07-27/3379784.html",
+      "http://gjj.smx.gov.cn/139708/2026/8/2300022.html"
+     ],
+     "docNumber": "豫人社办〔2026〕62号；历史记录：豫人社办〔2026〕62号（社保五险统一基数）；2026-07 中心通知，公积金 2350~19809",
+     "officialDomain": true,
+     "confirms": "社保基数 3912~19560 已由省级件统一确认。三门峡市医保办法明文「原则上按不超过全省全口径月均 3.5% 筹资、每两年调整，具体筹资标准由市医疗保障部门公布」「具体负担比例由单位自行确定」——官方并不设统一的个人固定额，故仓库 18.33 元/月缺证。",
+     "checks": [
+      "四关第3关：大额 18.33 元/月与官方「单位自行确定」口径不自洽",
+      "四关第4关：省级件官方"
+     ],
+     "mismatch": "三门峡大额 18.33 元/月与官方「具体负担比例由单位自行确定」不自洽；公积金 2350~19809 的 2026 年度件未取得"
+    },
+    {
+     "city": "南阳",
+     "status": "official-partial",
+     "urls": [
+      "http://hrss.henan.gov.cn/2026/10-10/3435886.html",
+      "http://hrss.henan.gov.cn/2026/07-22/3378143.html",
+      "http://tjj.henan.gov.cn/2026/07-27/3379784.html",
+      "https://zfgjj.nanyang.gov.cn/2026/08-14/1426656.html"
+     ],
+     "docNumber": "豫人社办〔2026〕62号；历史记录：豫人社办〔2026〕62号（社保五险统一基数）；2026-07 中心通知，公积金 2350~18553.5",
+     "officialDomain": true,
+     "confirms": "社保基数 3912~19560 已由省级件统一确认。南阳官方仅证实 2026 年度大额总额 459.72 元/年（=6385×0.6%×12），个人分担比例未证实，故 19.16 元/月缺证。",
+     "checks": [
+      "自校验：6385×0.6%×12 = 459.72 成立",
+      "但 19.16×12=229.92 仅为总额的一部分，个人比例无据"
+     ],
+     "mismatch": "南阳大额 19.16 元/月与官方 459.72 元/年总额口径不自洽；公积金 2350~18553.5 的 2026 年度件未取得"
+    },
+    {
+     "city": "商丘",
+     "status": "official-partial",
+     "urls": [
+      "https://gjj.shangqiu.gov.cn/zwdt/tzgg/content_309510",
+      "http://hrss.henan.gov.cn/2026/10-10/3435886.html",
+      "http://hrss.henan.gov.cn/2026/07-22/3378143.html",
+      "http://tjj.henan.gov.cn/2026/07-27/3379784.html",
+      "https://www.shangqiu.gov.cn/xw/gsgg/content_309516"
+     ],
+     "docNumber": "商公积金委〔2026〕9号 / 豫人社办〔2026〕62号；历史记录：豫人社办〔2026〕62号（社保五险统一基数）；2026-07 中心通知，公积金 2350~18820",
+     "officialDomain": true,
+     "confirms": "⭐ 父代理直抓复核（200/55140）逐字：「…18820元。缴存基数下限为：市区（含睢阳区、梁园区、城乡一体化示范区）为2350元，神火分中心为2150元，虞城县、夏邑县、柘城县、宁陵县、民权县、睢县为2000元」「比例均不应高于12%且不应低于5%」「比例调整时间为2026年7月1日至8月31日」，依据 商公积金委〔2026〕9号。仓库 sqiu.hf 2350~18820 零偏差。⚠️ 18820÷3=6273.33 非整数，官方未给月平均工资，算式自校验不成立（属官方直给值）。",
+     "rawQuotes": [
+      "缴存基数下限为：市区（含睢阳区、梁园区、城乡一体化示范区）为2350元，神火分中心为2150元，虞城县、夏邑县、柘城县、宁陵县、民权县、睢县为2000元",
+      "比例调整时间为2026年7月1日至8月31日"
+     ],
+     "checks": [
+      "四关第1关：商丘市公积金中心口径，市级值",
+      "四关第2关：2026 年度已生效",
+      "四关第3关：18820÷3 非整数 → 自校验不成立，标为官方直给值",
+      "四关第4关：gjj.shangqiu.gov.cn .gov.cn 市中心站"
+     ],
+     "mismatch": "商丘医保单位费率 6%、大额 12.5 元/月因市政府与医保局多个页面抓取失败未能核查"
+    },
+    {
+     "city": "开封",
+     "status": "official-partial",
+     "urls": [
+      "https://ylbzj.kaifeng.gov.cn/kfsylbzjwz/ylbzjzcjd/pc/content/content_2064604290377887744.html",
+      "https://ylbzj.kaifeng.gov.cn/kfsylbzjwz/ylbzjzcjd/pc/content/content_2095709621631627264.html",
+      "https://ylbzj.kaifeng.gov.cn/kfsylbzjwz/ylbzjzcjd/pc/content/content_2108475567767220224.html",
+      "http://hrss.henan.gov.cn/2026/10-10/3435886.html",
+      "http://hrss.henan.gov.cn/2026/07-22/3378143.html",
+      "http://tjj.henan.gov.cn/2026/07-27/3379784.html",
+      "http://gjj.kaifeng.gov.cn/kfsgjjglzxwz/gjjctzgg/pc/content/content_2079479374577971200.html",
+      "https://www.kaifeng.gov.cn/kfsrmzfwz/szfbx/pc/content/content_1750799455527022592.html"
+     ],
+     "docNumber": "",
+     "officialDomain": true,
+     "confirms": "开封是本批唯一有实质进展的河南城市。✅ 大额医疗个人固定额 15 元/月坐实（政策解读页明写「大额…每年再缴纳 180 元」，自校验 180÷12=15 成立）。❌ 医保单位费率 6% 仍只有征求意见稿：2026 年拟由 6% 调整为 7%，2026-10-09 的征求意见结果公告写「截至 2026 年 10 月 7 日未收到意见建议」→ 四关第 2 关不过，medComp 保持 6%、warn 保留。可用渠道：栏目 code = ylbzjzcjd / ylbzjgggs / ylbjzqyj / ylbzjqljgm / ylbjgk nr / ylbjybyw；文章路径 /kfsylbzjwz/<栏目>/[cd/]content/content_<id>.html；检索 API 为 POST https://www.kaifeng.gov.cn/search5/search/s（开封主站 siteCode 4102000008、医保局子站 4102000047）。",
+     "rawQuotes": [
+      "大额…每年再缴纳 180 元",
+      "截至 2026 年 10 月 7 日未收到意见建议"
+     ],
+     "checks": [
+      "四关第2关：医保费率件仍是征求意见稿，未生效，不得改值",
+      "四关第3关：180÷12=15 自校验成立",
+      "四关第4关：开封市医保局 .gov.cn 子站"
+     ],
+     "mismatch": "开封医保单位费率 6% 只有征求意见稿（拟改 7%），2026-10-07 前未收到意见建议，不得当作现值"
+    }
+   ]
+  },
+  {
+   "province": "湖北",
+   "provinceWideUrls": [
+    "http://ylbzj.ezhou.gov.cn/",
+    "https://sylbzj.xiaogan.gov.cn/",
+    "http://gjj.enshi.gov.cn/",
+    "https://ybj.wuhan.gov.cn/zwgk_52/zcfgyjd/zcwd/202308/t20230818_2249362.shtml"
+   ],
+   "provinceWideNote": "湖北 13 市州的社保与医保基数仍是 2025 年度（鄂人社发〔2025〕28号，三档：武汉 4498~22488；黄石/十堰/襄阳/宜昌/荆门/随州/恩施 4299~21678；荆州/鄂州/孝感/黄冈/咸宁 4254~21462），医保基数按 鄂医保函〔2024〕91号 自 2026-07-01 起继续执行至新标准出台 —— 执行期 2025-07-01~2026-06-30 已过，新年度件（鄂人社发〔2026〕/鄂医保发〔2026〕）本批未取到，影响全省 13 行，下一批优先。武汉医保局站内检索是 TRS isearch，isearch_web_build.js(111KB) + isearch-base-package.js(284KB) 里找不到后端 API，浏览器端 API 路径未打通，本环境死路。武汉公积金 www.whzfgjj.cn DoH 解析到 112.54.81.170 但 curl HTTP 000。",
+   "cities": [
+    {
+     "city": "武汉",
+     "status": "official-partial",
+     "urls": [
+      "https://ybj.wuhan.gov.cn/zwgk_52/zcfgyjd/zcwd/202308/t20230818_2249362.shtml",
+      "https://ybj.wuhan.gov.cn/zwgk_52/zcfgyjd/zcfg/202512/t20251215_2695416.html",
+      "http://gjj.ezhou.gov.cn/"
+     ],
+     "docNumber": "武医保规〔2022〕2号 / 武医保规〔2024〕2号",
+     "officialDomain": true,
+     "confirms": "✅ 基本医保单位费率 8% 官方坐实：政策解读页（200/46912）逐字「个人 2%，基数明文『省确定标准的 60%~300%』」。⚠️ 该页全文无「生育」二字、也无大额金额 → 仓库 medComp .087 与 medFixEmp 7 均无对应官方件，不改、维持 partial。⚠️ 武医保规〔2024〕2号《优化积极生育医疗保障具体措施》（有效期至 2029-03-31）是最可能载有生育费率的件，但站内只挂目录未挂正文 —— 这是拿下 medComp .087 的唯一线索。规范性文件栏仅 4 条且无分页（index_1~5 全 404）。",
+     "rawQuotes": [
+      "在职职工个人按本人缴费工资的2%缴纳基本医疗保险费",
+      "缴费基数按省确定标准的60%~300%确定"
+     ],
+     "checks": [
+      "四关第1关：基本医保 8% 是不含生育口径，而仓库 medComp 按含生育口径取值 8.7%",
+      "四关第3关：缺生育费率与大额金额，第3关不过 → 不改值"
+     ],
+     "mismatch": "武汉 medComp 8.7% 与 medFixEmp 7 元/月缺官方件（8% 只覆盖基本医保）；武医保规〔2024〕2号 站内无正文"
+    },
+    {
+     "city": "鄂州",
+     "status": "official-confirmed",
+     "urls": [
+      "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+      "http://ybj.ezhou.gov.cn/xxgk/zc/zcjd/202312/t20231229_604818.html",
+      "http://ybj.ezhou.gov.cn/"
+     ],
+     "docNumber": "鄂州医保发〔2023〕62号",
+     "officialDomain": true,
+     "confirms": "⭐ 两件一手件均零偏差。公积金（200/28892，页面 2026-06-29，落款「鄂州市住房公积金中心 2026年6月25日」）：「2026年度我市住房公积金月缴存基数上限为24457元，月缴存额上限为5870元（单位和个人缴存额合计）；最低月缴存基数不得低于1970元，最低月缴存额为198元」「2026年度各缴存单位集中调整时间为7月1日至8月31日，执行周期为2026年7月1日至2027年6月30日」，比例 5%~12%。医保（200/32837，政策解读页）：「缴费费率 = 生育保险费率 0.8% + 职工基本医疗保险费率 8.5% = 9.3%」「新生育医疗保障政策自 2024 年 1 月 1 日起执行」，关联 鄂州医保发〔2023〕62号（62号正文 PDF P020231227399106398620.pdf 200/2973955/8 页纯扫描 pypdf 0 字符，结论由同源解读页承载）。",
+     "rawQuotes": [
+      "2026年度我市住房公积金月缴存基数上限为24457元，月缴存额上限为5870元（单位和个人缴存额合计）",
+      "最低月缴存基数不得低于1970元，最低月缴存额为198元",
+      "缴费费率为生育保险费率0.8%与职工基本医疗保险费率8.5%之和，即9.3%"
+     ],
+     "checks": [
+      "四关第1关：市级口径，企业职工",
+      "四关第2关：2026-07-01~2027-06-30，已生效",
+      "四关第3关：算式自校验成立 —— round(24457×12%)×2 = 2935×2 = 5870；round(1970×5%)×2 = 99×2 = 198；医保 0.8+8.5=9.3 三数互洽",
+      "四关第4关：鄂州市公积金中心 + 市医保局 .gov.cn"
+     ],
+     "mismatch": "鄂州社保与医保基数仍为 2025 年度 4254~21462，2026 年度件未取得"
+    },
+    {
+     "city": "恩施",
+     "status": "official-partial",
+     "urls": [
+      "http://gjj.enshi.gov.cn/zcfg/",
+      "http://www.enshi.gov.cn/",
+      "http://ybj.enshi.gov.cn/zfxxgk/zc/zcjd/202506/t20250617_1709958.shtml"
+     ],
+     "docNumber": "",
+     "officialDomain": false,
+     "confirms": "州政规〔2023〕5号 未找到。gjj.enshi.gov.cn（只通 http）的 /zcfg/ 栏 19 条，最新年度件是 2024-06-19《关于调整2024年度住房公积金缴存额度的通知》—— 2025 与 2026 两年度件均未发布，故仓库 1800~25850 属无件沿用值，warn 保留。另：承德两件里的「5% 缴费比例缴费的灵活就业人员」与「按职工医保缴费基数的 0.8% 缴纳生育保险费」（灵活就业/农民工/新就业形态）都不是用人单位口径，同类陷阱已排查。⚠️ 域名抢注：www.esgjj.cn（Cloudflare）、www.ezgjj.cn（IP 属地与鄂州不符）；www.enshi.gov.cn 的 CNAME 指向 zzf.jyh.enshi.gov.cn 疑似被改指向，不可信勿用。",
+     "checks": [
+      "四关第1关：无件，无法判定口径",
+      "四关第2关：无件，无法判定生效",
+      "四关第4关：候选域名存在域名抢注"
+     ],
+     "mismatch": "恩施 2025/2026 两年度住房公积金缴存基数件均未发布；州政规〔2023〕5号 未找到"
+    },
+    {
+     "city": "孝感",
+     "status": "official-partial",
+     "urls": [
+      "https://sylbzj.xiaogan.gov.cn/c/xgsylbzj/qtzdgkwj/425801.jhtml",
+      "http://gjj.ezhou.gov.cn/",
+      "http://xggjj.xiaogan.gov.cn/gsgg/2134817.jhtml",
+      "http://xggjj.xiaogan.gov.cn/gsgg/2115115.jhtml",
+      "http://gkml.xiaogan.gov.cn/c/xnqylbzj/zcxwj/213410.jhtml"
+     ],
+     "docNumber": "孝医保发〔2021〕5号；历史记录：无文号（孝感市住房公积金管理委员会关于调整2026年度住房公积金缴存基数的通知）；孝医保发〔2021〕5号（孝感市职工基本医疗保险实施细则）",
+     "officialDomain": true,
+     "confirms": "✅ 孝医保发〔2021〕5号《孝感市职工基本医疗保险实施细则》的现行性已由官方清理结果公告（200/28656，2025-12-12）确认为「保留」→ 件仍有效，但费率原文未取到，故只记录不改值。孝感各局 CMS 文章路径 /c/<机构代码>/<栏目>/<数字id>.jhtml，文章页自带「效力状态」字段（这是本项目最省钱的现行性证据来源之一）。xggjj.xiaogan.gov.cn 只通 http。",
+     "checks": [
+      "四关第1关：孝感市职工医保口径，但费率原文未取到",
+      "四关第4关：孝感市医保局 .gov.cn + 官方清理结果公告"
+     ],
+     "mismatch": "孝感医保费率原文未取到（孝医保发〔2021〕5号 仍在有效，但无法核到具体数值）"
+    }
+   ]
+  }
+ ]
+}
