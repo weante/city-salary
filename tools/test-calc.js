@@ -1967,10 +1967,65 @@ eq('第三十一批B·邯郸社基数上限20382', A.CITIES.hd.pension.max, 2038
 eq('第三十一批B·邯郸note含邯医保规2024-5号', A.CITIES.hd.note.includes('邯医保规〔2024〕5号'), true);
 eq('第三十一批B·邯郸note声明不设300%上限', A.CITIES.hd.note.includes('不设300%上限'), true);
 eq('第三十一批B·邯郸note不再出现旧误植日期', A.CITIES.hd.note.includes('2025-03-13'), false);
-eq('第三十一批B·承德医保暂估8%', A.CITIES.chengd.med.comp, 0.08);
-eq('第三十一批B·承德note标注0.8%为灵活就业口径', A.CITIES.chengd.note.includes('0.8%'), true);
-eq('第三十一批B·衡水医保暂估8%', A.CITIES.hshui.med.comp, 0.08);
-eq('第三十一批B·衡水note如实写未找到', A.CITIES.hshui.note.includes('医保单位费率未找到'), true);
+eq('第三十一批B·承德生育0.8%仍在note', A.CITIES.chengd.note.includes('0.8%'), true);
+eq('第三十一批B·衡水已补官方费率（第三十六批改值）', A.CITIES.hshui.med.comp, 0.078);
+// ---- 第三十六批（河北 3 城 + 陕西 3 城）----
+// 承德：承医保字〔2021〕60号《承德市职工基本医疗保险市级统筹管理办法》第九条 其他用人单位 7.3%（基本医疗6.5%+生育0.8%）
+// 衡水：衡政规〔2019〕11号第十一条 9.8%-2%=7.8%；衡医保字〔2020〕15号「7%调至3.5%、生育0.8%」分解印证
+// 邯郸：2026-07-09 公积金缴存基数调整通知 2380~23754（下限三档 2380/2230/2080）
+// 渭南：渭房委发〔2026〕1号；汉中：2026-06-30 便笺（7448×3=22344）；安康：安房金发〔2026〕27号（86937÷12×3=21734）
+eq('河北·承德医保单位费率7.3%（承医保字〔2021〕60号第九条）', A.CITIES.chengd.med.comp, 0.073);
+eq('河北·承德医保个人2%', A.CITIES.chengd.med.emp, 0.02);
+eq('河北·承德费率自校验 基本医疗6.5%+生育0.8%=7.3%', 0.065 + 0.008, 0.073);
+eq('河北·承德机关事业口径6.8%不等于单位口径7.3%', 0.065 + 0.003, 0.068);
+eq('河北·承德note写明7.3%', A.CITIES.chengd.note.includes('医保单位7.3%'), true);
+eq('河北·承德note写明财政供养单位6.8%以免口径误用', A.CITIES.chengd.note.includes('6.8%'), true);
+eq('河北·承德note不再写暂估8%', A.CITIES.chengd.note.includes('暂按8%估算'), false);
+eq('河北·承德不设med区间（医保不设300%上限）', Boolean(A.CITIES.chengd.med.min === A.CITIES.chengd.pension.min), true);
+eq('河北·承德warn保留（公积金2025年度件已届满）', A.CITIES.chengd.warn, true);
+eq('河北·承德公积金上限23008（2025年度、已届满）', A.CITIES.chengd.hf.max, 23008);
+eq('河北·承德公积金自校验 92032x300%/12=23008', Math.round(92032 * 3 / 12), 23008);
+eq('河北·衡水医保单位费率7.8%（衡政规〔2019〕11号第十一条）', A.CITIES.hshui.med.comp, 0.078);
+eq('河北·衡水医保个人2%', A.CITIES.hshui.med.emp, 0.02);
+eq('河北·衡水费率自校验 9.8%-2%=7.8%', 0.098 - 0.02, 0.078);
+eq('河北·衡水费率自校验 7%+生育0.8%=7.8%', 0.07 + 0.008, 0.078);
+eq('河北·衡水机关事业9.3%不等于单位口径', 0.093 - 0.02, 0.073);
+eq('河北·衡水note写明7.8%', A.CITIES.hshui.note.includes('医保单位7.8%'), true);
+eq('河北·衡水note引用衡政规〔2019〕11号', A.CITIES.hshui.note.includes('衡政规〔2019〕11号'), true);
+eq('河北·衡水note引用衡医保字〔2020〕15号', A.CITIES.hshui.note.includes('衡医保字〔2020〕15号'), true);
+eq('河北·衡水note不再写暂估8%', A.CITIES.hshui.note.includes('暂按8%估算'), false);
+eq('河北·衡水不设med区间', Boolean(A.CITIES.hshui.med.min === A.CITIES.hshui.pension.min), true);
+eq('河北·衡水warn保留（公积金上限22086无官方件）', A.CITIES.hshui.warn, true);
+eq('河北·衡水note记2025年度官方上限20970', A.CITIES.hshui.note.includes('20970'), true);
+eq('河北·衡水note记2025年度件已届满', A.CITIES.hshui.note.includes('已届满'), true);
+eq('河北·邯郸医保单位8%保持', A.CITIES.hd.med.comp, 0.08);
+eq('河北·邯郸公积金下限2380（市区档）', A.CITIES.hd.hf.min, 2380);
+eq('河北·邯郸公积金上限23754', A.CITIES.hd.hf.max, 23754);
+eq('河北·邯郸上限反推参考值 23754/3=7918', 23754 / 3, 7918);
+eq('河北·邯郸note记下限三档2230/2080', A.CITIES.hd.note.includes('2230') && A.CITIES.hd.note.includes('2080'), true);
+eq('河北·邯郸note声明自校验不成立', A.CITIES.hd.note.includes('算式自校验不成立'), true);
+eq('河北·邯郸warn已取消（医保与公积金均有一手件）', Boolean(A.CITIES.hd.warn), false);
+eq('河北·三市社保基数仍4076~20382（省级口径）', A.CITIES.hd.pension.min + A.CITIES.hshui.pension.min + A.CITIES.chengd.pension.min, 4076 * 3);
+eq('河北·三市社保上限仍20382', A.CITIES.hd.pension.max + A.CITIES.hshui.pension.max + A.CITIES.chengd.pension.max, 20382 * 3);
+eq('河北·三市三险个人合计未变', A.CITIES.hd.med.emp + A.CITIES.hshui.med.emp + A.CITIES.chengd.med.emp, 0.06);
+eq('陕西·渭南公积金2250~22104零偏差', A.CITIES.wn.hf.min * 1000 + A.CITIES.wn.hf.max, 2250 * 1000 + 22104);
+eq('陕西·渭南note补渭房委发〔2026〕1号', A.CITIES.wn.note.includes('渭房委发〔2026〕1号'), true);
+eq('陕西·渭南note删除无2026件表述', A.CITIES.wn.note.includes('上限22104无2026件'), false);
+eq('陕西·渭南warn仍保留（医保费率未找到）', A.CITIES.wn.warn, true);
+eq('陕西·汉中公积金2250~22344零偏差', A.CITIES.hanz.hf.min * 1000 + A.CITIES.hanz.hf.max, 2250 * 1000 + 22344);
+eq('陕西·汉中上限自校验 7448x3=22344', 7448 * 3, 22344);
+eq('陕西·汉中note记7448元/月原数', A.CITIES.hanz.note.includes('7448'), true);
+eq('陕西·汉中note删除无2026件表述', A.CITIES.hanz.note.includes('上限22344无2026件'), false);
+eq('陕西·汉中县区档2140与本表2250并存', 2140 < A.CITIES.hanz.hf.min, true);
+eq('陕西·汉中warn仍保留（医保费率未找到）', A.CITIES.hanz.warn, true);
+eq('陕西·安康公积金2140~21734零偏差', A.CITIES.ank.hf.min * 1000 + A.CITIES.ank.hf.max, 2140 * 1000 + 21734);
+eq('陕西·安康上限自校验 floor(86937/12x3)=21734', Math.floor(86937 / 12 * 3), 21734);
+eq('陕西·安康下限自校验 round(2140x5%)x2=214', Math.round(2140 * 0.05) * 2, 214);
+eq('陕西·安康note保留安房金发〔2026〕27号', A.CITIES.ank.note.includes('安房金发〔2026〕27号'), true);
+eq('陕西·安康医保仍为省级暂估7%', A.CITIES.ank.med.comp, 0.07);
+eq('陕西·安康warn仍保留（医保费率未找到）', A.CITIES.ank.warn, true);
+eq('陕西·三市医保暂估口径仍为7%', A.CITIES.wn.med.comp + A.CITIES.hanz.med.comp + A.CITIES.ank.med.comp, 0.21);
+
 eq('第三十一批B·渭南医保暂估7%', A.CITIES.wn.med.comp, 0.07);
 eq('第三十一批B·汉中医保暂估7%', A.CITIES.hanz.med.comp, 0.07);
 eq('第三十一批B·安康医保暂估7%', A.CITIES.ank.med.comp, 0.07);

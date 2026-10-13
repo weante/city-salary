@@ -1,0 +1,62 @@
+{
+ "group": "Z30",
+ "generatedAt": "2026-10-14T08:00:00Z",
+ "note": "第三十六批 B：安徽省 16 市医保局真实域名一次性全部拿到（读 ybj.ah.gov.cn 首页页脚友情链接的 /ljzy/sybj/49638781.js 直接得到），并取得皖医保发〔2026〕11号《关于规范完善职工生育保险政策的通知》。安徽 16 市医保单位费率为 2026 年现行值，2027-01-01 起按皖医保发〔2026〕12号 新基准逐步调整。",
+ "provinces": [
+  {
+   "province": "安徽",
+   "provinceWideUrls": [
+    "https://ybj.ah.gov.cn/",
+    "https://ybj.ah.gov.cn/ljzy/sybj/49638781.js?num=100",
+    "https://ybj.ah.gov.cn/public/7071/150563551.html",
+    "https://ybj.ah.gov.cn/public/7071/150563471.html"
+   ],
+   "provinceWideNote": "⭐⭐ 安徽省医保局首页页脚的「友情链接」三块（外省市医保局/省直部门/市医保局）不是普通 <a>，而是 <script src=\"https://ybj.ah.gov.cn/ljzy/sybj/49638781.js?num=100&ect=…\">—— 直接 GET 这个 .js 就得到全部 16 个市级医保局真实域名（文件内容是 var linkLi = … 的数组）。此前只试过 ybj.* 一种命名猜测，命中率极低；安徽实际是 ybj. / ylbz. / ylbzj. 三种混用。16 市真实域名：铜陵 https://ybj.tl.gov.cn/、合肥 http://ybj.hefei.gov.cn/、淮北 http://ybj.huaibei.gov.cn/、淮南 http://ybj.huainan.gov.cn/、滁州 http://ybj.chuzhou.gov.cn/、六安 http://ybj.luan.gov.cn/、宣城 http://ylbz.xuancheng.gov.cn/、安庆 http://ylbzj.anqing.gov.cn/、黄山 http://ylbz.huangshan.gov.cn/、马鞍山 http://ylbzj.mas.gov.cn/、芜湖 http://ybj.wuhu.gov.cn/、池州 http://ylbzj.chizhou.gov.cn/、阜阳 http://ylbz.fy.gov.cn/、蚌埠 http://ybj.bengbu.gov.cn/、亳州 http://ybj.bozhou.gov.cn/、宿州 http://ylbzj.ahsz.gov.cn/index.html。⚠ 本项目第 7 例「短拼音才是真域名」：hefei.gov.cn 裸域可解析（112.30.184.224）而 www. 才是门户。⚠ 省会级 WAF 集中：ybj.hefei.gov.cn 返回 521/732B、ylbz.huangshan.gov.cn 返回 412/217B（JS 挑战），http 与 https 均如此。⚠ 本环境 curl 对 https 报 schannel CRYPT_E_REVOCATION_OFFLINE，必须加 --ssl-no-revoke。",
+   "cities": [
+    {
+     "city": "合肥",
+     "status": "official-partial",
+     "officialDomain": true,
+     "docNumber": "皖医保发〔2026〕11号；皖医保发〔2026〕12号（2027 起）；市政府令第213号",
+     "urls": [
+      "https://wjw.ah.gov.cn/group4/M00/05/76/wKg862SmeDWAAmxCAALovolVxFA926.pdf",
+      "http://ybj.ah.gov.cn/",
+      "http://ybj.hefei.gov.cn/",
+      "https://ybj.ah.gov.cn/public/7071/150563551.html"
+     ],
+     "confirms": "医保单位 6.4%（其他单位）、机关事业 6.2%，属 2026 年现行值；2027-01-01 起按皖医保发〔2026〕12号 新基准（企业及其他单位 7.2%、机关事业单位 7%，各市可上浮 0.5pp / 结余超 24 个月者下浮 0.8pp，现行费率不一致的原则上 5 年调整到位）。生育与职工医保合并实施、统一缴费基数、合并计算费率，单位按 0.5%~1% 费率缴费，个人不缴；具体生育费率由各市自定，不能反推某市确切值。公积金 2320~30540 为 2025 缴存年度值（该年度 2026-06-30 已届满），2026 年度件未取得。",
+     "rawQuotes": [
+      "单位职工个人不缴纳生育保险费，用人单位按照0.5%—1%费率缴费。生育保险与职工基本医疗保险合并实施，统一缴费基数，合并计算缴费费率，并动态调整。"
+     ],
+     "checks": [
+      "第一关 口径：仓库取其他单位（企业）6.4%，与市政府令第213号一致。",
+      "第二关 生效：皖医保发〔2026〕11号自 2026-07-01 施行；12 号新基准自 2027-01-01。",
+      "第四关 来源：ybj.ah.gov.cn / ybj.hefei.gov.cn 均为 .gov.cn。"
+     ],
+     "mismatch": "市级医保局站点 521 WAF 不可读，费率只能引用市政府令；生育费率 0.5%~1% 是区间、市值未定；公积金 2026 年度件未取得。"
+    },
+    {
+     "city": "黄山",
+     "status": "official-partial",
+     "officialDomain": true,
+     "docNumber": "皖医保发〔2026〕11号；黄医保〔2019〕42号",
+     "urls": [
+      "https://ylbz.huangshan.gov.cn/zwgk/public/6615779/8912127.html",
+      "http://ybj.ah.gov.cn/",
+      "http://ylbz.huangshan.gov.cn/",
+      "https://ybj.ah.gov.cn/public/7071/150563551.html"
+     ],
+     "confirms": "医保单位 6.5%（企业和民办非企业）、机关与全额拨款事业单位 6.4%，属 2026 年现行值；生育与职工医保合并征缴、费率由 0.5%~1% 区间内各市自定。公积金 2026 年度 2100~24545 的官方件本轮未取得。",
+     "rawQuotes": [
+      "单位职工个人不缴纳生育保险费，用人单位按照0.5%—1%费率缴费。"
+     ],
+     "checks": [
+      "第一关 口径：取企业与民办非企业 6.5%。",
+      "第四关 来源：ylbz.huangshan.gov.cn 为 .gov.cn（412 WAF 不可读，仅域名与归属可证）。"
+     ],
+     "mismatch": "市级医保局站点 412 JS 挑战 WAF 不可读；公积金 2026 年度件未取得；生育费率为区间、市值未定。"
+    }
+   ]
+  }
+ ]
+}
