@@ -1,0 +1,335 @@
+{
+  "group": "Z33",
+  "generatedAt": "2026-10-14T08:05:00Z",
+  "note": "第三十八批 A · 湖北 13 市州 2026 年度职工医保缴费基数 / 医保单位费率核查（数值零改动）。突破有两件但都不是数值：①2026 年度基数件文号坐实为 鄂人社发〔2026〕29号（三部门联署，五险一体）；②执行期被官方原文否定 —— 2026-07~10 执行 2025 年标准、2026-11~2027-06 才执行 2026 新标准，故仓库 13 城 dataYear 仍为 \"2025\" 是正确的。医保单位费率本轮新增 0 个官方件（仅襄阳 8.5% 为既有坐实）。省级死路：ybj.hubei.gov.cn 全站 412、www.hubei.gov.cn 全站 412、rst.hubei.gov.cn 规范性文件列表 JS 异步渲染且服务端 0 篇文章、该站无可用全文检索 API。",
+  "provinces": [
+    {
+      "province": "湖北",
+      "provinceWideUrls": [
+        "https://rst.hubei.gov.cn/",
+        "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html"
+      ],
+      "provinceWideNote": "第三十八批 A · 湖北 13 市州 2026 年度基数件取证（数值零改动）。\n⭐ 突破 1（文号坐实）：2026 年度件 = **鄂人社发〔2026〕29号**《湖北省人力资源和社会保障厅 省医疗保障局 国家税务总局湖北省税务局关于我省2026社保年度社会保险缴费基数标准的通知》，三部门联署、一件管养老/失业/工伤/医疗/生育，与 2025 年 鄂人社发〔2025〕28号 同一发文模式。由鄂州市医保局 2026-10-09 公告逐字引用。\n⭐ 突破 2（执行期被否定）：同件逐字「2026年7月至2026年10月执行2025年缴费基数标准，2026年11月至2027年06月执行2026年新缴费基数标准」。湖北 2026 社保年度虽是 2026-07~2027-06，但**新上下限生效日是 2026-11-01 而非 2026-07-01**。→ 仓库 13 城 dataYear:\"2025\" 在 2026-10-14 仍然正确，数值零改动。\n⭐ 文号性质校正：鄂医保函[2024]91号 =《省医疗保障局 国家税务总局湖北省税务局关于明确基本医疗保险费缴费基数标准**执行口径**的通知》、鄂医保函[2024]27号 =《关于明确职工基本医疗保险费缴费基数标准执行口径的通知》——**都是执行口径文件、不是年度基数文件**。仓库第 19 条原文「鄂医保函〔2024〕91号 2026-07-01 起继续执行至新标准出台」两处表述都需要更正，已在 AGENTS.md 修正。\n⚠️ 口径护栏：鄂州公告的缴费标准表是图片（原始 584×225），OCR 读出 4254/4292/5723/7154（2026.07-10）与 4552/6070/7587（2026.11-2027.06），「基数×10.5%+10 元大病保险」5 组算式全部闭合、档次 = 全口径月均×60%/80%/100%。但这是**灵活就业人员医保档次表**、不是用人单位职工缴费基数上下限 → 四关第①关不通过；且仓库 2025 下限 4254 ≠ 7154×0.6=4292，说明湖北「社保缴费基数下限」与「全口径月均×60%」并非同一锚，故 4552 不能当 2026 下限、7587×3=22761 只能标反推参考值。7154 与仓库第 3 档月标准零偏差吻合、21462=7154×3 ✅ 是有效的旁证。\n⚠️ 省级 dead-end（勿重复）：`ybj.hubei.gov.cn`（https 与 http 均 412）、`www.hubei.gov.cn`（全站 412）、`ylbzj.hubei.gov.cn`/`www.hbybj.gov.cn`/`hbyb.gov.cn`（全 502）；`rst.hubei.gov.cn/zfxxgk/zc/gfxwj/` 返回 200/49311 B 但 `createPageHTML(1,0,…)` **总页数=0**，列表 JS 异步渲染、服务端 0 篇文章 → **此前「99 条规范性文件 grep 零命中」抓到的是导航不是文章列表，该结论作废**；`rst.hubei.gov.cn` 检索端点 `/igs/front/suggest/term.jhtml` 返 2 字节空、`/igs/front/search/*.jhtml` 全 404（该站无可用全文检索 API）；`search.hubei.gov.cn` = 000；市级统一检索 API `/search5/search/s` 对湖北已判死（襄阳 403、黄石/恩施/荆州/咸宁 404、随州回首页、孝感空响应）；`zwfw.hubei.gov.cn` 办事搜索只搜办事服务不搜政策文件。\n⚠️ 域名纠错：湖北市级人社局统一前缀是 **`rsj.`**（不是 `rst.`，后者全部 NXDOMAIN），`rsj.wuhan/huangshi/shiyan/yichang/xiangyang/ezhou/jingmen/xiaogan/jingzhou/hg/xianning/suizhou/enshi.gov.cn` 全部可读；黄冈真域名 `www.hg.gov.cn`（`huanggang.gov.cn` NXDOMAIN）；随州真门户 `www.suizhou.gov.cn`（不是 `www.sz.gov.cn`）；⚠️ **`rsj.smx.gov.cn` 是三门峡市人社局（河南）不是随州**；`ybj.jingzhou.gov.cn` NXDOMAIN；孝感医保局是 `sylbzj.xiaogan.gov.cn`（无 ybj./ylbzj.）。",
+      "cities": [
+        {
+          "city": "武汉",
+          "status": "official-partial",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "https://www.dxh.gov.cn/ZWGK/QZFXXGKML/GGFWXX_devsavepath/SHBZ_devsavepath/ylbz/202509/t20250925_2652461.shtml",
+            "https://ybj.wuhan.gov.cn/zwgk_52/zcfgyjd/zcwd/202308/t20230818_2249362.shtml",
+            "https://ybj.wuhan.gov.cn/zwgk_52/zcfgyjd/zcfg/202512/t20251215_2695416.html",
+            "http://gjj.ezhou.gov.cn/",
+            "https://ybj.wuhan.gov.cn/zwgk_52/zcfgyjd/zcfg/",
+            "https://ybj.wuhan.gov.cn/zwgk_52/xxgkzn/",
+            "https://ybj.wuhan.gov.cn/zwgk_52/ybdt/tzgg/"
+          ],
+          "rawQuotes": [],
+          "confirms": "已核 4 个栏目（200），命中仅《武汉市基本医疗保险保障政策明白卡》（2024-04-18），只写「以上年度职工月平均缴费工资为基数」，无数字、无 2026 年度件。医保局站检索为 TRS 纯客户端渲染，curl 只得 271 字符模板、headless Chrome 得 2724 B = WAF 拦截，POST 三端点空响应。",
+          "mismatch": "2026 年度基数件与医保单位费率 8.7% 均无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "黄石",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://gjj.huangshi.gov.cn/zwgk/zc/qtzdgkwj/202606/t20260623_1336986.html",
+            "http://gjj.huangshi.gov.cn/",
+            "https://www.huangshi.gov.cn/",
+            "https://ybj.huangshi.gov.cn/zfxxgk/zc/gfxwj/",
+            "https://ybj.huangshi.gov.cn/zfxxgk/fdzdgknr/tzgg/",
+            "https://rsj.huangshi.gov.cn/xxgk/fdzdgknr/gggs/"
+          ],
+          "rawQuotes": [],
+          "confirms": "规范性文件 15 篇 + 通知公告 15 篇 + 人社局公示公告全量标题扫描，仅省局异地就医结算/个人账户/即时结算类，无任何缴费基数件。",
+          "mismatch": "2026 年度基数件 not-found；医保单位费率 8% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "十堰",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://gjj.shiyan.gov.cn/fwzn/gjyw/202606/t20260623_4949939.shtml",
+            "https://www.shiyan.gov.cn/fw/ztfw/zfly/ggj/wjtz/202607/t20260723_4973178.shtml",
+            "http://ybj.shiyan.gov.cn/ylbzxxgk/zc/gfxwj/",
+            "http://ybj.shiyan.gov.cn/ylbzxxgk/sfgwgkml/tzgg/",
+            "http://rsj.shiyan.gov.cn/srlzyhshbzj/zc/qtzdgkwj/gzdt/"
+          ],
+          "rawQuotes": [],
+          "confirms": "医保局规范性文件 13 篇 + 规范性公开文件 25 篇 + 人社局政策文件全量命中 0。该站确有整篇转载省局文件的惯例，但 2026 年度基数件未转。",
+          "mismatch": "2026 年度基数件 not-found；医保单位费率 8.5% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "宜昌",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://gjj.yichang.gov.cn/content-55762-6534-1.html",
+            "https://ybj.yichang.gov.cn/list-61511-1.html",
+            "http://rsj.yichang.gov.cn/list-22792-1.html",
+            "http://www.yichang.gov.cn/zfxxgk/list.html?depid=1155"
+          ],
+          "rawQuotes": [],
+          "confirms": "医保局列表分页至第 4 页 + 人社局列表 + 市政府部门文件列表，命中仅「2027年度城乡居民医保开始缴费」「异地就医备案续办」等居民医保/经办提示。",
+          "mismatch": "2026 年度基数件 not-found；医保单位费率 8.5% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "襄阳",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://gjj.xiangyang.gov.cn/bsfw/gjjjc/202607/t20260706_4027041.shtml",
+            "http://ybj.xiangyang.gov.cn/zwgk/gkml/qtzdgknr/tzgg/",
+            "http://rsj.xiangyang.gov.cn/xwzx/tzgg/202610/t20261009_4069544.shtml"
+          ],
+          "rawQuotes": [],
+          "confirms": "《襄阳市职工基本医疗保险实施办法》第七条单位费率 8.5%（含生育 0.5%），2024-07-01 施行、有效期 5 年 —— 四关全过，仓库 8.5% 零偏差。人社局《关于转发〈关于发布湖北省2026年企业工资指导线的通知〉》（2026-10-09）证明市级会转载省局文件，但基数件未转。",
+          "mismatch": "2026 年度基数件 not-found（8.5% 费率本身已坐实）",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "鄂州",
+          "status": "official-confirmed",
+          "docNumber": "鄂州市医疗保障局+国家税务总局鄂州市税务局《鄂州市2026年7月至2027年6月灵活就业人员医保缴费公告》（2026-10-09，无文号）；引用 鄂人社发〔2026〕29号 / 鄂医保函[2024]91号 / 鄂医保函[2024]27号",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "https://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://ybj.ezhou.gov.cn/xxgk/zc/zcjd/202312/t20231229_604818.html",
+            "http://ybj.ezhou.gov.cn/",
+            "https://ybj.ezhou.gov.cn/xwzx/tzgg/202610/t20261012_786135.html",
+            "https://ybj.ezhou.gov.cn/xwzx/tzgg/202605/t20260528_766125.html",
+            "https://ybj.ezhou.gov.cn/xxgk/zc/zcfg/202606/t20260625_769394.html"
+          ],
+          "rawQuotes": [
+            "根据《湖北省人力资源和社会保障厅 省医疗保障局 国家税务总局湖北省税务局关于我省2026 社保年度社会保险缴费基数标准的通知》（鄂人社发〔2026〕29号）等文件精神……",
+            "2026年7月至2026年10月执行2025年缴费基数标准，2026年11月至2027年06月执行2026年新缴费基数标准。",
+            "在年度缴费基数公布前，须逐月缴费以接续医保待遇；基数公布后，可根据自身情况一次性预缴至次年6月。"
+          ],
+          "confirms": "⭐ 第三十八批 A · 湖北 13 市州 2026 年度基数件取证（数值零改动）。两项改变判断的事实：①2026 年度件文号坐实为 **鄂人社发〔2026〕29号**——《湖北省人力资源和社会保障厅 省医疗保障局 国家税务总局湖北省税务局关于我省2026社保年度社会保险缴费基数标准的通知》，三部门联署、一件管养老/失业/工伤/医疗/生育，与 2025 年 鄂人社发〔2025〕28号 同一发文模式；②**执行期被官方原文否定**：鄂州市医保局+税务局 2026-10-09《鄂州市2026年7月至2027年6月灵活就业人员医保缴费公告》逐字「2026年7月至2026年10月执行2025年缴费基数标准，2026年11月至2027年06月执行2026年新缴费基数标准」。同件还校正了两个文号的性质：鄂医保函[2024]91号 =《省医疗保障局 国家税务总局湖北省税务局关于明确基本医疗保险费缴费基数标准**执行口径**的通知》、鄂医保函[2024]27号 =《关于明确职工基本医疗保险费缴费基数标准执行口径的通知》——**都是执行口径文件，不是年度基数文件**。旁证：《灵活就业人员医疗保险缴费须知》（2026-05-28）「在年度缴费基数公布前，须逐月缴费以接续医保待遇」。⚠️ 公告里的缴费标准表是图片（原始仅 584×225），OCR 读出 2026.07-10 档 4254/4292/5723/7154、2026.11-2027.06 档 4552/6070/7587，且「基数×10.5%+10 元大病保险」5 组算式全部闭合、档次 = 全口径月均×60%/80%/100%（7154 与仓库第 3 档月标准零偏差吻合，21462=7154×3 ✅）。但这是**灵活就业人员医保档次表**、不是用人单位职工缴费基数上下限 → 四关第①关不通过；且仓库 2025 下限 4254 ≠ 7154×0.6=4292，说明湖北「社保缴费基数下限」与「全口径月均×60%」并非同一锚，故 4552 不能当 2026 下限、7587×3=22761 只能标反推参考值。**13 城 dataYear 仍为 2025，数值零改动。**",
+          "mismatch": "2026 年度三档上下限数值仍未取到 → dataYear 保持 2025",
+          "checks": [
+            "①口径：鄂州件是灵活就业人员档次表而非用人单位职工上下限 —— 不通过；襄阳《实施办法》第七条单位口径 —— 通过",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "荆门",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://zfgjj.jingmen.gov.cn/art/2026/6/20/art_5015_1224922.html",
+            "http://rsj.jingmen.gov.cn/art/2026/10/9/art_3732_1241489.html",
+            "http://rsj.jingmen.gov.cn/"
+          ],
+          "rawQuotes": [],
+          "confirms": "医保局站 https 不通、http 仅 1326 B 跳转壳；人社局文章页可读但为选调/招录类，无基数件。",
+          "mismatch": "2026 年度基数件 not-found；医保单位费率 8.5% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "孝感",
+          "status": "official-partial",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://xggjj.xiaogan.gov.cn/gsgg/2134817.jhtml",
+            "http://xggjj.xiaogan.gov.cn/gsgg/2115115.jhtml",
+            "http://gkml.xiaogan.gov.cn/c/xnqylbzj/zcxwj/213410.jhtml",
+            "https://sylbzj.xiaogan.gov.cn/c/xgsylbzj/qtzdgkwj/425801.jhtml",
+            "http://gjj.ezhou.gov.cn/",
+            "http://sylbzj.xiaogan.gov.cn/",
+            "https://rsj.xiaogan.gov.cn/zwdt/gsgg/"
+          ],
+          "rawQuotes": [],
+          "confirms": "孝医保发〔2021〕5号 页面标注「保留」有效，但**费率原文仍未取到**，本轮无进展。",
+          "mismatch": "孝医保发〔2021〕5号 费率原文仍未取到；2026 年度基数件 not-found",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "荆州",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "https://zw.jingzhou.gov.cn/upload/default/bigfile/2026/06/26/20260626_361a649f9a8daaa41bbe0222b922fdc3.pdf",
+            "http://gjj.zwgk.jingzhou.gov.cn/35063/106220263/t126220263064/706794.shtml",
+            "https://zw.jingzhou.gov.cn/api/content_center/PublishTask/download?file_path=/upload/default/bigfile/2026/06/26/20260626_361a649f9a8daaa41bbe0222b922fdc3.pdf&file_name=x",
+            "https://zw.jingzhou.gov.cn/",
+            "http://rsj.jingzhou.gov.cn/xwzx_42/dtyw/",
+            "http://jzrsj.zwgk.jingzhou.gov.cn/list.shtml?column_id=35904",
+            "https://www.jingzhou.gov.cn/"
+          ],
+          "rawQuotes": [],
+          "confirms": "市政府门户 + 人社局「动态要闻/通知公告/其他」三栏全量命中 0；ybj.jingzhou.gov.cn 为 NXDOMAIN。",
+          "mismatch": "2026 年度基数件 not-found；医保单位费率 8.5% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "黄冈",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "https://gjj.hg.gov.cn/zwgk/public/6636168/1741290.html",
+            "https://rsj.hg.gov.cn/zwgk/public/column/6636189?type=4&catId=7026845",
+            "http://www.hg.gov.cn/"
+          ],
+          "rawQuotes": [],
+          "confirms": "真域名为 www.hg.gov.cn / rsj.hg.gov.cn（huanggang.gov.cn 全 NXDOMAIN）。⚠️ 该站分页参数未生效（4 个分页返回同一字节数 54891），实际只扫到第 1 页，「穷举」强度弱于其他 12 城。",
+          "mismatch": "2026 年度基数件 not-found（分页参数失效，仅扫到第 1 页）；医保单位费率 8% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "咸宁",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://www.xianning.gov.cn/wsbs/zf/gjj/zcwj/202606/t20260629_4970773.shtml",
+            "http://ybj.xianning.gov.cn/xxgk/zc/wjzl/202311/t20231120_3364160.shtml",
+            "http://ybj.xianning.gov.cn/zwdt/tzgg/",
+            "http://ybj.xianning.gov.cn/xxgk/zc/"
+          ],
+          "rawQuotes": [],
+          "confirms": "《咸宁市医保待遇政策一览表》（200/155978 B，索引号 MB1513297/2023-34679）全文可读，但内容**全部是待遇**（住院报销、门诊共济、慢特病限额、生育津贴、大额补助起付 12000 元/人/年），**无缴费基数、无单位费率**。⚠️ 12000 元是待遇起付线、不是缴费固定额，不可误用。",
+          "mismatch": "2026 年度基数件 not-found；医保单位费率 8.5% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "随州",
+          "status": "official-confirmed",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://www.suizhou.gov.cn/zwgk/zfwj/szbf/szf/shbz/202312/P020231222333267269694.docx",
+            "https://www.suizhougjj.cn/page/wzzs/wzzs_center/szgjj_neirong.jsp?wzid=0000152147&classid=20",
+            "https://www.suizhougjj.cn/UploadFiles/image/20251222/20251222113039_130.png",
+            "http://rsj.suizhou.gov.cn/fbjd_16/zwgk/zc/qtzdgkwj/tzgg/",
+            "http://rsj.suizhou.gov.cn/fbjd_16/zwgk/xxgkml/zcfg/",
+            "http://www.suizhou.gov.cn/"
+          ],
+          "rawQuotes": [],
+          "confirms": "真门户为 www.suizhou.gov.cn（meta 明示 SiteIDCode=4213000001），不是 www.sz.gov.cn。人社局政策文件/重点领域/动态要闻三栏命中 0（全是选调面试、事业单位招考）。",
+          "mismatch": "2026 年度基数件 not-found；医保单位费率 7.5% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        },
+        {
+          "city": "恩施",
+          "status": "official-partial",
+          "docNumber": "",
+          "urls": [
+            "https://rst.hubei.gov.cn/",
+            "http://gjj.ezhou.gov.cn/xwdt/tzgg/202606/t20260629_769638.html",
+            "http://ybj.enshi.gov.cn/zfxxgk/zc/zcjd/202506/t20250617_1709958.shtml",
+            "http://gjj.enshi.gov.cn/zcfg/",
+            "http://www.enshi.gov.cn/",
+            "http://ybj.enshi.gov.cn/xxgk/zc/qtzdgk/",
+            "http://ybj.enshi.gov.cn/xxgk/zc/gfxwj/",
+            "http://rsj.enshi.gov.cn/xxgk/zc/qtzdgk/"
+          ],
+          "rawQuotes": [],
+          "confirms": "医保局政策文件/其他主动公开 + 人社局对应栏目全量命中 0（仅农民工工资保证金、社保基金行政监督办法、最低工资标准）。该站有整篇转载省局文件的惯例，但基数件未转。",
+          "mismatch": "2026 年度基数件 not-found；医保单位费率 8.5% 无官方件",
+          "checks": [
+            "①口径：本轮新增件均为栏目/门户落点，未取到可改值的单位口径数字 —— 不适用",
+            "②生效：2026 年度件执行期 2026-11-01 起（2026-07~10 仍用 2025 标准）—— 仓库现值在 2026-10-14 仍然正确",
+            "③数字：鄂州 OCR 5 组「基数×10.5%+10」闭合，但档次表非职工上下限，不作改值依据",
+            "④来源：均为 .gov.cn 栏目/门户/原文（鄂州市医保局网站标识码 4207000057、鄂ICP备05017375号）",
+            "处置：13 城数值零改动，dataYear 保持 \"2025\"；仅新增官方链接与 dead-end 记录"
+          ]
+        }
+      ]
+    }
+  ]
+}
