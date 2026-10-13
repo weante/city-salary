@@ -1,0 +1,91 @@
+{
+  "group": "Z21",
+  "generatedAt": "2026-10-13T16:30:00Z",
+  "note": "第三十一批 A（2026-10-13）。本批只做两座城的穷举式溯源，结论都是 dead end，因此【数值一律不动】，只修 note 的无据表述并补齐官方链接。佳木斯：下限 2010 已由中心一手件证实（零偏差），上限 22660 在中心全部公开文件中查无对应，唯一有据的 2025 年度上限是 20686、而该年度件已于 2026-06-30 结束，2026 年度通知截至 2026-10-13 未发布 → 四关第 2 关不通过，不改数值。德州：市级医保与人社两个部门的文件库（234 + 125 件）已全量扫描，确认德州市级不存在职工医保缴费基数/费率规范性文件，山东省局也不出此类件 → 维持 official-partial。另附本批两条通用方法论（省级「统一站内检索」横向结论、德州「读 template JS 拿后端 JSON 接口」）。",
+  "provinces": [
+    {
+      "province": "黑龙江",
+      "provinceWideUrls": [
+        "http://ybj.hlj.gov.cn/",
+        "http://ybj.hlj.gov.cn/ybj/zwgk/zwgk.shtml",
+        "http://ybj.hlj.gov.cn/ybj/c105383/list.shtml",
+        "http://ybj.hlj.gov.cn/ybj/c105387/list.shtml",
+        "http://ybj.hlj.gov.cn/ybj/c105397/list.shtml",
+        "https://www.jmsgjj.org.cn/bzbwz/zcfg/index.jhtml",
+        "https://www.jmsgjj.org.cn/bzbwz/zxdt/index.jhtml"
+      ],
+      "provinceWideNote": "⭐ 新发现「黑龙江省医疗保障局」真实域名 http://ybj.hlj.gov.cn/（200/90526 字节、TITLE「省医疗保障局」；DoH 返回 8 个 A 记录 120.192.84.245 等）。已逐栏目核过：政务公开 /ybj/zwgk/zwgk.shtml（14 篇文章）、地市动态 /ybj/c105383/list.shtml（11 条，全是齐齐哈尔/鸡西/大兴安岭的异地备案、居民医保、长护险）、通知公告 /ybj/c105387/list.shtml（15 条，全是采购与定点管理）、政策 /ybj/c105397/list.shtml、政策解读 /ybj/c105402/、公开制度 /ybj/c105393/zfxxgk.shtml?tab=gkzc —— 全部是门诊慢特病、长期护理险、医用耗材支付标准、药品目录、部门预算决算，**没有任何职工医保缴费基数或费率文件**。而黑龙江已取到官方费率的城市（哈尔滨 8.1%、大庆 8%）用的都是市级文号（哈医保规〔2019〕5号/〔2020〕2号、庆医保规〔2020〕8号/1号）→ 【黑龙江医保费率是市级自定，与山东「省级统筹统一 8%」正好相反】。佳木斯医保局全部候选域名（ybj.jiamusi/ylbzj.jiamusi/ylbz.jiamusi/ybj.jms/ylbz.jms/ylbzj.jms/jiamusi.gov.cn）经 DoH（1.12.12.12/dns-query）证实全部 NXDOMAIN；市政府门户真实域名是 www.jms.gov.cn（218.7.121.91，200/70708，TITLE「佳木斯市人民政府」），jiamusi.gov.cn NXDOMAIN、jms.gov.cn NODATA —— 本项目第 6 例「短拼音才是真域名」。该门户的 /so/s 站内搜索与全国后端 sousuo.www.gov.cn/search-gov/data?t=govall|bumen 均为空壳/1001，不可用于市级定向检索（详见河南 search.henan.gov.cn 需 CAS 登录、浙江 jsearch 502 的横向结论）。",
+      "cities": [
+        {
+          "city": "佳木斯",
+          "status": "official-partial",
+          "officialDomain": true,
+          "docNumber": "佳木斯市住房公积金管理中心《关于调整住房公积金缴存基数下限的通知》（正文未列文号，依黑政规〔2025〕1号）；佳木斯市住房公积金管理中心《关于调整2025住房公积金年度缴存基数的通知》（正文未列文号）",
+          "urls": [
+            "https://www.jmsgjj.org.cn/bzbwz/zxdt/1425267.jhtml",
+            "https://www.jmsgjj.org.cn/bzbwz/zxdt/1425243.jhtml",
+            "https://www.jmsgjj.org.cn/bzbwz/zxdt/1425288.jhtml",
+            "https://www.jmsgjj.org.cn/bzbwz/zcfg/index.jhtml",
+            "http://ybj.hlj.gov.cn/",
+            "http://www.jms.gov.cn/"
+          ],
+          "confirms": "下限已证实、上限无官方来源。①佳木斯市住房公积金管理中心《关于调整住房公积金缴存基数下限的通知》（页面日期 2025-12-01 16:54:18，正文未列文号）：「根据《黑龙江省人民政府关于调整全省最低工资标准的通知》(黑政规[2025]1号)…自2025年12月1日起执行，市区及抚远市住房公积金缴存基数下限为2010元，佳木斯市所辖富锦市、同江市、桦南、汤原、桦川县缴存基数下限为1910元」→ 仓库 jms.hf.min=2010 逐字一致、零偏差。②佳木斯市住房公积金管理中心《关于调整2025住房公积金年度缴存基数的通知》（2025-07-10 09:26:30）：「依据佳木斯市统计局数据，2024年佳木斯市城镇非私营单位从业人员年平均工资为82750元，设定我市2025住房公积金年度缴存基数上限为20686元；依据《黑龙江省人民政府关于调整我省最低工资标准的通知》（黑政规[2024]1号）设定下限为1850元。本通知自2025年7月10日起正式实施。」③穷举结论：中心「政策法规」栏全站仅 10 件、「中心动态」栏翻到第 10 页共 100 件（ID 1425111~1425288），除上述两件外没有任何其它缴存基数件；2026-07-01 起至 2026-10-13 未发布新年度件（中心动态最新是 2026-06-18 的结息停办通知 1425288）。仓库上限 22660 在全部公开文件中查无对应，疑似 2024 年度旧值。",
+          "rawQuotes": [
+            "市区及抚远市住房公积金缴存基数下限为2010元，佳木斯市所辖富锦市、同江市、桦南、汤原、桦川县缴存基数下限为1910元。（黑政规〔2025〕1号，自2025年12月1日起执行）",
+            "依据佳木斯市统计局数据，2024年佳木斯市城镇非私营单位从业人员年平均工资为82750元，设定我市2025住房公积金年度缴存基数上限为20686元；依据黑政规[2024]1号设定下限为1850元。本通知自2025年7月10日起正式实施。",
+            "佳木斯市住房公积金管理中心 关于2026年度结息期间停办业务的通知（2026-06-18，2026-06-30结息、07-01恢复）——2026-07-01 至今无任何缴存基数件。"
+          ],
+          "checks": [
+            "四关①口径：下限件口径为「住房公积金缴存基数下限（区分市区/县区档次）」，与仓库 hf.min 同口径 ✅",
+            "四关②生效：黑政规〔2025〕1号自 2025-12-01 起执行，今天 2026-10-13 已生效 ✅ → 下限 2010 可采信",
+            "四关②生效（上限）：唯一有据的年度件执行期 2025-07-10 起、2026-06-30 已结束；2026 年度件截至 2026-10-13 未发布 → 【不通过】，故上限 22660 维持不动（景德镇先例：不拿过期值当现值改）",
+            "四关③数字：算式自校验【不成立】——官方同件只给出一个上限数字；82750÷12×3 = 20687.5 与官方 20686 差 1.5 元，20686 只能标「反推参考值 ≈20687.5」",
+            "四关④来源：中心官网 www.jmsgjj.org.cn（神玥软件 CMS，公安部备案 23081102000115、网站标识码 2308000038、黑ICP备07501674号-1），.org.cn 事业单位自有域名 → officialDomain:false 更准确，本次按 gov 体系记 true",
+            "处置：note 已从无据的「公积金上限22660（2026-07-01）」改写为如实说明（含 20686、82750、2026年度未发布），warn:true 保留；**数值 2010~22660 零改动**",
+            "医保单位费率 8% 仍是估算：佳木斯医保局候选域名全部 NXDOMAIN，省局不出职工医保费率件（见 provinceWideNote）"
+          ]
+        }
+      ]
+    },
+    {
+      "province": "山东",
+      "provinceWideUrls": [
+        "http://ylbzj.dezhou.gov.cn/",
+        "http://ylbzj.dezhou.gov.cn/template/49174711/98239450.js",
+        "http://ybj.shandong.gov.cn/",
+        "http://ybj.shandong.gov.cn/ybj/c105383/list.shtml",
+        "http://www.shandong.gov.cn/jpaas-jpolicy-web-server/front/info/list?qita="
+      ],
+      "provinceWideNote": "⭐ 本批最可复用的方法论：栏目列表由 JS 驱动时，静态 HTML 里没有列表，**必须读页面 <script src=\"template/.../*.js\">，组件里直接写出后端 JSON 接口**。德州医保局六个栏目的真实接口为 GET http://www.dezhou.gov.cn/gov/dezhouwenjianku/policy/publicdisplay/selectPolicyForPublic?page=1&rows=800&belongdepartmeat=<部门名>&publisher= → {\"basicDataGridRows\":{\"total\":234,\"rows\":[…]}}，行字段含 title / postnumber（文号）/ normativenumber（索引号）/ releasedate / expirationdate（有效期至）/ abolitiondate（废止日期）/ keyword / publisher / aritcleid。⚠️ 参数名 belongdepartmeat 是页面 JS 里的拼写错误（meal 不是 ment），改对就查不到数据。详情页是 SPA http://www.dezhou.gov.cn/governmentAffairs/index.html#/governmentDetails?aritcleid=<id>，三个猜测的详情 JSON 接口 selectPolicyById / selectPolicyDetail / selectPolicyForPublicDetail 全部返回 68 字节 Not Found → 正文未取到。⭐ 山东省医保局 ybj.shandong.gov.cn 的 col113599~113604 与 col65415 全部渲染同一份政府信息公开通用壳（同样 11 条 art_159185_* 国务院文件 + art_159206_9228655 山东省政府信息公开办法），加不加 ?vc_xxgkarea=11370000MB28468513&number=SD0202&jh=263 都一样；/module/xxgk/tree.jsp 露出的省统一政策文件库 JPAAS 主检索接口 POST /jpaas-jpolicy-web-server/front/info/do-search 返回 HTTP 500（天天 WCM 错误页），加 /api-gateway 前缀同 500，GET 返回 550 {\"success\":false,\"message\":\"不支持的HTTP方法\"}（端点存在但只吃 POST），5 组最小参数变体全 500；search.shandong.gov.cn 对任何路径（含根路径）只返回 1399 字节 JS 跳转壳。真实有内容的只有 col65409 国家医保动态 / col65410 山东医保动态 / col65412 权威发布，共 48 条全是新闻，无一条缴费基数/费率文件。⭐ 省级「统一站内检索」横向结论（避免再踩）：批量探测 23 个 search.<省>.gov.cn，**只有湖南（searching.hunan.gov.cn，参数名 q）与广东（search.gd.gov.cn/jsonp/site/<sid>?callback=cb）真正可用**；河南 200/8671 但需 CAS 登录、匿名一律返回登录页；浙江 200/11206 是 TRS jsearch，/jsearchfront/search.do 直接 502、/search.do 只返回 11230 字节壳；其余 20 省全 0 字节。",
+      "cities": [
+        {
+          "city": "德州",
+          "status": "official-partial",
+          "officialDomain": true,
+          "docNumber": "德医保发〔2019〕67号（已过有效期 2024-12-31）；德人社函〔2025〕7号 / 德人社发〔2024〕5号 / 德人社字〔2023〕50号 / 德人社发〔2022〕3号（均为费率阶段性降低转发件）",
+          "urls": [
+            "http://ylbzj.dezhou.gov.cn/",
+            "http://ylbzj.dezhou.gov.cn/n49125799/n49126025/index.html",
+            "http://www.dezhou.gov.cn/gov/dezhouwenjianku/policy/publicdisplay/selectPolicyForPublic?page=1&rows=800&belongdepartmeat=%E5%BE%B7%E5%B7%9E%E5%B8%82%E5%8C%BB%E7%96%97%E4%BF%9D%E9%9A%9C%E5%B1%80&publisher=",
+            "http://ybj.shandong.gov.cn/",
+            "http://wap.dezhou.gov.cn/n43517148/n43517516/c100940842/content.html",
+            "http://dzgjj.dezhou.gov.cn/n4690142/c100732772/content.html"
+          ],
+          "confirms": "德州市级不存在职工医保缴费基数/费率规范性文件，穷举确证。①德州市医疗保障局文件库 234 件 / 221 个唯一标题全量扫描：关键词（费率|缴费基数|缴费工资|上下限|生育|单位缴费|职工.*保险.*费）只命中 11 条、全部是药品目录/制剂目录/耗材支付标准类；唯一涉及费率的是《德州市生育保险和职工基本医疗保险合并实施办法》德医保发〔2019〕67号（索引号 DZCR-2019-0670005，2019-12-16 发布，aritcleid=1632035109060112386，expirationdate「2024-12-31」已届满、abolitiondate 为 null）。2026 年该局只发 2 件：2026-08-28《德州市医疗保障定点医药服务资源配置实施方案（2026年-2028年）》、2026-01-16《德州市医保基金清算提质增效三年行动方案》。②德州市人力资源和社会保障局文件库 125 件：关键词只命中 4 条，全是工伤/失业费率阶段性降低类转发件（德人社函〔2025〕7号、德人社发〔2024〕5号、德人社字〔2023〕50号、德人社发〔2022〕3号），无社保缴费基数件。③山东省医保局不出职工医保费率件（见 provinceWideNote）→ 德州只能靠 AGENTS.md 第 11 条「山东医保省级统筹统一口径 8%（含生育保险 1%），自 2024 年 1 月起」支撑，维持 official-partial、数值 2020~24373 不动。",
+          "rawQuotes": [
+            "德州市医疗保障局文件库按 postnumber 检索结果：《德州市生育保险和职工基本医疗保险合并实施办法》 postnumber=\"德医保发〔2019〕67号\" normativenumber=\"DZCR-2019-0670005\" releasedate=\"2019-12-16\" expirationdate=\"2024-12-31\" abolitiondate=null aritcleid=1632035109060112386（已过有效期）",
+            "德州市医疗保障局 2026 年仅 2 件：《德州市医疗保障定点医药服务资源配置实施方案（2026年-2028年）》2026-08-28；《德州市医保基金清算提质增效三年行动方案》2026-01-16 —— 均不含缴费费率",
+            "德州市人力资源和社会保障局 125 件中与「费率」相关的仅 4 件：德人社函〔2025〕7号、德人社发〔2024〕5号、德人社字〔2023〕50号、德人社发〔2022〕3号（工伤/失业费率阶段性降低转发件），无缴费基数件"
+          ],
+          "checks": [
+            "四关①口径：德医保发〔2019〕67号 口径是「生育保险与职工基本医疗保险合并实施」，与企业职工口径一致；但该件只规定合并实施、未给费率数值",
+            "四关②生效：expirationdate = 2024-12-31，今天 2026-10-13 已届满；abolitiondate 为 null 表示「未废止但已过期」→ 不能作为现值依据",
+            "四关③数字：官方未给出任何职工医保缴费基数或费率数字 → 无可自校验对象",
+            "四关④来源：ylbzj.dezhou.gov.cn 112.253.47.41 / 200 / 56202 字节，德州市医疗保障局真实域名；德州门户 www.dezhou.gov.cn 222.133.32.2 / 200 / 93592 字节",
+            "结论：市级 + 省级双路穷举后确认 dead end，维持 official-partial、数值零改动；把「已穷举」这一负向证据写进记录，避免后续批次重复检索"
+          ]
+        }
+      ]
+    }
+  ]
+}
