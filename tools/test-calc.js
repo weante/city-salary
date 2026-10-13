@@ -1729,6 +1729,58 @@ eq('黑龙江·鹤岗约61万→800', A.CITIES.hg.rent, 800);
 eq('黑龙江·双鸭山约46万→800', A.CITIES.sys.rent, 800);
 eq('黑龙江·伊春约42万→800', A.CITIES.yc.rent, 800);
 eq('黑龙江·佳木斯约76万→800', A.CITIES.jms.rent, 800);
+/* ===== 第三十一批 B（河北/陕西/广西 9 城）· 2026-10-13 =====
+   玉林 玉市医保发〔2025〕10号：http://ybj.yulin.gov.cn/bmwj/t21512386.shtml（200/20728，2025-07-03 发布，成文 2025-06-24）
+     逐字「从2025年7月1日起，参加"统账结合"职工基本医疗保险的用人单位和个人，职工基本医疗保险费率从目前实施的9%
+           （其中单位缴纳7%、个人缴纳2%）降至8%（其中单位缴纳6%、个人缴纳2%）」
+     算式自校验（同件给出旧值与新值两组独立数字）：6+2===8 ✓、7-6===1 ✓、7+2===9 ✓
+   邯郸 邯医保规〔2024〕5号：https://www.hd.gov.cn/hdzfxxgk/gszbm/auto28831/202501/t20250114_2097711.html
+     正文在 .docx 附件 P020260128621340360033.docx（530626 B）
+     第十八条逐字「党政机关和全额拨款事业单位…缴费比例为本单位缴费基数的7.9%（其中职工基本医疗保险7.5%，生育保险0.4%），
+           其他用人单位缴费比例为本单位缴费基数的8%（其中职工基本医疗保险7.5%，生育保险0.5%）。在职职工的缴费比例为本人缴费基数的2%」
+     第十七条只设全口径月均下限锚、全文无「300%」→ 医保不设上限，仓库沿用三项社保区间属近似
+   广西 桂人社发〔2026〕32号：http://rst.gxzf.gov.cn/zwgk/xxgkzcfg/fgfxlm/t28152939.shtml
+     逐字「按7008元/月作为核定个人缴费基数上下限的指标，缴费基数上限为21024元/月，下限为4204.8元/月」
+     算式自校验：7008×3===21024 ✓、7008×0.6===4204.8 ✓ */
+eq('第三十一批B·玉林·医保单位费率6%', A.CITIES.yuln.med.comp, 0.06);
+eq('第三十一批B·玉林·医保个人2%', A.CITIES.yuln.med.emp, 0.02);
+eq('第三十一批B·玉林·社基数下限4204.8', A.CITIES.yuln.pension.min, 4204.8);
+eq('第三十一批B·玉林·社基数上限21024', A.CITIES.yuln.pension.max, 21024);
+eq('第三十一批B·广西核定指标7008×3===21024', 7008 * 3, 21024);
+eq('第三十一批B·广西核定指标7008×0.6===4204.8', 7008 * 0.6, 4204.8);
+eq('第三十一批B·玉林费率自校验6+2===8', 6 + 2, 8);
+eq('第三十一批B·玉林费率自校验7-6===1', 7 - 6, 1);
+eq('第三十一批B·玉林note含玉市医保发2025-10号', A.CITIES.yuln.note.includes('玉市医保发〔2025〕10号'), true);
+eq('第三十一批B·玉林note含2025-07-01生效', A.CITIES.yuln.note.includes('2025-07-01起'), true);
+eq('第三十一批B·玉林note不再出现6.5%', A.CITIES.yuln.note.includes('医保单位6.5%'), false);
+eq('第三十一批B·柳州社基数下限4204.8', A.CITIES.liuz.pension.min, 4204.8);
+eq('第三十一批B·柳州社基数上限21024', A.CITIES.liuz.pension.max, 21024);
+eq('第三十一批B·柳州note含桂人社发2026-32号', A.CITIES.liuz.note.includes('桂人社发〔2026〕32号'), true);
+eq('第三十一批B·柳州医保单位8.0%', A.CITIES.liuz.med.comp, 0.08);
+eq('第三十一批B·北海社基数下限4204.8', A.CITIES.bh.pension.min, 4204.8);
+eq('第三十一批B·北海社基数上限21024', A.CITIES.bh.pension.max, 21024);
+eq('第三十一批B·北海note含桂人社发2026-32号', A.CITIES.bh.note.includes('桂人社发〔2026〕32号'), true);
+eq('第三十一批B·北海医保单位6.5%暂不改', A.CITIES.bh.med.comp, 0.065);
+eq('第三十一批B·北海warn保留', A.CITIES.bh.warn, true);
+eq('第三十一批B·邯郸医保单位8%', A.CITIES.hd.med.comp, 0.08);
+eq('第三十一批B·邯郸医保个人2%', A.CITIES.hd.med.emp, 0.02);
+eq('第三十一批B·邯郸社基数下限4076', A.CITIES.hd.pension.min, 4076);
+eq('第三十一批B·邯郸社基数上限20382', A.CITIES.hd.pension.max, 20382);
+eq('第三十一批B·邯郸note含邯医保规2024-5号', A.CITIES.hd.note.includes('邯医保规〔2024〕5号'), true);
+eq('第三十一批B·邯郸note声明不设300%上限', A.CITIES.hd.note.includes('不设300%上限'), true);
+eq('第三十一批B·邯郸note不再出现旧误植日期', A.CITIES.hd.note.includes('2025-03-13'), false);
+eq('第三十一批B·承德医保暂估8%', A.CITIES.chengd.med.comp, 0.08);
+eq('第三十一批B·承德note标注0.8%为灵活就业口径', A.CITIES.chengd.note.includes('0.8%'), true);
+eq('第三十一批B·衡水医保暂估8%', A.CITIES.hshui.med.comp, 0.08);
+eq('第三十一批B·衡水note如实写未找到', A.CITIES.hshui.note.includes('医保单位费率未找到'), true);
+eq('第三十一批B·渭南医保暂估7%', A.CITIES.wn.med.comp, 0.07);
+eq('第三十一批B·汉中医保暂估7%', A.CITIES.hanz.med.comp, 0.07);
+eq('第三十一批B·安康医保暂估7%', A.CITIES.ank.med.comp, 0.07);
+eq('第三十一批B·石家庄医保7.5%不变', A.CITIES.sjz.med.comp, 0.075);
+eq('第三十一批B·唐山医保7.8%不变', A.CITIES.ts.med.comp, 0.078);
+eq('第三十一批B·南宁医保6.5%不变', A.CITIES.nn.med.comp, 0.065);
+eq('第三十一批B·钦州医保8.5%不变', A.CITIES.qinz.med.comp, 0.085);
+eq('第三十一批B·桂林医保7.3%不变', A.CITIES.gl.med.comp, 0.073);
 
 // ===== 第三十一批 A（2026-10-13）· 黑龙江佳木斯公积金上限溯源（数值零改动，只修note 无据表述）=====
 // 下限官方件：佳木斯市住房公积金管理中心《关于调整住房公积金缴存基数下限的通知》（无文号，页面日期 2025-12-01）
