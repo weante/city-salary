@@ -2511,6 +2511,27 @@ eq('第五十批A·新疆·14市州社保基数统一不变 5246~26231', ["wlmq"
 ok('第五十批A·新疆·医保单位费率未取到市级件的3城仍标 warn', ['ylz','tc','alt'].every(function (k) { return A.CITIES[k].warn === true; }), true);
 eq('第五十批A·新疆·12城公积金有官方件故不标 warn', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].filter(function (k) { return k !== 'tc' && k !== 'alt'; }).every(function (k) { return A.CITIES[k].warn !== true; }), true);
 eq('第四十八批·定西·医保单位费率6.7%不变', A.CITIES.dx.med.comp, 0.067);
+
+/* ===== 第五十二批：吉林 4 市州取证（数值零改动，补文号与渠道穷举记录） ===== */
+eq('第五十二批·白城·note 补文号白医保联发〔2019〕3号', A.CITIES.bc.note.indexOf('白医保联发') >= 0, true);
+eq('第五十二批·白城·medComp 仍为 0.065', A.CITIES.bc.med.comp, 0.065);
+eq('第五十二批·白城·算式自校验 6.5-0.5=6.0', Math.round((0.065 - 0.005) * 10000) / 10000 === 0.06, true);
+eq('第五十二批·白城·算式自校验 6.4-0.4=6.0', Math.round((0.064 - 0.004) * 10000) / 10000 === 0.06, true);
+eq('第五十二批·白城·note 记页面级有效性声明', A.CITIES.bc.note.indexOf('有效性为有效') >= 0, true);
+eq('第五十二批·白城·note 不再把费率写成待核实', A.CITIES.bc.note.indexOf('医保单位费率待核实') < 0, true);
+eq('第五十二批·白山·真实域名已入 note', A.CITIES.bs.note.indexOf('www.cbs.gov.cn') >= 0, true);
+eq('第五十二批·白山·note 说明无医保局子域', A.CITIES.bs.note.indexOf('没有任何医疗保障局子域') >= 0, true);
+eq('第五十二批·白山·medComp 仍为 0.08', A.CITIES.bs.med.comp, 0.08);
+eq('第五十二批·白山·warn 保留', A.CITIES.bs.warn, true);
+eq('第五十二批·吉林市·机构页 URL 已入 note', A.CITIES.jl.note.indexOf('t20201013_886182.html') >= 0, true);
+eq('第五十二批·吉林市·medComp 仍为 0.08', A.CITIES.jl.med.comp, 0.08);
+eq('第五十二批·吉林市·warn 保留', A.CITIES.jl.warn, true);
+eq('第五十二批·辽源·医保局平台入口已入 note', A.CITIES.lyu.note.indexOf('data-classInfoId=17316') >= 0, true);
+eq('第五十二批·辽源·medComp 仍为 0.08', A.CITIES.lyu.med.comp, 0.08);
+eq('第五十二批·辽源·warn 保留', A.CITIES.lyu.warn, true);
+eq('第五十二批·吉林市/辽源/白山 8% 仍高于官方框架6%+0.5%=6.5%，note 已标注为估算占位', A.CITIES.jl.med.comp > 0.065 && A.CITIES.lyu.med.comp > 0.065 && A.CITIES.bs.med.comp > 0.065, true);
+eq('第五十二批·白城 6.5% 是四市中唯一落在官方框架内的值', A.CITIES.bc.med.comp === 0.065 && A.CITIES.jl.med.comp > A.CITIES.bc.med.comp, true);
+eq('第五十二批·延边 6% 不在本批范围但保持不变', A.CITIES.ybi.med.comp, 0.06);
 eq('第四十八批·定西·warn 保留', A.CITIES.dx.warn, true);
 
 eq('第四十七批·沧州·公积金2380~25581零偏差', A.CITIES.cangz.hf.min + '~' + A.CITIES.cangz.hf.max, '2380~25581');

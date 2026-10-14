@@ -1,0 +1,103 @@
+{
+  "group": "Z44",
+  "generatedAt": "2026-10-15",
+  "note": "第五十二批 · 吉林 4 市州（白城/白山/吉林市/辽源）医保渠道穷举。数值零改动：白城 6.5% 本批只补文号白医保联发〔2019〕3号与页面级有效性证据；白山/吉林市/辽源 的市级医保单位费率属制度性 dead-end（医保局无独立网站或列表由 ticaiSearch() 驱动），8% 高于省级框架6.5%、保留为估算值并维持 warn。另记录脚本层系统性盲点：calculator.html 并存 CI() 与 CIU() 两种构造形式，定位正则必须写 CIU 加可选 U 的模式（CIU? 开括号）。",
+  "provinces": [
+    {
+      "province": "吉林",
+      "provinceWideUrls": [
+        "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+        "https://ybj.jl.gov.cn/zcfg/sjzc/"
+      ],
+      "provinceWideNote": "省级依据：吉医保规〔2026〕1号《吉林省基本医疗保险参保缴费管理办法》（2026-03-24 发布、自 2026-03-01 起施行、废止吉医保联〔2022〕19号）第十五条「用人单位职工医保缴费费率由各统筹区确定，医疗保险控制在6%左右，生育保险控制在0.5%左右，并报省医保、财政、税务部门备案」「职工个人医疗保险缴费费率为2%」——个人2%全省统一，费率框架合计约6.5%。https://ybj.jl.gov.cn/zcfg/sjzc/ 全站无任何市级费率件。",
+      "cities": [
+        {
+          "city": "白城",
+          "key": "bc",
+          "status": "official-partial",
+          "docNumber": "无",
+          "urls": [
+            "http://www.jlbc.gov.cn/hdjl_3211/xszxx/xszxx_1/202508/t20250803_1018642.html",
+            "http://www.jlbc.gov.cn/qzqd/szfgjj/index.html",
+            "http://zj.jlbc.gov.cn/",
+            "https://xxgk.jl.gov.cn/szf/gkml/202511/t20251126_9360748.html",
+            "http://jst.jl.gov.cn",
+            "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+            "http://ybj.jl.gov.cn/",
+            "http://xxgk.jlbc.gov.cn/zsjg/tjj/xxgkml/",
+            "http://xxgk.jlbc.gov.cn/zsjg/tjj/xxgkml/202603/t20260320_1032902.html",
+            "http://xxgk.jlbc.gov.cn/zcbm/ylbj/xxgkml/201912/t20191231_761587.html"
+          ],
+          "rawQuotes": [],
+          "confirms": "2026-10-13 穷举 7 条渠道全部无命中：①白城市公积金中心法定主动公开目录 67 条/5 页，全为使用政策/提取/年度报告类；②住建局「住房公积金管理」子栏目 trs_js_subcatId=2061，?stit=2061&num=2 经 headless Chrome 渲染后为空列表，分页 index_2.html→404、?page=2 返回第1页；③住建局政策法规栏仅 1 篇加装电梯文件；④住建局 2026-08-10《顺应需求更好发挥住房公积金作用》通读为国务院条例评论稿无任何数值；⑤市长信箱栏渲染后无条目；⑥2025-11-03 中心具名答复只讲提取材料与流程；⑦2025年年度报告只披露缴存额20.57亿/缴存余额76.38亿/贷款上限70万。\n\n第五十二批父代理亲抓逐字复核：页面发文字号字段为「白医保联发﹝2019﹞3号」（页面用全角括号﹝﹞书写，标准形式白医保联发〔2019〕3号），发文机关白城市医疗保障局、成文日期与发布日期均2019年12月03日；正文逐字「具体为企业单位、差额拨款事业单位、自收自支事业单位缴费费率6.5%（含生育保险0.5%），行政机关、全额拨款事业单位缴费费率6.4%（含生育保险0.4%）」；⭐该页在发文字号表尾内嵌脚本 if(有效 != 有效){ document.write(…有效性：有效…) }，即件自身把效力状态写死为「有效」，只是渲染条件为假不显示——这是本项目第二种「页面级有效性」证据形态，比「无有效期字段」强，可直接闭合生效关。算式自校验：6.5-0.5=6.0、6.4-0.4=6.0 两条独立数字收敛到同一基本医疗费率。四关全过，数值 6.5% 不变，本批只补文号与有效性证据。\n\n第五十二批父代理亲抓逐字复核：页面发文字号字段为「白医保联发﹝2019﹞3号」（页面用全角括号﹝﹞书写，标准形式白医保联发〔2019〕3号），发文机关白城市医疗保障局、成文日期与发布日期均2019年12月03日；正文逐字「具体为企业单位、差额拨款事业单位、自收自支事业单位缴费费率6.5%（含生育保险0.5%），行政机关、全额拨款事业单位缴费费率6.4%（含生育保险0.4%）」；⭐该页在发文字号表尾内嵌脚本 if(有效 != 有效){ document.write(…有效性：有效…) }，即件自身把效力状态写死为「有效」，只是渲染条件为假不显示——这是本项目第二种「页面级有效性」证据形态，比「无有效期字段」强，可直接闭合生效关。算式自校验：6.5-0.5=6.0、6.4-0.4=6.0 两条独立数字收敛到同一基本医疗费率。四关全过，数值 6.5% 不变，本批只补文号与有效性证据。\n\n第五十二批父代理亲抓逐字复核：页面发文字号字段为「白医保联发﹝2019﹞3号」（页面用全角括号﹝﹞书写，标准形式白医保联发〔2019〕3号），发文机关白城市医疗保障局、成文日期与发布日期均2019年12月03日；正文逐字「具体为企业单位、差额拨款事业单位、自收自支事业单位缴费费率6.5%（含生育保险0.5%），行政机关、全额拨款事业单位缴费费率6.4%（含生育保险0.4%）」；⭐该页在发文字号表尾内嵌脚本 if(有效 != 有效){ document.write(…有效性：有效…) }，即件自身把效力状态写死为「有效」，只是渲染条件为假不显示——这是本项目第二种「页面级有效性」证据形态，比「无有效期字段」强，可直接闭合生效关。算式自校验：6.5-0.5=6.0、6.4-0.4=6.0 两条独立数字收敛到同一基本医疗费率。四关全过，数值 6.5% 不变，本批只补文号与有效性证据。\n\n第五十二批父代理亲抓逐字复核：页面发文字号字段为「白医保联发﹝2019﹞3号」（页面用全角括号﹝﹞书写，标准形式白医保联发〔2019〕3号），发文机关白城市医疗保障局、成文日期与发布日期均2019年12月03日；正文逐字「具体为企业单位、差额拨款事业单位、自收自支事业单位缴费费率6.5%（含生育保险0.5%），行政机关、全额拨款事业单位缴费费率6.4%（含生育保险0.4%）」；⭐该页在发文字号表尾内嵌脚本 if(有效 != 有效){ document.write(…有效性：有效…) }，即件自身把效力状态写死为「有效」，只是渲染条件为假不显示——这是本项目第二种「页面级有效性」证据形态，比「无有效期字段」强，可直接闭合生效关。算式自校验：6.5-0.5=6.0、6.4-0.4=6.0 两条独立数字收敛到同一基本医疗费率。四关全过，数值 6.5% 不变，本批只补文号与有效性证据。",
+          "officialDomain": true
+        },
+        {
+          "city": "白山",
+          "key": "bs",
+          "status": "official-partial",
+          "docNumber": "白山金管发〔2023〕6号（依据）",
+          "urls": [
+            "http://bsgjj.cbs.gov.cn/zcfg/zxzc/202601/t20260113_865179.html",
+            "http://bsgjj.cbs.gov.cn/sy/tzgg/202601/t20260113_865181.html",
+            "http://bsgjj.cbs.gov.cn/zcfg/zxzc/202510/t20251029_858880.html",
+            "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+            "http://ybj.jl.gov.cn/",
+            "https://bsgjj.cbs.gov.cn/zcfg/zxzc/202601/t20260113_865179.html",
+            "https://www.cbs.gov.cn/",
+            "https://www.cbs.gov.cn/sy/zddt/",
+            "http://xxgk.cbs.gov.cn/szf/zsjxxgkml/",
+            "http://hrss.cbs.gov.cn/",
+            "http://bsgjj.cbs.gov.cn/"
+          ],
+          "rawQuotes": [],
+          "confirms": "白山市公积金中心 2025-12-25《关于2026年度缴存单位年审、职工住房公积金缴存基数及比例调整工作的通知》逐字：现将我市2026年度住房公积金职工缴存基数上限调整为19272.5元；2026年我市单位和职工住房公积金缴存比例上限为12%，下限为5%；调整时间自2026-01-04起至2026-03-31。站点三重核验通过（.gov.cn + 吉ICP备2021003213号 + 网站标识码2206000010 + 主办单位署名）。\n\n第五十二批推翻旧结论「官网域名未找到」：白山市人民政府门户真实域名 www.cbs.gov.cn（TITLE「白山市人民政府」）。DoH 已证伪全部拼音猜测——www.bss.gov.cn / bss.gov.cn / www.baishan.gov.cn / baishan.gov.cn 全部 NXDOMAIN，cbs 是官方沿用的既有缩写，不是拼音首字母。headless 渲染首页共45条链接，列出的市局子域为 bsgjj（住房公积金管理中心）/ hrss（人社局）/ scjg（市场监管）/ jyj（应急）/ lyj（林业）/ zrzy（自然资源）/ hbj（生态环境）/ kjj（科技）/ wsjkw（卫健委）/ sjj（审计）/ bsjy（交通）/ swj（商务）/ kfq（经济开发区）/ edu / police，县区 hunjiang / jy / linjiang / fusong / jyx / changbai；没有任何医疗保障局子域，ylbzj.cbs.gov.cn 与 ybj.cbs.gov.cn 均不可达。hrss.cbs.gov.cn 首页「医保/生育/费率/医疗保障」全部零命中。门户已核入口：站点地图 www.cbs.gov.cn/sy/zddt/、政府文件 xxgk.cbs.gov.cn/szf/zsjxxgkml/（122137B、TRS CMS、正文仍无医保费率件）、通知公告 www.cbs.gov.cn/zw/tzgg/、政策解读 /zw/zcjd/，而 /xxgk/ 返回404。结论：医保局无独立网站、其文件只能挂市政府门户；8% 高于省级框架6.5%、仍属估算值、数值不改、warn 保留。\n\n第五十二批推翻旧结论「官网域名未找到」：白山市人民政府门户真实域名 www.cbs.gov.cn（TITLE「白山市人民政府」）。DoH 已证伪全部拼音猜测——www.bss.gov.cn / bss.gov.cn / www.baishan.gov.cn / baishan.gov.cn 全部 NXDOMAIN，cbs 是官方沿用的既有缩写，不是拼音首字母。headless 渲染首页共45条链接，列出的市局子域为 bsgjj（住房公积金管理中心）/ hrss（人社局）/ scjg（市场监管）/ jyj（应急）/ lyj（林业）/ zrzy（自然资源）/ hbj（生态环境）/ kjj（科技）/ wsjkw（卫健委）/ sjj（审计）/ bsjy（交通）/ swj（商务）/ kfq（经济开发区）/ edu / police，县区 hunjiang / jy / linjiang / fusong / jyx / changbai；没有任何医疗保障局子域，ylbzj.cbs.gov.cn 与 ybj.cbs.gov.cn 均不可达。hrss.cbs.gov.cn 首页「医保/生育/费率/医疗保障」全部零命中。门户已核入口：站点地图 www.cbs.gov.cn/sy/zddt/、政府文件 xxgk.cbs.gov.cn/szf/zsjxxgkml/（122137B、TRS CMS、正文仍无医保费率件）、通知公告 www.cbs.gov.cn/zw/tzgg/、政策解读 /zw/zcjd/，而 /xxgk/ 返回404。结论：医保局无独立网站、其文件只能挂市政府门户；8% 高于省级框架6.5%、仍属估算值、数值不改、warn 保留。",
+          "officialDomain": true
+        },
+        {
+          "city": "吉林市",
+          "key": "jl",
+          "status": "official-partial",
+          "docNumber": "无",
+          "urls": [
+            "http://xxgk.jlcity.gov.cn/qtdw/gjjglzx_1/xbgkml/202608/t20260814_1332244.html",
+            "http://xxgk.jlcity.gov.cn/qtdw/gjjglzx_1/xbgkml/202608/t20260814_1332245.html",
+            "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+            "http://ybj.jl.gov.cn/",
+            "http://gjj.jlcity.gov.cn/xwpd/tzgg/202608/t20260814_1332240.html",
+            "http://gjj.jlcity.gov.cn/zcfg/zcjd/202608/t20260814_1332242.html",
+            "http://www.jlcity.gov.cn/jlszf/20zfjg/202010/t20201013_886182.html",
+            "https://ybj.jl.gov.cn/zcfg/sjzc/"
+          ],
+          "rawQuotes": [],
+          "confirms": "吉林市公积金中心 2026-08-14《关于对吉林市2026年度住房公积金缴存基数上限进行调整的通知》逐字：吉林市2026年度住房公积金缴存基数上限按照我市2025年度职工月平均工资的3倍核定，标准为22734.75元；自发布之日起开始调整，2026年1月1日至基数调整日期间的缴存额差额应予以补缴。解读页明写「按照2025年度吉林市城镇非私营单位就业人员年平均工资标准计算，月平均工资的3倍为22734.75元」。⭐本批唯一算式自校验成立的城市：22734.75÷3=7578.25元/月、×12=90939元/年。\n\n第五十二批确认吉林市医疗保障局不设独立网站：唯一官方入口是市政府门户的政府组织机构条目页（ArticleTitle=吉林市医疗保障局、PubDate 2025-07-04、通讯地址吉林市船营区越山路11号城建大厦7楼）；/jlszf/zfwj/ 返回404。省市医保局侧复核：https://ybj.jl.gov.cn/zcfg/sjzc/ 省级政策栏的政策三级栏目只有 gjzc（国家）/ sjzc（省级）/ zcjd（解读）三类，逐页读完无任何市级费率件。8% 高于省级框架6.5%、仍属估算值、数值不改、warn 保留。\n\n第五十二批确认吉林市医疗保障局不设独立网站：唯一官方入口是市政府门户的政府组织机构条目页（ArticleTitle=吉林市医疗保障局、PubDate 2025-07-04、通讯地址吉林市船营区越山路11号城建大厦7楼）；/jlszf/zfwj/ 返回404。省市医保局侧复核：https://ybj.jl.gov.cn/zcfg/sjzc/ 省级政策栏的政策三级栏目只有 gjzc（国家）/ sjzc（省级）/ zcjd（解读）三类，逐页读完无任何市级费率件。8% 高于省级框架6.5%、仍属估算值、数值不改、warn 保留。",
+          "officialDomain": true
+        },
+        {
+          "city": "辽源",
+          "key": "lyu",
+          "status": "official-partial",
+          "docNumber": "无",
+          "urls": [
+            "http://zwgk.liaoyuan.gov.cn/zsjg/fgw_97992/xxgkml/202601/t20260115_730085.html",
+            "http://zwgk.liaoyuan.gov.cn/zsjg/fgw_97992/xxgkml/202601/t20260115_730073.html",
+            "http://zwgk.liaoyuan.gov.cn/zsjg/fgw_97992/gkzn/",
+            "https://xxgk.jl.gov.cn/szf/gkml/202511/t20251126_9360748.html",
+            "http://jst.jl.gov.cn",
+            "https://xxgk.jl.gov.cn/zsjg/fgw/xxgkmlqy/202603/t20260324_9453547.html",
+            "http://ybj.jl.gov.cn/",
+            "http://www.lygjj.cn/tzgg2/2018.jhtml",
+            "http://zwgk.liaoyuan.gov.cn/zcbm/szf_3973/xzgfxwjk/",
+            "http://zwgk.liaoyuan.gov.cn/zcbm/szf_3973/xxgkml/?stit=17316&num=2",
+            "http://zwgk.liaoyuan.gov.cn/zcbm/szf_3973/gknr/lzyj/qtwj/",
+            "http://jlsi.jl.gov.cn/szxx/lys_424472/",
+            "http://jlsi.jl.gov.cn/"
+          ],
+          "rawQuotes": [],
+          "confirms": "辽源市住房公积金管理中心《关于2026年度调整职工住房公积金缴存基数上限的通知》（2026-09-21 署名、2026-09-24 发布）逐字：二、缴存基数确定 2026年度职工住房公积金缴存基数上限调整为22444元。该件正文不含任何文号——旧 note 写的「辽公积金管发〔2026〕4号」经查并不存在，已删。件内口径是本市上年度职工月平均工资×3，与省全口径 89778÷12×3=22444.5 的吻合属巧合旁证，不是算式自校验。\n\n第五十二批定位到辽源市医疗保障局在政府信息公开平台的唯一入口：http://zwgk.liaoyuan.gov.cn/zcbm/szf_3973/xzgfxwjk/ 页面内有 li data-classInfoId=17316 的「辽源市医疗保障局」，切换函数 bumen(17316)/bumen2(17316)。其列表页 /zcbm/szf_3973/xxgkml/?stit=17316&num=2 有91381B，但条目全部由 ticaiSearch() 脚本驱动，curl 与 headless Chrome 渲染均取不到任何标题；其他文件栏 /zcbm/szf_3973/gknr/lzyj/qtwj/ 同样取不到条目。jlsi.jl.gov.cn/szxx/lys_424472/（吉林省社会保险事业管理局辽源页）只有养老/失业/工伤内容且列表 AJAX。结论：医保局文档在公开渠道结构性不可枚举，8% 保留为估算值、数值不改、warn 保留。",
+          "officialDomain": true
+        }
+      ]
+    }
+  ]
+}
