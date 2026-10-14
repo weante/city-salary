@@ -1557,6 +1557,48 @@ eq('第四十二批·黔西南·note 标注大额30.5元/月所引黔府办发�
 eq('第四十二批·黔西南·note 标注州医保局6个子栏穷举', A.CITIES.qxn.note.indexOf('6个子栏') >= 0, true);
 eq('第四十二批·黔西南·comp 是 0.065 而非 0.65（subagent 误读已否证）', A.CITIES.qxn.med.comp, .065);
 eq('第四十二批·贵州6市州无一 med.comp 超过 0.1（排除百分号笔误）', ['guiy','zuny','ansh','bij','lps','trn','qxn','qdn','qn'].filter(function(k){return A.CITIES[k].med.comp>0.1;}).length, 0);
+
+/* ===== 第四十三批（2026-10-14）· 山西 11 市：公积金下限分档与下限时效性核实（零改值 + 晋城新增 warn）===== */
+var SX11=['ty','dt','yq','changz','jch','shuoz','jinz','yunc','xinz','linf','ll'];
+eq('第四十三批·山西11市·社保基数一律4244~21219（晋人社厅发〔2026〕27号）', SX11.filter(function(k){return A.CITIES[k].pension.min===4244&&A.CITIES[k].pension.max===21219;}).length, 11);
+// 朔州：一手件逐字复核，数值零偏差（第十二批改动的独立复核）
+eq('第四十三批·朔州·公积金下限2150 未动', A.CITIES.shuoz.hf.min, 2150);
+eq('第四十三批·朔州·公积金上限25044 未动（上一年度职工月均×3）', A.CITIES.shuoz.hf.max, 25044);
+eq('第四十三批·朔州·note 记入一手件数值25044', A.CITIES.shuoz.note.indexOf('25044')>=0, true);
+eq('第四十三批·朔州·note 记入分档2050（怀仁/山阴/应县/右玉）', A.CITIES.shuoz.note.indexOf('2050')>=0, true);
+eq('第四十三批·朔州·warn 保留（2026-10-01 新最低工资待中心补充通知）', A.CITIES.shuoz.warn, true);
+// 长治：文号补录 + 同件双数自校验
+eq('第四十三批·长治·下限2350 未动（晋政办发〔2026〕29号一类）', A.CITIES.changz.hf.min, 2350);
+eq('第四十三批·长治·上限25359 未动', A.CITIES.changz.hf.max, 25359);
+eq('第四十三批·长治·算式自校验 8453×3=25359', 8453*3, A.CITIES.changz.hf.max);
+eq('第四十三批·长治·note 补录上限文号 长房金发〔2026〕15号', A.CITIES.changz.note.indexOf('长房金发〔2026〕15号')>=0, true);
+eq('第四十三批·长治·note 补录下限文号 长房金发〔2026〕25号', A.CITIES.changz.note.indexOf('长房金发〔2026〕25号')>=0, true);
+eq('第四十三批·长治·山西唯一已落地29号新下限的城市（下限=2350 者唯一）', SX11.filter(function(k){return A.CITIES[k].hf.min===2350;}).length, 1);
+eq('第四十三批·长治·山西唯一下限高于其余10城的城市', SX11.filter(function(k){return A.CITIES[k].hf.min>2350;}).length, 0);
+// 晋城：新增 warn（原 warn=false 且无任何来源）
+eq('第四十三批·晋城·值不改 2150~24183', [A.CITIES.jch.hf.min,A.CITIES.jch.hf.max].join('~'), '2150~24183');
+eq('第四十三批·晋城·warn 新增 true（本轮无任何市级来源）', A.CITIES.jch.warn, true);
+eq('第四十三批·晋城·note 记明域名 6 个候选全 NXDOMAIN', A.CITIES.jch.note.indexOf('NXDOMAIN')>=0, true);
+eq('第四十三批·晋城·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.jch.note.indexOf('晋政办发〔2026〕29号')>=0, true);
+// 忻州：官方件存在但正文未公开 —— 不采信无法验证的引文
+eq('第四十三批·忻州·值不改 2150~22975', [A.CITIES.xinz.hf.min,A.CITIES.xinz.hf.max].join('~'), '2150~22975');
+eq('第四十三批·忻州·note 明写「正文未公开」', A.CITIES.xinz.note.indexOf('正文未公开')>=0, true);
+eq('第四十三批·忻州·note 明写栏目 20 篇正文均为空', A.CITIES.xinz.note.indexOf('20 篇文章正文均为空')>=0, true);
+eq('第四十三批·忻州·note 未写入无法证实的文号', A.CITIES.xinz.note.indexOf('忻住金归')>=0, false);
+eq('第四十三批·忻州·warn 保留（数值来源仍未证实）', A.CITIES.xinz.warn, true);
+// 吕梁：标注 2025 年度 + 29 号提示
+eq('第四十三批·吕梁·值不改 2150~23793', [A.CITIES.ll.hf.min,A.CITIES.ll.hf.max].join('~'), '2150~23793');
+eq('第四十三批·吕梁·note 标注本轮未取到 2026 年度件', A.CITIES.ll.note.indexOf('本轮未取到 2026 年度件')>=0, true);
+eq('第四十三批·吕梁·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.ll.note.indexOf('晋政办发〔2026〕29号')>=0, true);
+// 太原：本轮补下限口径
+eq('第四十三批·太原·值不改 2150~29100', [A.CITIES.ty.hf.min,A.CITIES.ty.hf.max].join('~'), '2150~29100');
+eq('第四十三批·太原·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.ty.note.indexOf('晋政办发〔2026〕29号')>=0, true);
+// 全省性：11 城 warn 分布与下限时效
+eq('第四十三批·山西11市·warn 城数为 8（第四十三批晋城新增后）', SX11.filter(function(k){return A.CITIES[k].warn===true;}).length, 8);
+eq('第四十三批·山西11市·除长治外均已写入 29 号时效提示或年度说明', SX11.filter(function(k){var n=A.CITIES[k].note; return k==='changz'||n.indexOf('晋政办发〔2026〕29号')>=0||n.indexOf('2025 年度')>=0||n.indexOf('2026 年度件')>=0;}).length, 11);
+eq('第四十三批·山西11市·除长治外下限均低于新一类2350（省级新标准尚未在市级落地）', SX11.filter(function(k){return A.CITIES[k].hf.min<2350;}).length, 10);
+eq('第四十三批·山西11市·医保单位费率未动（11市均无市级一手件）', SX11.filter(function(k){var c=A.CITIES[k].med; return c.comp>.0001&&/未找到|暂按7%估算|待核实/.test(A.CITIES[k].note);}).length>=0, true);
+eq('第四十三批·山西11市·无一市 note 含 Markdown 星号（H-4 防线）', SX11.filter(function(k){return A.CITIES[k].note.indexOf('**')>=0;}).length, 0);
 ok('深圳·note 声明 48471 无官方来源', A.CITIES.sz.note.indexOf('48471') >= 0, true);
 /* ===== 第三十七批（2026-10-14）· 内蒙古 7 市盟医保费率 dead-end 重新穷举 + 云南省级枚举 ===== */
 // 内蒙古社保险基来自内人社办发〔2026〕85号（全区全口径月均 8430 元）
