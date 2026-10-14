@@ -1195,7 +1195,7 @@ eq('南宁·租金1500', A.CITIES.nn.rent, 1500);
 eq('柳州·医保单位8%', A.CITIES.liuz.med.comp, 0.08);
 eq('柳州·租金1100（税务局12366）', A.CITIES.liuz.rent, 1100);
 eq('梧州·租金800（税务局12366）', A.CITIES.wuz.rent, 800);
-eq('桂林·大额个人3元/月', A.CITIES.gl.medFixEmp, 3);
+eq('第四十六批·桂林·大额固定额字段已移除（第四十七条为0.2%比例型，默认0）', A.CITIES.gl.medFixEmp, 0);
 eq('云南·基数下限(云人社发〔2026〕8号)', A.CITIES.km.pension.min, 4403);
 eq('云南·基数上限', A.CITIES.km.pension.max, 22017);
 eq('昆明·医保单位7.9%（含生育0.9%）', A.CITIES.km.med.comp, 0.079);
@@ -2159,7 +2159,7 @@ eq('黑龙江·佳木斯约76万→800', A.CITIES.jms.rent, 800);
    广西 桂人社发〔2026〕32号：http://rst.gxzf.gov.cn/zwgk/xxgkzcfg/fgfxlm/t28152939.shtml
      逐字「按7008元/月作为核定个人缴费基数上下限的指标，缴费基数上限为21024元/月，下限为4204.8元/月」
      算式自校验：7008×3===21024 ✓、7008×0.6===4204.8 ✓ */
-eq('第三十一批B·玉林·医保单位费率6%', A.CITIES.yuln.med.comp, 0.06);
+eq('第四十六批·玉林·医保单位费率6.5%（基本医保6%+生育0.5%）', A.CITIES.yuln.med.comp, 0.065);
 eq('第三十一批B·玉林·医保个人2%', A.CITIES.yuln.med.emp, 0.02);
 eq('第三十一批B·玉林·社基数下限4204.8', A.CITIES.yuln.pension.min, 4204.8);
 eq('第三十一批B·玉林·社基数上限21024', A.CITIES.yuln.pension.max, 21024);
@@ -2168,8 +2168,8 @@ eq('第三十一批B·广西核定指标7008×0.6===4204.8', 7008 * 0.6, 4204.8)
 eq('第三十一批B·玉林费率自校验6+2===8', 6 + 2, 8);
 eq('第三十一批B·玉林费率自校验7-6===1', 7 - 6, 1);
 eq('第三十一批B·玉林note含玉市医保发2025-10号', A.CITIES.yuln.note.includes('玉市医保发〔2025〕10号'), true);
-eq('第三十一批B·玉林note含2025-07-01生效', A.CITIES.yuln.note.includes('2025-07-01起'), true);
-eq('第三十一批B·玉林note不再出现6.5%', A.CITIES.yuln.note.includes('医保单位6.5%'), false);
+eq('第四十六批·玉林note含2025年7月1日生效', A.CITIES.yuln.note.includes('2025年7月1日'), true);
+eq('第四十六批·玉林note改引玉市医保发〔2023〕17号', A.CITIES.yuln.note.includes('玉市医保发〔2023〕17号'), true);
 eq('第三十一批B·柳州社基数下限4204.8', A.CITIES.liuz.pension.min, 4204.8);
 eq('第三十一批B·柳州社基数上限21024', A.CITIES.liuz.pension.max, 21024);
 eq('第三十一批B·柳州note含桂人社发2026-32号', A.CITIES.liuz.note.includes('桂人社发〔2026〕32号'), true);
@@ -2253,6 +2253,96 @@ eq('第三十一批B·唐山医保7.8%不变', A.CITIES.ts.med.comp, 0.078);
 eq('第三十一批B·南宁医保6.5%不变', A.CITIES.nn.med.comp, 0.065);
 eq('第三十一批B·钦州医保8.5%不变', A.CITIES.qinz.med.comp, 0.085);
 eq('第三十一批B·桂林医保7.3%不变', A.CITIES.gl.med.comp, 0.073);
+
+/* ===== 第四十五批（陕西 10 市）· 2026-10-14 =====
+   延安 yanan 6.5%(机关)/6.9%(企业) —— 医保有生育合并实施方案六部门联署，2020-01-01 起执行
+   商洛 shangl 商政发〔2022〕3号 6.6%（基本医保6% + 生育0.6%），下限比例60%官方坐实
+   西安 xa 8%（含生育1%）坐实；原note「2025-12起阶段性减征至7%」查无实据已删
+   咸阳 xy 6.8% 坐实；铜川 tch / 安康 ank 制度件已确认失效；宝鸡 baoj 出处未能证实 → 新增 warn
+   https://ybj.yanan.gov.cn/zfxxgk/fdzdgknr/gsgg/1573196485158359041.html （无文号，六部门 2019-10-14）
+   http://www.shangluo.gov.cn/ybj/info/1032/1598.htm （商政发〔2022〕3号）
+   http://www.xa.gov.cn/gk/zcfg/zcjd/zcwd/shbx/636a1abef8fd1c4c212759a3.html （索引号 2023-010594）
+   https://ybj.xianyang.gov.cn/xwzx/xwdt/202409/t20240903_1807521.html （无文号，2024-09-02）
+   https://www.ankang.gov.cn/Content-84316.html （第四十六条：有效期为三年）
+   https://www.shaanxi.gov.cn/zfxxgk/zfgb/2019_3941/d15q_3956/201908/t20190821_1637018.html （陕政办发〔2019〕18号）
+*/
+eq('第四十五批·延安·医保单位费率6.9%（企业口径，机关事业6.5%）', A.CITIES.yanan.med.comp, 0.069);
+eq('第四十五批·延安·note记明企业与其他单位口径分列', A.CITIES.yanan.note.includes('其他单位'), true);
+eq('第四十五批·延安·算式自校验 6.5%(机关)与6.9%(企业)分列', 0.069 - 0.065, 0.004);
+eq('第四十五批·商洛·医保单位费率6.6%', A.CITIES.shangl.med.comp, 0.066);
+eq('第四十五批·商洛·算式自校验 6% + 0.6% = 6.6%', 0.06 + 0.006, 0.066);
+eq('第四十五批·商洛·note引商政发〔2022〕3号', A.CITIES.shangl.note.includes('商政发〔2022〕3号'), true);
+eq('第四十五批·商洛·note记下限比例60%', A.CITIES.shangl.note.includes('60%'), true);
+eq('第四十五批·商洛·note记修订在途（征求意见稿未生效）', A.CITIES.shangl.note.includes('修订在途'), true);
+eq('第四十五批·商洛·warn仍保留', A.CITIES.shangl.warn, true);
+eq('第四十五批·西安·医保单位费率8%（含生育1%）不变', A.CITIES.xa.med.comp, 0.08);
+eq('第四十五批·西安·算式自校验 8% - 1%(生育) = 7%', 0.08 - 0.01, 0.07);
+eq('第四十五批·西安·note记阶段性减征表述已删除', A.CITIES.xa.note.includes('已删除'), true);
+eq('第四十五批·西安·note保留减征表述的更正说明', A.CITIES.xa.note.includes('阶段性减征'), true);
+eq('第四十五批·西安·note记大额8元/人·月', A.CITIES.xa.note.includes('8'), true);
+eq('第四十五批·咸阳·医保单位费率6.8%不变', A.CITIES.xy.med.comp, 0.068);
+eq('第四十五批·咸阳·note逐字引用单位按6.8%缴纳', A.CITIES.xy.note.includes('6.8%'), true);
+eq('第四十五批·铜川·note记制度件已失效', A.CITIES.tch.note.includes('失效'), true);
+eq('第四十五批·安康·note记第四十六条有效期为三年', A.CITIES.ank.note.includes('有效期为三年'), true);
+eq('第四十五批·安康·医保仍为省级暂估7%', A.CITIES.ank.med.comp, 0.07);
+eq('第四十五批·宝鸡·医保仍为7%（未取到市级件）', A.CITIES.baoj.med.comp, 0.07);
+eq('第四十五批·宝鸡·出处未能证实→新增warn', A.CITIES.baoj.warn, true);
+eq('第四十五批·宝鸡·note记宝政发〔2010〕16号未能证实', A.CITIES.baoj.note.includes('未能证实'), true);
+eq('第四十五批·宝鸡·note记60%下限5041.65与300%上限25208.25', A.CITIES.baoj.note.includes('25208.25'), true);
+eq('第四十五批·宝鸡·算式自校验 8402.75×0.6=5041.65', Math.round(8402.75 * 0.6 * 100) / 100, 5041.65);
+eq('第四十五批·宝鸡·算式自校验 8402.75×3=25208.25', Math.round(8402.75 * 3 * 100) / 100, 25208.25);
+eq('第四十五批·陕西10市社保基数仍为4737~23685', A.CITIES.xa.pension.min + A.CITIES.wn.pension.max, 4737 + 23685);
+eq('第四十五批·陕西医保基数复用社保（无独立下限比例字段）', A.CITIES.xa.med.min, A.CITIES.xa.pension.min);
+
+/* ===== 第四十六批（广西 14 市）· 2026-10-14 =====
+   口径确认：广西 medComp = 单位合计（含生育）。企业 = 基本医保X% + 生育0.5%；机关事业 = 基本医保X% + 生育0.4%
+   防城港 fcg 防医保发〔2024〕20号 企业 6% + 0.5% = 6.5%（原 7% 是凭空估算）
+   玉林 yuln 玉市医保发〔2025〕10号 基本医保单位 6%，玉市医保发〔2023〕17号 生育 0.5% → 6.5%（原 6% 漏算生育）
+   桂林 gl 市政规〔2025〕19号 第十四条 7.3%（含生育0.5%）坐实；第四十七条大额为0.2%比例型
+        → 原 medFixEmp:3 误归属（真实来源是第四十七条后半段「领取失业保险金人员个人缴费标准36元/人·年」），已移除
+   https://www.fcgs.gov.cn/ybj/zcfg/t19534141.shtml （防医保发〔2024〕20号）
+   http://ybj.yulin.gov.cn/tzgg/t21580387.shtml （玉市医保发〔2025〕10号）
+   http://ybj.yulin.gov.cn/tzgg/t17579744.shtml （玉市医保发〔2023〕17号）
+   http://ybj.guilin.gov.cn/zfxxgk/fdzdgknr/zcfg/t26980912.shtml （市政规〔2025〕19号）
+   警示：桂医保发〔2026〕22号（自治区本级 7%）只适用区直机关，绝不可套用 14 市
+*/
+eq('第四十六批·防城港·医保单位费率6.5%', A.CITIES.fcg.med.comp, 0.065);
+eq('第四十六批·防城港·算式自校验 6% + 0.5%(生育) = 6.5%', 0.06 + 0.005, 0.065);
+eq('第四十六批·防城港·note引防医保发〔2024〕20号', A.CITIES.fcg.note.includes('防医保发〔2024〕20号'), true);
+eq('第四十六批·防城港·warn已新增', A.CITIES.fcg.warn, true);
+eq('第四十六批·防城港·note记机关事业生育0.4%与企业0.5%的口径差', A.CITIES.fcg.note.includes('0.4%'), true);
+eq('第四十六批·玉林·医保单位费率6.5%（原6%漏算生育0.5%）', A.CITIES.yuln.med.comp, 0.065);
+eq('第四十六批·玉林·算式自校验 6% + 0.5%(生育) = 6.5%', 0.06 + 0.005, 0.065);
+eq('第四十六批·玉林·note引玉市医保发〔2025〕10号（基本医保）', A.CITIES.yuln.note.includes('玉市医保发〔2025〕10号'), true);
+eq('第四十六批·玉林·note引玉市医保发〔2023〕17号（生育）', A.CITIES.yuln.note.includes('玉市医保发〔2023〕17号'), true);
+eq('第四十六批·玉林·warn已新增', A.CITIES.yuln.warn, true);
+eq('第四十六批·玉林·社基数不变4204.8', A.CITIES.yuln.pension.min, 4204.8);
+eq('第四十六批·桂林·医保单位费率7.3%（含生育0.5%）不变', A.CITIES.gl.med.comp, 0.073);
+eq('第四十六批·桂林·算式自校验 7.3% - 0.5%(生育) = 6.8%', Math.round((0.073 - 0.005) * 10000) / 10000, 0.068);
+eq('第四十六批·桂林·机关事业7.2％已在note记录（全角百分号）', A.CITIES.gl.note.includes('7.2％'), true);
+eq('第四十六批·桂林·大额固定额字段已移除（0.2%比例型不可建模，默认0）', A.CITIES.gl.medFixEmp, 0);
+eq('第四十六批·桂林·warn已新增', A.CITIES.gl.warn, true);
+eq('第四十六批·桂林·note引市政规〔2025〕19号', A.CITIES.gl.note.includes('市政规〔2025〕19号'), true);
+eq('第四十六批·桂林·note记第四十七条0.2%比例型', A.CITIES.gl.note.includes('第四十七条'), true);
+eq('第四十六批·桂林·note保留7.15%表述的更正说明', A.CITIES.gl.note.includes('7.15%'), true);
+eq('第四十六批·桂林·note记7.15%已删除', A.CITIES.gl.note.includes('已删除'), true);
+eq('第四十六批·桂林·note保留长护表述的更正说明', A.CITIES.gl.note.includes('长护'), true);
+eq('第四十六批·广西14市医保单位费率均在6%~9%合理区间', (function () {
+  var ks = ['nn', 'liuz', 'gl', 'wuz', 'bh', 'fcg', 'qinz', 'gg', 'yuln', 'bais', 'hezh', 'hech', 'lb', 'chz'];
+  for (var i = 0; i < ks.length; i++) { var v = A.CITIES[ks[i]].med.comp; if (!(v >= 0.06 && v <= 0.09)) return false; }
+  return true;
+})(), true);
+eq('第四十六批·广西14市企业口径均含生育0.5%（无低于6.5%的合计值）', (function () {
+  var ks = ['nn', 'liuz', 'gl', 'wuz', 'bh', 'fcg', 'qinz', 'gg', 'yuln', 'bais', 'hezh', 'hech', 'lb', 'chz'];
+  for (var i = 0; i < ks.length; i++) { if (A.CITIES[ks[i]].med.comp < 0.065) return false; }
+  return true;
+})(), true);
+eq('第四十六批·南宁·医保单位费率6.5%（含生育0.5%）不变', A.CITIES.nn.med.comp, 0.065);
+eq('第四十六批·北海·医保单位费率6.5%不变', A.CITIES.bh.med.comp, 0.065);
+eq('第四十六批·柳州·柳政办〔2015〕50号查无此文→新增warn', A.CITIES.liuz.warn, true);
+eq('第四十六批·柳州·note记文号查无此文', A.CITIES.liuz.note.includes('查无此文'), true);
+eq('第四十六批·柳州·医保单位费率8.0%保留不动', A.CITIES.liuz.med.comp, 0.08);
+
 
 // ===== 第三十一批 A（2026-10-13）· 黑龙江佳木斯公积金上限溯源（数值零改动，只修note 无据表述）=====
 // 下限官方件：佳木斯市住房公积金管理中心《关于调整住房公积金缴存基数下限的通知》（无文号，页面日期 2025-12-01）
