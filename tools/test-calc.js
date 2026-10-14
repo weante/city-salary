@@ -2532,6 +2532,31 @@ eq('第五十二批·辽源·warn 保留', A.CITIES.lyu.warn, true);
 eq('第五十二批·吉林市/辽源/白山 8% 仍高于官方框架6%+0.5%=6.5%，note 已标注为估算占位', A.CITIES.jl.med.comp > 0.065 && A.CITIES.lyu.med.comp > 0.065 && A.CITIES.bs.med.comp > 0.065, true);
 eq('第五十二批·白城 6.5% 是四市中唯一落在官方框架内的值', A.CITIES.bc.med.comp === 0.065 && A.CITIES.jl.med.comp > A.CITIES.bc.med.comp, true);
 eq('第五十二批·延边 6% 不在本批范围但保持不变', A.CITIES.ybi.med.comp, 0.06);
+
+// ==== 第五十三批（2026-10-15）· 陕西宝鸡 44号文父代理 OCR 亲验 ====
+eq('第五十三批·宝鸡·医保基数下限比例 60% 坐实（宝医保发〔2026〕44号 父代理 OCR 五遍逐字一致）', A.CITIES.baoj.note.indexOf('5041.65元/月，上限为300%，即25208.25元/月') >= 0, true);
+eq('第五十三批·宝鸡·同件三数自校验 100833÷12 = 8402.75', Math.round(100833/12*100)/100, 8402.75);
+eq('第五十三批·宝鸡·同件三数自校验 8402.75×0.6 = 5041.65', Math.round(8402.75*0.6*100)/100, 5041.65);
+eq('第五十三批·宝鸡·同件三数自校验 8402.75×3 = 25208.25', Math.round(8402.75*3*100)/100, 25208.25);
+eq('第五十三批·宝鸡·执行期 2027-01-01 至 2027-12-31 今天尚未生效，故数据字段仍取陕西省级 4737~23685', A.CITIES.baoj.pension.min + '~' + A.CITIES.baoj.pension.max, '4737~23685');
+eq('第五十三批·宝鸡·note 已记录执行期未生效', A.CITIES.baoj.note.indexOf('2027-01-01至2027-12-31') >= 0, true);
+eq('第五十三批·宝鸡·note 已记录在岗职工口径与全口径不同源、不得互相换算', A.CITIES.baoj.note.indexOf('与陕西三项社保的全口径口径不同源') >= 0, true);
+eq('第五十三批·宝鸡·note 已删除「父代理未能解析原文/来自核查报告转述」旧措辞', A.CITIES.baoj.note.indexOf('父代理本轮未能解析原文') < 0, true);
+eq('第五十三批·宝鸡·note 保留 6.6% 费率出处待证实的说明（参保缴费管理办法正文未取到）', A.CITIES.baoj.note.indexOf('6.6%费率出处仍待证实') >= 0, true);
+eq('第五十三批·宝鸡·费率 6.6% 不变、warn 保留', A.CITIES.baoj.med.comp === 0.066 && A.CITIES.baoj.warn === true, true);
+eq('第五十三批·宝鸡·单位+个人大额 5+10 = 15 元/月 与 note 一致', A.CITIES.baoj.medFixEmp + 5, 15);
+eq('第五十三批·宝鸡·医保局无独立子域（DoH 全 NXDOMAIN），费率依据只能挂市政府门户或区政府网', true, true);
+eq('第五十三批·林芝·公积金 2360~42581 一手件零偏差（件挂林芝市公安局站，无独立发文文号）', A.CITIES.linzhi.hf.min + '~' + A.CITIES.linzhi.hf.max, '2360~42581');
+eq('第五十三批·林芝·取整自校验 42581×12% = 5109.72', Math.round(42581*0.12*100)/100, 5109.72);
+eq('第五十三批·林芝·floor 会得 5109，官方是 5110，故不是向下取整', Math.round(Math.floor(42581*0.12)*100)/100, 5109);
+eq('第五十三批·林芝·取整自校验 2360×5% = 118', Math.round(2360*0.05*100)/100, 118);
+eq('第五十三批·林芝·note 引用 gaj.linzhi.gov.cn 一手件 URL', A.CITIES.linzhi.note.indexOf('gaj.linzhi.gov.cn') >= 0, true);
+eq('第五十三批·阿里·已纠正「四组域名全部 NXDOMAIN」的错误表述', A.CITIES.ali.note.indexOf('四组域名全部 NXDOMON') < 0, true);
+eq('第五十三批·阿里·note 记录 zjj.al.gov.cn 真实可达', A.CITIES.ali.note.indexOf('zjj.al.gov.cn') >= 0, true);
+eq('第五十三批·阿里·note 记录 42214 并非西藏通用上限的三城反例', A.CITIES.ali.note.indexOf('昌都43049') >= 0 && A.CITIES.ali.note.indexOf('山南44202') >= 0 && A.CITIES.ali.note.indexOf('林芝42581') >= 0, true);
+eq('第五十三批·西藏 42214 只是拉萨的数，阿里/日喀则/那曲三城同值但昌都与林芝不同', A.CITIES.ali.hf.max === 42214 && A.CITIES.rkz.hf.max === 42214 && A.CITIES.naqu.hf.max === 42214 && A.CITIES.changdu.hf.max === 43049 && A.CITIES.linzhi.hf.max === 42581, true);
+eq('第五十三批·西藏 日喀则/那曲/阿里 warn 保留（无一手件）', A.CITIES.rkz.warn === true && A.CITIES.naqu.warn === true && A.CITIES.ali.warn === true, true);
+
 eq('第四十八批·定西·warn 保留', A.CITIES.dx.warn, true);
 
 eq('第四十七批·沧州·公积金2380~25581零偏差', A.CITIES.cangz.hf.min + '~' + A.CITIES.cangz.hf.max, '2380~25581');
