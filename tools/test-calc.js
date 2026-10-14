@@ -745,8 +745,8 @@ eq('天津·大额医疗救助260元/年≈21.67元/月', A.CITIES.tj.medFixEmp,
 eq('天津·公积金下限2510', A.CITIES.tj.hf.min, 2510);
 eq('天津·公积金上限(津公积金委〔2026〕3号)', A.CITIES.tj.hf.max, 28917);
 eq('天津·房租扣除1500', A.CITIES.tj.rent, 1500);
-eq('江苏·五险下限(苏人社发〔2025〕33号)', A.CITIES.nanj.pension.min, 4952);
-eq('江苏·五险上限', A.CITIES.nanj.pension.max, 24762);
+eq('江苏·五险下限(苏人社发〔2026〕30号)', A.CITIES.nanj.pension.min, 5025);
+eq('江苏·五险上限(苏人社发〔2026〕30号)', A.CITIES.nanj.pension.max, 25127);
 eq('江苏·失业单位0.5%', A.CITIES.nanj.unemp.comp, 0.005);
 eq('江苏·工伤一类0.2%', A.CITIES.nanj.inj.comp, 0.002);
 eq('南京·医保单位7.8%(含生育)', A.CITIES.nanj.med.comp, 0.078);
@@ -774,6 +774,40 @@ eq('台州·医保个人1%', A.CITIES.taiz.med.emp, 0.01);
 eq('衢州·公积金上限37530', A.CITIES.qz.hf.max, 37530);
 eq('丽水·公积金上限暂用2025年度36405', A.CITIES.lish.hf.max, 36405);
 eq('天津/江苏/浙江·生育并入医保(mat.comp=0)', A.CITIES.tj.mat.comp + A.CITIES.nanj.mat.comp + A.CITIES.hangz.mat.comp, 0);
+
+/* ========== 第四十批 A：江苏 2026 年度基数落地（苏人社发〔2026〕30号）==============
+ * 一手件 https://jshrss.jiangsu.gov.cn/art/2026/10/8/art_77277_11838872.html
+ *   索引号 550232674/2026-00226，四部门联署，2026-09-28 印发 / 2026-10-08 上网
+ * 逐字：「2026年1月1日至12月31日，全省职工基本养老保险缴费工资基数上限按 25127 元执行，
+ *      缴费工资基数下限按 5025 元执行。职工基本医疗保险、失业保险、工伤保险、生育保险
+ *      缴费工资基数上下限按照上述标准执行。」
+ * 解读稿 https://jshrss.jiangsu.gov.cn/art/2026/10/8/art_78497_11838875.html 独立复述同两个数字
+ * ⚠️ 官方未公布全口径年平均工资，故下面两项只能当反推参考、不是同件双数自校验：
+ *    5025÷0.6 = 8375（整）、25127÷3 = 8375.67（不整）→ 与新疆同口径：上下限各自 floor。 */
+{
+  const JS13 = ['nanj', 'su', 'wx', 'czh', 'xz', 'nt', 'lyg', 'ha', 'ych', 'yz', 'tz', 'zjh', 'sq'];
+  let bad = 0, badWarn = 0, badNote = 0, badYr = 0;
+  for (const k of JS13) {
+    const c = A.CITIES[k];
+    if (c.pension.min !== 5025 || c.pension.max !== 25127) { bad++; console.log('  ✗ ' + k + ' 基数未落地'); }
+    if (c.med.min !== 5025 || c.med.max !== 25127) { bad++; console.log('  ✗ ' + k + ' 医保基数未同步'); }
+    if (c.dataYear !== '2026' || (c.dataNext || null) !== null) { badYr++; console.log('  ✗ ' + k + ' 年度口径未改'); }
+    if (c.warn !== true) { badWarn++; console.log('  ✗ ' + k + ' warn 被误清'); }
+    if ((c.note || '').indexOf('24762') >= 0 || (c.note || '').indexOf('4952；') >= 0) { badNote++; console.log('  ✗ ' + k + ' note 残留旧值'); }
+  }
+  eq('江苏·13 城五险基数全部落地 5025~25127', bad, 0);
+  eq('江苏·13 城医保基数与养老同口径', bad, 0);
+  eq('江苏·13 城 dataYear=2026 / dataNext=null', badYr, 0);
+  eq('江苏·13 城 warn 全部保留（各省市医保费率多无市级一手件）', badWarn, 0);
+  eq('江苏·13 城 note 无旧值残留', badNote, 0);
+  eq('江苏·note 逐城引用苏人社发〔2026〕30号', JS13.filter(k => (A.CITIES[k].note || '').indexOf('苏人社发〔2026〕30号') >= 0).length, 13);
+  eq('江苏·note 已删除从未证实的「苏税发」文号', JS13.filter(k => (A.CITIES[k].note || '').indexOf('苏税发') >= 0).length, 0);
+  eq('江苏·note 已删除「2026社保新基数未公布」', JS13.filter(k => (A.CITIES[k].note || '').indexOf('未公布') >= 0).length, 0);
+  eq('江苏·反推参考：下限÷60% = 8375（整）', 5025 / 0.6, 8375);
+  ok('江苏·反推参考：上限÷300% = 8375.67（非整，与新疆同一 floor 口径）', Math.abs(25127 / 3 - 8375.67) < 0.01, true);
+  eq('江苏·上限×20% = 5025.4，官方下限是 floor 后的 5025', Math.round(25127 * 0.2 * 100) / 100, 5025.4);
+  eq('江苏·旧值上限已作废（24762 不再出现）', JS13.filter(k => A.CITIES[k].pension.max === 24762).length, 0);
+}
 
 /* 河南 / 湖北 / 湖南 / 安徽 / 福建 / 江西 参数抽查（对照官方文件） */
 eq('河南·基数下限(豫人社办〔2026〕62号)', A.CITIES.zzheng.pension.min, 3912);
@@ -2299,7 +2333,7 @@ section('12. 省份年度口径与页脚文案');
 
   /* 12.3 受影响 9 省逐省抽查 + 未受影响省份不得被误改 */
   const CASES = [
-    ['heb', '哈尔滨', '2026', null], ['nanj', '南京', '2025', '2026'],
+    ['heb', '哈尔滨', '2026', null], ['nanj', '南京', '2026', null],
     ['hangz', '杭州', '2025', '2026'], ['zzheng', '郑州', '2026', null],
     ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2025', '2026'],
     ['haik', '海口', '2026', null],
@@ -2324,8 +2358,9 @@ section('12. 省份年度口径与页脚文案');
   ok('哈尔滨页脚不再出现"2025年度"', foot().indexOf('哈尔滨 2025年度') < 0, true);
 
   A.selectCity('nanj');
-  ok('南京页脚显示 2025年度（2026年度待公布）',
-    foot().indexOf('数据依据：南京 2025年度（2026年度待公布）') === 0, true);
+  ok('南京页脚显示 2026年度（苏人社发〔2026〕30号落地后不再提示待公布）',
+    foot().indexOf('数据依据：南京 2026年度') === 0, true);
+  ok('南京页脚不再出现「待公布」', foot().indexOf('待公布') < 0, true);
 
   A.selectCity('cc');
   ok('长春页脚显示 2025-2026年度', foot().indexOf('数据依据：长春 2025-2026年度') === 0, true);
