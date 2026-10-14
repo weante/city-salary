@@ -2421,6 +2421,18 @@ eq('第四十七批·石家庄·note保留石政规〔2024〕7号第九条对6.5
 
 // ---- 第四十八批：甘肃定西公积金 2026 年度（定市公积金函〔2026〕18号，扫描图 rapidocr 两遍一致）----
 eq('第四十八批·定西·公积金下限1850→2080（甘政办发〔2025〕71号三类地区月最低工资）', A.CITIES.dx.hf.min, 2080);
+// ── 第四十九批 B（2026-10-14）· 青海 7 市州公积金复核（零改值）──
+eq('第四十九批B·青海·海西公积金下限2080', A.CITIES.hxz.hf.min, 2080);
+eq('第四十九批B·青海·海西公积金上限37166', A.CITIES.hxz.hf.max, 37166);
+ok('第四十九批B·海西note引用2026年度市级件', A.CITIES.hxz.note.indexOf('2026年度住房公积金缴存基数调整') >= 0, true);
+ok('第四十九批B·海西note引用青政2025 11号', A.CITIES.hxz.note.indexOf('青政〔2025〕11号') >= 0, true);
+ok('第四十九批B·海西note声明关卡3算式校验未做', A.CITIES.hxz.note.indexOf('不作关卡3算式校验') >= 0, true);
+ok('第四十九批B·海西note不再出现2024年度33836作为现值', A.CITIES.hxz.note.indexOf('2024年度33836') > 0, true);
+eq('第四十九批B·海北下限仍为1700（不得由省级件推市级）', A.CITIES.hbz.hf.min, 1700);
+ok('第四十九批B·海北note写明1700已被11号取代', A.CITIES.hbz.note.indexOf('已被青政〔2025〕11号取代') >= 0, true);
+eq('第四十九批B·海北warn 保留', A.CITIES.hbz.warn, true);
+ok('第四十九批B·黄南note补记省直取整口径2024年已变更', A.CITIES.hnz.note.indexOf('以元为单位四舍五入后再合计') >= 0, true);
+ok('第四十九批B·青海7市州除海西外全部无2025/2026年度件', ['haid','hbz','hnz','hnan','glz','ysz'].every(function(k){ return A.CITIES[k].warn === true; }), true);
 eq('第四十八批·定西·公积金上限22046→22977', A.CITIES.dx.hf.max, 22977);
 eq('第四十八批·定西·算式自校验 91910÷12 向下取整 = 7659', Math.floor(91910 / 12), 7659);
 eq('第四十八批·定西·算式自校验 7659×3 = 22977', 7659 * 3, 22977);
@@ -2433,7 +2445,17 @@ eq('第四十八批·定西·warn 保留', A.CITIES.dx.warn, true);
 
 eq('第四十七批·沧州·公积金2380~25581零偏差', A.CITIES.cangz.hf.min + '~' + A.CITIES.cangz.hf.max, '2380~25581');
 eq('第四十七批·沧州·算式自校验 8527×3 = 25581', 8527 * 3, 25581);
-eq('第四十七批·沧州·note补引沧金管字〔2026〕24号并标注父代理未复核', A.CITIES.cangz.note.includes('沧金管字〔2026〕24号') && A.CITIES.cangz.note.includes('父代理未复核'), true);
+eq('第四十七批·沧州·note补引沧金管字〔2026〕24号', A.CITIES.cangz.note.includes('沧金管字〔2026〕24号'), true);
+eq('第四十九批·沧州·第四十八批记的「父代理未复核」已于 2026-10-14 解除（扫描 PNG 802×3348 经 PyMuPDF+rapidocr 两遍复核）', A.CITIES.cangz.note.includes('父代理未复核') === false && A.CITIES.cangz.note.includes('rapidocr'), true);
+eq('第四十九批·沧州·算式自校验 8527×3 = 25581（复核确认）', 8527 * 3, 25581);
+eq('第四十九批·沧州·灵活就业月缴存额上限 25581×24% 向下取整 = 6139', Math.floor(25581 * 0.24), 6139);
+eq('第四十九批·临汾·公积金1950~24789零偏差（父代理已复核 2 页扫描 PDF）', A.CITIES.linf.hf.min + '~' + A.CITIES.linf.hf.max, '1950~24789');
+eq('第四十九批·临汾·算式自校验 8263×3 = 24789', 8263 * 3, 24789);
+eq('第四十九批·临汾·算式自校验 24789×24% 精确到分 = 5949.36', Math.round(24789 * 0.24 * 100) / 100, 5949.36);
+eq('第四十九批·临汾·双方月缴存额各 2974.68（合计 5949.36 的一半，未先取整）', 5949.36 / 2, 2974.68);
+eq('第四十九批·临汾·灵活就业月缴存额上限 4180×24% = 1003.2', Math.round(4180 * 0.24 * 100) / 100, 1003.2);
+eq('第四十九批·临汾·note写入父代理 rapidocr 复核声明', A.CITIES.linf.note.includes('rapidocr') && A.CITIES.linf.note.includes('2026-07-01 至 2027-06-30'), true);
+eq('第四十九批·临汾·warn 仍保留（晋政办发〔2026〕29号自2026-10-01起一类2350，中心待另发下限通知）', A.CITIES.linf.warn, true);
 
 
 // ===== 第三十一批 A（2026-10-13）· 黑龙江佳木斯公积金上限溯源（数值零改动，只修note 无据表述）=====
