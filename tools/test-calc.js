@@ -763,8 +763,8 @@ eq('南通·公积金下限2660(通人社发〔2026〕1号市区一类)', A.CITI
 eq('南通·公积金上限34000(通金管〔2025〕50号)', A.CITIES.nt.hf.max, 34000);
 eq('无锡·公积金下限2490仍为旧口径未被误改', A.CITIES.wx.hf.min, 2490);
 eq('宿迁·公积金下限2010', A.CITIES.sq.hf.min, 2010);
-eq('浙江·五险下限(浙人社发〔2025〕52号)', A.CITIES.hangz.pension.min, 4986);
-eq('浙江·五险上限', A.CITIES.hangz.pension.max, 25299);
+eq('浙江·五险下限(浙人社发〔2026〕52号)', A.CITIES.hangz.pension.min, 5122);
+eq('浙江·五险上限', A.CITIES.hangz.pension.max, 25611);
 eq('杭州·医保单位9.5%(含生育0.6%)', A.CITIES.hangz.med.comp, 0.095);
 eq('杭州·公积金上限42151', A.CITIES.hangz.hf.max, 42151);
 eq('宁波·公积金上限38947', A.CITIES.nb.hf.max, 38947);
@@ -774,6 +774,36 @@ eq('台州·医保个人1%', A.CITIES.taiz.med.emp, 0.01);
 eq('衢州·公积金上限37530', A.CITIES.qz.hf.max, 37530);
 eq('丽水·公积金上限暂用2025年度36405', A.CITIES.lish.hf.max, 36405);
 eq('天津/江苏/浙江·生育并入医保(mat.comp=0)', A.CITIES.tj.mat.comp + A.CITIES.nanj.mat.comp + A.CITIES.hangz.mat.comp, 0);
+
+/* ---- 第四十批 B（2026-10-14）· 浙江 2026 年度缴费基数落地（改值 11 市）----
+   一手件：浙人社发〔2026〕52号（2026-10-08 五部门联署含统计局；统一编号 ZJSP13-2026-0006）
+     https://rlsbt.zj.gov.cn/col/col1229506773/art/2026/art_2b4555c11a034b9e874038cbff2f84fb.html
+   解读稿（逐字给出两个数，故可同件双数自校验）
+     https://rlsbt.zj.gov.cn/col/col1229101513/art/2026/art_e8b496ab59834390884b8d375cff1651.html
+   ⭐ 2026 起口径切换：下限恢复按上一年度加权平均工资 60%（2022~2025 曾取「上上年度」）
+   基准 2025 年度非私营+私营加权平均工资 102446 元 = 8537 元/月
+     上限 8537×300% = 25611；下限 8537×60% = 5122.2 → 5122 */
+const ZJ11 = ['hangz','nb','wz','jiax','huz','sx','jh','qz','zsh','taiz','lish'];
+eq('浙江·52号件构成自校验：102446/12 取整 8537，×300% = 25611', Math.round(102446/12) * 3, 25611);
+eq('浙江·52号件构成自校验：8537×60% 向下取整 = 5122', Math.floor(Math.round(102446/12) * 0.6), 5122);
+eq('浙江·解读稿「比上年提高312元/月」与旧上限 25299 吻合', 25611 - 312, 25299);
+eq('浙江·解读稿「比上年提高136元/月」与旧下限 4986 吻合', 5122 - 136, 4986);
+eq('浙江·11 市全覆盖', ZJ11.length, 11);
+for (const k of ZJ11) {
+  const c = A.CITIES[k];
+  ok('浙江·' + k + ' 下限 5122', c.pension.min, 5122);
+  ok('浙江·' + k + ' 上限 25611', c.pension.max, 25611);
+  ok('浙江·' + k + ' dataYear 2026', c.dataYear, '2026');
+  ok('浙江·' + k + ' dataNext 已清空', c.dataNext, null);
+  ok('浙江·' + k + ' note 引用 52 号', c.note.indexOf('浙人社发〔2026〕52号') >= 0, true);
+  ok('浙江·' + k + ' note 不再写「新基数未找到」', c.note.indexOf('新基数未找到') < 0, true);
+  ok('浙江·' + k + ' 保留 warn（医保费率/大病固定额多无市级一手件）', c.warn, true);
+}
+ok('浙江·11 市 note 均已带 52 号', ZJ11.filter(k => A.CITIES[k].note.indexOf('浙人社发〔2026〕52号') >= 0).length, 11);
+ok('浙江·旧文号 2025 版 52 号不再出现于任何 note',
+   ZJ11.filter(k => A.CITIES[k].note.indexOf('浙人社发〔2025〕52号') >= 0).length, 0);
+ok('浙江·宁波已改为「医保单独统筹」表述', A.CITIES.nb.note.indexOf('宁波医保单独统筹') >= 0, true);
+ok('浙江·丽水医保单位费率仍标注未找到市级值', A.CITIES.lish.note.indexOf('单位费率未找到') >= 0, true);
 
 /* ========== 第四十批 A：江苏 2026 年度基数落地（苏人社发〔2026〕30号）==============
  * 一手件 https://jshrss.jiangsu.gov.cn/art/2026/10/8/art_77277_11838872.html
@@ -2334,7 +2364,7 @@ section('12. 省份年度口径与页脚文案');
   /* 12.3 受影响 9 省逐省抽查 + 未受影响省份不得被误改 */
   const CASES = [
     ['heb', '哈尔滨', '2026', null], ['nanj', '南京', '2026', null],
-    ['hangz', '杭州', '2025', '2026'], ['zzheng', '郑州', '2026', null],
+    ['hangz', '杭州', '2026', null], ['zzheng', '郑州', '2026', null],
     ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2025', '2026'],
     ['haik', '海口', '2026', null],
     ['cc', '长春', '2025-2026', null], ['fz', '福州', '2025-2026', null],
@@ -2361,6 +2391,11 @@ section('12. 省份年度口径与页脚文案');
   ok('南京页脚显示 2026年度（苏人社发〔2026〕30号落地后不再提示待公布）',
     foot().indexOf('数据依据：南京 2026年度') === 0, true);
   ok('南京页脚不再出现「待公布」', foot().indexOf('待公布') < 0, true);
+
+  A.selectCity('hangz');
+  ok('杭州页脚显示 2026年度（浙人社发〔2026〕52号落地后不再提示待公布）',
+    foot().indexOf('数据依据：杭州 2026年度') === 0, true);
+  ok('杭州页脚不再出现「待公布」', foot().indexOf('待公布') < 0, true);
 
   A.selectCity('cc');
   ok('长春页脚显示 2025-2026年度', foot().indexOf('数据依据：长春 2025-2026年度') === 0, true);
