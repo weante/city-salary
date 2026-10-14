@@ -2440,6 +2440,76 @@ eq('第四十八批·定西·note引用定市公积金函〔2026〕18号', A.CIT
 eq('第四十八批·定西·note写明执行期为自然年2026-01-01至2026-12-31（非7月起）', A.CITIES.dx.note.includes('2026-01-01至2026-12-31'), true);
 eq('第四十八批·定西·note保留2026-04-07无文号件并记录其上限待定口径', A.CITIES.dx.note.includes('待统计部门发布后按新标准执行'), true);
 eq('第四十八批·定西·社保基数不变 4526~22626', A.CITIES.dx.pension.min + '~' + A.CITIES.dx.pension.max, '4526~22626');
+
+// ===== 第五十批 A（2026-10-15）· 新疆 13 地州公积金 2026 年度市级一手件入 note（数值零改动）=====
+// 13 个地州全部取到自治区中心门户 xjgjj.xjjs.gov.cn 上的 2026 缴存年度官方件，上下限逐字零偏差；
+// 本批只补官方链接与取整口径说明，不动任何数值。
+eq('第五十批A·新疆·乌鲁木齐公积金下限2070', A.CITIES.wlmq.hf.min, 2070);
+eq('第五十批A·新疆·乌鲁木齐公积金上限35071', A.CITIES.wlmq.hf.max, 35071);
+ok('第五十批A·新疆·乌鲁木齐note引用自治区中心官方件', A.CITIES.wlmq.note.includes('wlmqgjj/info/1120/5961.htm'), true);
+eq('第五十批A·新疆·克拉玛依公积金下限2070', A.CITIES.klmy.hf.min, 2070);
+eq('第五十批A·新疆·克拉玛依公积金上限33872', A.CITIES.klmy.hf.max, 33872);
+ok('第五十批A·新疆·克拉玛依note引用自治区中心官方件', A.CITIES.klmy.note.includes('klmy/info/1066/3045.htm'), true);
+eq('第五十批A·新疆·吐鲁番公积金下限1750', A.CITIES.tlf.hf.min, 1750);
+eq('第五十批A·新疆·吐鲁番公积金上限29259', A.CITIES.tlf.hf.max, 29259);
+ok('第五十批A·新疆·吐鲁番note引用自治区中心官方件', A.CITIES.tlf.note.includes('tlfdq/info/1066/6506.htm'), true);
+eq('第五十批A·新疆·哈密公积金下限1890', A.CITIES.hami.hf.min, 1890);
+eq('第五十批A·新疆·哈密公积金上限31532', A.CITIES.hami.hf.max, 31532);
+ok('第五十批A·新疆·哈密note引用自治区中心官方件', A.CITIES.hami.note.includes('hm/info/1037/4354.htm'), true);
+eq('第五十批A·新疆·昌吉公积金下限1890', A.CITIES.cjz.hf.min, 1890);
+eq('第五十批A·新疆·昌吉公积金上限29280', A.CITIES.cjz.hf.max, 29280);
+ok('第五十批A·新疆·昌吉note引用自治区中心官方件', A.CITIES.cjz.note.includes('cj/info/1113/8579.htm'), true);
+eq('第五十批A·新疆·博尔塔拉公积金下限1750', A.CITIES.boz.hf.min, 1750);
+eq('第五十批A·新疆·博尔塔拉公积金上限27689', A.CITIES.boz.hf.max, 27689);
+ok('第五十批A·新疆·博尔塔拉note引用自治区中心官方件', A.CITIES.boz.note.includes('boz/info/1066/4029.htm'), true);
+eq('第五十批A·新疆·巴音郭楞公积金下限1750', A.CITIES.bygl.hf.min, 1750);
+eq('第五十批A·新疆·巴音郭楞公积金上限33237', A.CITIES.bygl.hf.max, 33237);
+ok('第五十批A·新疆·巴音郭楞note引用自治区中心官方件', A.CITIES.bygl.note.includes('baz/info/1066/7290.htm'), true);
+eq('第五十批A·新疆·阿克苏公积金下限1890', A.CITIES.aks.hf.min, 1890);
+eq('第五十批A·新疆·阿克苏公积金上限26178', A.CITIES.aks.hf.max, 26178);
+ok('第五十批A·新疆·阿克苏note引用自治区中心官方件', A.CITIES.aks.note.includes('aksdq/info/1066/7120.htm'), true);
+eq('第五十批A·新疆·克孜勒苏公积金下限1750', A.CITIES.kzls.hf.min, 1750);
+eq('第五十批A·新疆·克孜勒苏公积金上限29874', A.CITIES.kzls.hf.max, 29874);
+ok('第五十批A·新疆·克孜勒苏note引用自治区中心官方件', A.CITIES.kzls.note.includes('kez/info/1003/5542.htm'), true);
+eq('第五十批A·新疆·喀什公积金下限1750', A.CITIES.kashi.hf.min, 1750);
+eq('第五十批A·新疆·喀什公积金上限29139', A.CITIES.kashi.hf.max, 29139);
+ok('第五十批A·新疆·喀什note引用自治区中心官方件', A.CITIES.kashi.note.includes('ksdq/info/1066/5166.htm'), true);
+eq('第五十批A·新疆·和田公积金下限1750', A.CITIES.ht.hf.min, 1750);
+eq('第五十批A·新疆·和田公积金上限29208', A.CITIES.ht.hf.max, 29208);
+ok('第五十批A·新疆·和田note引用自治区中心官方件', A.CITIES.ht.note.includes('htdq/info/1119/7309.htm'), true);
+eq('第五十批A·新疆·塔城公积金下限1750', A.CITIES.tc.hf.min, 1750);
+eq('第五十批A·新疆·塔城公积金上限28578', A.CITIES.tc.hf.max, 28578);
+ok('第五十批A·新疆·塔城note引用自治区中心官方件', A.CITIES.tc.note.includes('tcdq/info/1134/11295.htm'), true);
+eq('第五十批A·新疆·阿勒泰公积金下限1750', A.CITIES.alt.hf.min, 1750);
+eq('第五十批A·新疆·阿勒泰公积金上限28792', A.CITIES.alt.hf.max, 28792);
+ok('第五十批A·新疆·阿勒泰note引用自治区中心官方件', A.CITIES.alt.note.includes('altdq/info/1066/4377.htm'), true);
+ok('第五十批A·新疆·13地州note均含 xjgjj.xjjs.gov.cn 官方域名',
+  ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].every(function (k) { return A.CITIES[k].note.includes('xjgjj.xjjs.gov.cn'); }), true);
+eq('第五十批A·新疆·乌鲁木齐缴存额上限 round(35071×12%)×2 = 8418', Math.round(35071 * 0.12) * 2, 8418);
+eq('第五十批A·新疆·乌鲁木齐缴存额下限 round(2070×5%)×2 = 208', Math.round(2070 * 0.05) * 2, 208);
+eq('第五十批A·新疆·克拉玛依缴存额上限 round(33872×12%)×2 = 8130', Math.round(33872 * 0.12) * 2, 8130);
+eq('第五十批A·新疆·吐鲁番缴存额上限 round(29259×12%)×2 = 7022', Math.round(29259 * 0.12) * 2, 7022);
+eq('第五十批A·新疆·哈密缴存额上限 round(31532×12%)×2 = 7568', Math.round(31532 * 0.12) * 2, 7568);
+eq('第五十批A·新疆·博州缴存额上限 round(27689×12%)×2 = 6646', Math.round(27689 * 0.12) * 2, 6646);
+eq('第五十批A·新疆·巴州缴存额上限 round(33237×12%)×2 = 7976', Math.round(33237 * 0.12) * 2, 7976);
+eq('第五十批A·新疆·阿克苏缴存额上限 round(26178×12%)×2 = 6282', Math.round(26178 * 0.12) * 2, 6282);
+eq('第五十批A·新疆·克州缴存额上限 round(29874×12%)×2 = 7170', Math.round(29874 * 0.12) * 2, 7170);
+eq('第五十批A·新疆·喀什缴存额上限 round(29139×12%)×2 = 6994', Math.round(29139 * 0.12) * 2, 6994);
+eq('第五十批A·新疆·和田缴存额上限 round(29208×12%)×2 = 7010', Math.round(29208 * 0.12) * 2, 7010);
+eq('第五十批A·新疆·塔城缴存额上限 round(28578×12%)×2 = 6858', Math.round(28578 * 0.12) * 2, 6858);
+eq('第五十批A·新疆·阿勒泰缴存额上限 round(28792×12%)×2 = 6910', Math.round(28792 * 0.12) * 2, 6910);
+eq('第五十批A·新疆·昌吉单方上限 round(29280×12%) = 3514', Math.round(29280 * 0.12), 3514);
+eq('第五十批A·新疆·昌吉单方下限 round(1890×5%) = 95', Math.round(1890 * 0.05), 95);
+ok('第五十批A·新疆·13地州上限均落在上限×12%取整后×2的1元容差内',
+  [35071,33872,29259,31532,29280,27689,33237,26178,29874,29139,29208,28578,28792].every(function (m) { return Math.abs(Math.round(m * 0.12) * 2 - m * 0.24) < 1; }), true);
+eq('第五十批A·新疆·乌鲁木齐公积金下限依地区月最低工资2070（非全区统一1750）', A.CITIES.wlmq.hf.min === 2070 && A.CITIES.tlf.hf.min === 1750, true);
+eq('第五十批A·新疆·阿克苏下限分档（阿克苏市/库车市1890、其余7县市1750）', A.CITIES.aks.hf.min, 1890);
+ok('第五十批A·新疆·阿克苏note写明分档', A.CITIES.aks.note.includes('其余 7 县市 1750'), true);
+ok('第五十批A·新疆·喀什note写明塔什库尔干县1900', A.CITIES.kashi.note.includes('塔什库尔干县 1900'), true);
+ok('第五十批A·新疆·哈密note写明巴里坤伊吾1750', A.CITIES.hami.note.includes('巴里坤/伊吾1750'), true);
+eq('第五十批A·新疆·14市州社保基数统一不变 5246~26231', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].concat(['ylz']).every(function (k) { return A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231; }), true);
+ok('第五十批A·新疆·医保单位费率未取到市级件的3城仍标 warn', ['ylz','tc','alt'].every(function (k) { return A.CITIES[k].warn === true; }), true);
+eq('第五十批A·新疆·12城公积金有官方件故不标 warn', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].filter(function (k) { return k !== 'tc' && k !== 'alt'; }).every(function (k) { return A.CITIES[k].warn !== true; }), true);
 eq('第四十八批·定西·医保单位费率6.7%不变', A.CITIES.dx.med.comp, 0.067);
 eq('第四十八批·定西·warn 保留', A.CITIES.dx.warn, true);
 
