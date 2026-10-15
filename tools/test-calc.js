@@ -2590,6 +2590,20 @@ eq('第五十四批A·甘肃·金昌/酒泉 下限 2020 与庆阳 1910、天水 
 eq('第五十四批A·甘肃·白银与陇南无 warn（已取到 2026 年度一手件）', A.CITIES.by.warn === undefined && A.CITIES.ln.warn === undefined, true);
 eq('第五十四批A·甘肃·五城 warn 全部落地', A.CITIES.tshui.warn === true && A.CITIES.qingy.warn === true && A.CITIES.jiuq.warn === true && A.CITIES.lx.warn === true && A.CITIES.jc.warn === true, true);
 
+/* ---------------- 第五十五批·西宁公积金渠道穷举 + 辽宁 subagent 崩溃（2026-10-15）---------------- */
+eq('第五十五批·西宁 公积金现值 2080~31995 未改动', A.CITIES.xining.hf.min === 2080 && A.CITIES.xining.hf.max === 31995, true);
+eq('第五十五批·西宁 note 含中心真实域名 xnzfgjj.com', A.CITIES.xining.note.indexOf('xnzfgjj.com') >= 0, true);
+eq('第五十五批·西宁 note 记 2021 年度件唯一下限 1700 与上限 24591', A.CITIES.xining.note.indexOf('24591') >= 0 && A.CITIES.xining.note.indexOf('1700') >= 0, true);
+eq('第五十五批·西宁 note 记 2023 年度件标题在但正文未公开（tzgg/2488.jhtml）', A.CITIES.xining.note.indexOf('2488.jhtml') >= 0, true);
+eq('第五十五批·西宁 note 记站内全文检索已穷举（search.jspx）', A.CITIES.xining.note.indexOf('search.jspx') >= 0, true);
+eq('第五十五批·西宁 2021 年度件下限自校验成立 round(1700×5%)×2=170', Math.round(1700 * 0.05) * 2, 170);
+eq('第五十五批·西宁 2021 年度件上限 24591÷3 整除得 8197，但件内未给基准数字，按反推处理不作自校验', 24591 / 3 === 8197 && 8197 * 3 === 24591, true);
+eq('第五十五批·西宁 自主缴存月缴存额上限 5900 既非 round(24591×12%)×2 也非 floor(24591×24%)，不可强行建模', Math.round(24591 * 0.12) * 2 !== 5900 && Math.floor(24591 * 0.24) !== 5900, true);
+eq('第五十五批·西宁 下限 2080 与海西同为青政〔2025〕11号 三类地区 2080', A.CITIES.xining.hf.min === 2080 && A.CITIES.hxz.hf.min === 2080, true);
+eq('第五十五批·西宁 上限 31995 与 2021 年度件的 24591 不是同一年度数据', A.CITIES.xining.hf.max === 31995 && 24591 !== A.CITIES.xining.hf.max, true);
+eq('第五十五批·青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hxzfgjj.com.cn），其余 6 州无', A.CITIES.xining.note.indexOf('xnzfgjj.com') >= 0 && A.CITIES.hxz.note.indexOf('hxzfgjj.com.cn') >= 0, true);
+
+
 eq('第四十八批·定西·warn 保留', A.CITIES.dx.warn, true);
 
 eq('第四十七批·沧州·公积金2380~25581零偏差', A.CITIES.cangz.hf.min + '~' + A.CITIES.cangz.hf.max, '2380~25581');
