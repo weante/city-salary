@@ -2676,6 +2676,33 @@ eq('第五十五批·青海 8 市州中仅西宁与海西有中心自有域名�
   ok('第五十七批·朝阳 round(5624×60%)=3374', Math.round(5624 * 0.6) === 3374, true);
   ok('第五十七批·朝阳灵活就业 5624×4.6%×12=3104', Math.abs(5624 * 0.046 * 12 - 3104) < 1, true);
   ok('第五十七批·辽宁块头已记生育 1% 口径行', /生育保险费率企业侧自2025-09-01起为1%（阜新正式件/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
+  /* ===== 第五十八批（2026-10-15）· 福建泉州生育费率坐实并改值 + 南平口径坐实（数值零改动） ===== */
+  eq('第五十八批·泉州 medComp 7.5% 改 8.0%（基本医疗7.5%＋生育企业0.5%）', A.CITIES.quanz.med.comp, 0.08);
+  eq('第五十八批·泉州 med.comp 子对象同步为 0.08', A.CITIES.quanz.med.comp, 0.08);
+  ok('第五十八批·泉州 7.5+0.5=8.0 同源相加自校验', Math.round((0.075 + 0.005) * 10000) / 10000 === 0.08, true);
+  ok('第五十八批·泉州 warn 保留（养老 2026 年度基数仍缺）', A.CITIES.quanz.warn === true, true);
+  ok('第五十八批·泉州 note 写明合计口径与两个分项', A.CITIES.quanz.note.indexOf('单位合计8.0%') >= 0 && A.CITIES.quanz.note.indexOf('基本医疗7.5%') >= 0 && A.CITIES.quanz.note.indexOf('生育0.5%') >= 0, true);
+  ok('第五十八批·泉州 note 记生育机关事业口径 0.35%（防止与机关口径混用）', A.CITIES.quanz.note.indexOf('机关事业0.35%') >= 0, true);
+  ok('第五十八批·泉州 note 保留大额个人不另缴的旧结论', A.CITIES.quanz.note.indexOf('大病由医保统筹基金支付') >= 0, true);
+  eq('第五十八批·泉州医保基数下限仍为 4579', A.CITIES.quanz.med.min, 4579);
+  eq('第五十八批·泉州医保基数上限仍为 22893', A.CITIES.quanz.med.max, 22893);
+  eq('第五十八批·泉州个人费率仍为 2%', A.CITIES.quanz.med.emp, 0.02);
+  eq('第五十八批·南平 medComp 保持 8.5%（8%+0.5%，已由官方政策指南坐实，数值零改动）', A.CITIES.np.med.comp, 0.085);
+  ok('第五十八批·南平 8+0.5=8.5 同源相加自校验', Math.round((0.08 + 0.005) * 10000) / 10000 === 0.085, true);
+  ok('第五十八批·南平 note 已补官方政策指南 URL', A.CITIES.np.note.indexOf('www.np.gov.cn/cms/html/npszf/2024-01-18/1608300398.html') >= 0, true);
+  ok('第五十八批·南平 note 逐字写入基本医疗 8% 与个人 2%', A.CITIES.np.note.indexOf('基本医疗保险用人单位按工资总额的8%') >= 0 && A.CITIES.np.note.indexOf('职工个人按2%') >= 0, true);
+  ok('第五十八批·南平 note 逐字写入生育企业 0.5% 与机关事业 0.35%', A.CITIES.np.note.indexOf('企业按在职职工工资总额的0.5%') >= 0 && A.CITIES.np.note.indexOf('机关事业单位0.35%') >= 0, true);
+  ok('第五十八批·南平 note 已记同基数同增同减条款', A.CITIES.np.note.indexOf('职工、生育保险同基数') >= 0, true);
+  ok('第五十八批·南平 note 已声明指南为 2024 年 1—6 月版、更新版未取到', A.CITIES.np.note.indexOf('2024年1—6月版') >= 0, true);
+  ok('第五十八批·南平 note 已声明大额为比例型、固定额字段无法表达', A.CITIES.np.note.indexOf('比例型、固定额字段无法表达') >= 0, true);
+  ok('第五十八批·南平 medFixEmp 仍为 0（大额是比例型，未设固定额）', A.CITIES.np.medFixEmp === 0, true);
+  ok('第五十八批·福建块头已写明 medComp 口径＝基本医疗＋生育且只有泉州南平已坐实', /medComp 口径＝基本医疗单位费率＋生育单位费率（企业口径）/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')) && /其余7城费率是单险还是合计尚未取证/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
+  ok('第五十八批·福建其余 7 城 medComp 暂不变（福州.08 厦门.075 莆田.08 三明.085 漳州.075 龙岩.087 宁德.08）', [['fz',0.08],['xm',0.075],['pt',0.08],['sm',0.085],['zhangz',0.075],['longy',0.087],['nd',0.08]].every(([k,v]) => A.CITIES[k].med.comp === v), true);
+  eq('第五十八批·龙岩 medComp 暂仍为 0.087', A.CITIES.longy.med.comp, 0.087);
+  eq('第五十八批·三明 medComp 暂仍为 0.085', A.CITIES.sm.med.comp, 0.085);
+  eq('第五十八批·厦门 medComp 暂仍为 0.075', A.CITIES.xm.med.comp, 0.075);
+  eq('第五十八批·厦门 medFixEmp 仍为 7 元/月', A.CITIES.xm.medFixEmp, 7);
+  ok('第五十八批·福建 9 市 warn 全部保留', ['fz','xm','pt','sm','quanz','zhangz','np','longy','nd'].every(k => A.CITIES[k].warn === true), true);
 }
 
 
