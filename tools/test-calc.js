@@ -2649,6 +2649,33 @@ eq('第五十五批·青海 8 市州中仅西宁与海西有中心自有域名�
   eq('第五十六批·塔城 warn 保留（现行明确值仍未取到）', A.CITIES.tc.warn, true);
   ok('第五十六批·新疆 14 地州社保基数仍统一 5246~26231', ['wlmq','klmy','tlf','hami','cjz','boz','bygl','aks','kzls','kashi','ht','ylz','tc','alt'].every(k => A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231), true);
   ok('第五十六批·阿勒泰 medComp 与昌吉、博州、伊犁同为 9.5%', A.CITIES.alt.med.comp === A.CITIES.cjz.med.comp && A.CITIES.alt.med.comp === A.CITIES.boz.med.comp && A.CITIES.alt.med.comp === A.CITIES.ylz.med.comp, true);
+
+  /* ===== 第五十七批（2026-10-15）· 辽宁 6 城医保费率渠道穷举 + 朝阳医保基数现行性坐实 ===== */
+  ok('第五十七批·辽宁 6 城 medComp 全部保持 8%（生育 1% 有文号但基本医疗逐市不同，四关第①关不过）', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].med.comp === 0.08), true);
+  ok('第五十七批·辽宁 6 城 warn 全部保留', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].warn === true), true);
+  ok('第五十七批·抚顺单位合计应为 9%（基本医疗 8% + 生育 1%）但未取到市级生育件故不改值', Math.round((0.08 + 0.01) * 10000) / 10000 === 0.09, true);
+  ok('第五十七批·省级《辽宁省医疗保障待遇清单（2021年版）》只给 6% 至 8% 区间，8% 落在区间上沿', 0.08 >= 0.06 && 0.08 <= 0.08, true);
+  ok('第五十七批·阜新 note 已补生育恢复件原文 URL', A.CITIES.fx.note.indexOf('ybj.fuxin.gov.cn/content/2025/1017184.html') >= 0, true);
+  ok('第五十七批·阜新 note 已补 2025-09-01 生效日', A.CITIES.fx.note.indexOf('2025年9月1日') >= 0, true);
+  ok('第五十七批·阜新 note 已补 0.5% 恢复至 1%', A.CITIES.fx.note.indexOf('由0.5%恢复至1%') >= 0, true);
+  ok('第五十七批·辽医保规〔2025〕2号 准确全称已补（此前只记编号）', A.CITIES.fx.note.indexOf('关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知') >= 0, true);
+  ok('第五十七批·阜新 note 已补省级 6% 至 8% 区间', A.CITIES.fx.note.indexOf('6%至8%') >= 0, true);
+  ok('第五十七批·辽医保发〔2019〕26号 合并实施件已记录', A.CITIES.fx.note.indexOf('辽医保发〔2019〕26号') >= 0, true);
+  ok('第五十七批·抚顺 note 已记合计应为 9% 的推理', A.CITIES.fsh.note.indexOf('抚顺单位合计应为9%') >= 0, true);
+  ok('第五十七批·丹东 note 已补生育 1% 口径', A.CITIES.dd.note.indexOf('生育保险费率企业侧自2025-09-01起为1%') >= 0, true);
+  ok('第五十七批·锦州 note 已补无医保局子域', A.CITIES.jz.note.indexOf('锦州市医保局无独立子域') >= 0, true);
+  ok('第五十七批·铁岭 note 已补省局真实域名 ybj.ln.gov.cn', A.CITIES.tl.note.indexOf('ybj.ln.gov.cn') >= 0, true);
+  ok('第五十七批·朝阳 note 已补朝医保发〔2026〕14号 清理结果', A.CITIES.cy.note.indexOf('朝医保发〔2026〕14号') >= 0, true);
+  ok('第五十七批·朝阳清理结果继续有效 98 件 / 已废止 57 件 / 已失效 104 件', A.CITIES.cy.note.indexOf('继续有效98件') >= 0 && A.CITIES.cy.note.indexOf('已废止57件') >= 0 && A.CITIES.cy.note.indexOf('已失效104件') >= 0, true);
+  ok('第五十七批·朝阳 36 号文为清理目录第 33 序号（现行性最硬形态）', A.CITIES.cy.note.indexOf('第33序号即本件') >= 0, true);
+  ok('第五十七批·朝阳合并实施件 朝医保发〔2020〕67号 为第 11 序号', A.CITIES.cy.note.indexOf('朝医保发〔2020〕67号') >= 0 && A.CITIES.cy.note.indexOf('第11序号') >= 0, true);
+  ok('第五十七批·朝阳 note 已声明父代理两遍 OCR 亲验', A.CITIES.cy.note.indexOf('两遍逐字OCR核对') >= 0, true);
+  eq('第五十七批·朝阳医保基数下限仍为 3374', A.CITIES.cy.med.min, 3374);
+  eq('第五十七批·朝阳医保基数上限仍为 16872', A.CITIES.cy.med.max, 16872);
+  ok('第五十七批·朝阳 5624×3=16872', 5624 * 3 === 16872, true);
+  ok('第五十七批·朝阳 round(5624×60%)=3374', Math.round(5624 * 0.6) === 3374, true);
+  ok('第五十七批·朝阳灵活就业 5624×4.6%×12=3104', Math.abs(5624 * 0.046 * 12 - 3104) < 1, true);
+  ok('第五十七批·辽宁块头已记生育 1% 口径行', /生育保险费率企业侧自2025-09-01起为1%（阜新正式件/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
 }
 
 

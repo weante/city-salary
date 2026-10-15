@@ -1,0 +1,155 @@
+{
+  "group": "Z49",
+  "generatedAt": "2026-10-15",
+  "note": "第五十七批 · 辽宁 6 城医保费率渠道穷举（数值零改动）。结论：生育保险费率企业侧自 2025-09-01 起为 1%（阜新正式件坐实），省级《辽宁省医疗保障待遇清单（2021年版）》只给职工医保单位费率 6% 至 8% 区间不给定值，且各市基本医疗费率逐市不同 → 四关第①关不通过，6 城 medComp 全部不改值、warn 全部保留。朝阳医保基数 3374~16872 由朝医保发〔2026〕14号「继续有效」目录第 33 序号 + 父代理两遍 OCR 逐字核对双重坐实。新域名：ybj.ln.gov.cn（辽宁省医保局真域，此前只试过 yljz/ylbzj.ln.gov.cn 全 NXDOMAIN）。",
+  "provinces": [
+    {
+      "province": "辽宁",
+      "provinceWideUrls": [
+        "http://ybj.ln.gov.cn/"
+      ],
+      "provinceWideNote": "辽宁省医保局真实域名 ybj.ln.gov.cn；辽医保发〔2019〕26号确立各市按基本医疗与生育费率之和合并征缴；省级《辽宁省医疗保障待遇清单（2021年版）》只给 6% 至 8% 区间。",
+      "cities": [
+        {
+          "city": "抚顺",
+          "key": "fsh",
+          "status": "official-partial",
+          "docNumber": "无",
+          "urls": [
+            "https://fsyb.fushun.gov.cn/001/001001/20260319/58559cdd-dd82-4c31-82ea-9299094567da.html",
+            "https://www.fushun.gov.cn/zwgk/002011/002011011/002011011001/002011011001002/20260330/a2aeb970-b095-4245-b28f-0cb929b592be.html",
+            "https://fsyb.fushun.gov.cn/",
+            "https://gjj.dl.gov.cn/",
+            "http://zjt.ln.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml",
+            "http://fsyb.fushun.gov.cn/govxxgk/ybj/2026-06-29/147bf604-8d38-4912-8ebb-5f4234cf0a53.html",
+            "https://ybj.ln.gov.cn/",
+            "http://fsyb.fushun.gov.cn/",
+            "http://www.fushun.gov.cn/004/004003/20260805/21b3debd-420e-46ad-b5c2-e8a098075f19.html"
+          ],
+          "rawQuotes": [],
+          "confirms": "第五十七批复核：辽宁生育保险费率企业侧自2025-09-01起为1%（阜新正式件坐实）；若本项目medComp按单位合计（含生育）建模，则抚顺政办规〔2026〕3号自2026-04-01把基本医疗（不含生育）由7%调为8%之后，抚顺单位合计应为9%；但生育1%的落地件只在阜新、抚顺市级生育件未取到，且辽宁省只给6%至8%区间、逐市不同，故只记录不改值。抚顺医保局只有裸域 fsyb.fushun.gov.cn 可读，www./https 均失败；政府文件列表是 Mustache+AJAX，headless Chrome 渲染后仍只有模板变量，API 未挖通。\n医保：依据《抚顺市人民政府办公室关于调整抚顺市城镇职工基本医疗保险单位缴费费率的通知》（抚政办规〔2026〕3号），自2026年4月1日起，抚顺市职工医保单位缴费费率（不含生育）由7%调整为8% —— 仓库对抚顺采用『8%（其余市按省级7%~8%区间暂算，warn）』，官方确认抚顺为8%（此为不含生育的费率口径）。公积金上限23016元：抚顺市住房公积金管理中心 fsgjj.org.cn/tzgg/4467.jhtml 页面经多次抓取失败，未能核实。\n医保单位缴费费率 8%（自 2026-04-01 起，由 7% 调为 8%，官方 8% 不含生育）→ 与仓库 fsh.med.comp=0.08 零偏差。五险基数 4533~22665。⚠️ 公积金 2080~23016 仍无一手件（中心站 fsgjj.org.cn/tzgg 本轮未抓到），医保「不含生育」与仓库统一口径的差异未解决 → 保留 partial 与 warn。\n职工医保单位费率 8% 零偏差（自 2026-04-01 由 7% 调为 8%），但官方明写「不含生育」，仓库按辽宁统一口径处理，生育是否另计未证实。\n抚顺市医保局+财政局+税务局 2026-06-29《关于调整职工基本医疗（生育）保险缴费年度的通知》（页面无文号）逐字：将我市城镇职工基本医疗（生育）保险缴费年度由社保年度调整为自然年度；自2027年1月1日起执行；2026年7月1日至2026年12月31日参保单位和灵活就业人员职工医保（生育）保险缴费基数按现行缴费基数5306元执行。该件只给一个数字且未写全口径与上下限比例，无法分辨5306是下限还是唯一基数，故不改值。这是本项目首次拿到 辽医保规〔2025〕2号 的完整题名。",
+          "officialDomain": true
+        },
+        {
+          "city": "丹东",
+          "key": "dd",
+          "status": "official-partial",
+          "docNumber": "丹医保发〔2025〕89号",
+          "urls": [
+            "https://www.ddzfgjj.com/gzdt/38255.jhtml",
+            "http://www.ddzfgjj.com/tzgg/38310.jhtml",
+            "http://www.ddzfgjj.com:80/tzgg/index.jhtml",
+            "https://www.ddzfgjj.com/",
+            "http://zjt.ln.gov.cn/",
+            "https://ylbz.dandong.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml",
+            "https://ylbz.dandong.gov.cn/html/YLBZJ/202512/0176464445475411.html",
+            "https://www.dandong.gov.cn/articleweb/searchMessageOpenList.ct?siteCode=YLBZJ&pageMax=20"
+          ],
+          "rawQuotes": [],
+          "confirms": "第五十七批补记：辽宁生育保险费率企业侧自2025-09-01起为1%（阜新正式件坐实），辽宁各市按基本医疗与生育费率之和合并征缴；丹东市级费率件本轮未取到，故只记录不改值。丹东医保局首页暴露可枚举的列表接口 siteCode=YLBZJ，本轮未展开。\n线索：丹东市住房公积金管理中心官网（www.ddzfgjj.com，非 .gov.cn，属官方机构站）工作动态栏目存在2026年度缴存基数调整相关页面，但本次抓取失败（返回211字节），未能核实『上限22141元』。网上流传的『丹东公积金缴存基数上限22141元』仅见于今日头条等二手来源，不作为依据。\n2026 年度公积金上限 22141、市区下限 2080、东港/凤城/宽甸 1930、比例 5%~12%（2026-08-04 中心通知，无文号）→ 与仓库 dd.hf=2080~22141 逐字一致，零偏差。⚠️ 医保单位费率仍待核实 → 保留 partial 与 warn。\n公积金 2080~22141 已在第二十二批 official-confirmed（2026-08-04 无文号通知）。\n丹医保发〔2025〕89号（丹东市医保局+税务局，件挂「履职依据」栏目）逐字：2024年我市城镇非私营与私营单位加权计算的全口径城镇单位就业人员月平均工资为5654元；自2026年1月1日起，我市职工基本医疗保险最低缴费基数按照5654元/月执行。⚠ 该市下限=全口径月均的100%（不是60%），连续两年 5480→5480、5654→5654，不是笔误；与阜新/锦州/朝阳的60%并存，不可套用统一比例。该件与2024年度件均只给一个数字、从未公布上限，故不设独立医保区间。\n第五十七批补记：辽宁生育保险费率企业侧自2025-09-01起为1%（阜新正式件坐实），辽宁各市按基本医疗与生育费率之和合并征缴；丹东市级费率件本轮未取到，故只记录不改值。丹东医保局首页暴露可枚举的列表接口 siteCode=YLBZJ，本轮未展开。\n线索：丹东市住房公积金管理中心官网（www.ddzfgjj.com，非 .gov.cn，属官方机构站）工作动态栏目存在2026年度缴存基数调整相关页面，但本次抓取失败（返回211字节），未能核实『上限22141元』。网上流传的『丹东公积金缴存基数上限22141元』仅见于今日头条等二手来源，不作为依据。\n2026 年度公积金上限 22141、市区下限 2080、东港/凤城/宽甸 1930、比例 5%~12%（2026-08-04 中心通知，无文号）→ 与仓库 dd.hf=2080~22141 逐字一致，零偏差。⚠️ 医保单位费率仍待核实 → 保留 partial 与 warn。\n公积金 2080~22141 已在第二十二批 official-confirmed（2026-08-04 无文号通知）。\n丹医保发〔2025〕89号（丹东市医保局+税务局，件挂「履职依据」栏目）逐字：2024年我市城镇非私营与私营单位加权计算的全口径城镇单位就业人员月平均工资为5654元；自2026年1月1日起，我市职工基本医疗保险最低缴费基数按照5654元/月执行。⚠ 该市下限=全口径月均的100%（不是60%），连续两年 5480→5480、5654→5654，不是笔误；与阜新/锦州/朝阳的60%并存，不可套用统一比例。该件与2024年度件均只给一个数字、从未公布上限，故不设独立医保区间。",
+          "officialDomain": true
+        },
+        {
+          "city": "锦州",
+          "key": "jz",
+          "status": "official-partial",
+          "docNumber": "锦医保〔2025〕79号",
+          "urls": [
+            "http://jzsgjj.cn/",
+            "http://jzsgjj.cn/newslistnew.jsp?navid=4&listid=25",
+            "http://jzsgjj.cn/newsDetailsnew.jsp?newsid=31939&navid=4",
+            "http://zjj.jz.gov.cn/",
+            "http://zwfw.jz.gov.cn/",
+            "https://ylbz.jz.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml",
+            "http://ylbz.jz.gov.cn/info/1029/3355.htm",
+            "http://ylbz.jz.gov.cn/info/1029/3085.htm",
+            "https://www.jz.gov.cn/",
+            "https://www.jz.gov.cn/zwgk/fdzdgknr/lzyj1/szfwj.htm",
+            "https://www.jz.gov.cn/zwgk/zfgb.htm",
+            "https://www.jz.gov.cn/zwgk/fdzdgknr/zcjd.htm"
+          ],
+          "rawQuotes": [],
+          "confirms": "第五十七批补记：锦州市医保局无独立子域（ybj./ylbzj.jinzhou.gov.cn 全部NXDOMAIN），官方件挂在市政府门户政府文件栏；辽宁生育保险费率企业侧自2025-09-01起为1%（阜新正式件坐实），锦州市单位合计费率本轮未取到，只记录不改值。\n未找到锦州市住房公积金管理中心或锦州市政府发布的2026年度缴存基数官方通知（jzsgjj.cn 为锦州市住房公积金管理中心站点，但检索到的均为文件服务器链接与转载，未见可核实的通知原文）。仓库对锦州标注『2026上限未公布暂用2025』（1930~20610），与本次未能取到2026年度上限的情况一致。\n取得锦州市住房公积金管理中心官方站：http://jzsgjj.cn/（curl 200/46515 字节，**页面为 GB2312 编码**，须用 [System.Text.Encoding]::GetEncoding('GB2312').GetString(bytes) 解码；TITLE=锦州市住房公积金管理中心，keywords=锦州市住房公积金管理中心）。站点为 JSP CMS：indexnew.jsp 首页，栏目 newslistnew.jsp?navid=&listid=，文章 newsDetailsnew.jsp?newsid=&navid=。一级栏目：机构简介(2/15)、新闻动态(1/1)、政务公开重点工作(3/19)、业务指南(5/5)、涉企行政检查公示栏(50/50)、互动栏目(9/9)、常用下载(10/10)；政策类为 navid=4，下分 市级政策(listid=25)、省级政策(listid=26)、国家政策(listid=27)。**市级政策栏最新一条基数件为《关于调整2023年度住房公积金缴存基数的通知》（newsid=31939）**，2024—2026 三个缴存年度的基数通知未在该站发布。站内新闻动态中 2026 年有《公积金三项新政落地，小金帮你划重点~》《李强签署国务院令 公布〈国务院关于修改〈住房公积金管理条例〉的决定〉》，均为转载/解读类。另有锦州市住房和城乡建设局 http://zjj.jz.gov.cn/（200/21236 字节，栏目 xwdt/xwdt.htm、xxgk/fdzdgknr/bszn.htm、gsgg.htm，**无公积金专栏**）与锦州政务服务网 http://zwfw.jz.gov.cn/（jeesaas 平台，全站搜索 POST /jeesaas/f/globalsearch 参数名 keyword，结果为 JS 渲染 curl 抓不到条目）。\n本轮未取得 2026 年度一手数值件，沿用既有记录（见 中心站 jzsgjj.cn（GB2312，JSP CMS）市级政策栏最新基数件仍是 2023 年度件，2024—2026 三年度通知未在该站发布 → 值 1930~20610 保留 warn）。五险基数沿用辽宁省级 4533~22665（辽人社〔2026〕19号）。\n公积金中心站存在（jzsgjj.cn，GB2312 + JSP CMS），但市级政策栏最新仍是 2023 年度件。\n锦医保〔2025〕79号（锦州市医保局+财政局+税务局，落款 2025-12-26）逐字：2026年度我市职工基本医疗保险和生育保险缴费基数为71136元；2026年1月1日-2026年12月31日；上、下限分别按300%、60%确定，即213408元、42681.6元；2026年度灵活就业人员月缴费基数为5928元。算式自校验：71136×3=213408、71136×0.6=42681.6、71136÷12=5928，除12得月值上限17784、下限3556.8。对照件 锦医保〔2024〕35号 数字完全相同，可确认惯例。\n第五十七批补记：锦州市医保局无独立子域（ybj./ylbzj.jinzhou.gov.cn 全部NXDOMAIN），官方件挂在市政府门户政府文件栏；辽宁生育保险费率企业侧自2025-09-01起为1%（阜新正式件坐实），锦州市单位合计费率本轮未取到，只记录不改值。\n未找到锦州市住房公积金管理中心或锦州市政府发布的2026年度缴存基数官方通知（jzsgjj.cn 为锦州市住房公积金管理中心站点，但检索到的均为文件服务器链接与转载，未见可核实的通知原文）。仓库对锦州标注『2026上限未公布暂用2025』（1930~20610），与本次未能取到2026年度上限的情况一致。\n取得锦州市住房公积金管理中心官方站：http://jzsgjj.cn/（curl 200/46515 字节，**页面为 GB2312 编码**，须用 [System.Text.Encoding]::GetEncoding('GB2312').GetString(bytes) 解码；TITLE=锦州市住房公积金管理中心，keywords=锦州市住房公积金管理中心）。站点为 JSP CMS：indexnew.jsp 首页，栏目 newslistnew.jsp?navid=&listid=，文章 newsDetailsnew.jsp?newsid=&navid=。一级栏目：机构简介(2/15)、新闻动态(1/1)、政务公开重点工作(3/19)、业务指南(5/5)、涉企行政检查公示栏(50/50)、互动栏目(9/9)、常用下载(10/10)；政策类为 navid=4，下分 市级政策(listid=25)、省级政策(listid=26)、国家政策(listid=27)。**市级政策栏最新一条基数件为《关于调整2023年度住房公积金缴存基数的通知》（newsid=31939）**，2024—2026 三个缴存年度的基数通知未在该站发布。站内新闻动态中 2026 年有《公积金三项新政落地，小金帮你划重点~》《李强签署国务院令 公布〈国务院关于修改〈住房公积金管理条例〉的决定〉》，均为转载/解读类。另有锦州市住房和城乡建设局 http://zjj.jz.gov.cn/（200/21236 字节，栏目 xwdt/xwdt.htm、xxgk/fdzdgknr/bszn.htm、gsgg.htm，**无公积金专栏**）与锦州政务服务网 http://zwfw.jz.gov.cn/（jeesaas 平台，全站搜索 POST /jeesaas/f/globalsearch 参数名 keyword，结果为 JS 渲染 curl 抓不到条目）。\n本轮未取得 2026 年度一手数值件，沿用既有记录（见 中心站 jzsgjj.cn（GB2312，JSP CMS）市级政策栏最新基数件仍是 2023 年度件，2024—2026 三年度通知未在该站发布 → 值 1930~20610 保留 warn）。五险基数沿用辽宁省级 4533~22665（辽人社〔2026〕19号）。\n公积金中心站存在（jzsgjj.cn，GB2312 + JSP CMS），但市级政策栏最新仍是 2023 年度件。\n锦医保〔2025〕79号（锦州市医保局+财政局+税务局，落款 2025-12-26）逐字：2026年度我市职工基本医疗保险和生育保险缴费基数为71136元；2026年1月1日-2026年12月31日；上、下限分别按300%、60%确定，即213408元、42681.6元；2026年度灵活就业人员月缴费基数为5928元。算式自校验：71136×3=213408、71136×0.6=42681.6、71136÷12=5928，除12得月值上限17784、下限3556.8。对照件 锦医保〔2024〕35号 数字完全相同，可确认惯例。",
+          "officialDomain": true
+        },
+        {
+          "city": "阜新",
+          "key": "fx",
+          "status": "official-partial",
+          "docNumber": "阜医保发〔2025〕8号（缴费基数口径与动态调整）；另《关于恢复企业参保单位生育保险缴费费率的通知》《关于公布2026年全市城镇职工基本医疗（生育）保险缴费基数的通知》页面未显示文号",
+          "urls": [
+            "https://www.fuxin.gov.cn/channel/10911/index.html",
+            "https://www.fuxin.gov.cn/content/2025/1027978.html",
+            "http://zwfw.fuxin.gov.cn/epoint-web-zwdt/fxzwdt/pages/indextab/index_ztjcfwlist.html?serviceCombo=169&name=%E4%BD%8F%E6%88%BF%E5%85%AC%E7%A7%AF%E9%87%91",
+            "http://zjj.fuxin.gov.cn/zwgkjgjj.thtml?id=15675",
+            "http://zjj.fuxin.gov.cn/",
+            "https://www.fuxin.gov.cn/",
+            "https://ybj.fuxin.gov.cn/content/2025/1030653.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1017184.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1030649.html",
+            "https://ybj.fuxin.gov.cn/content/2025/1024595.html",
+            "https://ybj.fuxin.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml",
+            "http://ybj.ln.gov.cn/ybj/hdjl/yjzj/24AAC20FA42546249A34014C7A52C702/index.shtml"
+          ],
+          "rawQuotes": [],
+          "confirms": "第五十七批复核坐实生育费率：阜新市医保局+财政局+税务局 2025-08-29 印发《关于恢复企业参保单位生育保险缴费费率的通知》（此件公开发布），自2025年9月1日起企业参保单位生育保险缴费费率由0.5%恢复至1%；同件引述的辽医保规〔2025〕2号准确全称为《关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知》（此前仓库只记编号、取不到全称）；辽医保发〔2019〕26号确立各市按基本医疗与生育费率之和合并征缴、个人不缴生育。省级《辽宁省医疗保障待遇清单（2021年版）》只给职工医保单位费率6%至8%区间、个人2%，不给定值。\n未找到阜新市住房公积金管理中心发布的2026年度缴存基数上限官方通知原文（检索命中均为网易号、shebao.southmoney 等二手转载）。仓库阜新值1930~21201 未获官方源支撑。\n通过阜新市人民政府门户「政府机构」页 https://www.fuxin.gov.cn/channel/10911/index.html（curl 200/66728 字节）取得**市住房公积金管理中心机构条目页** https://www.fuxin.gov.cn/content/2025/1027978.html（TITLE=市住房公积金管理中心，页面底部含该中心独立的公安备案号 recordcode=21091102000041 与事业单位网站备案 bszs.conac.cn/sitename?method=show&id=1FD95B2D6D093107E053012819AC9BDC，证明该中心有独立网站身份；正文为门户模板空壳，未挂独立域名）。另在阜新政务服务网（epoint 平台）取得三条公积金事项入口：serviceCombo=169「住房公积金」（同时挂「住房服务」别名）、serviceCombo=170「公积金自愿缴存」、serviceCombo=171「公积金账户」。阜新市住房和城乡建设局 http://zjj.fuxin.gov.cn/（200/134827 字节，辽ICP备2021000280号、辽公网安备 21091102000097号、网站标识码 2109000039）机构简介页 http://zjj.fuxin.gov.cn/zwgkjgjj.thtml?id=15675 显示局属中心仅有「住房和基础设施建设服务中心」「城市公用设施服务中心」两项，**不含住房公积金管理中心**，说明阜新公积金中心为独立事业单位、不在该局系统内。\n本轮未取得 2026 年度一手数值件，沿用既有记录（见 有中心机构条目页（含独立公安备案 21091102000041 与事业单位备案 id=1FD95B2D6D093107E053012819AC9BDC），但无独立官网域名、数值件未取到 → 值 1930~21201 保留 warn）。五险基数沿用辽宁省级 4533~22665（辽人社〔2026〕19号）。\n医保（含生育）缴费基数 3563~17817 逐字证实（本批唯一改值）。四关全过：件为城镇职工基本医疗（生育）保险缴费基数、企业职工口径；执行期 2026-01-01 至 2026-12-31，已生效；同件三数互洽；市医保局 + 市税务局 2025-12-19 联署、页面标注「（此文件公开发布）」。\n阜医保发〔2025〕8号及配套件已在前批取得，2026年度上限 17817、自校验 5939×3=17817、round(5939×60%)=3563，本批复核零偏差、零改动。\n第五十七批复核坐实生育费率：阜新市医保局+财政局+税务局 2025-08-29 印发《关于恢复企业参保单位生育保险缴费费率的通知》（此件公开发布），自2025年9月1日起企业参保单位生育保险缴费费率由0.5%恢复至1%；同件引述的辽医保规〔2025〕2号准确全称为《关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知》（此前仓库只记编号、取不到全称）；辽医保发〔2019〕26号确立各市按基本医疗与生育费率之和合并征缴、个人不缴生育。省级《辽宁省医疗保障待遇清单（2021年版）》只给职工医保单位费率6%至8%区间、个人2%，不给定值。\n未找到阜新市住房公积金管理中心发布的2026年度缴存基数上限官方通知原文（检索命中均为网易号、shebao.southmoney 等二手转载）。仓库阜新值1930~21201 未获官方源支撑。\n通过阜新市人民政府门户「政府机构」页 https://www.fuxin.gov.cn/channel/10911/index.html（curl 200/66728 字节）取得**市住房公积金管理中心机构条目页** https://www.fuxin.gov.cn/content/2025/1027978.html（TITLE=市住房公积金管理中心，页面底部含该中心独立的公安备案号 recordcode=21091102000041 与事业单位网站备案 bszs.conac.cn/sitename?method=show&id=1FD95B2D6D093107E053012819AC9BDC，证明该中心有独立网站身份；正文为门户模板空壳，未挂独立域名）。另在阜新政务服务网（epoint 平台）取得三条公积金事项入口：serviceCombo=169「住房公积金」（同时挂「住房服务」别名）、serviceCombo=170「公积金自愿缴存」、serviceCombo=171「公积金账户」。阜新市住房和城乡建设局 http://zjj.fuxin.gov.cn/（200/134827 字节，辽ICP备2021000280号、辽公网安备 21091102000097号、网站标识码 2109000039）机构简介页 http://zjj.fuxin.gov.cn/zwgkjgjj.thtml?id=15675 显示局属中心仅有「住房和基础设施建设服务中心」「城市公用设施服务中心」两项，**不含住房公积金管理中心**，说明阜新公积金中心为独立事业单位、不在该局系统内。\n本轮未取得 2026 年度一手数值件，沿用既有记录（见 有中心机构条目页（含独立公安备案 21091102000041 与事业单位备案 id=1FD95B2D6D093107E053012819AC9BDC），但无独立官网域名、数值件未取到 → 值 1930~21201 保留 warn）。五险基数沿用辽宁省级 4533~22665（辽人社〔2026〕19号）。\n医保（含生育）缴费基数 3563~17817 逐字证实（本批唯一改值）。四关全过：件为城镇职工基本医疗（生育）保险缴费基数、企业职工口径；执行期 2026-01-01 至 2026-12-31，已生效；同件三数互洽；市医保局 + 市税务局 2025-12-19 联署、页面标注「（此文件公开发布）」。\n阜医保发〔2025〕8号及配套件已在前批取得，2026年度上限 17817、自校验 5939×3=17817、round(5939×60%)=3563，本批复核零偏差、零改动。",
+          "officialDomain": true
+        },
+        {
+          "city": "铁岭",
+          "key": "tl",
+          "status": "official-partial",
+          "docNumber": "无",
+          "urls": [
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=d2b3b081-729c-44de-a050-d2f322aeef03",
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=9d96a978-a4a6-46ae-b01d-d303ae54b484",
+            "http://sxzspzx.tieling.gov.cn/tlzwdt/epointzwmhwz/pages/eventdetail/personaleventdetail?taskguid=a5a14e2c-dec9-4704-86cf-8dd641495291",
+            "http://www.tieling.gov.cn/tieling/ywdt/bmdt/index.html",
+            "http://www.tieling.gov.cn/tieling/zwgk/zfwj/index.html",
+            "http://www.tieling.gov.cn/",
+            "http://sxzspzx.tieling.gov.cn/",
+            "http://www.tl.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml",
+            "https://www.tieling.gov.cn/",
+            "https://www.tieling.gov.cn/tieling/zwgk/zfwj/index.html",
+            "https://www.tieling.gov.cn/tieling/zwgk/zfwj/tzf/2026092914460840584/index.html"
+          ],
+          "rawQuotes": [],
+          "confirms": "第五十七批补记：辽宁省医保局真实域名是 ybj.ln.gov.cn（此前各批次只试过 yljz/ylbzj.ln.gov.cn 全NXDOMAIN）；辽宁生育保险费率企业侧自2025-09-01起为1%（阜新正式件坐实），铁岭无医保局子站、市级费率件本轮未取到，只记录不改值。铁岭市政府「关于公布文件清理结果的决定」栏目本轮未展开。\n未找到铁岭市住房公积金管理中心发布的2026年度缴存基数官方通知原文（检索命中为腾讯新闻、shebao.southmoney 等二手来源，且其流传值『不超过35283元』与仓库22056差异极大，无法采信）。仓库铁岭值1930~22056 未获官方源支撑。\n铁岭市人民政府门户 http://www.tieling.gov.cn/（curl 200/98217 字节，TITLE=铁岭市人民政府- 铁岭市人民政府）首页「便民服务」区直接给出铁岭市政务服务中心 epoint 平台的三条**住房公积金事项**入口：taskguid=d2b3b081-729c-44de-a050-d2f322aeef03「住房公积金缴存」、taskguid=9d96a978-a4a6-46ae-b01d-d303ae54b484「住房公积金贷款」、taskguid=a5a14e2c-dec9-4704-86cf-8dd641495291「住房公积金提取」，均在 http://sxzspzx.tieling.gov.cn/ 下。门户站型为 /tieling/<col>/index.html，文章 /tieling/<col>/<yyyymmddN>/index.html；与公积金最相关的发布渠道为「部门动态」/tieling/ywdt/bmdt/index.html、「政府文件」/tieling/zwgk/zfwj/index.html、「公示公告」/tieling/gsgg/index.html。\n本轮未取得 2026 年度一手数值件，沿用既有记录（见 无中心官网域名；www.tlgjj.com 是 4.cn 停放页、www.tlzfgjj.com 是色情站（域名抢注）→ 值 1930~22056 保留 warn）。五险基数沿用辽宁省级 4533~22665（辽人社〔2026〕19号）。\n无。铁岭是 6 城中唯一连一条职工医保官方 URL 都没有的城市。\nybj/ylbz/ylbzj/ylj.tieling.gov.cn 四种医保局命名全部 NXDOMAIN，铁岭市政府门户全站子域仅 gaj/jyj/scjg/sxzspzx 四个、无医保局子站，属结构性缺失。⚠ ybj.tl.gov.cn 与 gjj.tl.gov.cn 虽可解析但属安徽铜陵，禁用。\n第五十七批补记：辽宁省医保局真实域名是 ybj.ln.gov.cn（此前各批次只试过 yljz/ylbzj.ln.gov.cn 全NXDOMAIN）；辽宁生育保险费率企业侧自2025-09-01起为1%（阜新正式件坐实），铁岭无医保局子站、市级费率件本轮未取到，只记录不改值。铁岭市政府「关于公布文件清理结果的决定」栏目本轮未展开。\n未找到铁岭市住房公积金管理中心发布的2026年度缴存基数官方通知原文（检索命中为腾讯新闻、shebao.southmoney 等二手来源，且其流传值『不超过35283元』与仓库22056差异极大，无法采信）。仓库铁岭值1930~22056 未获官方源支撑。\n铁岭市人民政府门户 http://www.tieling.gov.cn/（curl 200/98217 字节，TITLE=铁岭市人民政府- 铁岭市人民政府）首页「便民服务」区直接给出铁岭市政务服务中心 epoint 平台的三条**住房公积金事项**入口：taskguid=d2b3b081-729c-44de-a050-d2f322aeef03「住房公积金缴存」、taskguid=9d96a978-a4a6-46ae-b01d-d303ae54b484「住房公积金贷款」、taskguid=a5a14e2c-dec9-4704-86cf-8dd641495291「住房公积金提取」，均在 http://sxzspzx.tieling.gov.cn/ 下。门户站型为 /tieling/<col>/index.html，文章 /tieling/<col>/<yyyymmddN>/index.html；与公积金最相关的发布渠道为「部门动态」/tieling/ywdt/bmdt/index.html、「政府文件」/tieling/zwgk/zfwj/index.html、「公示公告」/tieling/gsgg/index.html。\n本轮未取得 2026 年度一手数值件，沿用既有记录（见 无中心官网域名；www.tlgjj.com 是 4.cn 停放页、www.tlzfgjj.com 是色情站（域名抢注）→ 值 1930~22056 保留 warn）。五险基数沿用辽宁省级 4533~22665（辽人社〔2026〕19号）。\n无。铁岭是 6 城中唯一连一条职工医保官方 URL 都没有的城市。\nybj/ylbz/ylbzj/ylj.tieling.gov.cn 四种医保局命名全部 NXDOMAIN，铁岭市政府门户全站子域仅 gaj/jyj/scjg/sxzspzx 四个、无医保局子站，属结构性缺失。⚠ ybj.tl.gov.cn 与 gjj.tl.gov.cn 虽可解析但属安徽铜陵，禁用。",
+          "officialDomain": true
+        },
+        {
+          "city": "朝阳",
+          "key": "cy",
+          "status": "official-partial",
+          "docNumber": "朝医保发〔2025〕36号",
+          "urls": [
+            "https://www.cygjj.com.cn/tzgg2/1398.jhtml",
+            "https://www.cygjj.com.cn/",
+            "https://www.cygjj.com.cn/tzgg2/index.html",
+            "http://zjt.ln.gov.cn/",
+            "https://ybj.chaoyang.gov.cn/",
+            "http://ybj.ln.gov.cn/",
+            "https://ybj.ln.gov.cn/ybj/zwgk/zcwjyjd/index.shtml",
+            "https://ybj.chaoyang.gov.cn/html/CYYBJ/202512/0176524130882496.html",
+            "https://files.chaoyang.gov.cn/files/ueditor/CYYBJ/jsp/upload/image/20251209/1765241972547097456.jpg",
+            "https://ybj.chaoyang.gov.cn/html/CYYBJ/202607/0178468643329055.html",
+            "https://ybj.chaoyang.gov.cn/cysylbzj/zfxxgk/fdgknr/lzyj/glist.html"
+          ],
+          "rawQuotes": [],
+          "confirms": "第五十七批：现行性已由市级清理结果坐实——朝医保发〔2026〕14号《关于公布现行文件清理结果的通知》（2026-07-22，依据朝政办传〔2026〕24号，259件清理为继续有效98件、已废止57件、已失效104件）附件1继续有效文件目录第33序号即朝医保发〔2025〕36号；同目录第11序号为合并实施件朝医保发〔2020〕67号（未取到原文）。父代理用PyMuPDF+rapidocr对正文两张图两遍逐字OCR核对：2026年职工基本医疗保险缴费基数5624元/月，个人月缴费基数最高16872元/月、最低3374元/月；灵活就业以5624元/月为基数按4.6%缴基本医保为3104元/年。三条算式自校验全部成立：5624×3=16872、round(5624×60%)=3374、5624×4.6%×12=3104。朝阳医保局文章URL为 /html/CYYBJ/<yyyymm>/<id>.html，正文一律是图片；清理结果正文是1588×40392超长图。\n朝阳市住房公积金管理中心官网（www.cygjj.com.cn，非 .gov.cn，属官方机构站）确有该2026年度通知，标题与发布时间明确，但正文以图片（jpeg）形式发布，未能提取文字，故『上限21816元』未获文本核实。official-partial。\n2026 年度公积金缴存基数最高限额 21816、缴存额最高限额 5234（朝阳市住房公积金管理中心 2026-06-25 印发，自 2026-07-01 起施行，页面发布 2026-07-13）→ 与仓库 cy.hf.max=21816 零偏差。⚠️ 该件只调上限，下限 1930 无 2026 件；医保单位费率未核实 → 保留 partial 与 warn。\n公积金上限 21816 与缴存额上限 5234 已在第二十二批 official-confirmed（2026-06-25 印发，3 张扫描 JPEG 经 Windows OCR 读出）。\n朝医保发〔2025〕36号（朝阳市医疗保障局 2025-12-08 印发，信息公开形式：主动公开）逐字（正文为 2 张扫描 JPG，经 Windows OCR 读出）：2026年朝阳市职工基本医疗保险缴费基数为 5624元/月；参保单位职工基本医疗保险个人月缴费基数为个人上年月平均工资，最高为 16872元/月，最低为 3374元/月；二、执行时间 自2026年1月1日起至2026年12月31日止。算式自校验：5624×3=16872、Math.round(5624×0.6)=3374（原文已取整，非3374.4）。\n第五十七批：现行性已由市级清理结果坐实——朝医保发〔2026〕14号《关于公布现行文件清理结果的通知》（2026-07-22，依据朝政办传〔2026〕24号，259件清理为继续有效98件、已废止57件、已失效104件）附件1继续有效文件目录第33序号即朝医保发〔2025〕36号；同目录第11序号为合并实施件朝医保发〔2020〕67号（未取到原文）。父代理用PyMuPDF+rapidocr对正文两张图两遍逐字OCR核对：2026年职工基本医疗保险缴费基数5624元/月，个人月缴费基数最高16872元/月、最低3374元/月；灵活就业以5624元/月为基数按4.6%缴基本医保为3104元/年。三条算式自校验全部成立：5624×3=16872、round(5624×60%)=3374、5624×4.6%×12=3104。朝阳医保局文章URL为 /html/CYYBJ/<yyyymm>/<id>.html，正文一律是图片；清理结果正文是1588×40392超长图。\n朝阳市住房公积金管理中心官网（www.cygjj.com.cn，非 .gov.cn，属官方机构站）确有该2026年度通知，标题与发布时间明确，但正文以图片（jpeg）形式发布，未能提取文字，故『上限21816元』未获文本核实。official-partial。\n2026 年度公积金缴存基数最高限额 21816、缴存额最高限额 5234（朝阳市住房公积金管理中心 2026-06-25 印发，自 2026-07-01 起施行，页面发布 2026-07-13）→ 与仓库 cy.hf.max=21816 零偏差。⚠️ 该件只调上限，下限 1930 无 2026 件；医保单位费率未核实 → 保留 partial 与 warn。\n公积金上限 21816 与缴存额上限 5234 已在第二十二批 official-confirmed（2026-06-25 印发，3 张扫描 JPEG 经 Windows OCR 读出）。\n朝医保发〔2025〕36号（朝阳市医疗保障局 2025-12-08 印发，信息公开形式：主动公开）逐字（正文为 2 张扫描 JPG，经 Windows OCR 读出）：2026年朝阳市职工基本医疗保险缴费基数为 5624元/月；参保单位职工基本医疗保险个人月缴费基数为个人上年月平均工资，最高为 16872元/月，最低为 3374元/月；二、执行时间 自2026年1月1日起至2026年12月31日止。算式自校验：5624×3=16872、Math.round(5624×0.6)=3374（原文已取整，非3374.4）。",
+          "officialDomain": true
+        }
+      ]
+    }
+  ]
+}
