@@ -2556,6 +2556,39 @@ eq('第五十三批·阿里·note 记录 zjj.al.gov.cn 真实可达', A.CITIES.a
 eq('第五十三批·阿里·note 记录 42214 并非西藏通用上限的三城反例', A.CITIES.ali.note.indexOf('昌都43049') >= 0 && A.CITIES.ali.note.indexOf('山南44202') >= 0 && A.CITIES.ali.note.indexOf('林芝42581') >= 0, true);
 eq('第五十三批·西藏 42214 只是拉萨的数，阿里/日喀则/那曲三城同值但昌都与林芝不同', A.CITIES.ali.hf.max === 42214 && A.CITIES.rkz.hf.max === 42214 && A.CITIES.naqu.hf.max === 42214 && A.CITIES.changdu.hf.max === 43049 && A.CITIES.linzhi.hf.max === 42581, true);
 eq('第五十三批·西藏 日喀则/那曲/阿里 warn 保留（无一手件）', A.CITIES.rkz.warn === true && A.CITIES.naqu.warn === true && A.CITIES.ali.warn === true, true);
+/* ---------------- 第五十四批A·甘肃 7 市州公积金核查（2026-10-15）---------------- */
+/* 报告：REPORT_round53_gansu_gjj.md。改值 0 城：白银/陇南 取到 2026 年度市级一手件且与现值零偏差；
+   天水/庆阳/临夏/金昌/酒泉 五城 2026 年度件在中心全部公开栏目里都不存在（临夏的州办法反证该通知应当存在）。 */
+eq('第五十四批A·甘肃·白银 2026 年度件零偏差 2200~25059', A.CITIES.by.hf.min === 2200 && A.CITIES.by.hf.max === 25059, true);
+eq('第五十四批A·甘肃·白银 note 含官方域名 baiyin.gov.cn', A.CITIES.by.note.indexOf('baiyin.gov.cn') >= 0, true);
+eq('第五十四批A·甘肃·白银 上限 8353×3=25059 同件双数自校验', 8353 * 3 === 25059, true);
+eq('第五十四批A·甘肃·白银 月缴存额上限单方 round(25059×12%)=3007', Math.round(25059 * 0.12), 3007);
+eq('第五十四批A·甘肃·白银 月缴存额下限单方 round(2200×5%)=110', Math.round(2200 * 0.05), 110);
+eq('第五十四批A·甘肃·陇南 2026 年度件零偏差 2130~23301', A.CITIES.ln.hf.min === 2130 && A.CITIES.ln.hf.max === 23301, true);
+eq('第五十四批A·甘肃·陇南 note 含官方域名 longnan.gov.cn', A.CITIES.ln.note.indexOf('longnan.gov.cn') >= 0, true);
+eq('第五十四批A·甘肃·陇南 上限三数自校验 93211÷12→7767、7767×3=23301', Math.floor(93211 / 12) === 7767 && 7767 * 3 === 23301, true);
+eq('第五十四批A·甘肃·陇南 月缴存额上限 round(23301×12%)×2=5592', Math.round(23301 * 0.12) * 2, 5592);
+eq('第五十四批A·甘肃·陇南 月缴存额下限 round(2130×5%)×2=214（必须 half-up）', Math.round(2130 * 0.05) * 2, 214);
+eq('第五十四批A·甘肃·陇南 下限取整判别点：floor 会得 212（错）', Math.floor(2130 * 0.05) * 2, 212);
+eq('第五十四批A·甘肃·陇南 下限取整判别点：先乘10%再取整会得 213×2=426（错）', Math.floor(2130 * 0.10) * 2, 426);
+eq('第五十四批A·甘肃·天水 无 2026 年度件 → 新增 warn', A.CITIES.tshui.warn === true, true);
+eq('第五十四批A·甘肃·天水 note 记录 2025 年度件上限 21429 与 85715 基准', A.CITIES.tshui.note.indexOf('21429') >= 0 && A.CITIES.tshui.note.indexOf('85715') >= 0, true);
+eq('第五十四批A·甘肃·天水 现值 2130~23287 未变', A.CITIES.tshui.hf.min === 2130 && A.CITIES.tshui.hf.max === 23287, true);
+eq('第五十四批A·甘肃·天水 2025 年度件取整自校验 85715÷12→7143、7143×3=21429、round(1910×5%)=96、round(1850×5%)=93', Math.round(85715 / 12) === 7143 && 7143 * 3 === 21429 && Math.round(1910 * 0.05) === 96 && Math.round(1850 * 0.05) === 93, true);
+eq('第五十四批A·甘肃·庆阳 现值 1910~27275 就是已届满的 2025 年度值 → 新增 warn', A.CITIES.qingy.warn === true && A.CITIES.qingy.hf.min === 1910 && A.CITIES.qingy.hf.max === 27275, true);
+eq('第五十四批A·甘肃·庆阳 note 含真域 zgqingyang.gov.cn', A.CITIES.qingy.note.indexOf('zgqingyang.gov.cn') >= 0, true);
+eq('第五十四批A·甘肃·庆阳 2025 年度件取整自校验 109102÷12→9091、9091×3=27273≠27275 故不作自校验', Math.round(109102 / 12) * 3 !== 27275, true);
+eq('第五十四批A·甘肃·临夏 2025 年度值来自官方年度报告 → warn 保留', A.CITIES.lx.warn === true && A.CITIES.lx.hf.min === 1910 && A.CITIES.lx.hf.max === 22788, true);
+eq('第五十四批A·甘肃·临夏 note 含年度报告域名 linxia.gov.cn', A.CITIES.lx.note.indexOf('linxia.gov.cn') >= 0, true);
+eq('第五十四批A·甘肃·临夏 note 记 22788÷3 属反推不作自校验', A.CITIES.lx.note.indexOf('反推') >= 0, true);
+eq('第五十四批A·甘肃·金昌 无任何缴存基数件 → warn 保留', A.CITIES.jc.warn === true && A.CITIES.jc.hf.min === 2020 && A.CITIES.jc.hf.max === 26166, true);
+eq('第五十四批A·甘肃·金昌 note 含真域 jcs.gov.cn 与已失效的 jzgjj.gov.cn', A.CITIES.jc.note.indexOf('jcs.gov.cn') >= 0 && A.CITIES.jc.note.indexOf('jzgjj.gov.cn') >= 0, true);
+eq('第五十四批A·甘肃·金昌 note 记三个管理办法均为征求意见稿故排除', A.CITIES.jc.note.indexOf('征求意见稿') >= 0, true);
+eq('第五十四批A·甘肃·酒泉 无 2026 年度件 → 新增 warn', A.CITIES.jiuq.warn === true && A.CITIES.jiuq.hf.min === 2020 && A.CITIES.jiuq.hf.max === 26246.49, true);
+eq('第五十四批A·甘肃·酒泉 note 含真子域 jiuquan.gov.cn', A.CITIES.jiuq.note.indexOf('gjj.jiuquan.gov.cn') >= 0, true);
+eq('第五十四批A·甘肃·金昌/酒泉 下限 2020 与庆阳 1910、天水 2130 分属甘政发〔2023〕83号（已取代）与甘政办发〔2025〕71号两套口径', A.CITIES.jc.hf.min === 2020 && A.CITIES.jiuq.hf.min === 2020 && A.CITIES.qingy.hf.min === 1910 && A.CITIES.tshui.hf.min === 2130 && A.CITIES.by.hf.min === 2200 && A.CITIES.ln.hf.min === 2130, true);
+eq('第五十四批A·甘肃·白银与陇南无 warn（已取到 2026 年度一手件）', A.CITIES.by.warn === undefined && A.CITIES.ln.warn === undefined, true);
+eq('第五十四批A·甘肃·五城 warn 全部落地', A.CITIES.tshui.warn === true && A.CITIES.qingy.warn === true && A.CITIES.jiuq.warn === true && A.CITIES.lx.warn === true && A.CITIES.jc.warn === true, true);
 
 eq('第四十八批·定西·warn 保留', A.CITIES.dx.warn, true);
 
