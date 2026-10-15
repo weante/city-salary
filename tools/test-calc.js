@@ -2063,10 +2063,10 @@ eq('伊犁·最低比例 5%：单位/个人各 ceil(1750×5%)=88', Math.ceil(175
 eq('伊犁·月缴存额下限 88×2=176（官方按每侧取整后再相加）', Math.ceil(1750 * 0.05) * 2, 176);
 eq('伊犁·上限÷3=2025 年月均工资8728', 26184 / 3, 8728);
 /* 医保费率仍是死路：14 地州逐地州自定（6.5%~9.8%，含生育 0.5%~1%），自治区医保局无统件 */
-eq('新疆·仅伊犁/塔城/阿勒泰 3 城 warn', XJ.filter(k => A.CITIES[k].warn).map(k => A.CITIES[k].name).join(','), '伊犁,塔城,阿勒泰');
-eq('新疆·warn 恰好 3 城', XJ.filter(k => A.CITIES[k].warn).length, 3);
+eq('新疆·第五十六批后 8 城 warn（阿勒泰取到在职口径已撤，新增乌鲁木齐/克拉玛依/昌吉/阿克苏/克孜勒苏/喀什）', XJ.filter(k => A.CITIES[k].warn).map(k => A.CITIES[k].name).join(','), '乌鲁木齐,克拉玛依,昌吉,阿克苏,克孜勒苏,喀什,伊犁,塔城');
+eq('新疆·warn 恰好 8 城', XJ.filter(k => A.CITIES[k].warn).length, 8);
 eq('伊犁·医保单位费率仍为估算 9.5%', A.CITIES.ylz.med.comp, 0.095);
-eq('阿勒泰·医保单位费率仍为估算 7.5%', A.CITIES.alt.med.comp, 0.075);
+eq('阿勒泰·医保单位费率 9.5%（第五十六批由退休/灵活就业口径误判改正）', A.CITIES.alt.med.comp, 0.095);
 eq('新疆·乌鲁木齐租金1500', A.CITIES.wlmq.rent, 1500);
 eq('新疆·其余 13 地州租金统一 800', XJ.filter(k => A.CITIES[k].rent === 800).length, 13);
 eq('新疆·14 地州租金仅两档', [...new Set(XJ.map(k => A.CITIES[k].rent))].sort((a, b) => a - b).join('/'), '800/1500');
@@ -2508,8 +2508,8 @@ ok('第五十批A·新疆·阿克苏note写明分档', A.CITIES.aks.note.include
 ok('第五十批A·新疆·喀什note写明塔什库尔干县1900', A.CITIES.kashi.note.includes('塔什库尔干县 1900'), true);
 ok('第五十批A·新疆·哈密note写明巴里坤伊吾1750', A.CITIES.hami.note.includes('巴里坤/伊吾1750'), true);
 eq('第五十批A·新疆·14市州社保基数统一不变 5246~26231', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].concat(['ylz']).every(function (k) { return A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231; }), true);
-ok('第五十批A·新疆·医保单位费率未取到市级件的3城仍标 warn', ['ylz','tc','alt'].every(function (k) { return A.CITIES[k].warn === true; }), true);
-eq('第五十批A·新疆·12城公积金有官方件故不标 warn', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].filter(function (k) { return k !== 'tc' && k !== 'alt'; }).every(function (k) { return A.CITIES[k].warn !== true; }), true);
+ok('第五十批A·新疆·医保单位费率未取到市级件的2城仍标 warn（阿勒泰第五十六批已取到在职口径故撤）', ['ylz','tc'].every(function (k) { return A.CITIES[k].warn === true; }), true);
+eq('第五十批A·新疆·公积金14地州全部有官方件（第五十六批新增的 6 个 warn 均因医保费率缺口而非公积金）', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].concat(['ylz']).every(function (k) { return A.CITIES[k].hf.min > 0 && A.CITIES[k].hf.max > A.CITIES[k].hf.min; }), true);
 eq('第四十八批·定西·医保单位费率6.7%不变', A.CITIES.dx.med.comp, 0.067);
 
 /* ===== 第五十二批：吉林 4 市州取证（数值零改动，补文号与渠道穷举记录） ===== */
@@ -2602,6 +2602,55 @@ eq('第五十五批·西宁 自主缴存月缴存额上限 5900 既非 round(245
 eq('第五十五批·西宁 下限 2080 与海西同为青政〔2025〕11号 三类地区 2080', A.CITIES.xining.hf.min === 2080 && A.CITIES.hxz.hf.min === 2080, true);
 eq('第五十五批·西宁 上限 31995 与 2021 年度件的 24591 不是同一年度数据', A.CITIES.xining.hf.max === 31995 && 24591 !== A.CITIES.xining.hf.max, true);
 eq('第五十五批·青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hxzfgjj.com.cn），其余 6 州无', A.CITIES.xining.note.indexOf('xnzfgjj.com') >= 0 && A.CITIES.hxz.note.indexOf('hxzfgjj.com.cn') >= 0, true);
+
+// ===== 第五十六批（2026-10-15）· 新疆 13 地州医保单位费率复核 =====
+{
+  // --- 阿勒泰：改值 7.5% → 9.5%（父代理逐字复核，推翻 subagent 的退休/灵活就业口径误判）---
+  eq('第五十六批·阿勒泰 medComp 9.5%（含生育，在职职工企业口径）', A.CITIES.alt.med.comp, 0.095);
+  eq('第五十六批·阿勒泰 个人 2% 不变', A.CITIES.alt.med.emp, 0.02);
+  ok('第五十六批·阿勒泰 warn 已撤销（两件官方件互相印证在职单位费率 9.5%）', A.CITIES.alt.warn === undefined, true);
+  ok('第五十六批·阿勒泰 note 引阿行办发〔2019〕58号', A.CITIES.alt.note.indexOf('阿行办发〔2019〕58号') >= 0, true);
+  ok('第五十六批·阿勒泰 note 含 2019 件逐字「单位职工基本医疗保险缴费率统一按 9.5%执行」', A.CITIES.alt.note.indexOf('单位职工基本医疗保险缴费率统一按9.5%执行') >= 0, true);
+  ok('第五十六批·阿勒泰 note 含 2026 件逐字「按我地区职工医保缴费率9.5%」', A.CITIES.alt.note.indexOf('按我地区职工医保缴费率9.5%') >= 0, true);
+  ok('第五十六批·阿勒泰 note 记录 7% 是退休/灵活就业口径', A.CITIES.alt.note.indexOf('退休职工与灵活就业') >= 0 || A.CITIES.alt.note.indexOf('退休职工缴费费率为单位7%') >= 0, true);
+  ok('第五十六批·阿勒泰 note 声明原 7.5% 作废', A.CITIES.alt.note.indexOf('作废') >= 0, true);
+  ok('第五十六批·阿勒泰 不再引错误的阿行办规〔2022〕3号', A.CITIES.alt.note.indexOf('阿行办规〔2022〕3号') < 0, true);
+  ok('第五十六批·阿勒泰 note 含 2019 件 URL', A.CITIES.alt.note.indexOf('xjalt.gov.cn/govxxgk/DD041/2019-11-27/') >= 0, true);
+  ok('第五十六批·阿勒泰 note 含 2026 件 URL', A.CITIES.alt.note.indexOf('638d53bd-5604-4060-83ed-07451846749f.html') >= 0, true);
+  ok('第五十六批·阿勒泰 公积金 1750~28792 不变', A.CITIES.alt.hf.min === 1750 && A.CITIES.alt.hf.max === 28792, true);
+  ok('第五十六批·阿勒泰 社保基数 5246~26231 不变', A.CITIES.alt.pension.min === 5246 && A.CITIES.alt.pension.max === 26231, true);
+
+  // --- 新增 warn 的 6 城（费率只有一半或完全没有官方件）---
+  eq('第五十六批·乌鲁木齐 warn 新增（生育 0.8% 已证、单位基本医保 9.0% 无件）', A.CITIES.wlmq.warn, true);
+  eq('第五十六批·克拉玛依 warn 新增（基本医保 7.3% 属反推）', A.CITIES.klmy.warn, true);
+  eq('第五十六批·昌吉 warn 新增（9%+0.5% 属反推）', A.CITIES.cjz.warn, true);
+  eq('第五十六批·阿克苏 warn 新增（阿地医保发〔2019〕26号 未取到）', A.CITIES.aks.warn, true);
+  eq('第五十六批·克孜勒苏 warn 新增（无任何市级费率件）', A.CITIES.kzls.warn, true);
+  eq('第五十六批·喀什 warn 新增（站点对本机出口 403）', A.CITIES.kashi.warn, true);
+  ok('第五十六批·乌鲁木齐 note 说明乌政办〔2019〕111号 不在规范性文件库', A.CITIES.wlmq.note.indexOf('不在乌市 37 页规范性文件库') >= 0, true);
+  ok('第五十六批·克拉玛依 note 说明基本医保 7.3% 属反推', A.CITIES.klmy.note.indexOf('属反推') >= 0, true);
+  ok('第五十六批·昌吉 note 说明 9%+0.5% 属反推', A.CITIES.cjz.note.indexOf('属反推') >= 0, true);
+  ok('第五十六批·阿克苏 note 说明本轮未取到该件', A.CITIES.aks.note.indexOf('本轮站内检索未取到该件') >= 0, true);
+  ok('第五十六批·克孜勒苏 note 说明 29 条规范性文件全是农业林草水价燃气', A.CITIES.kzls.note.indexOf('农业林草水价燃气') >= 0, true);
+  ok('第五十六批·喀什 note 说明整站 403', A.CITIES.kashi.note.indexOf('403') >= 0, true);
+
+  // --- 补 URL 的 5 城（报告转述、父代理复取 000 未复核）---
+  ok('第五十六批·和田 note 含和行办规〔2025〕3号与 URL', A.CITIES.ht.note.indexOf('和行办规〔2025〕3号') >= 0 && A.CITIES.ht.note.indexOf('xjht.gov.cn/xjht/') >= 0, true);
+  ok('第五十六批·巴州 note 含巴医保规〔2022〕3号与 URL', A.CITIES.bygl.note.indexOf('巴医保规〔2022〕3号') >= 0 && A.CITIES.bygl.note.indexOf('xjbz.gov.cn/xjbz/') >= 0, true);
+  ok('第五十六批·博州 note 含 9.5-0.5=9 自校验与 URL', A.CITIES.boz.note.indexOf('9.5-0.5=9') >= 0 && A.CITIES.boz.note.indexOf('xjboz.gov.cn/xjboz/') >= 0, true);
+  ok('第五十六批·吐鲁番 note 含 8.7=6.7+2 自校验与 URL', A.CITIES.tlf.note.indexOf('8.7=6.7+2') >= 0 && A.CITIES.tlf.note.indexOf('tlf.gov.cn/tlfs/') >= 0, true);
+  ok('第五十六批·吐鲁番 note 纠正「含生育0.7%」的错误表述', A.CITIES.tlf.note.indexOf('不含生育') >= 0, true);
+  ok('第五十六批·哈密 note 含 2027-01-01 调至 7.5% 的时效说明与 URL', A.CITIES.hami.note.indexOf('2027年1月1日') >= 0 && A.CITIES.hami.note.indexOf('hami.gov.cn/hami/') >= 0, true);
+  ok('第五十六批·5 城均标注父代理未能复核', ['ht','bygl','boz','tlf','hami'].every(k => A.CITIES[k].note.indexOf('本机出口返回 000 未复核') >= 0), true);
+  ok('第五十六批·5 城 medComp 数值全部不变', A.CITIES.ht.med.comp === 0.065 && A.CITIES.bygl.med.comp === 0.07 && A.CITIES.boz.med.comp === 0.095 && A.CITIES.tlf.med.comp === 0.067 && A.CITIES.hami.med.comp === 0.065, true);
+
+  // --- 未动的 3 城保持 warn（估算值）---
+  eq('第五十六批·伊犁 warn 保留（现行明确值仍未取到）', A.CITIES.ylz.warn, true);
+  eq('第五十六批·塔城 warn 保留（现行明确值仍未取到）', A.CITIES.tc.warn, true);
+  ok('第五十六批·新疆 14 地州社保基数仍统一 5246~26231', ['wlmq','klmy','tlf','hami','cjz','boz','bygl','aks','kzls','kashi','ht','ylz','tc','alt'].every(k => A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231), true);
+  ok('第五十六批·阿勒泰 medComp 与昌吉、博州、伊犁同为 9.5%', A.CITIES.alt.med.comp === A.CITIES.cjz.med.comp && A.CITIES.alt.med.comp === A.CITIES.boz.med.comp && A.CITIES.alt.med.comp === A.CITIES.ylz.med.comp, true);
+}
+
 
 
 eq('第四十八批·定西·warn 保留', A.CITIES.dx.warn, true);
