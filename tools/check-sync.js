@@ -308,12 +308,17 @@ const STALE_PATTERNS = [
   [/黑\/赣\/琼、(?!.*鄂)/, '年度分组遗漏湖北（同上）'],
 ];
 let staleHits = 0;
+/* 「202 城」自第七十七批起同时是 warn 缺口清单的合法计数（H 检查：全国 337 城中 202 城带 warn），
+   只有在「项目覆盖了 202 城」这一语境下才算陈旧表述。判定：匹配点前后 80 字内出现 warn/缺口 → 放行。 */
+const WARN_COUNT_CTX = /warn|缺口/;
 for (const f of MD_FILES) {
   let content;
   try { content = read(f); } catch (e) { continue; }
   for (const [re, why] of STALE_PATTERNS) {
     const m = content.match(re);
     if (m) {
+      if (/202/.test(re.source)
+        && WARN_COUNT_CTX.test(content.slice(Math.max(0, m.index - 80), m.index + 40))) continue;
       const line = content.slice(0, m.index).split('\n').length;
       console.log(`  ✗ ${f}:${line} 残留 ${why}`);
       staleHits++; fail++;
