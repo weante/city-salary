@@ -141,6 +141,7 @@ section('全城基数上下限排查');
 {
   var _bad = [];
   var _clampBad = [];
+  var _noCap = [];
   for (var _k in A.CITIES) {
     var _c = A.CITIES[_k];
     var _fields = [
@@ -151,6 +152,12 @@ section('全城基数上下限排查');
       var _n = _fields[_i][0], _f = _fields[_i][1];
       if (!_f) { _bad.push(_c.name + '·' + _n + ' 缺失'); continue; }
       var _lo = _f.min, _hi = _f.max;
+      /* 工伤等「法定无缴费基数上下限」的险种：min=0 且 max=0 表示不设上下限，
+         豁免「必须为正数」与「夹取到下限」两项检查（第八十一批） */
+      if (_n === '工伤' && _lo === 0 && _hi === 0) { _noCap.push(_c.name); continue; }
+      if (_n === '工伤' && (_lo === 0 || _hi === 0)) {
+        _bad.push(_c.name + '·工伤 上下限只设一半：' + _lo + '~' + _hi); continue;
+      }
       if (typeof _lo !== 'number' || _lo <= 0) { _bad.push(_c.name + '·' + _n + ' 下限非正数：' + _lo); continue; }
       if (typeof _hi !== 'number' || _hi <= 0) { _bad.push(_c.name + '·' + _n + ' 上限非正数：' + _hi); continue; }
       if (_lo > _hi) { _bad.push(_c.name + '·' + _n + ' 下限>上限：' + _lo + '>' + _hi); }
@@ -163,6 +170,10 @@ section('全城基数上下限排查');
   eq('全城基数上下限排查·337 城 × 5 险种均满足 min≤max 且为正数', _bad.length, 0);
   if (_bad.length) for (var _b = 0; _b < Math.min(8, _bad.length); _b++) emit('      ✗ ' + _bad[_b]);
   eq('全城基数上下限排查·月薪低于下限时全部正确夹取到下限', _clampBad.length, 0);
+  eq('全城基数上下限排查·工伤「法定无上下限」城市＝广东 21 市', _noCap.length, 21);
+  eq('全城基数上下限排查·工伤豁免城市全部属广东', _noCap.every(function(n){
+    for (var _kk in A.CITIES) { if (A.CITIES[_kk].name === n) return A.CITIES[_kk].region === '广东'; }
+    return false; }), true);
   if (_clampBad.length) for (var _cb = 0; _cb < Math.min(8, _clampBad.length); _cb++) emit('      ✗ ' + _clampBad[_cb]);
   /* 用户报告的原始场景必须被覆盖：广州月薪 6000 < 医保下限 6234 */
   var _gz = A.CITIES.gz;
@@ -3369,6 +3380,80 @@ section('9. 广州失业上限口径修正与条例内部口径一致（第七�
   eq('清远·公积金上限 27593 与失业上限 27594 仍差 1 元（无市级件可裁定）',
      qy.hf.max - qy.unemp.max, -1);
 })();
+})();
+
+/* ===== 第八十一批（2026-10-20）· 工伤保险法定无缴费基数上下限（广东 21 市） =====
+   旧值 inj {min:2520,max:44265} 系误抄失业数据（44265 早已被证伪删除）。
+   法定依据：
+   ①《广东省工伤保险条例》第四十四条「用人单位缴纳工伤保险费的数额为本单位职工工资总额乘以单位缴费费率之积」
+      —— 普通单位职工工伤缴费基数＝本单位职工工资总额，法规不设上下限。
+   ②珠人社发〔2023〕2号《关于公布2023年珠海市养老、失业和工伤保险缴费基数上下限和待遇核定基数的通知》
+      「工伤保险费由用人单位按照本单位职工工资总额乘以单位缴费费率之积缴纳。其中，"八类"特定人员参加工伤保险，
+        月缴费基数上限和下限按照2022年全省全口径城镇单位就业人员月平均工资的300%和60%确定，即26421元和5284元」
+   ③汕头市人社局+财政局+税务局+统计局《关于调整2024年度社会保险缴费基数上下限的通知》（2024-12-19，索引号08704422/2024-00453）
+      「（三）全市特定人员单项工伤保险缴费基数：根据特定人员月劳动报酬或者月补助补贴收入等情况予以申报，
+        上限为27501元，下限为5500元」
+   → 上下限只针对【特定人员单项工伤保险】（八类特定人员），普通职工工伤不设上下限。
+   落码方式：inj = {min:0,max:0}；cl0() 遇 max<=0 不夹取；inj.min=0 时输入框默认回落养老下限。
+   ==================================================================== */
+section('10. 工伤保险法定无缴费基数上下限（第八十一批）');
+(function gdInj81() {
+  const GD81 = ['sz','gz','dg','fs','zh','hz','jm','zs','st','sg','zj','zq','mm','mz','sw','hy','yj','qy','cz','jy','yf'];
+  eq('广东 21 市工伤缴费基数上下限均为 0（法定无上下限）',
+     GD81.every(k => A.CITIES[k].inj.min === 0 && A.CITIES[k].inj.max === 0), true);
+  eq('21 市中已无任何一市把失业旧值 2520 当作工伤下限',
+     GD81.every(k => A.CITIES[k].inj.min !== 2520), true);
+  eq('21 市中已无任何一市把失业旧值 44265 当作工伤上限',
+     GD81.every(k => A.CITIES[k].inj.max !== 44265), true);
+  eq('工伤单位费率仍为 0.2%（一档行业基准，本批未动）',
+     GD81.every(k => A.CITIES[k].inj.comp === .002), true);
+  eq('工伤 0/0 不代表零缴费：单位侧仍按 ijB×0.2% 计', A.CITIES.gz.inj.comp * 10000, 20);
+  eq('cl0 语义·max=0 时不封顶（90000 原样返回）', A.cl0(90000, 0, 0), 90000);
+  eq('cl0 语义·max=0 时不抬到下限（3000 原样返回）', A.cl0(3000, 0, 0), 3000);
+  eq('cl0 语义·max>0 时仍正常夹取（90000→44265）', A.cl0(90000, 2520, 44265), 44265);
+  eq('cl0 语义·max>0 且低于下限时抬到下限（1000→2520）', A.cl0(1000, 2520, 44265), 2520);
+  eq('非广东城市均未套用「工伤 0/0」（仍按当地/省级上下限）',
+     Object.keys(A.CITIES).filter(k => A.CITIES[k].region !== '广东')
+       .every(k => A.CITIES[k].inj.max > 0), true);
+  eq('福建 9 城工伤仍按闽人社文〔2026〕10号 4579~22893',
+     Object.keys(A.CITIES).filter(k => A.CITIES[k].region === '福建').length === 9
+       && Object.keys(A.CITIES).filter(k => A.CITIES[k].region === '福建')
+         .every(k => A.CITIES[k].inj.max === 22893 && A.CITIES[k].inj.min === 4579), true);
+  eq('工厂注释已载明珠人社发〔2023〕2号与汕头2024年度件两份逐字依据',
+     /珠人社发〔2023〕2号/.test(html) && /特定人员单项工伤保险/.test(html), true);
+  eq('工厂注释已声明旧值 2520~44265 系误抄失业数据',
+     /2520~44265/.test(html) && /误抄/.test(html), true);
+  eq('汕头note载明 27501 属「特定人员单项工伤保险」而非普通职工工伤',
+     /特定人员单项工伤保险/.test(A.CITIES.st.note) && /27501/.test(A.CITIES.st.note), true);
+  eq('惠州note载明特定人员工伤两版上下限 27501/5500 与 27549/5510',
+     /特定人员工伤保险缴费基数上、下限分别为27501元、5500元/.test(A.CITIES.hz.note)
+       && /27549元、5510元/.test(A.CITIES.hz.note), true);
+  eq('工厂注释已载明珠州特定人员上下限口径（×300% / ×60%）',
+     /特定人员工伤保险缴费基数上、下限分别为27501元、5500元/.test(html), true);
+  eq('特定人员工伤上下限＝全省全口径月均×300%/×60%（27501÷3=9167、27549÷3=9183、5510÷0.6=9183.33）',
+     27501 / 3 + '/' + 27549 / 3 + '/' + Math.round(5510 / 0.6), '9167/9183/9183');
+  eq('珠海note载明珠医保〔2025〕62号与 4775 医保下限口径',
+     /珠医保〔2025〕62号/.test(A.CITIES.zh.note) && /4775/.test(A.CITIES.zh.note), true);
+  eq('珠海医保上下限未变（4775~27549）',
+     A.CITIES.zh.med.min + '~' + A.CITIES.zh.med.max, '4775~27549');
+  eq('工伤 0/0 不参与个人实发：改工伤基数后税后实发与个人社保合计均不变', (function(){
+     A.selectCity('gz');
+     A._setMany({ salary: 8000, month: 12, startMonth: 1, pBase: 8000, mBase: 8000, uBase: 8000, hfBase: 8000, ijBase: 3000 });
+     A.calc();
+     var n1 = A._num('resNet'), s1 = A._num('resSI');
+     A._setMany({ ijBase: 99999 });
+     A.calc();
+     var n2 = A._num('resNet'), s2 = A._num('resSI');
+     return n1 === n2 && s1 === s2; })(), true);
+  eq('工伤区间显示为「无上下限」', (function(){ A.selectCity('gz'); return A._text('rngIJ'); })(), '无上下限');
+  eq('工伤 0/0 时输入框默认回落养老下限 5521（IJ.min=0 → P.min）',
+     (function(){ A.selectCity('gz'); return Number(A._doc.getElementById('ijBase').value); })(), 5521);
+  eq('东莞医保上下限未变（4775~27549；24号文只调养老、不含医保）',
+     A.CITIES.dg.med.min + '~' + A.CITIES.dg.med.max, '4775~27549');
+  eq('东莞note已载「不含医保」口径说明并标注缺本市一手件',
+     /不含医保/.test(A.CITIES.dg.note) && /4775/.test(A.CITIES.dg.note)
+       && /尚未取到/.test(A.CITIES.dg.note), true);
+  emit('  广东 21 市工伤改 0/0（法定无上下限）+ 珠海医保 4775~27549 口径坐实 + 东莞医保证据口径说明 ✓');
 })();
 /* =========================================================
    汇总
