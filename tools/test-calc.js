@@ -3595,6 +3595,119 @@ section('13. 工伤口径补强与特定人员 injSpecial（第八十四批）')
   emit('  工伤口径补强（佛山/东莞/惠州逐字不设上下限 + 省级依据与国家层面更正）+ injSpecial 特定人员 5521~27603 ✓');
 })();
 
+/* ===== 第八十五批（2026-10-21）· 广东 11 市失业上限收官复核（推导值实值化核查，值一律不改） =====
+   第八十二批已为肇庆取得市级件逐字 28220（×0.25 派）；本批对余下 10 城
+   （深圳/广州/汕头/湛江/梅州/汕尾/河源/清远/潮州/云浮）逐市再取一遍官方件。
+   结论：10 城均无 2026 社保年度市级失业上限印数件，但统计局 2025 年在岗职工年平均工资
+   与公积金 2026 年度上限件均逐字闭合至仓库现值 ⇒ 值一律不改，只补来源与口径说明。
+   ---------------------------------------------------------------------------------
+   各城缺件原因（互不相同，均属体例变化而非漏检）：
+     · 深圳  2003~2018 年度以《调整社会保险缴费基数和待遇偿付基数》连年发文，
+             2019 年度改《调整2019年度社会保险征缴及待遇计发基数的通知》后停发
+     · 广州  从未发布过失业上限印数件（人社局 200025 / 门户 200001 十组关键词零命中）
+     · 汕头  2026 年度只有汕人社〔2026〕65号，只设下限 2040 与失业金 1836
+     · 湛江  最新同险种市级件停在 2023 社保年度（26904）
+     · 梅州  从未发布（唯一失业基数类文件是 2021-12-01 只调下限件）
+     · 汕尾  2023 年度件由市税务局发（表格 24369/1620），2024 年后改社保费征管系统自动套用
+     · 河源  2018 年后无年度件（最后一版河人社发〔2017〕123号）
+     · 清远  站群内 2024~2027 年不存在该类文件
+     · 潮州  「社保年度缴费及待遇计发基数」系列止于 2019 年
+     · 云浮  2026 年度值按惯例待 2027 年信息披露通告
+   落码：calculator.html 10 城 note 追加收官复核段；docs/sources/F1.json 新建；
+        E1.json 10 城 confirms 补逐字旁证、gz 旧文（41697）订正为 42933 口径。 */
+section('14. 广东 11 市失业上限收官复核（第八十五批）');
+(function gdUnemp85() {
+  const TEN = ['sz','gz','st','zj','mz','sw','hy','qy','cz','yf'];
+  eq('第八十五批·10 城 note 均已追加收官复核段', TEN.every(k => /第八十五批/.test(A.CITIES[k].note)), true);
+  eq('第八十五批·10 城失业上限一律不改',
+    TEN.map(k => A.CITIES[k].unemp.max).join('/'), '48471/42933/27699/29640/26316/27849/25470/27594/26043/27642');
+  eq('第八十五批·10 城下限不变（深圳 2700/广州 2680 一类市，其余三类 2040）',
+    TEN.map(k => A.CITIES[k].unemp.min).join('/'), '2700/2680/2040/2040/2040/2040/2040/2040/2040/2040');
+  const YW85 = [
+    ['深圳', 'sz', 193881, 48471], ['广州', 'gz', 171731, 42933],
+    ['汕头', 'st', 110794, 27699], ['湛江', 'zj', 118562, 29640],
+    ['梅州', 'mz', 105259, 26316], ['汕尾', 'sw', 111396, 27849],
+    ['河源', 'hy', 101875, 25470], ['清远', 'qy', 110372, 27594],
+    ['潮州', 'cz', 104173, 26043], ['云浮', 'yf', 110567, 27642]];
+  YW85.forEach(([cn, k, yw, mx]) => {
+    const mo = Math.round(yw / 12);
+    eq(`第八十五批·${cn} ${yw}÷12=${(yw / 12).toFixed(2)}→${mo}元/月×3=${mo * 3} 与现值一致`,
+      mo * 3 === mx && A.CITIES[k].unemp.max === mx, true);
+  });
+  eq('第八十五批·10 城按 ÷12 换算偏差全部为 0 元',
+    YW85.every(([, , yw, mx]) => Math.round(yw / 12) * 3 - mx === 0), true);
+  eq('第八十五批·×0.25 派在湛江/河源/清远各差 1 元 → 三市必为 ÷12 派',
+    [Math.round(118562 * 0.25), Math.round(101875 * 0.25), Math.round(110372 * 0.25)].join('/'),
+    '29641/25469/27593');
+  eq('第八十五批·汕头 2022 年度件 2021 年在岗 86951÷12=7246×3=21738 逐字闭合',
+    Math.round(86951 / 12) * 3, 21738);
+  eq('第八十五批·汕头 2023 年度件 2022 年在岗 92765÷12=7730×3=23190 逐字闭合',
+    Math.round(92765 / 12) * 3, 23190);
+  eq('第八十五批·汕头 2024 年度件 2023 年在岗 97346÷12=8112×3=24336 逐字闭合',
+    Math.round(97346 / 12) * 3, 24336);
+  eq('第八十五批·汕头三年链逐年递进且官方写法均为「月平均工资N元的300%，即M元」',
+    [21738 < 23190, 23190 < 24336, Math.round(86951 / 12) === 7246, Math.round(97346 / 12) === 8112].join('/'),
+    'true/true/true/true');
+  eq('第八十五批·梅州 1 元差真因：含劳务派遣年工资 105260÷12×3=26315 为精确整数',
+    Math.round(105260 / 12 * 3), 26315);
+  eq('第八十五批·梅州统计局口径 105259÷12=8772×3=26316（仓库取此值）',
+    Math.round(105259 / 12) * 3, 26316);
+  eq('第八十五批·云浮公积金件精确值 110567×0.25=27641.75（官方不取整）', 110567 * 0.25, 27641.75);
+  eq('第八十五批·云浮仓库值 27642 与官方精确值差 0.25 元（取整层级差，非口径差）',
+    A.CITIES.yf.unemp.max - 110567 * 0.25, 0.25);
+  eq('第八十五批·潮州失业上限与本市公积金上限同值 26043（缴存年度完全重合）',
+    A.CITIES.cz.unemp.max + '/' + A.CITIES.cz.hf.max, '26043/26043');
+  eq('第八十五批·汕尾 2023 社保年度件表格值 24369＝8123×3（97474÷12=8122.83→8123）',
+    Math.round(97474 / 12) * 3, 24369);
+  eq('第八十五批·广州失业 42933 − 公积金 41697 = 1236（第三次证伪「照抄公积金上限」）',
+    A.CITIES.gz.unemp.max - A.CITIES.gz.hf.max, 1236);
+  eq('第八十五批·深圳 note 载体例停发史（2019 年度改名后停发）',
+    /2019年度社会保险征缴及待遇计发基数/.test(A.CITIES.sz.note), true);
+  eq('第八十五批·广州 note 载 171731 与 41697 反证',
+    /171731/.test(A.CITIES.gz.note) && /41697/.test(A.CITIES.gz.note), true);
+  eq('第八十五批·汕头 note 载三年逐字闭合链 21738/23190/24336',
+    /21738/.test(A.CITIES.st.note) && /23190/.test(A.CITIES.st.note) && /24336/.test(A.CITIES.st.note), true);
+  eq('第八十五批·湛江 note 载公积金 29640 与工伤「按工资总额」逐字',
+    /29,640/.test(A.CITIES.zj.note) && /工资总额/.test(A.CITIES.zj.note), true);
+  eq('第八十五批·梅州 note 载含劳务派遣口径与 105260 真因',
+    /劳务派遣/.test(A.CITIES.mz.note) && /105260/.test(A.CITIES.mz.note), true);
+  eq('第八十五批·汕尾 note 载税务局表格 24369 与征管系统自动套用',
+    /24369/.test(A.CITIES.sw.note) && /征管系统/.test(A.CITIES.sw.note), true);
+  eq('第八十五批·河源 note 载公积金逐字「即25470元」',
+    /即25470元/.test(A.CITIES.hy.note), true);
+  eq('第八十五批·清远 note 载 110372 与 WAF 口径说明',
+    /110372/.test(A.CITIES.qy.note) && /WAF|挑战页/.test(A.CITIES.qy.note), true);
+  eq('第八十五批·潮州 note 载 170dpi/400dpi 双档 OCR 与 26043 同值',
+    /170dpi/.test(A.CITIES.cz.note) && /400dpi/.test(A.CITIES.cz.note) && /26043/.test(A.CITIES.cz.note), true);
+  eq('第八十五批·云浮 note 载 27641.75 精确值与 26385 属 2025 社保年度',
+    /27641\.75/.test(A.CITIES.yf.note) && /2025社保年度/.test(A.CITIES.yf.note), true);
+  eq('第八十五批·docs/sources/F1.json 为 10 城收官复核档',
+    (function () {
+      const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F1.json'), 'utf8'));
+      return j.provinces[0].cities.length;
+    })(), 10);
+  eq('第八十五批·F1.json 10 城 unempMax 与仓库现值逐一一致',
+    (function () {
+      const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F1.json'), 'utf8'));
+      const m = {};
+      j.provinces[0].cities.forEach(c => { m[c.key] = c.unempMax; });
+      return TEN.every(k => m[k] === A.CITIES[k].unemp.max);
+    })(), true);
+  eq('第八十五批·E1.json 10 城 confirms 均已补入第八十五批收官复核段',
+    (function () {
+      const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'E1.json'), 'utf8'));
+      const cs = {};
+      j.provinces[0].cities.forEach(c => { cs[c.key] = c.confirms || ''; });
+      return TEN.every(k => /第八十五批收官复核/.test(cs[k]));
+    })(), true);
+  eq('第八十五批·F1.json 经 source-records 正向判定为已核查（10 城全部 isFilled）',
+    (function () {
+      const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F1.json'), 'utf8'));
+      return j.provinces[0].cities.every(isFilled);
+    })(), true);
+  emit('  10 城无 2026 年度市级印数件（缺件原因互不相同）+ ÷12 口径偏差全 0 + F1.json 新建 ✓');
+})();
+
 
 /* =========================================================
    汇总
