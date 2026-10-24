@@ -830,11 +830,11 @@ ok('浙江·丽水医保单位费率仍标注未找到市级值', A.CITIES.lish.
   let bad = 0, badWarn = 0, badNote = 0, badYr = 0;
   for (const k of JS13) {
     const c = A.CITIES[k];
-    if (c.pension.min !== 5025 || c.pension.max !== 25127) { bad++; console.log('  ✗ ' + k + ' 基数未落地'); }
-    if (c.med.min !== 5025 || c.med.max !== 25127) { bad++; console.log('  ✗ ' + k + ' 医保基数未同步'); }
-    if (c.dataYear !== '2026' || (c.dataNext || null) !== null) { badYr++; console.log('  ✗ ' + k + ' 年度口径未改'); }
-    if (c.warn !== true) { badWarn++; console.log('  ✗ ' + k + ' warn 被误清'); }
-    if ((c.note || '').indexOf('24762') >= 0 || (c.note || '').indexOf('4952；') >= 0) { badNote++; console.log('  ✗ ' + k + ' note 残留旧值'); }
+    if (c.pension.min !== 5025 || c.pension.max !== 25127) { bad++; emit('  ✗ ' + k + ' 基数未落地'); }
+    if (c.med.min !== 5025 || c.med.max !== 25127) { bad++; emit('  ✗ ' + k + ' 医保基数未同步'); }
+    if (c.dataYear !== '2026' || (c.dataNext || null) !== null) { badYr++; emit('  ✗ ' + k + ' 年度口径未改'); }
+    if (c.warn !== true) { badWarn++; emit('  ✗ ' + k + ' warn 被误清'); }
+    if ((c.note || '').indexOf('24762') >= 0 || (c.note || '').indexOf('4952；') >= 0) { badNote++; emit('  ✗ ' + k + ' note 残留旧值'); }
   }
   eq('江苏·13 城五险基数全部落地 5025~25127', bad, 0);
   eq('江苏·13 城医保基数与养老同口径', bad, 0);
