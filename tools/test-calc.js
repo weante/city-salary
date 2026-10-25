@@ -4127,6 +4127,99 @@ section('19. 界面重构契约：sticky 顶栏 + 步骤化面板 + 新设计令
   emit('  界面重构：sticky 顶栏 + 步骤化面板 + 16 图标库 + 82 id 契约全保留（数值零改动）✓');
 })();
 /* =========================================================
+   20. 省市县三级树 + 省按笔画排序 + 数据依据折叠（第九十一批）
+   ========================================================= */
+section('20. 省市县三级导航与数据依据折叠（第九十一批）');
+(function gdTree91(){
+  var T91_MARKUP = html.slice(0, html.indexOf('<script>'));
+  var T91_STYLE = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+
+  // 一、导航数据来源与生成契约
+  ok('第九十一批·PROV_TREE 数据已注入脚本', /var PROV_TREE=\[/.test(html), true);
+  ok('第九十一批·来源注明民政部行政区划 pca-code.json', /pca-code\.json/.test(html), true);
+  ok('第九十一批·来源注明 Unihan kTotalStrokes 笔画', /kTotalStrokes/.test(html), true);
+  var t91s = html.indexOf('var PROV_TREE=[');
+  var t91e = html.indexOf('];', t91s);
+  var T91 = eval('(' + html.slice(t91s + 'var PROV_TREE='.length, t91e + 1) + ')');
+  ok('第九十一批·PROV_TREE 可解析为数组', Array.isArray(T91), true);
+  eq('第九十一批·省级节点数（31 个省级行政区，含 4 直辖市）', T91.length, 31);
+
+  // 二、省级：按汉字笔画升序
+  var t91names = T91.map(function(p){ return p.n; });
+  eq('第九十一批·省名无重复', new Set(t91names).size, t91names.length);
+  eq('第九十一批·每省笔画数均为正整数', T91.filter(function(p){ return !(p.s > 0 && Math.floor(p.s) === p.s); }).length, 0);
+  var t91mono = T91.every(function(p, i){ return i === 0 || p.s >= T91[i - 1].s; });
+  ok('第九十一批·笔画数非递减（升序排列）', t91mono, true);
+  eq('第九十一批·首位省份为广东', T91[0].n, '广东');
+  eq('第九十一批·广东笔画数 8（广 3 + 东 5）', T91[0].s, 8);
+  var t91first = T91[0].s, t91last = T91[T91.length - 1].s;
+  ok('第九十一批·首末笔画跨度合理（8 ~ 32）', t91first === 8 && t91last === 32, true);
+  var t91same = T91.filter(function(p){ return p.s === t91first; }).length;
+  ok('第九十一批·存在同笔画并列的省（广东/山东/四川 同 8 画）', t91same >= 3, true);
+
+  // 三、市级：337 城全覆盖且 key 与 CITIES 严格一致
+  var t91cities = [];
+  T91.forEach(function(p){ p.c.forEach(function(c){ t91cities.push(c); }); });
+  eq('第九十一批·市级节点数 337（与 CITIES 城市总数一致）', t91cities.length, 337);
+  eq('第九十一批·CITIES 城市总数未变', Object.keys(A.CITIES).length, 337);
+  var t91keys = t91cities.map(function(c){ return c.k; });
+  eq('第九十一批·城市 key 无重复', new Set(t91keys).size, t91keys.length);
+  var t91bad = t91keys.filter(function(k){ return !A.CITIES[k]; });
+  eq('第九十一批·全部城市 key 均存在于 CITIES', t91bad.length, 0);
+  var t91names2 = t91cities.map(function(c){ return c.d; });
+  var t91bad2 = t91names2.filter(function(d){ return !Object.keys(A.CITIES).some(function(k){ return A.CITIES[k].name === d; }); });
+  eq('第九十一批·全部城市显示名均存在于 CITIES', t91bad2.length, 0);
+  var t91gd = T91.filter(function(p){ return p.n === '广东'; })[0];
+  eq('第九十一批·广东 21 城齐全', t91gd.c.length, 21);
+  var t91bj = T91.filter(function(p){ return p.n === '北京'; })[0];
+  ok('第九十一批·直辖市区县已合并（北京 ≥ 10 个区）', t91bj.c[0].a.split(',').length >= 10, true);
+
+  // 四、区县级：仅作导航，社保按市级统筹
+  var t91areas = 0, t91empty = 0;
+  t91cities.forEach(function(c){ var n = c.a ? c.a.split(',').filter(function(x){ return x; }).length : 0; if (!n) t91empty++; t91areas += n; });
+  eq('第九十一批·区县节点总数 3012', t91areas, 3012);
+  eq('第九十一批·每个城市都有区县列表', t91empty, 0);
+  var t91sz = t91cities.filter(function(c){ return c.k === 'sz'; })[0];
+  eq('第九十一批·深圳区县数 9', t91sz.a.split(',').length, 9);
+
+  // 五、折叠结构：数据依据折叠条在 footNote 外层
+  ok('第九十一批·数据依据折叠容器存在', /<details class="ft-note" id="ftNoteBox">/.test(T91_MARKUP), true);
+  ok('第九十一批·折叠标题含城市名占位 id ftNoteSum', /id="ftNoteSum"/.test(T91_MARKUP), true);
+  ok('第九十一批·footNote 容器仍在（内容 div 未被搬走）', /<div class="ft" id="footNote">/.test(T91_MARKUP), true);
+  var t91d = T91_MARKUP.indexOf('id="ftNoteBox"'), t91f = T91_MARKUP.indexOf('id="footNote"');
+  ok('第九十一批·footNote 位于折叠容器内部', t91d > 0 && t91f > t91d, true);
+  ok('第九十一批·折叠容器默认不展开（无 open 属性）', /<details class="ft-note" id="ftNoteBox">/.test(T91_MARKUP), true);
+
+  // 六、树形 DOM 与搜索契约
+  ok('第九十一批·省级折叠节点 tree-prov', /class="tree-prov"/.test(html), true);
+  ok('第九十一批·市级折叠节点 tree-city', /class="tree-city"/.test(html), true);
+  ok('第九十一批·区县按钮 area-chip', /class="area-chip"/.test(html), true);
+  ok('第九十一批·城市入口按钮 area-pick', /class="area-pick"/.test(html), true);
+  ok('第九十一批·省级带 data-prov 供搜索定位', /data-prov=/.test(html), true);
+  ok('第九十一批·市级带 data-city 供搜索定位', /data-city=/.test(html), true);
+  ok('第九十一批·curCityKey 记录当前城市', /var curCityKey=null;/.test(html), true);
+  ok('第九十一批·provOfCity 反查所属省', /function provOfCity\(k\)/.test(html), true);
+  ok('第九十一批·filterCity 改为跨三级检索', /querySelectorAll\("\.tree-prov"\)/.test(html), true);
+  ok('第九十一批·市县按中文拼音序排序', /localeCompare\([^)]*"zh-Hans-CN"\)/.test(html), true);
+  ok('第九十一批·折叠标题随城市同步', /ftNoteSum"\)\)\$?\("ftNoteSum"\)\.textContent=CITY\.name/.test(html), true);
+
+  // 七、样式契约
+  ok('第九十一批·树形样式 tree-prov 已定义', /\.tree-prov\{/.test(T91_STYLE), true);
+  ok('第九十一批·区县按钮样式 area-chip 已定义', /\.area-chip[.,{]/.test(T91_STYLE), true);
+  ok('第九十一批·折叠条样式 ft-note 已定义', /\.ft-note\{/.test(T91_STYLE), true);
+  ok('第九十一批·折叠箭头使用 ::after', /\.ft-note-sum[^{]*::after/.test(T91_STYLE), true);
+  ok('第九十一批·省级笔画徽标样式 pv 已定义', /\.pv\{/.test(T91_STYLE), true);
+
+  // 八、既有契约与数值零改动
+  eq('第九十一批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第九十一批·深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
+  eq('第九十一批·东莞公积金上限仍 27700', A.CITIES.dg.hf.max, 27700);
+  eq('第九十一批·省级分组数仍 28', (function(){ var r = {}; Object.keys(A.CITIES).forEach(function(k){ r[A.CITIES[k].region] = 1; }); return Object.keys(r).length; })(), 28);
+  ok('第九十一批·footNote 内容仍由 JS 赋值且以「数据依据：」开头', /\$\("footNote"\)\.innerHTML='数据依据：'/.test(html), true);
+
+  emit('  省市县三级树（31 省 / 337 市 / 3012 区县）+ 省按笔画升序 + 数据依据折叠（数值零改动）✓');
+})();
+/* =========================================================
    汇总
    ========================================================= */
 emit('\n' + '='.repeat(58));

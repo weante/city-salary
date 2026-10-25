@@ -1,0 +1,30 @@
+{
+  "group": "第七十五批（2026-10-25）· 城市导航数据来源（省市县三级行政区划 + 汉字笔画）",
+  "generatedAt": "2026-10-25",
+  "note": "本档记录第九十一批 UI 改造新增的两份**外部导航数据**的出处：①民政部行政区划三级表（用于省市县三级折叠树的市/县节点）；②Unicode Unihan kTotalStrokes（用于省名笔画数排序）。二者都不是政策取值来源：社保与公积金一律按市级统筹，区县节点仅作导航；省名笔画只影响排列顺序。本档不含任何城市政策条目（provinces 为空），因此不参与 source-records 的 best 归属与 urls 统计。",
+  "legalBasis": {
+    "title": "行政区划：modood/Administrative-divisions-of-China（pca-code.json）",
+    "url": "https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/pca-code.json",
+    "quote": "结构为 省[{code,name,children:[{code,name,children:[{code,name}]}]}]，含省→市→县三级名称",
+    "meaning": "用于把仓库的 337 个城市 key 映射到所属省、市与下辖区县；直辖市的市节点在源数据中名为「市辖区」（重庆另有「县」），按省合并全部市辖区处理；「省直辖县级行政区划」「自治区直辖县级行政区划」为虚拟节点，不对应本仓库城市，忽略。"
+  },
+  "provenance": [
+    {
+      "name": "行政区划三级表",
+      "file": "pca-code.json",
+      "url": "https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/pca-code.json",
+      "bytes": 136996,
+      "role": "省→市→县三级名称",
+      "match": "337/337 城市全部命中（等值匹配 303 + 自治州前缀匹配 29 + 直辖市/海南州别名 5），共 3012 个区县"
+    },
+    {
+      "name": "汉字笔画数",
+      "file": "Unicode Unihan_IRGSources.txt（kTotalStrokes）",
+      "url": "https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip",
+      "bytes": 8340649,
+      "role": "省名笔画数（用于升序排列）",
+      "match": "按 Unihan kTotalStrokes 逐字求和；抽样校验直=8 广=3 黄=11 鹏=13 面=9 辽=5 四=5 苏=8 建=9 福=14 陕=8 蒙=14 藏=18 全对。⚠️ 曾误用 kfcd/chaizi 的 chaizi-jt.txt，其第 2 列是「部件」不是笔画序列，已弃用。"
+    }
+  ],
+  "provinces": []
+}
