@@ -3982,14 +3982,14 @@ section('17. 东莞公积金 36 号文闭合长期疑点 + 深圳公积金新办
   eq('第八十八批 B·Q1 深圳 confirms 含第八十八批 B', /第八十八批 B/.test(sz.confirms || ''), true);
   eq('第八十八批 B·Q1 深圳 mismatch 仍记两金额缺官方件', /2520/.test(sz.mismatch || '') && /48471/.test(sz.mismatch || ''), true);
   eq('第八十八批 B·Q1 notes 第 ⑧ 条已订正为已获官方原文', Q1.notes.some(n => /第八十八批 B 已获官方原文/.test(n)), true);
-  eq('第八十八批 B·Q1 自身 urls 总数 45→49', Q1.provinces.reduce((t, p) => t + (p.cities || []).reduce((u, c) => u + ((c.urls || []).length), 0), 0), 49);
+  eq('第八十八批 B·Q1 自身 urls 总数 45→49（第八十九批 P10 后为 59）', Q1.provinces.reduce((t, p) => t + (p.cities || []).reduce((u, c) => u + ((c.urls || []).length), 0), 0), 59);
 
   // 六、来源库整体链接数不得丢失
   const allUrls = fs.readdirSync(SRC).filter(f => /^[A-Z]\d+[a-z]?\.json$/.test(f)).reduce((t, f) => {
     const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
     return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
   }, 0);
-  eq('第八十八批 B·全库 urls 总数 2823→2827', allUrls, 2827);
+  eq('第八十八批 B·全库 urls 总数 2823→2827（第八十九批 P10 后为 2837）', allUrls, 2837);
 
   // 七、口径并列（不得混用）
   eq('第八十八批 B·东莞下限仍按存量 2080（2027-01 起才转 2300）', dgc.hf.min, 2080);
@@ -3998,6 +3998,70 @@ section('17. 东莞公积金 36 号文闭合长期疑点 + 深圳公积金新办
   eq('第八十八批 B·东莞未新增 warn（公积金数值已由 36 号文闭合）', !!dgc.warn, false);
 
   emit('  东莞公积金 36 号文闭合长期媒体疑点 + 深圳公积金新办法与 7 月年度体例入库 + Q1.json 增量（数值零改动）✓');
+})();
+
+section('18. 深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方取整规则闭合（第八十九批 P10）');
+(function gdSzP10(){
+  const SRC = path.join(__dirname, '..', 'docs', 'sources');
+  const Q1 = JSON.parse(fs.readFileSync(path.join(SRC, 'Q1.json'), 'utf8'));
+  const sz = Q1.provinces[0].cities.filter(c => c.city === '深圳')[0];
+  const szc = A.CITIES.sz;
+
+  // 一、深圳 note 新增段
+  eq('第八十九批·深圳 note 含第八十九批标识', /第八十九批/.test(szc.note), true);
+  eq('第八十九批·深圳 note 载 2025 年省最低工资标准表 URL', /post_3844543/.test(szc.note), true);
+  eq('第八十九批·深圳 note 载表图本体 URL', /3844543\.png/.test(szc.note), true);
+  eq('第八十九批·深圳 note 载 OCR 一致的深圳 2520 与小时 23.7', /月最低工资标准 2520 元\/月/.test(szc.note) && /23\.7 元\/小时/.test(szc.note), true);
+  eq('第八十九批·深圳 note 载官方取整规则「除以12，取整到元」', /除以12，取整到元/.test(szc.note), true);
+  eq('第八十九批·深圳 note 载官方答复 pid=2941733', /pid=2941733/.test(szc.note), true);
+  eq('第八十九批·深圳 note 载历史官方值链 34860/38892/41190', /34860/.test(szc.note) && /38892/.test(szc.note) && /41190/.test(szc.note), true);
+  eq('第八十九批·深圳 note 载 2027 年度下限 2700 与门户稿 URL', /post_12936470/.test(szc.note) && /2027 公积金年度下限将变为 2700/.test(szc.note), true);
+  eq('第八十九批·深圳 note 明示 48471 未在任何官方件上印出', /48471 这六个数字未在任何官方件上被印出/.test(szc.note), true);
+
+  // 二、深圳数值零改动 + 官方取整规则复算
+  eq('第八十九批·深圳公积金下限仍为 2520', szc.hf.min, 2520);
+  eq('第八十九批·深圳公积金上限仍为 48471', szc.hf.max, 48471);
+  eq('第八十九批·官方取整规则复算：193881÷12 取整到元再×3 = 48471', Math.round(193881 / 12) * 3, 48471);
+  eq('第八十九批·193881÷12 小数部分为 .75（非整除）', (193881 / 12).toFixed(2), '16156.75');
+  eq('第八十九批·深圳失业上限与公积金上限同源同值 48471', szc.unemp.max - szc.hf.max, 0);
+  eq('第八十九批·深圳仍标 warn（48471 金额未印出于官方件）', szc.warn, true);
+
+  // 三、Q1.json 增量
+  eq('第八十九批·Q1 深圳 urls 含 2025 年省最低工资标准表', sz.urls.some(u => /post_3844543/.test(u)), true);
+  eq('第八十九批·Q1 深圳 urls 含 2025 年表图本体', sz.urls.some(u => /3844543\.png/.test(u)), true);
+  eq('第八十九批·Q1 深圳 urls 含 2026 年省最低工资标准表', sz.urls.some(u => /post_3951589/.test(u)), true);
+  eq('第八十九批·Q1 深圳 urls 含最低工资上调门户稿', sz.urls.some(u => /post_12936470/.test(u)), true);
+  eq('第八十九批·Q1 深圳 urls 含官方答复 pid=2941733', sz.urls.some(u => /pid=2941733/.test(u)), true);
+  eq('第八十九批·Q1 深圳 urls 含 2023 年度通知原件', sz.urls.some(u => /post_10684484/.test(u)), true);
+  eq('第八十九批·Q1 深圳 urls 数 6→16', sz.urls.length, 16);
+  eq('第八十九批·Q1 深圳 confirms 含第八十九批与 2520', /第八十九批/.test(sz.confirms || '') && /2520/.test(sz.confirms || ''), true);
+  eq('第八十九批·Q1 深圳 mismatch 明示金额未印出于官方件', /未在任何官方件上被印出/.test(sz.mismatch || ''), true);
+  eq('第八十九批·Q1 深圳 status 维持 official-partial', sz.status, 'official-partial');
+  eq('第八十九批·Q1 notes 含第八十九批 P10 条', Q1.notes.some(n => /第八十九批/.test(n || '')), true);
+  eq('第八十九批·Q1 自身 urls 总数 49→59', Q1.provinces.reduce((t, p) => t + (p.cities || []).reduce((u, c) => u + ((c.urls || []).length), 0), 0), 59);
+
+  // 四、来源库整体链接数不得丢失
+  const allUrls = fs.readdirSync(SRC).filter(f => /^[A-Z]\d+[a-z]?\.json$/.test(f)).reduce((t, f) => {
+    const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
+    return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
+  }, 0);
+  eq('第八十九批·全库 urls 总数 2827→2837', allUrls, 2837);
+
+  // 五、最低工资档位（2025 年表 / 2026 年表 OCR 两档一致）
+  eq('第八十九批·2025 年省表 一类 深圳 2520 / 广州 2500', [2520, 2500].join('/'), '2520/2500');
+  eq('第八十九批·2025 年省表 二类 2080 / 三类 1850 / 四类 1750', [2080, 1850, 1750].join('/'), '2080/1850/1750');
+  eq('第八十九批·2026 年省表 一类 深圳 2700 / 广州 2680', [2700, 2680].join('/'), '2700/2680');
+  eq('第八十九批·2026 年省表 二类 2300 / 三类 2040', [2300, 2040].join('/'), '2300/2040');
+  eq('第八十九批·深圳最低工资 2520→2700 差 180 元', 2700 - 2520, 180);
+  eq('第八十九批·2027 公积金年度下限预期 2700（本次不预先改值）', 2700, 2700);
+
+  // 六、口径分离：2024 年度上限预期 44265 与 48471 不得混用
+  eq('第八十九批·2024 年度深圳在岗年平均工资 177057 元（医保件载）', 177057, 177057);
+  eq('第八十九批·2024 年度公积金上限预期 44265（官方答复只给公式，未采用）', Math.round(177057 / 12) * 3, 44265);
+  eq('第八十九批·2024 年度预期值与现值 48471 不同（不得混用年度）', 44265 === 48471, false);
+  eq('第八十九批·仓库仍用 2026 年度 48471', szc.hf.max, 48471);
+
+  emit('  深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方取整规则闭合（数值零改动，Q1.json 增量）✓');
 })();
 /* =========================================================
    汇总
