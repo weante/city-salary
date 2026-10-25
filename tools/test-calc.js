@@ -4063,6 +4063,69 @@ section('18. 深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方
 
   emit('  深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方取整规则闭合（数值零改动，Q1.json 增量）✓');
 })();
+
+/* =========================================================
+   19. 界面重构：按 UI demo 重排 calculator.html（第九十批）
+   ========================================================= */
+section('19. 界面重构契约：sticky 顶栏 + 步骤化面板 + 新设计令牌（第九十批）');
+(function gdUi90(){
+  var UI90_MARKUP = html.slice(0, html.indexOf('<script>'));
+  var UI90_STYLE = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+
+  // 一、结构骨架：粘性顶栏 / 主导航 / 页头 / 两栏工作区
+  ok('第九十批·粘性顶栏 site-header 存在', /<header class="site-header">/.test(UI90_MARKUP), true);
+  ok('第九十批·主导航 main-nav 内含两个 tab', /<nav class="main-nav" aria-label="主导航">/.test(UI90_MARKUP), true);
+  ok('第九十批·tab0 基准 class 为 tab a（switchTab 依赖）', /class="tab a" id="tab0"/.test(UI90_MARKUP), true);
+  ok('第九十批·tab1 基准 class 为 tab', /class="tab" id="tab1"/.test(UI90_MARKUP), true);
+  ok('第九十批·品牌标记与名称在顶栏内', /class="brand-mark"/.test(UI90_MARKUP) && /class="brand-name">城薪</.test(UI90_MARKUP), true);
+  ok('第九十批·「数据与口径」纯 CSS 弹层存在', /class="policy-menu"/.test(UI90_MARKUP) && /class="policy-pop"/.test(UI90_MARKUP), true);
+  ok('第九十批·页头含标题 / 政策徽章 / 城市选择器', /class="page-head"/.test(UI90_MARKUP) && /class="policy-badge"/.test(UI90_MARKUP) && /class="city-picker"/.test(UI90_MARKUP), true);
+  ok('第九十批·工作区为两栏：panel-stack + results', /class="workspace"/.test(UI90_MARKUP) && /class="panel-stack"/.test(UI90_MARKUP) && /class="results"/.test(UI90_MARKUP), true);
+  ok('第九十批·年度明细页为单列 history-view', /class="history-view"/.test(UI90_MARKUP), true);
+
+  // 二、图标库：16 个 SVG symbol 全部在位
+  var UI90_ICONS = ['i-logo','i-pin','i-chevron','i-info','i-arrow','i-reset','i-wallet','i-shield','i-tax','i-home','i-calendar','i-gift','i-search','i-close','i-download'];
+  var UI90_ICON_MISS = UI90_ICONS.filter(function(x){ return UI90_MARKUP.indexOf('id="' + x + '"') < 0; });
+  eq('第九十批·SVG symbol 图标库 15 个全部存在', UI90_ICON_MISS.length, 0);
+  eq('第九十批·图标库数量', UI90_ICONS.length, 15);
+
+  // 三、既有 id 契约：82 个历史 id 一个都不能丢（重构的最大回归风险）
+  var UI90_IDS = ['cityTag','tab0','tab1','cityOverlay','provTabs','cityGrid','page0','salary','month','startMonth','startWarn','hkRow','hk0','hk1','medRow','medNote','medBtns','rngP','pBase','rngM','mBase','rngU','uBase','mtRow','rngMT','mtBase','rngIJ','ijBase','rngHF','hfBase','hfRateHint','hfRate','hfRateV','hfRateCompHint','hfRateComp','hfRateCompV','ltcWrap','ltcOn','ltcRate','baseNote','dedChild','childOn','childLabel','cg0','cg1','childAmt','dedEdu','eduOn','eduAmt','dedHouse','houseOn','houseLabel','houseHint','hg0','hg1','houseAmt','dedElderly','elderlyOn','elderlyAmt','dedMedical','medicalOn','medicalAmt','spTot','healthIns','persPen','annuity','incLabor','incRoyal','incLic','reliefPct','bonus','bonusResult','res','page1','histCity','rangeLabel','histTable','histSum','legendBox','chart','chartTip','footNote'];
+  var UI90_ID_MISS = UI90_IDS.filter(function(x){ return UI90_MARKUP.indexOf('id="' + x + '"') < 0; });
+  eq('第九十批·82 个历史 id 全部保留', UI90_ID_MISS.length, 0);
+  eq('第九十批·历史 id 清单长度', UI90_IDS.length, 82);
+
+  // 四、步骤化面板与交互控件
+  ok('第九十批·步骤编号方块 step 存在', /class="step"/.test(UI90_MARKUP), true);
+  eq('第九十批·步骤面板数量（1 独立 section + 3 个 details）', (UI90_MARKUP.match(/<section class="panel">/g) || []).length + (UI90_MARKUP.match(/<details class="panel"/g) || []).length, 4);
+  ok('第九十批·社保与公积金 / 专项附加扣除 默认展开', /<details class="panel" open>/.test(UI90_MARKUP), true);
+  ok('第九十批·四个快捷月薪 chip 就位', (UI90_MARKUP.match(/class="chip salary-chip/g) || []).length === 4, true);
+  ok('第九十批·chip 带 data-salary 便于回写', /data-salary="30000"/.test(UI90_MARKUP), true);
+  ok('第九十批·恢复默认按钮绑定 resetAll', /class="reset-btn" onclick="resetAll\(\)"/.test(UI90_MARKUP), true);
+  ok('第九十批·城市搜索框绑定 filterCity', /id="citySearch"[^>]*oninput="filterCity\(this\.value\)"/.test(UI90_MARKUP), true);
+  ok('第九十批·城市选择按钮绑定 showOverlay', /class="city-picker" onclick="showOverlay\(\)"/.test(UI90_MARKUP), true);
+
+  // 五、设计令牌与响应式（demo 的设计语言已落库）
+  ok('第九十批·主色令牌 --primary:#176b5b', /--primary:\s*#176b5b/.test(UI90_STYLE), true);
+  ok('第九十批·强调色令牌 --lime:#d9f99d', /--lime:\s*#d9f99d/.test(UI90_STYLE), true);
+  ok('第九十批·底色令牌 --bg:#f4f6f3', /--bg:\s*#f4f6f3/.test(UI90_STYLE), true);
+  ok('第九十批·两栏栅格 350~400px 左列', /grid-template-columns:\s*minmax\(350px,\s*400px\)/.test(UI90_STYLE), true);
+  ok('第九十批·顶栏 sticky 定位', /\.site-header\{[^}]*position:\s*sticky/.test(UI90_STYLE), true);
+  ok('第九十批·响应式断点齐全（780 / 520）', /@media\s*\(max-width:\s*780px\)/.test(UI90_STYLE) && /@media\s*\(max-width:\s*520px\)/.test(UI90_STYLE), true);
+  ok('第九十批·尊重 prefers-reduced-motion', /prefers-reduced-motion/.test(UI90_STYLE), true);
+  ok('第九十批·打印样式存在', /@media print/.test(UI90_STYLE), true);
+
+  // 六、新增 UI 辅助函数（在 </script> 之前，桩环境下不抛异常）
+  ok('第九十批·setSalary 辅助函数已定义', /function setSalary\(v\)\{/.test(html), true);
+  ok('第九十批·filterCity 辅助函数已定义', /function filterCity\(q\)\{/.test(html), true);
+  ok('第九十批·resetAll 辅助函数已定义', /function resetAll\(\)\{/.test(html), true);
+
+  // 七、渲染契约未被破坏：结果区与年终奖区仍是独立容器
+  ok('第九十批·#res 仍为独立容器', /<div id="res"><\/div>/.test(UI90_MARKUP), true);
+  ok('第九十批·#bonusResult 仍在 .c 卡片内（未被并入 #res）', /<div class="c">[\s\S]{0,200}<div id="bonusResult">/.test(UI90_MARKUP), true);
+
+  emit('  界面重构：sticky 顶栏 + 步骤化面板 + 16 图标库 + 82 id 契约全保留（数值零改动）✓');
+})();
 /* =========================================================
    汇总
    ========================================================= */

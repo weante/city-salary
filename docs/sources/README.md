@@ -5844,3 +5844,82 @@ subagent 称忻州件逐字写「2025年忻州市城镇非私营单位就业人�
 | docs/sources 文件数 | 104 | 104（未新建，只增量 Q1） |
 | 深圳公积金下限 / 上限 | 2520 / 48471 | **2520 / 48471（零改动）** |
 | 深圳 warn | true | true（保留） |
+
+## 第七十四批（2026-10-25）· 界面重构：按 UI demo 重排 `calculator.html`（数值零改动，无来源档变化）
+
+### 一、本批回答
+
+用户提供了 UI 参考稿 `city-salary-ui-demo.html`（Qoder 生成，65530 B / 724 行），要求据此改造本项目界面。
+本批把 demo 的**设计语言**移植进仓库的 `skills/city-salary/assets/calculator.html`，但**不移植 demo 的计算引擎**：
+
+| 维度 | demo | 本仓库 | 处置 |
+|---|---|---|---|
+| 数据 | 6 城硬编码 | **全国 337 城 × 各险种参数** | 保留本仓库 |
+| 个税 | demo 自写简化算法 | 累计预扣预缴 + 11 项专项附加扣除 + 三类其他所得 + 年终奖双算法 | 保留本仓库 |
+| 样式 | CSS 变量 + 卡片化 + 响应式 | 同方向但配色/间距不同 | **移植 demo 的令牌与版式** |
+| 结构 | 单文件独立实现 | 单文件 + `CITIES` 工厂 | 保留本仓库 |
+
+### 二、移植了什么
+
+1. **设计令牌**：`:root` 新增 `--bg:#f4f6f3`、`--surface:#fff`、`--surface-soft:#f8faf8`、`--ink:#172b28`、
+   `--muted:#6c7b78`、`--line:#e2e8e4`、`--primary:#176b5b`、`--primary-dark:#123f38`、`--primary-soft:#e8f3ef`、
+   `--lime:#d9f99d`、`--amber:#a86216`、`--amber-soft:#fff6e7`、`--danger:#b94b54`、`--radius:18px`、`--radius-sm:12px`、`--max:1180px`，
+   并保留 `--text`/`--card`/`--border`/`--blue`/`--violet`/`--teal` 等旧别名以兼容既有样式。
+2. **粘性顶栏**：品牌区「城薪 / CITY SALARY」＋ 主导航（工资计算 / 年度明细）＋「数据与口径」纯 CSS 弹层（`<details class="policy-menu">`）＋ GitHub 入口。
+3. **页头**：眉题（覆盖全国 337 城）＋ 标题 ＋ 政策徽章「2025–2026 政策」＋ 城市选择器按钮。
+4. **两栏工作区**：`.workspace` 改为 `grid-template-columns:minmax(350px,400px) minmax(0,1fr)`，
+   左栏 `.panel-stack` 承载输入、右栏 `.results` 承载结果。
+5. **步骤化输入面板**：1 基本信息 → 2 社保与公积金 → 3 专项附加扣除 → 4 年终奖与更多（后三者为可折叠 `details`），
+   每步带编号方块与一句话说明；末尾「恢复默认设置」按钮。
+6. **结果区**：深绿 hero 卡（lime 大数字）＋ 工资构成明细卡 ＋ 年终奖临界值卡。
+7. **图标库**：新增 15 个 SVG `<symbol>`（logo / pin / chevron / info / arrow / reset / wallet / shield / tax / home / calendar / gift / search / close / download）。
+8. **响应式与可达性**：断点 1100 / 1000 / 780 / 520px（移动端单列、底部固定导航）＋ `prefers-reduced-motion` ＋ 打印样式。
+9. **旧内联色映射**：JS 渲染里 15 处历史内联色（`style="color:#059669"` 等）用属性选择器 `[style*="#059669"]{color:var(--primary)!important}` 映射到新色板。
+
+### 三、没改什么（关键约束）
+
+- **计算引擎一行未动**：`CITIES` 工厂、`calc()` / `calcHist()` / `exportPDF()` / 渲染函数全部保持原样。
+  因此 `tools/check-golden.js` 的 16 用例 × 4 面板**逐字节一致**通过，**全部数值与口径零改动**。
+- **82 个历史 id 一个不丢**：`cityTag`、`salary`、`pBase`、`hfBase`、`bonus`、`bonusResult`、`res`、
+  `histTable`、`histSum`、`chart`、`footNote` 等全部原位保留（新增断言逐个核对）。
+  id 是 JS 静态引用与 golden 面板定位的锚点，搬家即破坏。
+- **`switchTab` 语义未变**：`$("tab0").className = t===0 ? "tab a" : "tab"`，故导航按钮的基准 class 必须是 `tab`、active 态是 `tab a`。
+- **`setHk/setChild/setHouse` 会整体替换 className**，故分段按钮的选中态样式改用 id 选择器兜底（顺带修掉旧 `.bt button.a` 失效的小 bug）。
+
+### 四、新增的三个辅助函数（对最小 DOM 桩安全）
+
+| 函数 | 作用 | 桩环境行为 |
+|---|---|---|
+| `setSalary(v)` | 快捷月薪 chip 写值 + 切换 active + 立即重算 | `querySelectorAll` 返回空数组 → 循环不执行 |
+| `filterCity(q)` | 城市弹层按名字过滤城市卡片 | 同上，不执行 |
+| `resetAll()` | 月薪回 20000、奖金清零、各险种基数回本市下限 | 桩里同样安全 |
+
+### 五、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | `<style>` 全量替换（11119 → 26230 字符）；`<body>` markup 重排（11034 → 18596 字符）；`<script>` 末尾追加 3 个 UI 辅助函数；**数值 / 费率 / warn / 城市参数零改动** |
+| `site/index.html` | 由 `node tools/sync.js` 镜像生成 |
+| `tools/test-calc.js` | 新增 section 19「界面重构契约」，新增断言 34 条 |
+| `README.md` ×2、`skills/city-salary/SKILL.md`、`docs/calculation-spec.md`、`docs/verification-2026-09.md` | 断言数 8882 → 8916 |
+
+### 六、本批方法论（四条）
+
+1. **UI 改造只动 markup + CSS，不动渲染逻辑** —— `check-golden` 比对的是 JS 渲染后的四块面板逐字节内容，
+   只要 `renderResult` 等函数一行不改，golden 快照天然不变，风险面收敛到「看不看得见」而非「算得对不对」。
+2. **id 是硬契约** —— 改造前先跑 `git log -S` 追溯历史，用 `tools/check-dom.js` 摸清「markup 里唯一 id」清单，
+   重排时逐个核对；新增断言把 82 个 id 固化成可回归的清单。
+3. **新增 JS 必须对最小 DOM 桩安全** —— `tools/calc-harness.js` 用 greedy 正则把 `<script>` 整块抽进桩里执行，
+   任何 `querySelectorAll` 结果都要按「可能为空」写，任何对 `getElementById` 返回值的直接属性访问都要防 null。
+4. **视觉必须真的看一眼** —— 本批用 `agent-browser`（Chrome via CDP）打开 `file://` 页面，
+   逐屏截图并核验：弹层、桌面双栏、年度明细页、390px 移动端单列。
+
+### 七、本批数据变化
+
+| 项 | 变化 |
+|---|---|
+| 数值 / 费率 / 城市参数 | **零改动**（337 城全部一致） |
+| 断言数 | 8882 → **8916**（新增断言 34 条） |
+| 源码文件数 | 103 → 103（**未新建来源档**，本批不涉及任何政策取值） |
+| `docs/sources/` 全库 urls 总数 | 2837 → 2837（不变） |
+| `calculator.html` 体积 | 428183 B → 约 460 KB（CSS 24048 + markup 18596 + 辅助 JS） |
