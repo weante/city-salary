@@ -3938,6 +3938,67 @@ section('16. 珠海/东莞 2027 年度职工医保基数底数五重闭合与纯
   emit('  2025 年全省全口径 9201 五重闭合推定 + 东莞纯图 OCR 闭合 + 路径A/B 上下限收敛 + F2.json 增量 ✓');
 })();
 
+section('17. 东莞公积金 36 号文闭合长期疑点 + 深圳公积金新办法与年度体例（第八十八批 B）');
+(function gdGjj89(){
+  const SRC = path.join(__dirname, '..', 'docs', 'sources');
+  const Q1 = JSON.parse(fs.readFileSync(path.join(SRC, 'Q1.json'), 'utf8'));
+  const gd = Q1.provinces[0].cities.filter(c => c.city === '东莞')[0];
+  const sz = Q1.provinces[0].cities.filter(c => c.city === '深圳')[0];
+  const szc = A.CITIES.sz, dgc = A.CITIES.dg;
+
+  // 一、东莞：东公积金通〔2026〕36号 入库
+  eq('第八十八批 B·东莞 note 引东公积金通〔2026〕36号', /东公积金通〔2026〕36号/.test(dgc.note), true);
+  eq('第八十八批 B·东莞 note 载 36 号文原文 URL', /post_4577664/.test(dgc.note), true);
+  eq('第八十八批 B·东莞 note 载上限 27391→27700 逐字', /由27391元调整为27700元/.test(dgc.note), true);
+  eq('第八十八批 B·东莞 note 载存量 2080 与 2027-01 强制 2300', /不得低于2080元/.test(dgc.note) && /缴存2027年1月及后续月份/.test(dgc.note), true);
+  eq('第八十八批 B·东莞 note 载补缴手续条款', /应同时为职工办理补缴手续/.test(dgc.note), true);
+
+  // 二、东莞数值零改动（与 36 号文逐字一致）
+  eq('第八十八批 B·东莞公积金上限仍为 27700', dgc.hf.max, 27700);
+  eq('第八十八批 B·东莞公积金下限仍为 2080（存量口径）', dgc.hf.min, 2080);
+  eq('第八十八批 B·东莞公积金上下限与 36 号文逐字一致', [dgc.hf.min, dgc.hf.max].join('~'), '2080~27700');
+
+  // 三、深圳：新办法与年度体例入库
+  eq('第八十八批 B·深圳 note 引深府规〔2026〕2号', /深府规〔2026〕2号/.test(szc.note), true);
+  eq('第八十八批 B·深圳 note 载五类强制缴存单位逐字', /五类强制缴存单位/.test(szc.note), true);
+  eq('第八十八批 B·深圳 note 载新办法施行日 2026年4月1日', /自2026年4月1日起施行/.test(szc.note), true);
+  eq('第八十八批 B·深圳 note 载公积金年度 7月1日至次年6月30日', /当年7月1日至次年6月30日/.test(szc.note), true);
+  eq('第八十八批 B·深圳 note 载新职工不随年度调整明文', /不在本次缴存基数调整范围内/.test(szc.note), true);
+  eq('第八十八批 B·深圳 note 载 2023 年度件执行期限', /2024年6月30日/.test(szc.note), true);
+
+  // 四、深圳数值零改动
+  eq('第八十八批 B·深圳公积金上下限仍为 2520~48471', [szc.hf.min, szc.hf.max].join('~'), '2520~48471');
+  eq('第八十八批 B·深圳失业下限仍为 2700', szc.unemp.min, 2700);
+  eq('第八十八批 B·深圳公积金上限 48471 仍等于在岗月均×3', szc.hf.max, Math.round(193881 / 12) * 3);
+  eq('第八十八批 B·深圳仍标 warn（数值缺官方件）', szc.warn, true);
+
+  // 五、Q1.json 增量
+  eq('第八十八批 B·Q1 东莞 urls 含 36 号文 post_4577664', gd.urls.some(u => /4577664/.test(u)), true);
+  eq('第八十八批 B·Q1 东莞 docNumber 含 36 号文', /东公积金通〔2026〕36号/.test(gd.docNumber || ''), true);
+  eq('第八十八批 B·Q1 东莞 confirms 含第八十八批 B', /第八十八批 B/.test(gd.confirms || ''), true);
+  eq('第八十八批 B·Q1 东莞 mismatch 已闭合且不再含未获官方原文', /已闭合/.test(gd.mismatch || '') && !/未获官方原文/.test(gd.mismatch || ''), true);
+  eq('第八十八批 B·Q1 深圳 urls 含新办法与 2021/2023 年度件', [12687780, 8894190, 10722622].every(n => sz.urls.some(u => u.indexOf(String(n)) >= 0)), true);
+  eq('第八十八批 B·Q1 深圳 docNumber 含深府规〔2026〕2号', /深府规〔2026〕2号/.test(sz.docNumber || ''), true);
+  eq('第八十八批 B·Q1 深圳 confirms 含第八十八批 B', /第八十八批 B/.test(sz.confirms || ''), true);
+  eq('第八十八批 B·Q1 深圳 mismatch 仍记两金额缺官方件', /2520/.test(sz.mismatch || '') && /48471/.test(sz.mismatch || ''), true);
+  eq('第八十八批 B·Q1 notes 第 ⑧ 条已订正为已获官方原文', Q1.notes.some(n => /第八十八批 B 已获官方原文/.test(n)), true);
+  eq('第八十八批 B·Q1 自身 urls 总数 45→49', Q1.provinces.reduce((t, p) => t + (p.cities || []).reduce((u, c) => u + ((c.urls || []).length), 0), 0), 49);
+
+  // 六、来源库整体链接数不得丢失
+  const allUrls = fs.readdirSync(SRC).filter(f => /^[A-Z]\d+[a-z]?\.json$/.test(f)).reduce((t, f) => {
+    const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
+    return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
+  }, 0);
+  eq('第八十八批 B·全库 urls 总数 2823→2827', allUrls, 2827);
+
+  // 七、口径并列（不得混用）
+  eq('第八十八批 B·东莞下限仍按存量 2080（2027-01 起才转 2300）', dgc.hf.min, 2080);
+  eq('第八十八批 B·东莞与深圳公积金下限并存（2080 与 2520）', [dgc.hf.min, szc.hf.min].join('/'), '2080/2520');
+  eq('第八十八批 B·东莞失业上限仍比公积金上限高 2 元（证伪点守住）', dgc.unemp.max - dgc.hf.max, 2);
+  eq('第八十八批 B·东莞未新增 warn（公积金数值已由 36 号文闭合）', !!dgc.warn, false);
+
+  emit('  东莞公积金 36 号文闭合长期媒体疑点 + 深圳公积金新办法与 7 月年度体例入库 + Q1.json 增量（数值零改动）✓');
+})();
 /* =========================================================
    汇总
    ========================================================= */
