@@ -430,6 +430,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
 .ft-note-city{color:var(--primary);font-weight:600}
 .ft-note .ft{padding:0 14px 14px}
 
+  .rng-hint{font-size:11px;line-height:1.65;color:var(--muted);margin:0 0 8px;padding:7px 11px;background:var(--surface-soft);border:1px dashed var(--line);border-radius:10px}
 </style>
 </head>
 <body>
@@ -554,6 +555,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
             <div class="base-row"><span class="bl">失业保险<span class="rng" id="rngU"></span></span><div style="display:flex;align-items:center"><input type="number" id="uBase" value="2040" min="0" step="100"><span class="u">元</span></div></div>
             <div class="base-row" id="mtRow"><span class="bl">生育保险<span class="rng" id="rngMT"></span></span><div style="display:flex;align-items:center"><input type="number" id="mtBase" value="6727" min="0" step="100"><span class="u">元</span></div></div>
             <div class="base-row"><span class="bl">工伤保险<span class="rng" id="rngIJ"></span></span><div style="display:flex;align-items:center"><input type="number" id="ijBase" value="5521" min="0" step="100"><span class="u">元</span></div></div>
+            <div class="rng-hint" id="ijSpecialHint"></div>
             <div class="base-row"><span class="bl">住房公积金<span class="rng" id="rngHF"></span></span><div style="display:flex;align-items:center"><input type="number" id="hfBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
             <div class="sld"><label>公积金比例（个人）<span class="h" id="hfRateHint">0 或 5~12%</span></label><input type="range" id="hfRate" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateV">5%</span></div>
             <div class="sld"><label>公积金比例（单位）<span class="h" id="hfRateCompHint">默认与个人相同</span></label><input type="range" id="hfRateComp" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateCompV">5%</span></div>
@@ -4262,6 +4264,20 @@ function selectCity(k){
   $("rngP").textContent=P.min+"~"+P.max;$("rngM").textContent=(M.min||"-")+"~"+(M.max||"-");
   $("rngU").textContent=U.min+"~"+U.max;$("rngMT").textContent=(MT.min||"-")+"~"+(MT.max||"-");
   $("rngIJ").textContent=IJ.max?IJ.min+"~"+IJ.max:"无上下限";$("rngHF").textContent=HF.min+"~"+HF.max;
+  /* 第九十二批：特定人员单项工伤保险的缴费基数上下限（仅广东 21 市注入 injSpecial）
+     在界面上以补充说明呈现。普通单位职工工伤按「本单位职工工资总额×费率」计缴、
+     法定不设上下限，故 rngIJ 仍显示「无上下限」，此处不改其文案。 */
+  (function(){
+    var IS=CITY.injSpecial,el=$("ijSpecialHint");
+    if(!el)return;
+    if(IS){
+      el.textContent="特定人员单项工伤保险缴费基数："+IS.min+"~"+IS.max+" 元/月（适用 "+IS.from+" 至 "+IS.to+"；依据 "+IS.src+"）——仅限八类特定人员；普通单位职工工伤仍按工资总额计缴、不设上下限。";
+      el.style.display="";
+    }else{
+      el.textContent="";
+      el.style.display="none";
+    }
+  })();
   /* dataNext 非空时显式提示"下一年度待公布"，避免用户把现行年度误读成已更新 */
   $("footNote").innerHTML='数据依据：'+CITY.name+' '+CITY.dataYear+'年度'+(CITY.dataNext?'（'+CITY.dataNext+'年度待公布）':'')+' · '+
     (CITY.region==="广东"?'养老按广东省统一基数，失业/工伤/医保/公积金按本市口径':'五险按当地统一基数区间，医保/公积金按当地标准')+

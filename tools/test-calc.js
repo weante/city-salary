@@ -4219,6 +4219,48 @@ section('20. 省市县三级导航与数据依据折叠（第九十一批）');
 
   emit('  省市县三级树（31 省 / 337 市 / 3012 区县）+ 省按笔画升序 + 数据依据折叠（数值零改动）✓');
 })();
+
+section('21. 特定人员单项工伤保险的界面呈现（第九十二批）');
+(function gdInj92(){
+  var M92 = html.slice(0, html.indexOf('<script>'));
+  var S92 = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+
+  // 一、界面契约
+  ok('第九十二批·界面存在 injSpecial 提示容器', /id="ijSpecialHint"/.test(M92), true);
+  ok('第九十二批·提示容器样式已定义', /\.rng-hint\{/.test(S92), true);
+  ok('第九十二批·赋值逻辑读取 CITY.injSpecial', /CITY\.injSpecial/.test(html), true);
+  ok('第九十二批·rngIJ 文案未被改动（仍按 inj.max 决定）', /IJ\.max\?IJ\.min\+"~"\+IJ\.max:"无上下限"/.test(html), true);
+
+  // 二、广东城市：提示有内容
+  A.selectCity('gz');
+  var t92 = A._text('ijSpecialHint');
+  ok('第九十二批·广东城市显示特定人员上下限 5521~27603', /5521~27603/.test(t92), true);
+  ok('第九十二批·提示含出处文号', /韶人社函〔2026〕44号/.test(t92), true);
+  ok('第九十二批·提示含适用期 2026-07-01 至 2027-06-30', /2026-07-01/.test(t92) && /2027-06-30/.test(t92), true);
+  ok('第九十二批·提示写明普通单位职工工伤不设上下限', /不设上下限/.test(t92), true);
+  eq('第九十二批·广东城市提示容器可见', A._style('ijSpecialHint'), '');
+
+  // 三、不回归：工伤区间文案
+  eq('第九十二批·工伤区间仍显示「无上下限」', A._text('rngIJ'), '无上下限');
+
+  // 四、非广东城市不显示
+  A.selectCity('bj');
+  eq('第九十二批·非广东城市提示为空', A._text('ijSpecialHint'), '');
+  eq('第九十二批·非广东城市提示容器隐藏', A._style('ijSpecialHint'), 'none');
+
+  // 五、广东 21 市逐城
+  var GD92 = ['sz','gz','dg','fs','zh','hz','jm','zs','st','sg','zj','zq','mm','mz','sw','hy','yj','qy','cz','jy','yf'];
+  var all92 = GD92.every(function(k){ A.selectCity(k); return /5521~27603/.test(A._text('ijSpecialHint')); });
+  ok('第九十二批·广东 21 市逐城均显示 5521~27603', all92, true);
+
+  // 六、数值零改动
+  A.selectCity('gz');
+  eq('第九十二批·injSpecial 数值仍为 5521~27603', A.CITIES.gz.injSpecial.min + '~' + A.CITIES.gz.injSpecial.max, '5521~27603');
+  ok('第九十二批·普通职工工伤仍为 0/0（不夹取）', A.CITIES.gz.inj.min === 0 && A.CITIES.gz.inj.max === 0, true);
+  ok('第九十二批·injSpecial 不携带费率、不参与计算', A.CITIES.gz.inj.comp === .002 && A.CITIES.gz.injSpecial.comp === undefined, true);
+
+  emit('  特定人员单项工伤保险 injSpecial 5521~27603 已在界面呈现，普通职工工伤仍「无上下限」（数值零改动）✓');
+})();
 /* =========================================================
    汇总
    ========================================================= */
