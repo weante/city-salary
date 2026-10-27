@@ -4261,6 +4261,53 @@ section('21. 特定人员单项工伤保险的界面呈现（第九十二批）'
 
   emit('  特定人员单项工伤保险 injSpecial 5521~27603 已在界面呈现，普通职工工伤仍「无上下限」（数值零改动）✓');
 })();
+
+/* =========================================================
+   第九十三批：P8 巡检基线（珠海/东莞 2027 年度职工医保件尚未进入发文窗口）
+   —— 数值一律不改；并入库《广东省工程建设项目参加工伤保险办法》所代表的第三套工伤口径
+   ========================================================= */
+section('22. P8 巡检基线与广东工伤第三套口径（第九十三批）');
+(function gdP8Check93() {
+  const F2 = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F2.json'), 'utf8'));
+  const E2 = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'E2.json'), 'utf8'));
+  const cOf = k => F2.provinces[0].cities.filter(c => c.key === k)[0];
+  const E2P = E2.provinces[0];
+
+  // 一、巡检基线
+  eq('第九十三批·F2 珠海 lastCheck 2026-10-27', cOf('zh').lastCheck, '2026-10-27');
+  eq('第九十三批·F2 东莞 lastCheck 2026-10-27', cOf('dg').lastCheck, '2026-10-27');
+  eq('第九十三批·F2 珠海巡检结论含发文窗口', /发文窗口/.test(cOf('zh').checkResult || ''), true);
+  eq('第九十三批·F2 东莞巡检结论含发文窗口', /发文窗口/.test(cOf('dg').checkResult || ''), true);
+  eq('第九十三批·F2 两城巡检渠道均已记录', (cOf('zh').checkChannels || []).length >= 6 && (cOf('dg').checkChannels || []).length >= 6, true);
+
+  // 二、规则与候选值不变
+  eq('第九十三批·F2 珠海候选上限仍 27603', cOf('zh').candidateMax, 27603);
+  eq('第九十三批·F2 东莞候选上限仍 27603', cOf('dg').candidateMax, 27603);
+  eq('第九十三批·F2 珠海候选下限仍含 5521', (cOf('zh').candidateMin || []).indexOf('5521') >= 0, true);
+  eq('第九十三批·F2 东莞候选下限仍含 5521', (cOf('dg').candidateMin || []).indexOf('5521') >= 0, true);
+  eq('第九十三批·F2 两城第三个数仍 7974', cOf('zh').candidateThird === 7974 && cOf('dg').candidateThird === 7974, true);
+
+  // 三、界面与来源档
+  eq('第九十三批·珠海 note 载第九十三批巡检', A.CITIES.zh.note.indexOf('第九十三批') >= 0, true);
+  eq('第九十三批·东莞 note 载第九十三批巡检', A.CITIES.dg.note.indexOf('第九十三批') >= 0, true);
+  eq('第九十三批·F2 省级说明载省医保局仍无职工医保基数文件', /无职工医保缴费基数文件/.test(F2.provinces[0].provinceWideNote || ''), true);
+  eq('第九十三批·F2 省级说明载底数 9201 维持五重闭合推定', /9201/.test(F2.provinces[0].provinceWideNote || '') && /五重闭合/.test(F2.provinces[0].provinceWideNote || ''), true);
+
+  // 四、广东工伤三套口径
+  eq('第九十三批·E2 省级说明载粤人社规〔2026〕21号', /粤人社规〔2026〕21号/.test(E2P.provinceWideNote || ''), true);
+  eq('第九十三批·E2 省级说明载工程建设项目第三套口径', /工程建设项目/.test(E2P.provinceWideNote || ''), true);
+  eq('第九十三批·E2 省级链接含工程建设项目办法出处', (E2P.provinceWideUrls || []).some(u => u.indexOf('post_2955973') >= 0), true);
+  eq('第九十三批·E2 21 城 rawNotes 均载第三套口径说明', E2P.cities.every(c => /工程建设项目/.test(c.rawNotes || '')), true);
+
+  // 五、数值零改动
+  eq('第九十三批·工伤普通职工仍 0/0', A.CITIES.gz.inj.min === 0 && A.CITIES.gz.inj.max === 0, true);
+  eq('第九十三批·特定人员 injSpecial 仍 5521~27603', A.CITIES.gz.injSpecial.min === 5521 && A.CITIES.gz.injSpecial.max === 27603, true);
+  eq('第九十三批·珠海职工医保基数仍 4775~27549', A.CITIES.zh.med.min === 4775 && A.CITIES.zh.med.max === 27549, true);
+  eq('第九十三批·东莞职工医保基数仍 4775~27549', A.CITIES.dg.med.min === 4775 && A.CITIES.dg.med.max === 27549, true);
+
+  emit('  P8 巡检基线（两城 2027 年度件尚未进入发文窗口，规则与候选值不变）＋ 广东工伤第三套口径入库 ✓');
+})();
+
 /* =========================================================
    汇总
    ========================================================= */
