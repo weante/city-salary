@@ -1,7 +1,7 @@
 {
   "group": "第七十五批（2026-10-25）· 城市导航数据来源（省市县三级行政区划 + 汉字笔画）",
   "generatedAt": "2026-10-25",
-  "note": "本档记录第九十一批 UI 改造新增的两份**外部导航数据**的出处：①民政部行政区划三级表（用于省市县三级折叠树的市/县节点）；②Unicode Unihan kTotalStrokes（用于省名笔画数排序）。二者都不是政策取值来源：社保与公积金一律按市级统筹，区县节点仅作导航；省名笔画只影响排列顺序。本档不含任何城市政策条目（provinces 为空），因此不参与 source-records 的 best 归属与 urls 统计。",
+  "note": "本档记录第九十一批 UI 改造新增的两份**外部导航数据**的出处：①民政部行政区划三级表（用于省市县三级折叠树的市/县节点）；②Unicode Unihan kTotalStrokes（用于省名笔画数排序）。二者都不是政策取值来源：社保与公积金一律按市级统筹，区县节点仅作导航；省名笔画只影响排列顺序。本档不含任何城市政策条目（provinces 为空），因此不参与 source-records 的 best 归属与 urls 统计。（2026-10-31 第九十四批复核：两个上游源均成功取回且逐字节一致，PROV_TREE 无需重生成，P11 正式收口——见本档 recheck 字段。）",
   "legalBasis": {
     "title": "行政区划：modood/Administrative-divisions-of-China（pca-code.json）",
     "url": "https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/pca-code.json",
@@ -15,7 +15,10 @@
       "url": "https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/pca-code.json",
       "bytes": 136996,
       "role": "省→市→县三级名称",
-      "match": "337/337 城市全部命中（等值匹配 303 + 自治州前缀匹配 29 + 直辖市/海南州别名 5），共 3012 个区县"
+      "match": "337/337 城市全部命中（等值匹配 303 + 自治州前缀匹配 29 + 直辖市/海南州别名 5），共 3012 个区县",
+      "md5": "CE1794B8747A2370508B8D359B3A0AAF",
+      "recheckAt": "2026-10-31",
+      "recheck": "2026-10-31 复核：raw.githubusercontent、github.com/raw、ghproxy.net 三源均 HTTP 200 且取回 136996 字节，MD5 与基线恒等；cdn.jsdelivr.net 三次均 Recv failure（该 CDN 对本机封锁，不影响结论）；gitee 镜像不存在（搜索 API 返回空数组）。"
     },
     {
       "name": "汉字笔画数",
@@ -23,8 +26,28 @@
       "url": "https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip",
       "bytes": 8340649,
       "role": "省名笔画数（用于升序排列）",
-      "match": "按 Unihan kTotalStrokes 逐字求和；抽样校验直=8 广=3 黄=11 鹏=13 面=9 辽=5 四=5 苏=8 建=9 福=14 陕=8 蒙=14 藏=18 全对。⚠️ 曾误用 kfcd/chaizi 的 chaizi-jt.txt，其第 2 列是「部件」不是笔画序列，已弃用。"
+      "match": "按 Unihan kTotalStrokes 逐字求和；抽样校验直=8 广=3 黄=11 鹏=13 面=9 辽=5 四=5 苏=8 建=9 福=14 陕=8 蒙=14 藏=18 全对。⚠️ 曾误用 kfcd/chaizi 的 chaizi-jt.txt，其第 2 列是「部件」不是笔画序列，已弃用。",
+      "md5": "715FFE91650BCA85B4B55341E98855E0",
+      "recheckAt": "2026-10-31",
+      "recheck": "2026-10-31 复核：Unicode 版本仍为 18.0.0；Unihan.zip 一次拉满 8340649 字节，MD5 与基线恒等、逐字节一致；31 省笔画重算 31/31 全中，抽样 13/13 全中。"
     }
   ],
-  "provinces": []
+  "provinces": [],
+  "recheck": {
+    "checkedAt": "2026-10-31",
+    "verdict": "NO-CHANGE",
+    "pcaMd5": "CE1794B8747A2370508B8D359B3A0AAF",
+    "unihanMd5": "715FFE91650BCA85B4B55341E98855E0",
+    "provTreeSha256": "ab39eefd…95aac",
+    "provTreeChars": 21796,
+    "provTreeLines": 401,
+    "counts": {
+      "provinces": 31,
+      "cities": 337,
+      "districts": 3012
+    },
+    "closure": "用最新两源重跑与第九十一批相同的生成逻辑，所得 PROV_TREE 与仓库现存的 skills/city-salary/assets/calculator.html 内 PROV_TREE 逐字符相同（两侧字面量 SHA256 一致），故无需重生成，repo 零改动。第九十二批那次因三镜像全部连接失败而只能写「未能复核」，本轮是成功取回后比对，据此正式收口。",
+    "scopeNote": "pca-code.json 的原始口径为 31 省 / 342 市 / 3056 区县；仓库 PROV_TREE 的口径为 31 / 337 / 3012，其中 337 市取自仓库内置城市表而非 pca 全量。两者并存不矛盾。",
+    "nextCheck": "2027-01-15 前后（覆盖 Unicode 19.0 发布窗口）。触发条件：modood 仓库有新 commit/release、Unihan ReadMe 版本号不再为 18.0.0、或民政部发布地市/县区调整文件。复核源固定用 raw.githubusercontent、github.com/raw、ghproxy.net 三源。"
+  }
 }

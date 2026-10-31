@@ -4274,8 +4274,8 @@ section('22. P8 巡检基线与广东工伤第三套口径（第九十三批）'
   const E2P = E2.provinces[0];
 
   // 一、巡检基线
-  eq('第九十三批·F2 珠海 lastCheck 2026-10-27', cOf('zh').lastCheck, '2026-10-27');
-  eq('第九十三批·F2 东莞 lastCheck 2026-10-27', cOf('dg').lastCheck, '2026-10-27');
+  eq('第九十三批·F2 珠海 lastCheck 已推进到 2026-10 之后', /^2026-(10|11|12)-/.test(cOf('zh').lastCheck || ''), true);
+  eq('第九十三批·F2 东莞 lastCheck 已推进到 2026-10 之后', /^2026-(10|11|12)-/.test(cOf('dg').lastCheck || ''), true);
   eq('第九十三批·F2 珠海巡检结论含发文窗口', /发文窗口/.test(cOf('zh').checkResult || ''), true);
   eq('第九十三批·F2 东莞巡检结论含发文窗口', /发文窗口/.test(cOf('dg').checkResult || ''), true);
   eq('第九十三批·F2 两城巡检渠道均已记录', (cOf('zh').checkChannels || []).length >= 6 && (cOf('dg').checkChannels || []).length >= 6, true);
@@ -4306,6 +4306,118 @@ section('22. P8 巡检基线与广东工伤第三套口径（第九十三批）'
   eq('第九十三批·东莞职工医保基数仍 4775~27549', A.CITIES.dg.med.min === 4775 && A.CITIES.dg.med.max === 27549, true);
 
   emit('  P8 巡检基线（两城 2027 年度件尚未进入发文窗口，规则与候选值不变）＋ 广东工伤第三套口径入库 ✓');
+})();
+
+
+/* =========================================================
+   23. 337 城数值自洽性审计 + P8 巡检工具契约（第九十四批）
+   ========================================================= */
+section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十四批）');
+(function gdAudit94(){
+  const F2x = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F2.json'), 'utf8'));
+  const cOf94 = k => F2x.provinces[0].cities.filter(function(c){ return c.key === k; })[0];
+  const K = Object.keys(A.CITIES);
+  const rng = c => c && typeof c.min === 'number' && typeof c.max === 'number';
+  const same = (a, b) => rng(a) && rng(b) && a.min === b.min && a.max === b.max;
+
+  eq('第九十四批·CITIES 共 337 城', K.length, 337);
+
+  // 一、区间结构：不倒挂、不含非法值
+  let inverted = [], nonPos = [];
+  K.forEach(k => {
+    const c = A.CITIES[k];
+    ['med','unemp','inj','hf','injSpecial'].forEach(f => {
+      const r = c[f];
+      if (!rng(r)) return;
+      if (r.min > r.max) inverted.push(k + '.' + f);
+      if (f !== 'inj' && (r.min <= 0 || r.max <= 0)) nonPos.push(k + '.' + f);
+    });
+  });
+  eq('第九十四批·337 城五类区间均不倒挂', inverted.length, 0);
+  eq('第九十四批·med/unemp/hf/injSpecial 区间均不含 0 或负值（inj 的 0/0 为广东法定口径）', nonPos.length, 0);
+
+  // 二、inj 区间归属：inj≠0/0 的城，inj 区间必等于该城 med 或 unemp 区间
+  let injNZ = 0, injMed = 0, injUnemp = 0;
+  const injOther = [];
+  K.forEach(k => {
+    const c = A.CITIES[k];
+    if (!rng(c.inj) || (c.inj.min === 0 && c.inj.max === 0)) return;
+    injNZ++;
+    if (same(c.inj, c.med)) injMed++;
+    else if (same(c.inj, c.unemp)) injUnemp++;
+    else injOther.push(k);
+  });
+  eq('第九十四批·inj 非 0/0 的城共 316 个（广东 21 市走工资总额制，其余走统一基数制）', injNZ, 316);
+  eq('第九十四批·inj 区间与 med 相同的城 279 个', injMed, 279);
+  eq('第九十四批·inj 区间与 unemp 相同的城 37 个', injUnemp, 37);
+  eq('第九十四批·inj 区间与 med/unemp 均不同的城 0 个', injOther.length, 0);
+
+  // 三、injSpecial 只覆盖广东 21 市且取值唯一
+  const sp = K.filter(k => A.CITIES[k].injSpecial);
+  eq('第九十四批·injSpecial 覆盖 21 城', sp.length, 21);
+  eq('第九十四批·injSpecial 全部落在广东 21 市', sp.every(k => A.CITIES[k].region === '广东'), true);
+  eq('第九十四批·injSpecial 取值全为 5521~27603', sp.every(k => A.CITIES[k].injSpecial.min === 5521 && A.CITIES[k].injSpecial.max === 27603), true);
+  eq('第九十四批·injSpecial.max 不等于 med.max（两套口径不混淆）', sp.filter(k => A.CITIES[k].injSpecial.max === A.CITIES[k].med.max).length, 0);
+
+  // 四、费率与比值
+  const BUILTIN_OK = true;
+  let badRate = [];
+  K.forEach(k => {
+    const c = A.CITIES[k];
+    ['med','unemp','inj','mat'].forEach(f => {
+      const r = c[f];
+      if (!r || typeof r.comp !== 'number') return;
+      if (r.comp !== 0 && !(r.comp > 0 && r.comp <= 1)) badRate.push(k + '.' + f + '=' + r.comp);
+    });
+  });
+  eq('第九十四批·各险种费率均落在 (0,1]（0 表示该险种不单列）', badRate.length, 0);
+  let badRatio = [];
+  K.forEach(k => {
+    const c = A.CITIES[k];
+    if (!rng(c.med) || c.med.min <= 0) return;
+    const r = c.med.max / c.med.min;
+    if (r < 2 || r > 8) badRatio.push(k + '=' + r.toFixed(2));
+  });
+  eq('第九十四批·337 城 med 上下限比值均落在 [2,8]', badRatio.length, 0);
+
+  // 五、warn 集合与 dataYear 分布
+  const warnC = K.filter(k => A.CITIES[k].warn);
+  eq('第九十四批·warn 城 202 个', warnC.length, 202);
+  const dy = {};
+  K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
+  eq('第九十四批·dataYear 分布 2025-2026:39 / 2026:274 / 2025:24',
+     dy['2025-2026'] === 39 && dy['2026'] === 274 && dy['2025'] === 24, true);
+
+  // 六、广东 21 市 med 取值分布
+  const gdK = K.filter(k => A.CITIES[k].region === '广东');
+  eq('第九十四批·广东 21 市齐备', gdK.length, 21);
+  const gm = {};
+  gdK.forEach(k => { const r = A.CITIES[k].med.min + '~' + A.CITIES[k].med.max; gm[r] = (gm[r] || 0) + 1; });
+  const gv = Object.keys(gm).map(k => gm[k]);
+  eq('第九十四批·广东 21 市 med 取值 20 种（19 个独用 + 东莞/珠海 4775~27549）',
+     Object.keys(gm).length === 20 && gv.filter(x => x === 1).length === 19 && gm['4775~27549'] === 2, true);
+  eq('第九十四批·广东 21 市失业上限与公积金上限的差异仍登记在案（321 城存在差异）',
+     K.filter(k => A.CITIES[k].hf && A.CITIES[k].unemp && A.CITIES[k].hf.max !== A.CITIES[k].unemp.max).length, 321);
+
+  // 七、P8 巡检工具契约
+  const toolPath = path.join(__dirname, '..', 'tools', 'p8-check.js');
+  eq('第九十四批·P8 巡检工具已入库 tools/p8-check.js', fs.existsSync(toolPath), true);
+  const tSrc = fs.readFileSync(toolPath, 'utf8');
+  const mods = (tSrc.match(/require\(['"]([^'"]+)['"]\)/g) || [])
+    .map(m => m.replace(/require\(['"]/, '').replace(/['"]\)/, ''));
+  eq('第九十四批·巡检工具零第三方依赖（只用 Node 内置模块）',
+     mods.length > 0 && mods.every(m => ['https','http','fs','zlib','path','url','crypto','os'].indexOf(m) >= 0), true);
+  eq('第九十四批·巡检工具覆盖 13 个栏目号（珠海医保 3 + 珠海人社 3 + 东莞医保 4 + 东莞人社 3）',
+     ['9090','9088','9082','6555','6556','6583','3321','3322','3334','3335','453','432','446']
+       .every(c => tSrc.indexOf(c) >= 0), true);
+  eq('第九十四批·巡检工具含居民件排除判据（居民医保个人筹资 ≠ 职工基数）', /RE_RESIDENT/.test(tSrc), true);
+  eq('第九十四批·巡检工具含退出码语义（0 未命中 / 2 命中 / 1 取网失败）',
+     /hits\.length \? 2 : \(errs \? 1 : 0\)/.test(tSrc), true);
+  eq('第九十四批·巡检工具含省医保局 15 页栏目巡检', tSrc.indexOf('hsa.gd.gov.cn/zwgk/zcfg') >= 0 && tSrc.indexOf('i <= 15') >= 0, true);
+  eq('第九十四批·F2 两城 lastCheck 已推进至 2026-10-31', cOf94('zh').lastCheck === '2026-10-31' && cOf94('dg').lastCheck === '2026-10-31', true);
+  eq('第九十四批·两城 note 载第九十四批巡检复核', A.CITIES.zh.note.indexOf('第九十四批') >= 0 && A.CITIES.dg.note.indexOf('第九十四批') >= 0, true);
+
+  emit('  337 城数值自洽性审计 8 类不变量全过 + P8 巡检工具契约锁定 ✓');
 })();
 
 /* =========================================================
