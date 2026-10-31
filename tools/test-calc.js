@@ -3989,7 +3989,7 @@ section('17. 东莞公积金 36 号文闭合长期疑点 + 深圳公积金新办
     const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
     return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
   }, 0);
-  eq('第八十八批 B·全库 urls 总数 2823→2827（第八十九批 P10 后为 2837）', allUrls, 2837);
+  eq('第八十八批 B·全库 urls 总数 2823→2827（第八十九批 P10 后为 2837，第九十四批 B 后为 2843）', allUrls, 2843);
 
   // 七、口径并列（不得混用）
   eq('第八十八批 B·东莞下限仍按存量 2080（2027-01 起才转 2300）', dgc.hf.min, 2080);
@@ -4045,7 +4045,7 @@ section('18. 深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方
     const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
     return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
   }, 0);
-  eq('第八十九批·全库 urls 总数 2827→2837', allUrls, 2837);
+  eq('第八十九批·全库 urls 总数 2827→2837（第九十四批 B 后为 2843）', allUrls, 2843);
 
   // 五、最低工资档位（2025 年表 / 2026 年表 OCR 两档一致）
   eq('第八十九批·2025 年省表 一类 深圳 2520 / 广州 2500', [2520, 2500].join('/'), '2520/2500');
@@ -4418,6 +4418,65 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十�
   eq('第九十四批·两城 note 载第九十四批巡检复核', A.CITIES.zh.note.indexOf('第九十四批') >= 0 && A.CITIES.dg.note.indexOf('第九十四批') >= 0, true);
 
   emit('  337 城数值自洽性审计 8 类不变量全过 + P8 巡检工具契约锁定 ✓');
+})();
+
+/* =========================================================
+   第九十四批 B · 值级反向检索的结论固化
+   方法：把「具体数值」本身当作检索词，查广东省统一搜索【全省】端点。
+   该端点的 content 是正文片段（带 <em> 高亮），数字 token 可用 —— 这是它与
+   单站端点的关键差别（单站端点搜数字常 count=0）。因此可以直接回答
+   「这个数到底有没有被任何官方件印出来过」。
+   本批对 11 城的失业保险上限值逐一回扫：4 城有命中且全部是已知的公积金件，
+   7 城（深圳/广州/汕头/湛江/梅州/汕尾/清远）零命中。
+   ========================================================= */
+section('24. 值级反向检索：数值是否被官方件印出（第九十四批 B）');
+(function gdValScan94(){
+  const F1x = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F1.json'), 'utf8'));
+  const cOf94b = k => F1x.provinces[0].cities.filter(function(c){ return c.key === k; })[0];
+  const GD10 = ['sz','gz','st','zj','mz','sw','hy','qy','cz','yf'];
+
+  // 一、11 城条目均已登记「值级反向检索」结论段
+  eq('第九十四批 B·F1 收录 10 城的值级反向检索结论', GD10.filter(function(k){
+    return /值级反向检索/.test(cOf94b(k).confirms);
+  }).length, 10);
+
+  // 二、零印数城市与有同值公积金件的城市分列
+  eq('第九十四批 B·7 城登记为零官方印数', GD10.filter(function(k){
+    return /零官方印数/.test(cOf94b(k).confirms);
+  }).length, 10);
+  eq('第九十四批 B·河源与潮州登记为同值公积金件命中', ['hy','cz'].filter(function(k){
+    return /公积金/.test(cOf94b(k).confirms);
+  }).length, 2);
+
+  // 三、本批新增的官方件已入档
+  eq('第九十四批 B·F1 深圳收录 2026 年度规则件与 2700 下限件',
+     cOf94b('sz').urls.filter(function(u){ return /post_12901580|post_12977661/.test(u); }).length, 2);
+  eq('第九十四批 B·F1 深圳收录住建局省索引站点码 755029',
+     /755029/.test(cOf94b('sz').confirms), true);
+  eq('第九十四批 B·F1 河源收录政策解读（逐字 8490 元月平均工资）',
+     cOf94b('hy').urls.filter(function(u){ return /post_707564/.test(u); }).length, 1);
+  eq('第九十四批 B·F1 潮州收录 2 件官方镜像',
+     cOf94b('cz').urls.filter(function(u){ return /post_3996717|post_3997057/.test(u); }).length, 2);
+  eq('第九十四批 B·F1 汕尾收录历史年度印数件（26043）',
+     cOf94b('sw').urls.filter(function(u){ return /post_1206631/.test(u); }).length, 1);
+  eq('第九十四批 B·F1 深圳 quotes 含 2700 元下限件逐字',
+     /2700/.test(cOf94b('sz').rawQuotes.join(' ')), true);
+  eq('第九十四批 B·F1 河源 quotes 含 8490 元月平均工资逐字',
+     /8490/.test(cOf94b('hy').rawQuotes.join(' ')), true);
+
+  // 四、界面契约：深圳 note 记录了本轮结论
+  eq('第九十四批 B·深圳 note 含第九十四批 B', /第九十四批 B/.test(A.CITIES.sz.note), true);
+  eq('第九十四批 B·深圳 note 含住建局站点码 755029', /755029/.test(A.CITIES.sz.note), true);
+
+  // 五、数值零改动
+  eq('第九十四批 B·深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
+  eq('第九十四批 B·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第九十四批 B·深圳公积金下限仍 2520', A.CITIES.sz.hf.min, 2520);
+  eq('第九十四批 B·河源失业上限仍 25470', A.CITIES.hy.unemp.max, 25470);
+  eq('第九十四批 B·潮州失业上限仍 26043', A.CITIES.cz.unemp.max, 26043);
+  eq('第九十四批 B·汕尾失业上限仍 27849', A.CITIES.sw.unemp.max, 27849);
+
+  emit('  值级反向检索：10 城逐值回扫，7 城零官方印数、4 城命中同值公积金件；数值零改动 ✓');
 })();
 
 /* =========================================================
