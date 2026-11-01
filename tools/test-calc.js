@@ -5094,14 +5094,14 @@ section('34. 导出 PDF 不重复渲染 + 卡片不断开（第一百零六批�
   // 二、分页：段式 + 卡片避让
   ok('第一百零六批·分页改为按画布行计算每页容量',
      /var rowMm=imgH\/canvas\.height;/.test(M106_SCRIPT) &&
-     /var rowsPerPage=Math\.max\(1,Math\.floor\(ch\/rowMm\)\);/.test(M106_SCRIPT), true);
+     /var pageCapPx=Math\.max\(1,Math\.floor\(ch\/rowMm\)\);/.test(M106_SCRIPT), true);
   ok('第一百零六批·切点落在卡片内部时整卡推到下一页',
-     /if\(ct<segEnd&&cb>segEnd&&ct>segStart&&\(cb-ct\)<=rowsPerPage&&\(pushTo<0\|\|ct<pushTo\)\)pushTo=ct;/.test(M106_SCRIPT) &&
+     /if\(c\.top<segEnd&&c\.top\+c\.h>segEnd&&c\.top>segStart&&c\.h<=pageCapPx&&\(pushTo<0\|\|c\.top<pushTo\)\)pushTo=c\.top;/.test(M106_SCRIPT) &&
      /if\(pushTo>0\)segEnd=pushTo;/.test(M106_SCRIPT), true);
   ok('第一百零六批·每段单独成页且首尾相接',
-     /pdf\.addImage\(img,"PNG",P\.mx,P\.my-segs\[si\]\[0\]\*rowMm,imgW,imgH\);/.test(M106_SCRIPT), true);
+     /pdf\.addImage\(cut\.toDataURL\("image\/png"\),"PNG",P\.mx,P\.my,imgW,hMm\);/.test(M106_SCRIPT), true);
   ok('第一百零六批·旧的整图偏移循环已删除',
-     /heightLeft-=ch/.test(M106_SCRIPT), false);
+     /P\.my-segs\[si\]\[0\]\*rowMm/.test(M106_SCRIPT) && /heightLeft-=ch/.test(M106_SCRIPT), false);
   ok('第一百零六批·克隆文档里量测卡片边界',
      /cardBounds\.push\(\{top:c1\.top,h:c1\.h\}\)/.test(M106_SCRIPT) &&
      /querySelectorAll\("\.history-view > \.c"\)/.test(M106_SCRIPT) &&
@@ -5114,7 +5114,7 @@ section('34. 导出 PDF 不重复渲染 + 卡片不断开（第一百零六批�
      /querySelectorAll\("#histTable tr"\)/.test(M106_SCRIPT) &&
      /rowEdges\.push\(\{top:t1\.top,b:t1\.b\}\)/.test(M106_SCRIPT), true);
   ok('第一百零六批·切点落在行内部时切点提前到该行顶边',
-     /if\(rt<segEnd&&rb>segEnd\)\{if\(rt>segStart\)segEnd=rt;break;\}/.test(M106_SCRIPT), true);
+     /if\(r\.top<segEnd&&r\.b>segEnd\)\{if\(r\.top>segStart\)segEnd=r\.top;break;\}/.test(M106_SCRIPT), true);
 
   // 三、纸张与导出模式规则保持不变
   ok('第一百零六批·仍是 A4 横向并留 10mm 页边距',
@@ -5255,6 +5255,79 @@ section('35. 广东职工医保法定口径档 F3.json 与珠海/东莞 2027 候
   eq('第九十五批·全库 urls 总数 2851（F3 provinces 为空不贡献）', allUrls95, 2851);
 
   emit('  广东职工医保法定口径档（F3.json）7 条逐字 + 珠海/东莞两支口径订正已锁定（数值零改动）✓');
+})();
+
+/* =========================================================
+   36. 导出 PDF「过页重复」修复 + 趋势图强制整块落在第二页（第一百零七批）
+   =========================================================
+   背景：用户反馈导出 PDF 里「每月工资 · 五险一金 · 个税趋势图」的标题在第 1 页底部
+        （被页边界切掉一半）与第 2 页顶部各出现一次，并要求「把趋势图直接强制在第二页」。
+   根因：旧实现把**整张长图**按 y = P.my - 段起点×rowMm 画到每一页。第一段因
+        「不可切块推页」被提前截断到趋势卡顶边（画布 1478px），但第 1 页仍按页容量
+        显示到画布 1553px —— 两页之间重叠了 [1478,1553] 这 75px，于是页 1 底部露出
+        被切一半的趋势图标题，页 2 顶部又原样出现一次。
+        （端到端复现实测：addImage 记录 页0 y=10 / 页1 y=-170.833，两页可见画布
+          区间 [0,1553] 与 [1396,3106] 重叠 157px ≈ 78.5 CSS px。）
+   修复：①分页切点计算抽成纯函数 planSegments()，新增规则「切点不得越过趋势图卡
+        顶边」→ 趋势图卡整块从新的一页开始；②每页改为**单独裁剪本段内容**再放置
+        （高度 = 本段内容高），页与页首尾相接、绝不重叠。
+   验证：headless Chrome 端到端导出 → 解析 PDF 每页位图：页 1 = 明细表 + 4 张汇总卡
+        （无趋势图标题），页 2 = 完整趋势图卡（标题 + 图例 + 图表），相邻页首尾 40 行
+        像素零重复。
+   ========================================================= */
+section('36. 导出 PDF 过页重复修复 + 趋势图强制落在第二页（第一百零七批）');
+(function gdPdf107(){
+  var M107_SCRIPT = html.slice(html.indexOf('<script>'));
+
+  // 一、根因修复：每页单独裁剪本段内容再放置
+  ok('第一百零七批·每页裁剪本段内容后单独放置（不再整图偏移）',
+     /var cut=document\.createElement\("canvas"\);/.test(M107_SCRIPT) &&
+     /cx2\.drawImage\(canvas,0,y0,canvas\.width,y1-y0,0,0,canvas\.width,y1-y0\);/.test(M107_SCRIPT) &&
+     /pdf\.addImage\(cut\.toDataURL\("image\/png"\),"PNG",P\.mx,P\.my,imgW,hMm\);/.test(M107_SCRIPT), true);
+  ok('第一百零七批·旧的整图偏移放置写法已删除',
+     /P\.my-segs\[si\]\[0\]\*rowMm/.test(M107_SCRIPT), false);
+  ok('第一百零七批·页内高度按本段内容高并受页容量约束',
+     /var hMm=Math\.min\(ch,\(y1-y0\)\*rowMm\);/.test(M107_SCRIPT), true);
+
+  // 二、趋势图卡强制整块从新页开始
+  ok('第一百零七批·分页切点计算抽成纯函数 planSegments',
+     /function planSegments\(totalPx,pageCapPx,trendTopPx,cards,rows\)/.test(M107_SCRIPT), true);
+  ok('第一百零七批·切点不得越过趋势图卡顶边',
+     /if\(trendTopPx>0&&segStart<trendTopPx&&segEnd>trendTopPx\)segEnd=trendTopPx;/.test(M107_SCRIPT), true);
+  ok('第一百零七批·克隆文档里量测趋势图卡顶边',
+     /if\(trendTop<0&&cs\[i\]\.querySelector&&cs\[i\]\.querySelector\("#chart"\)\)trendTop=c1\.top;/.test(M107_SCRIPT), true);
+  ok('第一百零七批·排除 .exp 模式下高度为 0 的无效卡片',
+     /if\(c1\.h<=0\|\|c1\.top<0\)continue;/.test(M107_SCRIPT), true);
+
+  // 三、planSegments 行为单测（深圳 12 个月实测几何：总高 2488、页容量 1553、趋势卡顶 1478）
+  var TOTAL = 2488, CAP = 1553, TREND = 1478, TREND_H = 1010;
+  var segs = A.planSegments(TOTAL, CAP, TREND, [{ top: TREND, h: TREND_H }], []);
+  eq('第一百零七批·趋势图卡顶边处切分：第 1 段止于趋势图顶边',
+     segs[0][0] + '/' + segs[0][1], '0/' + TREND);
+  eq('第一百零七批·趋势图卡整块从第 2 段开始',
+     segs.length >= 2 && segs[1][0] === TREND, true);
+  eq('第一百零七批·趋势图卡未被任何一段从中间切开',
+     segs.every(function(s){ return !(s[0] < TREND && s[1] > TREND); }), true);
+  eq('第一百零七批·各段首尾相接、不重叠',
+     segs.every(function(s, i){ return i === 0 || s[0] === segs[i - 1][1]; }), true);
+  eq('第一百零七批·首段从 0 开始、末段到画布底',
+     segs[0][0] + '/' + segs[segs.length - 1][1], '0/' + TOTAL);
+  eq('第一百零七批·每段不超过一页容量',
+     segs.every(function(s){ return s[1] - s[0] <= CAP; }), true);
+  eq('第一百零七批·总页数为 2（趋势图独占第 2 页）', segs.length, 2);
+  var segsNoTrend = A.planSegments(TOTAL, CAP, -1, [], []);
+  eq('第一百零七批·不指定趋势图时按页容量常规切分',
+     segsNoTrend.length + '/' + segsNoTrend[0][1] + '/' + segsNoTrend[segsNoTrend.length - 1][1],
+     '2/' + CAP + '/' + TOTAL);
+  var segsRow = A.planSegments(2000, 1000, -1, [], [{ top: 900, b: 1100 }]);
+  eq('第一百零七批·切点落在表格行内部时提前到该行顶边',
+     segsRow[0][1], 900);
+
+  // 四、数值零改动
+  eq('第一百零七批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第一百零七批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  导出 PDF 过页重复已修复：趋势图整块落在第 2 页，页与页零重叠（数值零改动）✓');
 })();
 
 /* =========================================================

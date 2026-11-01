@@ -36,9 +36,29 @@ function makeEl(id) {
 const els = new Map();
 /* 记录被 append 的 <script>，用于验证 loadScript 的同名去重缓存 */
 const appended = [];
+
+/* 第一百零七批：导出实现改为「每页单独裁剪本段内容再放置」，会在页面上
+   createElement('canvas') 并取 2d 上下文做 drawImage。桩里补一个最小可用的
+   canvas：2d 上下文提供 fillRect/drawImage 空实现，toDataURL 返回占位 PNG。
+   tainted 标记模拟「原画布被跨域图污染」——真实浏览器里被污染的 canvas，
+   裁剪出来的副本同样无法 toDataURL，导出链会走打印兜底。 */
+let tainted = false;
+function makeCanvas() {
+  const ctx = {
+    fillStyle: '', drawImage() {}, fillRect() {}, clearRect() {}, save() {}, restore() {},
+  };
+  return {
+    id: '_canvas', width: 0, height: 0, style: {}, dataset: {},
+    getContext() { return ctx; },
+    toDataURL() {
+      if (tainted) throw new Error('tainted canvas');
+      return 'data:image/png;base64,x';
+    },
+  };
+}
 const document = {
   getElementById: (id) => { if (!els.has(id)) els.set(id, makeEl(id)); return els.get(id); },
-  createElement: () => makeEl('_new'),
+  createElement: (tag) => (String(tag).toLowerCase() === 'canvas' ? makeCanvas() : makeEl('_new')),
   head: { appendChild(el) { appended.push(el && el.src); } },
   querySelectorAll: () => [],
 };
@@ -51,6 +71,8 @@ function fakeHtml2canvas(opts, result) {
     if (o && typeof o.onclone === 'function') {
       try { o.onclone(document); } catch (e) { /* 克隆文档不完整时忽略 */ }
     }
+    /* 探测原画布是否被污染：被污染的 canvas 无法 toDataURL，其裁剪副本同样不行 */
+    try { result.toDataURL(); } catch (e) { tainted = true; }
     return Promise.resolve(result);
   };
 }
@@ -115,6 +137,8 @@ function runNext() {
   }
   const c = CASES[idx++];
   let printed = false;
+  /* 每个用例独立：重置画布污染标记，避免上一个用例的状态串到下一个 */
+  tainted = false;
   /* 注意：exportPDF 先探测 window.html2canvas / window.jspdf，缺失就走 CDN 加载分支。
      必须把桩同时挂到 window 上，否则测的是"CDN 下载失败"路径而不是目标路径。 */
   const window = { print() { printed = true; }, html2canvas: c.html2canvas, jspdf: c.jspdf };

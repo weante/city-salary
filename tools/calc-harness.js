@@ -36,9 +36,22 @@ function makeEl(id) {
   };
 }
 
+/* 第一百零七批：导出实现会 createElement('canvas') 取 2d 上下文做裁剪，
+   桩里补一个最小可用的 canvas，避免任何调用 exportPDF 的测试被桩绊倒。 */
+function makeCanvas() {
+  const ctx = {
+    fillStyle: '', drawImage() {}, fillRect() {}, clearRect() {}, save() {}, restore() {},
+  };
+  return {
+    id: '_canvas', width: 0, height: 0, style: {}, dataset: {},
+    getContext() { return ctx; },
+    toDataURL() { return 'data:image/png;base64,x'; },
+  };
+}
+
 /* 暴露给测试的 API 是**超集**：各脚本按需取用，避免每加一个测试就改一次导出清单。 */
 const API_NAMES = 'tx,btx,TRAPS,BR,BBR,CITIES,CLAMP:cl,cl0,normHF,effStart,calc,selectCity,' +
-  'setHk,setMed,setChild,setHouse,switchTab,buildHistory,calcHist,exportPDF,' +
+  'setHk,setMed,setChild,setHouse,switchTab,buildHistory,calcHist,exportPDF,planSegments,' +
   'histRows:function(){return histRows}';
 
 function loadCalculator(opts) {
@@ -47,7 +60,7 @@ function loadCalculator(opts) {
   const appended = [];
   const document = {
     getElementById(id) { if (!els.has(id)) els.set(id, makeEl(id)); return els.get(id); },
-    createElement: () => makeEl('_new'),
+    createElement: (tag) => (String(tag).toLowerCase() === 'canvas' ? makeCanvas() : makeEl('_new')),
     head: {
       appendChild(el) {
         appended.push(el && el.src);

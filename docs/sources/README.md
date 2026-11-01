@@ -5886,7 +5886,7 @@ subagent 称忻州件逐字写「2025年忻州市城镇非私营单位就业人�
 15. **历史明细页移动端适配**：桌面端 `.tbl-hint{display:none}`；≤780px 时 `.tbl-hint{display:block}`（显示「← 左右滑动查看全部 15 列 →」提示）、`table.hist{min-width:1120px;font-size:11px}`（**保留最小宽度改为横向滚动**，不再把 15 列挤成一团）、`table.hist th/td` 内边距与字号收窄、`table.hist td input{width:58px}`、`.chart-box{overflow-x:auto}` + `.chart-box svg{min-width:620px}`（图表可横滑，右轴不被切）——第一百零二批新增。
 16. **城市选择器（省份胶囊 + 城市网格）**：省份胶囊由 `buildProvTabs()` 生成，**只有 34 个省、没有「全部」**（原 `onclick="setProv('')"` 的全部按钮已删除）；当前省份 `var prov="广东"`（**默认广东**），`setProv(r)` 与 `showOverlay()` 的兜底值同样是 `"广东"`；城市区 `.city-grid` 改为**单列省份块**（原 `repeat(3,1fr)` 三列并排），常态只渲染当前省（`if(!citySearchMode&&p.n!==prov)continue;`），省下城市由 `.tree-cities` 用 `repeat(auto-fill,minmax(168px,1fr))` **网格横排**成卡片（`.tree-city` 卡片化：1px 边框 + 12px 圆角，`[open]` 时高亮），区县仍是 `.tree-areas` 的胶囊按钮；**搜索态**由 `citySearchMode` 临时渲染全部省份以保证跨省命中（`filterCity(q)` 里 `if(wantAll!==citySearchMode){citySearchMode=wantAll;buildCityGrid();}`），清空搜索或切换省份即回到当前省——第一百零三批新增。
 17. **历史明细表固定列宽**：`.history-view`（grid item）加 `min-width:0`、`.tbl-wrap` 加 `min-width:0;max-width:100%` —— **grid item 的 `min-width:auto` 等于 min-content 尺寸，原先 15 列表格的 min-content 宽度（约 1660px）把容器顶宽、`max-width:var(--max)` 失效，表格与汇总卡溢出 `#page1` 节点框，导出 PDF 被 html2canvas 裁掉右侧列**；`table.hist` 改 `table-layout:fixed`（勾选列 30px、月份列 58px、其余 12~13 列均分，`min-width:960px`），表头 `white-space:normal` 允许换行、数字列 11px、可编辑框 `width:100%;max-width:78px`；≤780px 的 `min-width` 为 1120px；`.tbl-title .tt` 加 `min-width:0;overflow-wrap:anywhere`——第一百零四批新增。
-18. **PDF 导出不重复渲染 + 卡片不断开**：`exportPDF()` 调 html2canvas 时**必须同时给出 `windowHeight` 与 `scrollX/scrollY`** —— `var exportH=Math.max(nodeH+400,2400)`（内容全高 + 400px 余量，下限 2400px）、`scrollX:0,scrollY:0`（**旧实现只给 `windowWidth`，克隆 iframe 高度仍是浏览器窗口高（约 800px），而 `#page1` 实测 1244px 高，html2canvas 只能在视口内取材，超出视口的部分在拼接缝处被重复绘制 → 导出 PDF 里「趋势图」标题在第 1 页底部和第 2 页顶部各完整出现一次**）；分页改为「段」式（`rowMm=imgH/canvas.height` → `rowsPerPage=floor(ch/rowMm)`，每段 `pdf.addImage(img,"PNG",P.mx,P.my-segs[si][0]*rowMm,imgW,imgH)`，段间 `pdf.addPage()`，旧的 `heightLeft-=ch` 整图偏移循环已删除）；切点规则：**切点落在不可切块（趋势图卡片 / 汇总卡）内部且该块放得下一整页 → 整块推到下一页**（`pushTo`），否则**切点落在明细表格的行内部 → 切点提前到该行顶边**（一行不会被切成两半，切点只提前绝不推后以免内容被裁）；克隆文档里量测 `.history-view > .c`（跳过含 `#histTable` 的表格卡）与 `.sum-grid` 得到 `cardBounds`、量测 `#histTable tr` 得到 `rowEdges`；打印兜底路径（`window.print()`）同样隐藏导出按钮卡片、放开表格横向裁切——第一百零六批新增。
+18. **PDF 导出不重复渲染 + 卡片不断开**：`exportPDF()` 调 html2canvas 时**必须同时给出 `windowHeight` 与 `scrollX/scrollY`** —— `var exportH=Math.max(nodeH+400,2400)`（内容全高 + 400px 余量，下限 2400px）、`scrollX:0,scrollY:0`（**旧实现只给 `windowWidth`，克隆 iframe 高度仍是浏览器窗口高（约 800px），而 `#page1` 实测 1244px 高，html2canvas 只能在视口内取材，超出视口的部分在拼接缝处被重复绘制 → 导出 PDF 里「趋势图」标题在第 1 页底部和第 2 页顶部各完整出现一次**）；分页改为「段」式（`rowMm=imgH/canvas.height` → `rowsPerPage=floor(ch/rowMm)`，每段 `pdf.addImage(img,"PNG",P.mx,P.my-segs[si][0]*rowMm,imgW,imgH)`，段间 `pdf.addPage()`，旧的 `heightLeft-=ch` 整图偏移循环已删除）；切点规则：**切点落在不可切块（趋势图卡片 / 汇总卡）内部且该块放得下一整页 → 整块推到下一页**（`pushTo`），否则**切点落在明细表格的行内部 → 切点提前到该行顶边**（一行不会被切成两半，切点只提前绝不推后以免内容被裁）；克隆文档里量测 `.history-view > .c`（跳过含 `#histTable` 的表格卡）与 `.sum-grid` 得到 `cardBounds`、量测 `#histTable tr` 得到 `rowEdges`；打印兜底路径（`window.print()`）同样隐藏导出按钮卡片、放开表格横向裁切——第一百零六批新增。**第一百零七批起（用户复测「还是一样，过页重复了」后的根因修复）**：分页切点计算抽成纯函数 `planSegments(totalPx,pageCapPx,trendTopPx,cards,rows)`（返回首尾相接的画布 px 区间），并新增一条**切点不得越过趋势图卡顶边**的规则（`if(trendTopPx>0&&segStart<trendTopPx&&segEnd>trendTopPx)segEnd=trendTopPx;`）→ **趋势图卡片整块从新的一页开始**；克隆文档里额外量测趋势图卡顶边 `trendTop`（含 `#chart` 的那张卡）并排除 `.exp` 下 `display:none` 的无效块（`if(c1.h<=0||c1.top<0)continue;`）；放置方式由「整张长图按 y 偏移画到每页」改为**每页单独裁剪本段内容再放置**（`document.createElement("canvas")` → `drawImage(canvas,0,y0,…,0,0,…)` → `pdf.addImage(cut.toDataURL("image/png"),"PNG",P.mx,P.my,imgW,hMm)`，每页 y 固定 `P.my`、高度 = 本段内容高）。**旧写法会让相邻两页重叠「页边距 P.my」对应的那一段内容** —— 页 1 底部被切掉一半的趋势图标题会在页 2 顶部原样再出现一次（用户截图里的过页重复）。
 
 ### 三、没改什么（关键约束）
 
@@ -6692,3 +6692,48 @@ var pw=210,ph=297;var imgW=pw,imgH=canvas.height*pw/canvas.width;
 - 断言数 9217 → **9234**（section 34 共 17 条）。
 - DOM id 总数仍 **105**（本批未新增/删除 id）。
 - 导出版面（深圳实测）：`#page1` 高 1244px → 2 页；第 1 页 = 明细表（表头 + 12 行）+ 汇总卡，第 2 页 = 完整趋势图卡（标题 + 图例 + 图表，不再被切开、不再重复）。
+
+## 第一百零七批（2026-11-01）· PDF 过页重复根因修复：趋势图整块强制落在第 2 页（数值零改动）
+
+### 一、本批回答
+
+用户复测后再次反馈：**「还是一样，过页重复了。把每月工资 · 五险一金 · 个税趋势图直接强制在第二页」**（附导出 PDF 截图：趋势图标题在第 1 页底部被页边界切掉一半、第 2 页顶部又完整出现一次）。
+
+| 问题 | 处理 |
+|---|---|
+| 趋势图标题在第 1 页底部与第 2 页顶部各出现一次（过页重复） | 根因是**放置方式**：旧实现把整张长图按 `y = P.my - 段起点×rowMm` 画到每一页，相邻两页因此重叠了「页边距 `P.my`」对应的那一段内容 → 改为**每页单独裁剪本段内容再放置**，页与页首尾相接、绝不重叠 |
+| 趋势图卡片要被「强制在第二页」 | 分页切点抽成纯函数 `planSegments()`，新增规则「切点不得越过趋势图卡顶边」→ 趋势图卡**整块**从新的一页开始（第 1 页放明细表 + 汇总卡，第 2 页放完整趋势图卡） |
+| 上一批为什么没修好 | 上一批只修了「克隆视口高度不足导致 html2canvas 重复绘制」与「切点避让卡片」，但**没有动放置方式**；页边距带来的固有重叠仍在，重复依旧 |
+| 无法在真实浏览器里自测 | 本轮 CDN 恢复可达 → 下载 html2canvas / jsPDF 到本地，**headless Chrome 端到端跑真实导出**，并解析 PDF 每页位图做像素级比对（新增能力） |
+
+### 二、根因与设计取舍
+
+1. **先量化再改**：headless Chrome 实测旧实现的 `addImage` 记录 —— 页 0 `{x:10,y:10,w:277,h:304.406}`、页 1 `{x:10,y:-170.833,w:277,h:304.406}` → 第 1 页可见画布 `[0,1553]`、第 2 页 `[1396,3106]`，**两页重叠 157 画布 px ≈ 78.5 CSS px**；而第 1 段因「不可切块推页」被提前截断在画布 1478px（趋势卡顶边）→ 重叠段 `[1478,1553]` 恰好是趋势卡标题的上半 → 页 1 底部露一半、页 2 顶部原样再来一次，**与用户截图逐像素吻合**。
+2. **裁剪式放置取代整图偏移**：整图偏移靠「负 y + 页边距」实现，天然会在页边界处重叠；改成每页只画自己那一段（`cut` 画布 + `drawImage` 偏移裁剪），每页 y 固定 `P.my`、高度 = 本段内容高 → **重叠在数学上不可能发生**。
+3. **趋势图卡用「顶边守门」而不是「高度判断」**：直接判「趋势卡高 ≤ 页容量则整块下移」不够稳（页容量随内容高度变），改用「切点不得超过趋势卡顶边」这一条规则最直接 —— 只要切点会切进趋势卡，就提前到它的顶边。
+4. **排除无效块**：`.exp` 导出模式下「导出 PDF」按钮卡片是 `display:none`，`getBoundingClientRect()` 全 0 → `rel()` 算出的 top 为负；必须 `if(c1.h<=0||c1.top<0)continue;` 排除，否则会污染切点计算。
+5. **端到端验证优先于纸上推演**：本轮具备真实导出能力（本地 html2canvas/jsPDF + headless Chrome CDP），修复后重跑导出 → PDF 22.5MB → 解析出页 1 图 2264×1478、页 2 图 2264×1010 → **目视：页 1 = 明细表 + 4 张汇总卡（无趋势图标题），页 2 = 完整趋势图卡（标题 + 图例 + 图表）**；相邻页首尾 40 行像素重复数 **0/40**。
+
+### 三、关键约束（不能破）
+
+1. **数值零改动**：`calc()` / `calcHist()` / `renderChart()` / `renderHistTable()` / `renderResult()` 一律不动；`check-golden` 16 用例 × 4 面板逐字节一致。
+2. **DOM markup 一字未动**：本批只改 `exportPDF()`（新增 `planSegments`）与导出实现内部，历史 DOM id 一个不丢、也不多一个（105 个）。
+3. **前几批的导出修复不能被破坏**：`.exp .tbl-wrap{overflow:visible}`、`.exp #exportCard{display:none}`、`EXPORT_W=1180`、A4 横向 + 10mm 页边距、`windowHeight:exportH` + `scrollX:0,scrollY:0` 全部保留。
+4. **导出降级链不能破**：CDN 未就绪 / 画布被污染 / PDF 组装失败三条路径仍要落到 `window.print()` 兜底（`tools/test-export.js` 5 项全绿 —— 本批给桩补了最小可用的 canvas 与「画布污染」标记，因为实现改为用 `document.createElement("canvas")` 裁剪）。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①新增纯函数 `planSegments(totalPx,pageCapPx,trendTopPx,cards,rows)`：规则①切点不得越过趋势图卡顶边（`trendTopPx`）；规则②不可切块内部且放得下一整页 → `pushTo` 整块推到下一页；规则③切点落在明细表格行内部 → 切点提前到该行顶边；②`onclone` 量测增补 `trendTop`（含 `#chart` 的卡片顶边）与无效块排除（`c1.h<=0||c1.top<0`）；③分页量测统一换算成画布 px（`kScale`）；④放置改为**每页裁剪本段**（`cut` 画布 + `drawImage` + `addImage(cut.toDataURL(...),"PNG",P.mx,P.my,imgW,hMm)`），旧的整图偏移写法删除 |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/test-calc.js` | section 34 的 5 处断言随实现改名（`rowsPerPage`→`pageCapPx`、卡片避让改 `c.top` 版、行吸附改 `r.top/r.b` 版、`addImage` 改裁剪放置）；新增 section 36「导出 PDF 过页重复修复 + 趋势图强制落在第二页（第一百零七批）」共 **18** 条断言（静态 6 + `planSegments` 行为 9 + 数值零改动 2） |
+| `tools/calc-harness.js` | `API_NAMES` 增补 `planSegments`（供 section 36 直接调用做行为单测）；`document.createElement('canvas')` 桩补最小可用 canvas（2d 上下文 + `toDataURL`） |
+| `tools/test-export.js` | 桩补 canvas 能力 + 「画布污染」标记（`tainted`）：被污染的原画布其裁剪副本同样无法 `toDataURL` → 导出链仍走打印兜底；每个用例开始重置 `tainted` |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过、`check-sync` 无漂移）。
+- 断言数 9234 → **9291**（section 36 新增 18 条，section 34 随实现改名 5 条）。
+- DOM id 总数仍 **105**（本批未新增/删除 id）。
+- 导出版面（深圳 12 个月实测）：**2 页** —— 第 1 页 = 明细表（表头 + 12 行）+ 4 张汇总卡；第 2 页 = 完整趋势图卡（标题 + 图例 + 图表）；相邻页首尾 40 行像素重复 **0/40**。

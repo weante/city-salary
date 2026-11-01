@@ -5096,6 +5096,44 @@ function loadScript(src, integrity){
 var EXPORT_W=1180;          /* 导出渲染视口宽（px，@96dpi ≈ 312mm，与 --max 一致） */
 var EXPORT_CHART_VB="0 -12 784 304";  /* 图表 viewBox 四周留余量，避免右轴刻度被裁 */
 var EXPORT_PDF={pw:297,ph:210,mx:10,my:10};  /* A4 横向 + 上下左右页边距（mm） */
+/* 分页切点计算（第一百零七批）——纯函数，便于单测。
+   totalPx    画布总高（px）
+   pageCapPx  每页可容纳的画布像素
+   trendTopPx 趋势图卡顶边（画布 px）；>0 表示该卡必须整块从新的一页开始
+   cards      不可切块 [{top,h}]（画布 px）
+   rows       可切点 [{top,b}]（画布 px）
+   返回 [[start,end],…]（画布 px，闭开区间）：段与段首尾相接、不重叠、不遗漏。 */
+function planSegments(totalPx,pageCapPx,trendTopPx,cards,rows){
+  var segs=[],segStart=0,guard=0;
+  cards=cards||[];rows=rows||[];
+  pageCapPx=Math.max(1,Math.floor(pageCapPx));
+  while(segStart<totalPx&&guard++<200){
+    var segEnd=Math.min(segStart+pageCapPx,totalPx);
+    /* ① 趋势图卡必须整块从新的一页开始：切点不得越过它的顶边
+          （否则标题+图例+图表会被页边界切开，页 2 顶部还会再出现一次标题）。 */
+    if(trendTopPx>0&&segStart<trendTopPx&&segEnd>trendTopPx)segEnd=trendTopPx;
+    /* ② 切点落在「不可切块」内部，且该块本身放得下一整页 → 整块推到下一页 */
+    var pushTo=-1;
+    for(var ci=0;ci<cards.length;ci++){
+      var c=cards[ci];
+      if(!c||c.h<=0||c.top<0)continue;
+      if(c.top<segEnd&&c.top+c.h>segEnd&&c.top>segStart&&c.h<=pageCapPx&&(pushTo<0||c.top<pushTo))pushTo=c.top;
+    }
+    if(pushTo>0)segEnd=pushTo;
+    /* ③ 切点落在明细表格的行内部 → 切点提前到该行顶边，一行不会被切成两半
+          （切点只提前、绝不推后，避免超出本页容量导致内容被裁）。 */
+    else if(rows.length){
+      for(var ri=0;ri<rows.length;ri++){
+        var r=rows[ri];
+        if(r.top<segEnd&&r.b>segEnd){if(r.top>segStart)segEnd=r.top;break;}
+      }
+    }
+    if(segEnd<=segStart)segEnd=Math.min(segStart+pageCapPx,totalPx);
+    segs.push([segStart,segEnd]);
+    segStart=segEnd;
+  }
+  return segs;
+}
 function exportPDF(){
   /* printed=已走打印兜底；saved=PDF已成功保存。只有保存成功才阻断兜底，
      否则"画布生成失败/组装PDF抛错"时两条兜底路径都会被误判为已完成而静默失效 */
@@ -5122,7 +5160,7 @@ function exportPDF(){
        归零（导出时页面往往已滚动，旧实现继承滚动量会再次造成错位/重复）。 */
     var nodeH=Math.max((node&&node.scrollHeight)||0,(node&&node.offsetHeight)||0,0);
     var exportH=Math.max(nodeH+400,2400);
-    var cardBounds=[],rowEdges=[],cloneH=0;
+    var cardBounds=[],rowEdges=[],cloneH=0,trendTop=-1;
     return html2canvas(node,{scale:2,useCORS:true,backgroundColor:"#f8fafc",
       windowWidth:EXPORT_W,windowHeight:exportH,scrollX:0,scrollY:0,
       onclone:function(doc){
@@ -5146,7 +5184,12 @@ function exportPDF(){
             for(var i=0;i<cs.length;i++){
               if(cs[i].querySelector&&cs[i].querySelector("#histTable"))continue;
               var c1=rel(cs[i]);
+              /* .exp 模式下导出按钮卡片是 display:none，getBoundingClientRect 全 0，
+                 top 会被算成负数 —— 这类无效块必须排除，否则会污染切点计算 */
+              if(c1.h<=0||c1.top<0)continue;
               cardBounds.push({top:c1.top,h:c1.h});
+              /* 趋势图卡（含 #chart 的那张）单独记顶边：它必须整块从新的一页开始 */
+              if(trendTop<0&&cs[i].querySelector&&cs[i].querySelector("#chart"))trendTop=c1.top;
             }
             var sums=p1.querySelectorAll?p1.querySelectorAll(".sum-grid"):[];
             for(var j=0;j<sums.length;j++){
@@ -5162,7 +5205,6 @@ function exportPDF(){
         }catch(e){/* 克隆文档不可用时按默认整段分页 */}
       }}).then(function(canvas){
       if(printed)return;
-      var img=canvas.toDataURL("image/png");
       /* A4 横向：内容按「页宽 - 左右边距」等比放置，上下各留 my 边距；
          内容高于一页时按「段」分页 —— 每段单独算好起点画长图，后续页 y 为负，
          段与段首尾相接（不重复、不丢内容）；切点若落在某张卡片中间，
@@ -5171,35 +5213,30 @@ function exportPDF(){
       var pdf=new jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
       var cw=P.pw-2*P.mx,ch=P.ph-2*P.my;
       var imgW=cw,imgH=canvas.height*cw/canvas.width;
-      var rowMm=imgH/canvas.height;                    /* 每行画布像素对应多少 mm */
-      var rowsPerPage=Math.max(1,Math.floor(ch/rowMm)); /* 每页能放多少行画布 */
+      var rowMm=imgH/canvas.height;                     /* 每个画布像素对应多少 mm */
+      var pageCapPx=Math.max(1,Math.floor(ch/rowMm));   /* 每页能放多少画布像素 */
       var kScale=(cloneH>0?canvas.height/cloneH:(nodeH>0?canvas.height/nodeH:1));
-      var segs=[],segStart=0,guard=0;
-      while(segStart<canvas.height&&guard++<80){
-        var segEnd=Math.min(segStart+rowsPerPage,canvas.height);
-        /* ① 切点落在「不可切块」（趋势图卡片 / 汇总卡）内部，且该块本身放得下一整页
-              → 整块推到下一页，避免标题、图例与图表被页边界切成两半； */
-        var pushTo=-1;
-        for(var ci=0;ci<cardBounds.length;ci++){
-          var ct=cardBounds[ci].top*kScale,cb=ct+cardBounds[ci].h*kScale;
-          if(ct<segEnd&&cb>segEnd&&ct>segStart&&(cb-ct)<=rowsPerPage&&(pushTo<0||ct<pushTo))pushTo=ct;
-        }
-        if(pushTo>0)segEnd=pushTo;
-        /* ② 切点落在明细表格的行内部 → 切点提前到该行顶边，一行不会被切成两半
-              （切点只提前、绝不推后，避免超出本页容量导致内容被裁）； */
-        else if(rowEdges.length){
-          for(var ri=0;ri<rowEdges.length;ri++){
-            var rt=rowEdges[ri].top*kScale,rb=rowEdges[ri].b*kScale;
-            if(rt<segEnd&&rb>segEnd){if(rt>segStart)segEnd=rt;break;}
-          }
-        }
-        if(segEnd<=segStart)segEnd=Math.min(segStart+rowsPerPage,canvas.height);
-        segs.push([segStart,segEnd]);
-        segStart=segEnd;
-      }
+      /* 把克隆文档里量到的 CSS px 坐标换算成画布 px */
+      var cardsPx=[],rowsPx=[],trendTopPx=-1;
+      for(var ci2=0;ci2<cardBounds.length;ci2++)cardsPx.push({top:cardBounds[ci2].top*kScale,h:cardBounds[ci2].h*kScale});
+      for(var ri2=0;ri2<rowEdges.length;ri2++)rowsPx.push({top:rowEdges[ri2].top*kScale,b:rowEdges[ri2].b*kScale});
+      if(trendTop>=0)trendTopPx=trendTop*kScale;
+      var segs=planSegments(canvas.height,pageCapPx,trendTopPx,cardsPx,rowsPx);
+      /* 第一百零七批：每页单独裁出本段内容再放置。
+         旧写法把整张长图按 y 偏移画到每页（y = P.my - 段起点×rowMm），
+         相邻两页会重叠「页边距 P.my」对应的那一段内容 —— 页 1 底部被切掉一半的
+         「趋势图」标题，会在页 2 顶部原样再出现一次（用户截图里的过页重复）。
+         改成每页只画自己那一段（高度 = 本段内容高），页与页首尾相接、绝不重叠。 */
       for(var si=0;si<segs.length;si++){
+        var y0=segs[si][0],y1=segs[si][1];
+        var hMm=Math.min(ch,(y1-y0)*rowMm);
+        var cut=document.createElement("canvas");
+        cut.width=canvas.width;cut.height=Math.max(1,y1-y0);
+        var cx2=cut.getContext("2d");
+        cx2.fillStyle="#f8fafc";cx2.fillRect(0,0,cut.width,cut.height);
+        cx2.drawImage(canvas,0,y0,canvas.width,y1-y0,0,0,canvas.width,y1-y0);
         if(si>0)pdf.addPage();
-        pdf.addImage(img,"PNG",P.mx,P.my-segs[si][0]*rowMm,imgW,imgH);
+        pdf.addImage(cut.toDataURL("image/png"),"PNG",P.mx,P.my,imgW,hMm);
       }
       pdf.save(CITY.name+"工资历史明细.pdf");
       saved=true;
