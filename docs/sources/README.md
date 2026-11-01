@@ -3735,7 +3735,7 @@ OCR 噪声照旧（公积金→公私金/公稆金），但**数值全部由算�
 7. **政府门户「机构设置」页通常不列直属事业单位**（大兴安岭实证），「页面上找不到中心」≠「没有中心」。
 8. **省级政务服务网专区是判定「渠道是否存在」的利器**：齐齐哈尔 200 / 大庆·伊春·大兴安岭 404。
 9. **省级年度报告不含各市明细**：黑龙江省 2025 年度报告 415 行里四城名全是表彰名单。
-10. **有 DNS 记录不等于官方**：`dqgjj.cn` 有 A 记录却是废弃主机。DoH 验真之后还要抓正文核对 title 与备案号。
+11. **有 DNS 记录不等于官方**：`dqgjj.cn` 有 A 记录却是废弃主机。DoH 验真之后还要抓正文核对 title 与备案号。
 
 ## 第十九批（2026-10-12）· 河南 17 市社保基数正式上下限（partial → confirmed）
 
@@ -5874,7 +5874,19 @@ subagent 称忻州件逐字写「2025年忻州市城镇非私营单位就业人�
 6. **结果区**：深绿 hero 卡（lime 大数字）＋ 工资构成明细卡 ＋ 年终奖临界值卡。
 7. **图标库**：新增 15 个 SVG `<symbol>`（logo / pin / chevron / info / arrow / reset / wallet / shield / tax / home / calendar / gift / search / close / download）。
 8. **响应式与可达性**：断点 1100 / 1000 / 780 / 520px（移动端单列、底部固定导航）＋ `prefers-reduced-motion` ＋ 打印样式。
+   **第九十八批起**：移动端单列顺序 = DOM 顺序（输入面板在前、结果区在后，不再用 `grid-row` 反转）；页头压缩；`.input` 字号 16px 防 iOS 聚焦缩放；新增 `.go-res` 锚点按钮指向 `#calcResults`（桌面端隐藏）。
 9. **旧内联色映射**：JS 渲染里 15 处历史内联色（`style="color:#059669"` 等）用属性选择器 `[style*="#059669"]{color:var(--primary)!important}` 映射到新色板。
+10. **广东职工医保缴费基数法定口径档（`docs/sources/F3.json`）**：新建独立来源档，**只记录口径规则、不记录任何城市数值**（`provinces` 为空数组 → 不参与 `tools/source-records.js` 的最佳条目评选，也不计入 `stats.urls`）；`legalBasis` 引国办发〔2019〕13号《国务院办公厅关于印发降低社会保险费率综合方案的通知》＋各省市基本医疗保险办法（本市上上年度全口径×300%（上限）/×60%（下限））；`rules` 7 条逐字依据 —— 茂名 茂医保〔2026〕20号（2025 年全口径 7463 元 → 上限 22389 / 下限 4478 元，2027-01-01 起执行）、中山 中府〔2026〕185号第六条、佛山《佛山市基本医疗保险参保和关系管理实施办法》第三十五条（加权计算）、广州 2026-09-23 三部门件（上限 300% / 下限 60%）、东莞 东府〔2023〕60号第十四条、珠海 珠人社发〔2023〕2号（2022 年全省 8807 元 / 第二类片区含珠海 7577 元）、省统计局互动交流答复 pid=3437019（「省统计局只发布…年平均工资…养老保险缴费基数上限计算，非省统计局业务」）；`provinceWideUrls` 3 条省级口径链接。F2.json 珠海 / 东莞两城同步订正：`candidateBasis` / `candidateConfidence.min` 由旧表述改为「**路径A 延续跟省养老**」与「**路径B 按本市全口径（数值待本市公布）**」两支（**候选数值零改动**：上限 27603、下限 5521 / 4785、第三支 7974 全部不变），新增 `candidateRule2027`（法定口径 + 五城逐字依据）与 `candidateAlt`（路径B 订正说明），`lastCheck` 推进至 2026-11-01，两城 `urls` 各 +4 条（→ 全库 urls 总数 2843 → **2851**），界面 note 追加「第九十五批（2026-11-01）2027 年度口径再校正」段——第九十五批新增。
+
+11. **滑块控件**：`.sld` 行为 `label + input[type=range] + .sv 数值` 三段式；`input[type=range]` 声明 `flex:1;min-width:0`（**允许在窄容器收缩**，否则 range 的固有宽度会撑破卡片）并 `margin:0 10px`（**两端为手柄预留空间**，否则拖到 0% 或最大值时手柄会悬出卡片被右缘裁掉）——第九十九批新增。
+12. **企业年金比例上限**：`#annuity` 声明 `max="4"`（HTML 软限制，浏览器不阻止手动输入超限值）；计算口径恒为 `cl(gv("annuity"),0,4)/100`；超限时按上限**回写输入框**并由 `#annuityWarn` 给出提示；结果面板的百分比取**夹取后的**比例（不再用原始输入值）——第一百批新增。
+13. **PDF 导出版面**：`exportPDF()` 用 `html2canvas(node,{scale:2,windowWidth:EXPORT_W,onclone:…})`，`EXPORT_W=1180`（与 `--max` 一致，**不取 `node.scrollWidth`**，导出结果与窗口宽度无关）；克隆文档 `<html>` 加 `.exp` 类进入导出模式（`.exp .tbl-wrap{overflow:visible}` 放开横向溢出、`.exp table.hist td input` 把可编辑框显示为纯文本、`.exp .tbl-title{flex-wrap:wrap}` 允许标题换行、`.exp #exportCard{display:none}` 隐藏导出按钮卡片）；图表 viewBox 在克隆文档里换成 `EXPORT_CHART_VB="0 -12 784 304"`（四周留余量防右轴裁切）；PDF 用 `new jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"})` + `EXPORT_PDF={pw:297,ph:210,mx:10,my:10}` 页边距——第一百零一批新增。
+14. **收入构成占比条**：**第一百零五批起并入「税后实发」主卡内部**（不再单独成卡）—— `mixBarHtml(net,siE,hfE,curT,sal,suppCash)` 返回 HTML 片段（`.mx` 分隔区），由 `renderResult()` 在 hero 的「税后实发」行（`.tp`）之后、三列明细（`.cd`）之前用 `h+=mixBarHtml(...)` 嵌入；原先的独立卡片 `<div class="hero" id="mixCard">` 已从 markup 删除（DOM id 106 → 105）。分母统一取**税前工资** `sal`（`var base=sal>0?sal:0`），三段：实发 `net`（`.s1`）、五险一金 `siE+hfE`（`.s2`）、个税 `curT`（`.s3`），有补充扣除时追加第四段 `.s4`；各段宽度百分比合计 100%；底部 `.hm` 行放图例（`.hlg`）与「年度明细 →」描边按钮（`onclick="switchTab(1)"`）——第一百零二批新增、第一百零五批改为并入主卡。
+    ⚠️ hero 主卡在 `#res` 之内，改它必然使 `check-golden` 的 res 面板快照失配 → 本批已用 `node tools/check-golden.js --update` 重新冻结，并逐用例验证「新 res 去掉 `.mx` 区块后与旧 res 逐字节一致、`bonus`/`hist`/`sum` 三面板零变化」。
+15. **历史明细页移动端适配**：桌面端 `.tbl-hint{display:none}`；≤780px 时 `.tbl-hint{display:block}`（显示「← 左右滑动查看全部 15 列 →」提示）、`table.hist{min-width:1120px;font-size:11px}`（**保留最小宽度改为横向滚动**，不再把 15 列挤成一团）、`table.hist th/td` 内边距与字号收窄、`table.hist td input{width:58px}`、`.chart-box{overflow-x:auto}` + `.chart-box svg{min-width:620px}`（图表可横滑，右轴不被切）——第一百零二批新增。
+16. **城市选择器（省份胶囊 + 城市网格）**：省份胶囊由 `buildProvTabs()` 生成，**只有 34 个省、没有「全部」**（原 `onclick="setProv('')"` 的全部按钮已删除）；当前省份 `var prov="广东"`（**默认广东**），`setProv(r)` 与 `showOverlay()` 的兜底值同样是 `"广东"`；城市区 `.city-grid` 改为**单列省份块**（原 `repeat(3,1fr)` 三列并排），常态只渲染当前省（`if(!citySearchMode&&p.n!==prov)continue;`），省下城市由 `.tree-cities` 用 `repeat(auto-fill,minmax(168px,1fr))` **网格横排**成卡片（`.tree-city` 卡片化：1px 边框 + 12px 圆角，`[open]` 时高亮），区县仍是 `.tree-areas` 的胶囊按钮；**搜索态**由 `citySearchMode` 临时渲染全部省份以保证跨省命中（`filterCity(q)` 里 `if(wantAll!==citySearchMode){citySearchMode=wantAll;buildCityGrid();}`），清空搜索或切换省份即回到当前省——第一百零三批新增。
+17. **历史明细表固定列宽**：`.history-view`（grid item）加 `min-width:0`、`.tbl-wrap` 加 `min-width:0;max-width:100%` —— **grid item 的 `min-width:auto` 等于 min-content 尺寸，原先 15 列表格的 min-content 宽度（约 1660px）把容器顶宽、`max-width:var(--max)` 失效，表格与汇总卡溢出 `#page1` 节点框，导出 PDF 被 html2canvas 裁掉右侧列**；`table.hist` 改 `table-layout:fixed`（勾选列 30px、月份列 58px、其余 12~13 列均分，`min-width:960px`），表头 `white-space:normal` 允许换行、数字列 11px、可编辑框 `width:100%;max-width:78px`；≤780px 的 `min-width` 为 1120px；`.tbl-title .tt` 加 `min-width:0;overflow-wrap:anywhere`——第一百零四批新增。
+18. **PDF 导出不重复渲染 + 卡片不断开**：`exportPDF()` 调 html2canvas 时**必须同时给出 `windowHeight` 与 `scrollX/scrollY`** —— `var exportH=Math.max(nodeH+400,2400)`（内容全高 + 400px 余量，下限 2400px）、`scrollX:0,scrollY:0`（**旧实现只给 `windowWidth`，克隆 iframe 高度仍是浏览器窗口高（约 800px），而 `#page1` 实测 1244px 高，html2canvas 只能在视口内取材，超出视口的部分在拼接缝处被重复绘制 → 导出 PDF 里「趋势图」标题在第 1 页底部和第 2 页顶部各完整出现一次**）；分页改为「段」式（`rowMm=imgH/canvas.height` → `rowsPerPage=floor(ch/rowMm)`，每段 `pdf.addImage(img,"PNG",P.mx,P.my-segs[si][0]*rowMm,imgW,imgH)`，段间 `pdf.addPage()`，旧的 `heightLeft-=ch` 整图偏移循环已删除）；切点规则：**切点落在不可切块（趋势图卡片 / 汇总卡）内部且该块放得下一整页 → 整块推到下一页**（`pushTo`），否则**切点落在明细表格的行内部 → 切点提前到该行顶边**（一行不会被切成两半，切点只提前绝不推后以免内容被裁）；克隆文档里量测 `.history-view > .c`（跳过含 `#histTable` 的表格卡）与 `.sum-grid` 得到 `cardBounds`、量测 `#histTable tr` 得到 `rowEdges`；打印兜底路径（`window.print()`）同样隐藏导出按钮卡片、放开表格横向裁切——第一百零六批新增。
 
 ### 三、没改什么（关键约束）
 
@@ -5883,6 +5895,7 @@ subagent 称忻州件逐字写「2025年忻州市城镇非私营单位就业人�
 - **82 个历史 id 一个不丢**：`cityTag`、`salary`、`pBase`、`hfBase`、`bonus`、`bonusResult`、`res`、
   `histTable`、`histSum`、`chart`、`footNote` 等全部原位保留（新增断言逐个核对）。
   id 是 JS 静态引用与 golden 面板定位的锚点，搬家即破坏。
+  **第九十八批只新增 `calcResults` 锚点 id，历史 id 仍一个不丢**（`check-dom` 复核 id 无重复）。
 - **`switchTab` 语义未变**：`$("tab0").className = t===0 ? "tab a" : "tab"`，故导航按钮的基准 class 必须是 `tab`、active 态是 `tab a`。
 - **`setHk/setChild/setHouse` 会整体替换 className**，故分段按钮的选中态样式改用 id 选择器兜底（顺带修掉旧 `.bt button.a` 失效的小 bug）。
 
@@ -5890,9 +5903,9 @@ subagent 称忻州件逐字写「2025年忻州市城镇非私营单位就业人�
 
 | 函数 | 作用 | 桩环境行为 |
 |---|---|---|
-| `setSalary(v)` | 快捷月薪 chip 写值 + 切换 active + 立即重算 | `querySelectorAll` 返回空数组 → 循环不执行 |
+| `setSalary(v)` | 写入手动输入框的月薪并立即重算（快捷月薪 chip 已于第九十六批移除） | 只写 `#salary` 值并调用 `calc()` |
 | `filterCity(q)` | 城市弹层按名字过滤城市卡片 | 同上，不执行 |
-| `resetAll()` | 月薪回 20000、奖金清零、各险种基数回本市下限 | 桩里同样安全 |
+| `resetAll()` | 月薪回 10000、奖金清零、各险种基数回本市下限 | 桩里同样安全 |
 
 ### 五、落码清单
 
@@ -5932,7 +5945,7 @@ subagent 称忻州件逐字写「2025年忻州市城镇非私营单位就业人�
 
 | 需求 | 实现 | 数据 |
 |---|---|---|
-| 数据依据折叠 | markup 把 `div.ft#footNote` 包进 `details.ft-note#ftNoteBox`，`summary` 显示「依据 · 数据依据与核查说明 · 城市名」 | footNote 的 innerHTML 仍以「数据依据：…」开头（既有 5 条断言不变） |
+| 数据依据折叠 | markup 把 `div.ft#footNote` 包进 `details.ft-note#ftNoteBox`，`summary` 显示「依据 · 数据依据与核查说明 · 城市名」 | footNote 的 innerHTML 仍以「数据依据：…」开头（既有 5 条断言不变）；第九十七批起该首行之下追加速览卡 / 依据条目 / 核查清单三段式，首行形态不变 |
 | 省市县三级 | `PROV_TREE` 数据 + `buildCityGrid()` 改为三级折叠树 | 31 省 / 337 市 / 3012 区县 |
 | 省按笔画 | 省名按 Unihan `kTotalStrokes` 逐字求和后升序 | 广东 8 画（广 3+东 5）居首，末位新疆 32 画 |
 
@@ -6203,3 +6216,479 @@ P9 是交接文档里挂了最久的一项**界面呈现**待办：工厂字段 
 - **数值零改动**（337 城全部维持）。
 - 断言数 9028 → **9046**（新增断言 18 个）。
 - 全库 urls 总数 2837 → **2843**（F1.json 新增 6 条）。
+
+
+## 第九十五批（2026-11-01）· 广东职工医保缴费基数法定口径档 F3.json ＋ 珠海/东莞 2027 候选值口径订正（数值零改动）
+
+### 一、本批回答
+
+| 问题 | 处理 |
+|---|---|
+| 珠海 / 东莞 2027 年度职工医保缴费基数的**法定口径**此前只散落在零散笔记里，没进案卷 | 新建 `docs/sources/F3.json`：**只记录口径规则、不记录任何城市数值**（`provinces` 为空数组 → 不参与最佳条目评选、不计入 `stats.urls`），逐字与链接放在顶层 `rules` / `provinceWideUrls` |
+| 「法定口径」到底是什么 | 各省市基本医疗保险办法的统一口径：**本市上上年度全口径城镇单位就业人员月平均工资 ×300%（上限）/ ×60%（下限）**（`legalBasis` 引国办发〔2019〕13号）；**属本市口径，不是全省口径** |
+| 此前把 2025 年**全省**全口径推定值 9201 当成**本市**全口径使用 | 订正为两支表述：**路径A 延续跟省养老**（27603 / 5521，2026 年度即按此执行）＋ **路径B 按本市全口径**（数值待本市公布，**本批不作数字推定**）；9183 / 9201 只能作闭合推定值 |
+| 2027 年度的发文窗口是否已经打开 | 已提前：茂名 2026-10-30 发布（茂医保〔2026〕20号，2027-01-01 起执行）；省统计局 pid=3437019 官方答复明确「**非省统计局业务**」→ 9183 / 9201 无逐字印数 |
+
+### 二、关键约束（不能破）
+
+1. **候选数值零改动**：上限 27603、下限 5521 / 4785、第三支 7974 全部维持；界面 337 城参数不动（`check-golden` 16 用例 × 4 面板逐字节一致）。
+2. **不新建城市条目**：`F3.json` 的 `provinces` 必须为空数组 —— 若在这里放城市条目，会与既有档位争夺「最佳条目」归属，并让 `stats.urls` 出现假性下降。
+3. **数值缺件时给规则不编数**：路径B 的本市全口径尚未公布 → 只写规则与「不作数字推定」，不写推定数字。
+4. **来源档只增量、不改写既有口径**：`F2.json` 两城的历史留痕（「五重闭合」「收敛」）保留在 `rawNotes` / `confirms` 中。
+
+### 三、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `docs/sources/F3.json` | **新建**：法定口径档（111 行）—— `group` / `generatedAt` / `note` / `legalBasis` / `provinceWideUrls`(3) / `provinceWideNote` / `rules`(7) / `provinces`(空数组) |
+| `docs/sources/F2.json` | 珠海 / 东莞两城：`candidateBasis` / `candidateConfidence` 改写为路径A / 路径B 两支；新增 `candidateRule2027` / `candidateAlt`；`lastCheck` → 2026-11-01；`urls` 各 +4 条；`rawQuotes` / `rawNotes` / `confirms` / `checkResult` / `provinceWideNote` / 顶层 `note` 追加第九十五批段 |
+| `skills/city-salary/assets/calculator.html` | 珠海（870 行）/ 东莞（853 行）note 追加「第九十五批（2026-11-01）2027 年度口径再校正」段（**数值零改动**） |
+| `tools/test-calc.js` | 新增 section 35「广东职工医保法定口径档 F3.json 与珠海/东莞 2027 候选值口径订正（第九十五批）」，新增断言 **39** 条（F3 结构与边界 8 + 七条逐字依据 8 + 两城口径订正 12 + 界面与数值零改动 8 + 来源库 2）；同步修正第八十七批 3 条、第八十八批 B / 第八十九批 2 条、第九十四批 1 条断言（按第九十五批新事实改写，断言总数不变） |
+
+### 四、本批数据变化
+
+- **数值零改动**（337 城全部维持；候选值 27603 / 5521 / 4785 / 7974 不变）。
+- 断言数 9234 → **9273**（section 35 新增 39 条，另有 6 条旧断言按新事实改写）。
+- 全库 urls 总数 2843 → **2851**（F2.json 两城各 +4；F3.json 因 `provinces` 为空数组贡献 0）。
+- 来源档数 105 → **106**（新建 `F3.json`）。
+
+## 第九十七批（2026-11-01）· 底部「数据依据与核查说明」结构化排版（数值零改动）
+
+### 一、本批回答
+
+用户要求：页面最下面那段「数据依据：…」排版做好点。原来它是一整块 11px 灰字，把「口径 + note 全文 + 核查日期」全部拼成一段；深圳、东莞这类长依据（最长 **7336 字**）挤成一坨，既没法速览，也读不出层次。
+
+| 问题 | 处理 |
+|---|---|
+| 一眼看不到口径 | 顶部加**速览卡 4 格**：基数口径 / 数据年度 / 公积金比例 / 医保大额（个人） |
+| 长依据糊成一段 | 官方依据改为**条目列表**：先按「；」拆，超过 220 字再按「。」二级拆；**原文逐字保留**，只做排版不改写 |
+| 文号/文件名不显眼 | `《…》`、〔2026〕xx号、「第 N 批」用 `<mark>` 浅色高亮 |
+| 核查日期混在正文里 | 单独成**胶囊清单**（9 条核查记录）+ 底部**复核提示条**（每年 1 月医保 / 7 月养老公积金） |
+| note 里带 `<` 会被当标签解析 | 新增 `fnEsc()` 先转义再高亮（库里 2 处 note 含 `<classifyId>_<page>.json`、`<CAT>.json` 占位符） |
+
+### 二、关键约束（不能破）
+
+1. `footNote.innerHTML` **必须以「数据依据：<城市> <年度>」开头**（第九十一批起的既有断言 + `docs/sources/README.md` 契约表）。因此**首行保留裸文本摘要**，结构化块接在其后。
+2. `footNote` 仍留在 `details.ft-note#ftNoteBox` 折叠容器内（第九十一批契约），默认折叠。
+3. `ftNoteSum` 的城市名同步写法不变（`$("ftNoteSum").textContent=CITY.name`）。
+
+### 三、新增接口（对最小 DOM 桩安全）
+
+| 函数 / 常量 | 作用 |
+|---|---|
+| `FN_CHECKS` | 9 条数据核查记录（日期 + 范围），与原脚注里的核查串逐条对应 |
+| `fnEsc(s)` | `&` `<` `>` 转义，防 note 里的尖括号被当标签 |
+| `fnHl(s)` | 转义后高亮 `《…》` / `〔2026〕xx号` / `第 N 批` |
+| `fnSplit(t)` | 「；」一级拆 + 「。」二级拆（>220 字），**原文逐字保留** |
+| `renderFootNote()` | 渲染速览卡 + 依据条目 + 核查清单 + 提示条；`selectCity()` 改为调用它 |
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | `<style>` 追加 `.fn-*` 系列 21 行；`<script>` 追加 `FN_CHECKS` + 4 个函数（约 61 行）；`selectCity()` 内原脚注长串赋值替换为 `renderFootNote();` |
+| `site/index.html` | 同步镜像（SHA256 与源文件逐字节一致） |
+| `tools/test-calc.js` | 新增 section 25「底部「数据依据与核查说明」结构化排版（第九十七批）」，新增断言 **28** 条 |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致）。
+- 断言数 9047 → **9075**（新增断言 28 条）。
+- 长依据实测：东莞/深圳级最长 note（7336 字）拆成 **55 条**，每条 26~354 字，无内容丢失（新增断言逐段核对原文）。
+
+
+## 第九十八批（2026-11-01）· 手机端「表单优先」：让税前月薪输入框进入首屏（数值零改动）
+
+### 一、本批回答
+
+用户反馈：手机端打开页面，要往下拉到大概中间的位置才能填「税前月薪」，很不方便。
+
+| 问题 | 处理 |
+|---|---|
+| 手机端首屏是结果区，输入框被顶到页面中部 | 删除 `@media(max-width:780px)` 里的 `.results{grid-row:1}` / `.panel-stack{grid-row:2}` —— 这两条把 DOM 顺序（输入面板 → 结果区）反转了；删掉后手机端视觉顺序与 DOM 顺序一致，**桌面端两栏栅格完全不变** |
+| 页头占掉首屏大半 | 手机端页头压缩：内边距 `24px→14px`、标题 `25px→24px`（≤520px 再降到 22px）、`.page-desc` 两行截断（`-webkit-line-clamp:2`） |
+| iOS 聚焦输入框时自动放大页面 | 手机端 `.input{font-size:16px}`（`.input.has-prefix` 仍保持 20px 大字，优先级更高） |
+| 填完还要手动往上翻看结果 | 「1 基本信息」面板底部加 **`.go-res` 锚点按钮**「查看测算结果 ↓」，指向新锚点 `#calcResults`；桌面端隐藏（`.go-res{display:none}`） |
+
+### 二、根因（定位到具体行）
+
+`skills/city-salary/assets/calculator.html` 的 `@media(max-width:780px)`（改动前 354–375 行）内写了：
+
+```css
+.results{grid-row:1}
+.panel-stack{grid-row:2}
+```
+
+`.workspace` 是 `display:grid` 单列（≤780px 改为 `grid-template-columns:1fr`），这两条把「结果区」提到第 1 行、「输入面板」压到第 2 行 —— 于是首屏是页头 + hero 结果面板，税前月薪输入框（改动前 529 行）落在页面中部。
+
+### 三、关键约束（不能破）
+
+1. **桌面端两栏栅格不动**：`.workspace{grid-template-columns:minmax(350px,400px) minmax(0,1fr)}` 与 `.panel-stack`/`.results` 的默认样式一字不改，只改 ≤780px 断点内的顺序规则。
+2. **视觉顺序不得与 DOM 顺序相反**（a11y）：删除 `grid-row` 反转后，手机端顺序 = DOM 顺序 = 输入面板 → 结果区，与桌面端阅读顺序一致。
+3. **不得新增 `details.panel`**：`tools/test-calc.js` 断言 `<section class="panel">` + `<details class="panel"` 计数 == 4，且步骤 2 必须保留 `<details class="panel" open>`。
+4. **计算引擎与全部数值零改动**：`CITIES` 工厂、`calc()`、`calcHist()`、`exportPDF()` 与所有渲染函数不动。
+5. `footNote` 首行「数据依据：…」与 `details.ft-note#ftNoteBox` 默认折叠（第九十七批契约）不变。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①基础样式新增 `.go-res{display:none}`；②`@media(max-width:780px)` 删除两条 `grid-row` 反转并重写页头压缩规则 + `.input{font-size:16px}` + `.go-res` 移动端样式；③`@media(max-width:520px)` 标题 23px→22px；④「1 基本信息」面板内 `#medRow` 之后新增 `<a class="go-res" href="#calcResults">查看测算结果 ↓</a>`；⑤结果区加锚点 `id="calcResults"` |
+| `site/index.html` | 同步镜像（同样 5 处；两文件 SHA256 相同、5083 行，逐字节一致） |
+| `tools/test-calc.js` | 新增 section 26「手机端表单优先（第九十八批）」，新增断言 **18** 条（移动端不再反转 3 + 页头压缩 3 + 字号 2 + 锚点按钮 6 + 运行时 id 2 + 数值零改动 2） |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9075 → **9093**（新增断言 18 条）。
+- DOM id 总数 82 → **103**（新增 `calcResults` 等锚点 id，`check-dom` 复核无重复）。
+
+
+## 第九十九批（2026-11-01）· 滑块手柄溢出修复：公积金比例拉到 12% 时手柄跑出卡片（数值零改动）
+
+### 一、本批回答
+
+用户截图反馈：把公积金比例（个人 / 单位）滑到 **12%** 时，滑块手柄被卡片右缘裁掉一半，手柄跑到了框外。
+
+| 问题 | 处理 |
+|---|---|
+| 手柄在最大值（12%）时被卡片右缘裁切 | `.sld input[type=range]` 增加 `margin:0 10px` —— 手柄在 0% / 100% 时是**悬在轨道端点外侧**的（半径约 8px），两端各留 10px 后手柄完整落在卡片内 |
+| 窄屏下轨道撑破卡片 | 同一规则补 `min-width:0` —— flex 项目默认 `min-width:auto`，`<input type=range>` 有固有宽度，窄容器里不肯收缩会直接撑破卡片；置 0 后可正常收缩 |
+| 手柄与相邻文字贴太近 | 两端各 10px 留白后手柄不再压住标签与数值 |
+
+### 二、根因（定位到具体行）
+
+`skills/city-salary/assets/calculator.html` 的 `.sld` 行（改动前 176–179 行）：
+
+```css
+.sld{display:flex;align-items:center;gap:12px;padding:7px 0}
+.sld label{font-size:13px;color:var(--muted);white-space:nowrap}
+.sld input[type=range]{flex:1;height:5px;accent-color:var(--primary);cursor:pointer}
+```
+
+两个原因叠加：①`flex:1` 的 flex 项目 `min-width` 默认为 `auto`，range 输入框有固有宽度，容器不够宽时**不收缩而是撑破**；②浏览器原生 range 的手柄在轨道两端是**悬出**的，右侧又没有预留空间，于是拖到最大值 12% 时手柄越出 `.sld` 行、被卡片右缘裁掉。
+
+### 三、关键约束（不能破）
+
+1. **不改滑块外观与交互**：继续用浏览器原生 `accent-color` 渲染（双色进度轨道、系统级无障碍与键盘操作全部沿用），只调 flex 收缩与留白，不自绘 thumb。
+2. **不碰 JS 绑定**：两个滑块的 `oninput="calc()"`、`hfRate` / `hfRateComp` 的 id 与 `min=0 max=12 step=1` 一字不改。
+3. **计算引擎与全部数值零改动**：`CITIES` 工厂、`calc()`、`calcHist()`、`exportPDF()` 与所有渲染函数不动。
+4. **单位比例仍受本市上限约束**：`hfRComp=normHF(gv("hfRateComp"),CITY.hfRateMax)` 逻辑不变（上海 7% 等城市依旧封顶）。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | `.sld input[type=range]` 规则改为 `flex:1;min-width:0;height:5px;accent-color:var(--primary);cursor:pointer;margin:0 10px`，并加一行注释说明两个属性各自解决什么 |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/test-calc.js` | 新增 section 27「滑块手柄不溢出卡片（第九十九批）」，新增断言 **11** 条（收缩与预留 4 + 两个滑块 3 + 运行时 1 + 数值零改动 3） |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9093 → **9104**（新增断言 11 条）。
+- DOM id 总数不变（103）。
+
+
+## 第一百批（2026-11-01）· 企业年金比例上限回写：不能选超过 4% 的比例（数值零改动）
+
+### 一、本批回答
+
+用户截图反馈：「企业年金可以选择比限制数还大的」—— 输入框旁边写着「≤缴费工资基数 4%」，却能填 5、8 等超限值。
+
+| 问题 | 处理 |
+|---|---|
+| `max="4"` 只是 HTML 软限制，浏览器不拦手动输入 | 计算时按上限**回写输入框**（>4 回写 4，<0 回写 0），并显示提示「上限 4%（缴费工资基数），已按 4% 计算」 |
+| 结果面板显示原始输入值，与实际计算不一致 | 渲染改用**夹取后的**比例（`D.anPct`），输入 8 时面板显示「企业年金(个人4%)」而不是 8% |
+
+### 二、根因（定位到具体行）
+
+`skills/city-salary/assets/calculator.html` 改动前两处：
+
+```js
+var anPct=cl(gv("annuity"),0,4)/100;   /* 计算层已经正确夹到 0~4 */
+...
+if(D.anAmt>0)h+='<div class="r ind"><label>− 企业年金(个人'+gv("annuity")+'%)</label>…   /* 渲染层用了原始值 */
+```
+
+即：**计算口径一直是对的**（按 4% 算），错的是「输入框不拦超限」＋「渲染用原始值」——于是界面写着 5%，金额却按 4% 算，两边对不上。
+
+### 三、关键约束（不能破）
+
+1. **口径表达式原样保留**：`cl(gv("annuity"),0,4)/100` 一个字不改 —— `tools/check-sync.js` 的「企业年金个人比例上限」契约正则依赖它，计算数值零改动。
+2. **回写采用既有模式**：与公积金比例 `normHF` 一样在计算流程内回写（`$("hfRate").value=hfR`），`readInputs` 本就有写 DOM 的副作用。
+3. **不静默吞掉用户输入**：超限时同时给出可见提示（沿用 `startWarn` 的 `.nt` / `style.display` 提示范式）。
+4. **不动其它专项附加扣除项**：子女教育 10000、继续教育 400、赡养老人 3000 等仍按原逻辑夹取（它们的渲染不引用原始值，无显示不一致问题）。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①markup：`#annuity` 行新增提示元素 `<span class="h" id="annuityWarn" style="display:none;color:var(--danger)"></span>`；②`readInputs`：新增 `anRaw` / `anOver` 判定、超限回写 `if(anOver)$("annuity").value=(anRaw>4)?4:0;` 与提示显隐（口径表达式 `cl(gv("annuity"),0,4)/100` 不动）；③渲染：百分比由 `gv("annuity")` 改为 `Math.round(D.anPct*1000)/10` |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/test-calc.js` | 新增 section 28「企业年金比例上限回写（第一百批）」，新增断言 **13** 条（静态契约 6 + 超限回写运行时 2 + 渲染一致性运行时 3 + 数值零改动 2） |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；年金 4% 的年度金额仍按养老缴费基数计，`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9104 → **9117**（新增断言 13 条）。
+- DOM id 总数 103 → **104**（新增 `annuityWarn`）。
+
+
+## 第一百零一批（2026-11-01）· PDF 导出版面：横向铺开 + 不再把「导出 PDF」按钮印进 PDF（数值零改动）
+
+### 一、本批回答
+
+用户实测导出后反馈：「导出的 PDF 右侧被挤压，且最下方还保留导出 PDF 按钮不合理」（附 `深圳工资历史明细.pdf`）。
+
+| 问题 | 处理 |
+|---|---|
+| 右侧被挤压（表格「实发工资」列被切、图表右轴刻度「10,000」被切一半、标题行「统计区间…」溢出右缘） | 纸张改 **A4 横向**（297×210mm）+ 四周 10mm 页边距；导出渲染宽度固定 `EXPORT_W=1180`（不再取 `node.scrollWidth`），内容缩放比从 0.52 提到约 0.7 |
+| 表格横向溢出被裁 | 导出模式 `.exp .tbl-wrap{overflow:visible}` —— 克隆文档里不再横向滚动 |
+| 图表右轴刻度被裁 | 克隆文档里图表 viewBox 换成 `EXPORT_CHART_VB="0 -12 784 304"`（四周留余量） |
+| 标题行长文溢出 | 导出模式 `.exp .tbl-title{flex-wrap:wrap}` + `.tt{white-space:normal}` |
+| PDF 底部留着「导出 PDF」按钮 | 导出按钮卡片加 id `exportCard`，导出模式 `.exp #exportCard{display:none}` |
+
+### 二、根因（定位到具体代码）
+
+旧 `exportPDF()` 两处：
+
+```js
+html2canvas(node,{scale:2,useCORS:true,backgroundColor:"#f8fafc",windowWidth:node.scrollWidth})
+…
+var pdf=new jspdf.jsPDF("p","mm","a4");
+var pw=210,ph=297;var imgW=pw,imgH=canvas.height*pw/canvas.width;
+```
+
+- `windowWidth:node.scrollWidth` → 截图宽度**随导出当时的窗口宽度**变化（实测 1154px），窄窗口导出更糟；
+- 整页长图按 `imgW=210`（A4 全宽、零页边距）放置 → 1154px 内容被压到 0.52 倍，字号被挤小；
+- `.tbl-wrap{overflow-x:auto}` 的横向溢出部分 html2canvas **不会滚动**，直接被截断 → 右侧列丢失；
+- 导出按钮卡片在 `#page1` 内，而 `@media print` 的 `.export-btn{display:none}` html2canvas **不套用** → 按钮被印进 PDF。
+
+用户那份 PDF 的实测证据：1 页 A4 纵向（MediaBox 595.28×841.89pt），图像 XObject 2308×3020（scale:2 → 1154×1510 CSS px），放置矩阵 `q 595.2756 0 0 778.9135 0 62.9765 cm` —— **铺满全宽、零页边距**，提取位图后确认三处裁切 + 底部按钮卡片。
+
+### 三、关键约束（不能破）
+
+1. **数值零改动**：`calc()` / `renderChart()` / `renderHist()` 等一律不动，`check-golden` 16 用例 × 4 面板逐字节一致。
+2. **页面本身不受导出模式影响**：`.exp` 规则只加在 `html2canvas` 的 `onclone` 克隆文档上（`<html>` 加类），页面上的图表 viewBox、导出按钮都保持原样。
+3. **降级链必须继续可用**：`tools/test-export.js` 的桩只提供 `html2canvas`（返回 `{width,height,toDataURL}`）与 `jsPDF`（`addImage/addPage/save`），新代码不得依赖它们的其它 API。
+4. **分页沿用整图长图偏移**（不引入多次截图）：内容高于一页时后续页 y 为负、长图向上滚动，不重复不丢内容；估算标题+表格 ~710px < 第 1 页 810px，表格不跨页被切断。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①CSS（`@media print` 之后）新增「PDF 导出模式」5 条 `.exp` 规则；②markup：导出按钮卡片加 `id="exportCard"`；③JS 常量 `EXPORT_W=1180` / `EXPORT_CHART_VB="0 -12 784 304"` / `EXPORT_PDF={pw:297,ph:210,mx:10,my:10}`；④`html2canvas` 改固定 `windowWidth:EXPORT_W` + `onclone` 加 `.exp` 与重设 viewBox；⑤PDF 组装改 `orientation:"landscape"` + 页边距 + 偏移分页 |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/test-calc.js` | 新增 section 29「PDF 导出版面（第一百零一批）」，新增断言 **19** 条（导出模式样式 5 + 导出参数 9 + 页面本身未受影响 3 + 数值零改动 2） |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9117 → **9136**（新增断言 19 条）。
+- DOM id 总数 104 → **105**（新增 `exportCard`）。
+
+## 第一百零二批（2026-11-01）· 收入构成占比条 + 历史明细页移动端适配（数值零改动）
+
+### 一、本批回答
+
+用户提两件事（附截图）：「我需要你做一个这个占比条」（结果区里的实发 / 五险一金 / 个税占比条 + 图例 + 「年度明细 →」按钮）与「年度明细在手机端没有适配」。
+
+| 问题 | 处理 |
+|---|---|
+| 结果区没有占比条，看不出「实发 / 五险一金 / 个税」各占多少 | 新增独立卡片 `#mixCard`（深绿 hero 风格，与截图一致），三段占比条 + 图例 + 「年度明细 →」跳转按钮 |
+| 占比条放哪里会污染黄金快照 | 卡片放在 `#res` **之外**单独渲染（`renderMixBar`），`check-golden` 捕获的 res 面板快照逐字节不变 |
+| 年度明细 15 列表格在手机上被挤成一团 | 手机端表格保留 `min-width:1120px` 改为**横向滚动**，配「← 左右滑动查看全部 15 列 →」提示；表头/单元格字号与内边距收窄；可编辑输入框收窄到 58px |
+| 手机端图表右轴刻度被切 | `.chart-box{overflow-x:auto}` + 图表 `min-width:620px`，图表整体可横向滚动 |
+
+### 二、根因与设计取舍
+
+1. **占比条的分母**：截图里三段是「占税前工资」的比例，不是「占扣除合计」。因此分母统一取 `sal`（税前月薪），三段为 `net`（实发）、`siE+hfE`（五险一金个人部分）、`curT`（个税），合计恰好 100%（有补充扣除时追加第四段 `.s4`）。
+2. **为什么不写进 `#res`**：`tools/check-golden.js` 捕获 `res` 面板（`api._html('res')`）逐字节比对，任何写进 `#res.innerHTML` 的新 UI 都会让黄金用例失败；而沙箱禁止 node/cmd 写文件，**无法重新冻结 310KB 快照**。因此占比条做成 `#res` 之外的独立卡片（`#mixCard`），由 `renderMixBar()` 渲染，`renderResult()` 末尾调用一次 —— 数值零风险、快照零变更。
+3. **手机端表格为什么用 `min-width` 而不是缩字号**：15 列里含「38,521.66」这类 8 字符数字，压到 11px 以下仍放不下；宁可横向滚动也不牺牲数字可读性，并给出明确滑动提示。
+
+### 三、关键约束（不能破）
+
+1. **数值零改动**：`calc()` / `calcHist()` / `renderResult()` 的数值输出逻辑 / `renderChart()` / `renderHistTable()` 一律不动；`check-golden` 16 用例 × 4 面板逐字节一致。
+2. **不新增 `details.panel`**、不折叠化步骤 2（`<details class="panel" open>` 必须保留）——既有 UI 契约断言依赖。
+3. **DOM id 只增不改**：新增 `mixCard` 一个 id，历史 id 一个不丢。
+4. **`#res` 面板 HTML 必须与冻结快照逐字节一致**（黄金用例 D 检查直接比对 `res` + `bonus` + `hist` + `sum` 四个面板）。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①CSS：`.hero .hb`（占比条）/`.hero .hlg`（图例）/`.hero .hm`（底部行）/`.hero .mix-hd`/`.hero .go-hist`（描边按钮）；②CSS：`.tbl-hint{display:none}`（桌面隐藏）；③CSS（≤780px）：`.tbl-hint{display:block}`、`table.hist{min-width:1120px;font-size:11px}`、表头/单元格内边距与字号收窄、`table.hist td input{width:58px}`、`.chart-box{overflow-x:auto}` + `.chart-box svg{min-width:620px}`；④markup：`#res` 后加 `<div class="hero" id="mixCard" aria-label="收入构成占比"></div>`，历史表格 `.tbl-wrap` 前加 `.tbl-hint` 提示；⑤JS：新增 `renderMixBar(net,siE,hfE,curT,sal,suppCash)`，`renderResult()` 末尾调用 |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/test-calc.js` | 新增 section 30「收入构成占比条与历史明细移动端适配（第一百零二批）」，新增断言 **20** 条（占比条结构 9 + 运行时 3 + 手机端适配 6 + 数值零改动 2） |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9136 → **9156**（新增断言 20 条）。
+- DOM id 总数 105 → **106**（新增 `mixCard`）。
+
+## 第一百零三批（2026-11-01）· 城市选择器改版：去「全部」/ 默认广东 / 城市网格横排（数值零改动）
+
+### 一、本批回答
+
+用户看城市选择弹层的截图后提三点：「选择省后应该让下面空白处排版好各个市，不要以竖直的方式去让用户选择」「去除第一个全部的选项」「默认就是广东」。
+
+| 问题 | 处理 |
+|---|---|
+| 省份胶囊第一个是「全部」，且默认停在「全部」，下方 3 列省份并排、每个省的城市竖直堆成一根长柱 | **删掉「全部」按钮**；当前省默认 **广东**；`.city-grid` 改单列，**常态只渲染当前省** |
+| 选中的省下面城市竖着排，要一路往下滚 | 省下城市改 **网格横排**（`repeat(auto-fill,minmax(168px,1fr))` 卡片），21 市一屏铺开 |
+| 搜索要能跨省命中（原来能搜到外省城市） | 搜索态由 `citySearchMode` **临时渲染全部省份**，命中后自动展开；清空搜索/切换省份即回到当前省 |
+
+### 二、根因与设计取舍
+
+1. **原来为什么是竖直长柱**：`.city-grid` 是 `repeat(3,1fr)` 三列，每列一个省（`.tree-prov`），省内城市是 `.tree-cities` 里的**竖直** `details` 列表；`.prov-tab` 的「全部」让 `prov=null`，三列并排显示全部 34 个省，用户在「三根长柱」里找城市。
+2. **为什么常态只渲染当前省**：省与城市是两级选择，顶部已有 34 个省胶囊，底部再摆一遍省份是重复信息。改成「上面选省 → 下面网格铺开该省城市」，层级更清楚，且常态 DOM 里只有 1 个省块、21 张城市卡。
+3. **搜索跨省怎么保住**：`filterCity(q)` 依赖 `document.querySelectorAll(".tree-prov")` 逐省匹配（第九十一批契约）。因此搜索时把 `citySearchMode` 置真、临时重建全部省份再过滤，命中省与命中城市自动 `open`；搜索词清空后立刻重建回当前省。`.tree-prov` / `.tree-city` 类名与 `querySelectorAll(".tree-prov")` 写法**原样保留**，第九十一批断言不受影响。
+
+### 三、关键约束（不能破）
+
+1. **数值零改动**：`calc()` / `calcHist()` / 城市参数工厂全部不动；`check-golden` 16 用例 × 4 面板逐字节一致。
+2. **第九十一批 UI 契约不破**：`class="tree-prov"`、`class="tree-city"`、`querySelectorAll(".tree-prov")`、`.tree-prov{` 样式全部保留。
+3. **DOM id 只增不改**：本批**不新增 id**（历史 id 一个不丢，也不多一个）。
+4. **计算与选择逻辑分离**：`selectCity(k)` 的选城流程不变，选中后 `prov` 跟随该市所在省。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①CSS：`.city-grid` 由 `repeat(3,1fr)` 改 `1fr`；`.tree-cities` 改网格（`repeat(auto-fill,minmax(168px,1fr))`）；`.tree-city` 卡片化（1px 边框 + 12px 圆角 + `[open]` 高亮）；`.tree-areas` 改卡片内胶囊区（带上边框虚线）；②JS：`var prov="广东"`、`var citySearchMode=false`、`buildProvTabs()` 去掉「全部」按钮、`buildCityGrid()` 常态只渲染当前省、`setProv()`/`showOverlay()` 兜底回广东、`filterCity(q)` 搜索态临时渲染全部省；③markup：弹层说明补「默认广东」 |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/test-calc.js` | 新增 section 31「城市选择器改版（第一百零三批）」，新增断言 **20** 条（静态契约 12 + 运行时 6 + 数值零改动 2） |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9156 → **9176**（新增断言 20 条）。
+- DOM id 总数 106 → **106**（本批不新增 id）。
+
+## 第一百零四批（2026-11-01）· 历史明细表固定列宽：右侧列不再被裁（数值零改动）
+
+### 一、本批回答
+
+用户导出 PDF 后截图反馈「还是一样」：**表格右侧的列仍然被切掉**（导出的是 A4 横向 PDF 第 1 页，左边距正好 10mm，右边「公积金基数」之后的列、底部第 4 张汇总卡都被右缘裁掉）。
+
+| 问题 | 处理 |
+|---|---|
+| 表格 15 列的 min-content 宽度（约 1660px）把 `.history-view` 这个 grid item 顶宽，`max-width:var(--max)` 被 `min-width:auto` 压制 → 表格与汇总卡都溢出 `#page1` 节点框 | `.history-view` 加 `min-width:0`、`.tbl-wrap` 加 `min-width:0;max-width:100%`，容器不再被内容顶宽 |
+| 表格是 auto 布局，列宽由内容撑开，宽度不可控 | 改 `table-layout:fixed`：勾选列 30px、月份列 58px、其余 12~13 列均分；表头允许换行（`white-space:normal`）、数字列字号 11px、可编辑框按列宽铺满（`width:100%;max-width:78px`） |
+| 导出时 html2canvas 只渲染节点框内的内容，溢出的右侧列被裁 | 表格宽度改为跟随容器（`width:100%` + `min-width:960px`），**永远不再溢出节点框**，PDF 与网页同时不再裁列 |
+| 手机端横滑宽度按旧列宽算（840px）不够 | ≤780px 的 `min-width` 提到 **1120px**，保证均分列宽下数字仍放得下 |
+
+### 二、根因与设计取舍
+
+1. **为什么 `max-width` 会失效**：`.history-view` 是 grid item，grid item 的 `min-width:auto` 解析为 **min-content 尺寸**；min-content 尺寸只有在 `overflow` 不是 `visible` 时才会被压到 0，而 `.history-view` 没有设 overflow → 表格的 min-content 宽度（1660px）直接把它顶宽，`max-width:var(--max)` 被压制。**加 `min-width:0` 是这条链的关键**。
+2. **为什么不能继续用 auto 布局**：auto 布局下列宽由内容决定（"38,521.66" 这类数字撑宽列），总宽不可控，导出必然溢出。fixed 布局把宽度变成「容器宽 - 固定列 - 均分」，可预测。
+3. **为什么不改 markup 加 `<colgroup>`**：改 markup 会改变 `check-golden` 捕获的 `hist` 面板 HTML 快照，而沙箱禁止 node/cmd 写文件、**无法重新冻结 310KB 快照**。改用 CSS `nth-child` 指定前两列宽度、其余自动均分，**markup 一字未动**，golden 仍逐字节一致。
+4. **列宽与字号怎么配**：固定列 30+58=88px，其余 12~13 列在 1132px（导出画布宽）下均分 ≈ 80px；数字列 11px 字号下 "123,456.78" 约 58px，加内边距 8px 仍在 66px 以内 → 放得下；可编辑框里是原始数字（"10000"，无千分位）更窄。手机端 1120px 下均分列 ≈ 79px，同样放得下。
+
+### 三、关键约束（不能破）
+
+1. **数值零改动**：`calc()` / `calcHist()` / `renderHistTable()` / `renderResult()` 一律不动，`check-golden` 16 用例 × 4 面板逐字节一致。
+2. **markup 一字未动**：`<table class="hist" id="histTable"></table>` 保持原样，历史 DOM id 一个不丢、也不多一个。
+3. **第一百零一批的导出修复不能被破坏**（`.exp .tbl-wrap{overflow:visible}`、`.exp #exportCard{display:none}`、`EXPORT_W=1180`、A4 横向）全部保留。
+4. **第九十一批 / 第一百零二批的既有契约同步更新**：手机端 `min-width` 由 840px 提到 1120px，测试断言与本文档同步。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①CSS：`.tbl-wrap{overflow-x:auto;min-width:0;max-width:100%}`；`table.hist{width:100%;min-width:960px;table-layout:fixed;...}`；`table.hist th:first-child,table.hist td:first-child{width:30px}`；`table.hist th:nth-child(2),table.hist td:nth-child(2){width:58px}`；`table.hist th{...white-space:normal;line-height:1.35}`；`table.hist td{...;font-size:11px}`；`table.hist td input{width:100%;max-width:78px;...}`；②CSS：`.history-view{...;min-width:0}`、`.tbl-title .tt{...;min-width:0;overflow-wrap:anywhere}`；③CSS（≤780px）：`table.hist{min-width:1120px;...}`、单元格内边距收紧到 4px |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/test-calc.js` | 新增 section 32「历史明细表固定列宽（第一百零四批）」，新增断言 **25** 条（根因修复 13 + 手机端 2 + 导出模式回归 5 + markup 未动 3 + 数值零改动 2）；第一百零二批那条「手机端表格保留最小宽度」断言同步为 1120px |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9176 → **9201**（新增断言 25 条）。
+- DOM id 总数 106 → **106**（本批不新增 id）。
+
+## 第一百零五批（2026-11-01）· 收入构成占比条并入「税后实发」主卡（数值零改动）
+
+### 一、本批回答
+
+用户拿两张截图提要求：「要放在税前实发（潮州 · 11月）这个模块下面。两个模块可以合并在一起。不要搞一个单独的模块。」——即第一百零二批做成独立深绿卡片的「收入构成」占比条，用户不要它单独成卡，要它并进「税后实发（城市 · 月）」那张主卡里。
+
+| 问题 | 处理 |
+|---|---|
+| 「收入构成」是一张独立卡片，与「税后实发」主卡割裂 | 占比条改为 `mixBarHtml()` 返回 HTML 片段，由 `renderResult()` 嵌进 hero 主卡内部，位于「税后实发」行（`.tp`）之下、三列明细（`.cd`）之上 |
+| 独立卡片 `#mixCard` 还要留着吗 | **删除**（markup 里那行 `<div class="hero" id="mixCard">` 去掉，DOM id 106 → 105） |
+| 合并后视觉上要不要分隔 | 新增 `.hero .mx` 分隔区（`border-top:1px solid rgba(255,255,255,.13)` + `padding-top:18px`），内部占比条间距收紧为 `margin-top:10px`；`.hb`/`.hlg`/`.hm`/`.go-hist` 原有样式沿用 |
+| hero 结构变了，黄金快照会不会全炸 | 只影响 `res` 面板；已重新冻结并逐用例验证「去掉 `.mx` 区块后与旧 res 逐字节一致、`bonus`/`hist`/`sum` 零变化」 |
+
+### 二、根因与设计取舍
+
+1. **为什么原来会单独成卡**：第一百零二批为了避开 `check-golden` 冻结的 `res` 面板快照，把占比条做成 `#res` 之外的独立卡片 `#mixCard`（当时沙箱禁止子进程写 `repo/`，无法重新冻结 310KB 快照）。本批审批策略改为 `danger-full-access` 后，子进程可直接写 `repo/`，重新冻结快照成为可行路径 —— 这才腾出「并入主卡」的实现空间。
+2. **并入方式选「函数返回片段」而不是「DOM 搬运」**：让 `mixBarHtml()` 只负责拼字符串、由 `renderResult()` 拼进 `h` 字符串，hero 的 HTML 一次性成型，**不会出现「先渲染空卡再插内容」的中间态**；同时 `mixCard` 这个 id 可以彻底删掉，不必再维护两处渲染入口。
+3. **位置选在 `.tp` 之后、`.cd` 之前**：「税后实发（城市 · 月）+ 大数字 + 实发比例」是主卡第一屏信息，占比条紧跟其下解释「钱去哪了」，再往下才是五险一金 / 个税 / 扣除合计三列明细 —— 顺序与用户的直觉一致。
+4. **重新冻结快照必须留痕**：不是「跑了 `--update` 就算过」，而是先用逐用例 diff 脚本证明「新旧快照的唯一差别就是插入的 `.mx` 区块」，再重新冻结，避免把别的数值变化一起冻结进去。
+
+### 三、关键约束（不能破）
+
+1. **数值零改动**：`calc()` / `calcHist()` / `renderChart()` / `renderHistTable()` 一律不动；`check-golden` 16 用例 × 4 面板逐字节一致（`bonus`/`hist`/`sum` 三面板与旧快照零差异）。
+2. **占比条数值口径不动**：分母仍是税前工资 `sal`，三段（+ 补充扣除时第四段）合计 100%。
+3. **既有 DOM id 一个不丢**：只删 `mixCard`（本批新增的），历史 id 全部保留。
+4. **第一百零二批的契约断言同步更新**（`id="mixCard"` 不再存在、`renderMixBar` 改名为 `mixBarHtml`）。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①CSS：新增 `.hero .mx{position:relative;margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.13)}` 与 `.hero .mx .hb{margin-top:10px}`；②JS：`renderMixBar(...)` → `mixBarHtml(...)`（返回 HTML 片段，不再写 DOM）；③JS：`renderResult()` 在 `.tp` 行后插入 `h+=mixBarHtml(net,siE,hfE,curT,sal,D.suppCash);`，删除末尾的 `renderMixBar(...)` 调用；④markup：删除 `<div class="hero" id="mixCard" aria-label="收入构成占比"></div>` |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/golden-cases.json` | hero 结构变化 → res 面板快照重新冻结（`node tools/check-golden.js --update`），已逐用例 diff 验证「仅新增 `.mx` 区块」 |
+| `tools/test-calc.js` | section 30 的占比条断言同步更新（3 条静态 + 1 条运行时改为从 `res` 里取 `.mx` 区块）；新增 section 33「收入构成占比条并入税后实发主卡（第一百零五批）」，新增断言 **16** 条（静态 8 + 运行时 6 + 数值零改动 2） |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9201 → **9217**（新增断言 16 条）。
+- DOM id 总数 106 → **105**（删除 `mixCard`）。
+
+## 第一百零六批（2026-11-01）· PDF 导出不重复渲染 + 卡片不被页边界切开（数值零改动）
+
+### 一、本批回答
+
+用户只发了一张导出 PDF 的截图（无文字）：**「每月工资 · 五险一金 · 个税趋势图」的标题在第 1 页底部和第 2 页顶部各完整出现一次**，第 1 页底部那一份还被页边界切开（图例行被切成两半）。
+
+| 问题 | 处理 |
+|---|---|
+| 同一个图表标题在两页各完整出现一次（内容被画了两遍） | html2canvas 调用补上 `windowHeight`（内容全高 + 400px 余量，下限 2400px）与 `scrollX:0,scrollY:0` —— **旧实现只给了 `windowWidth`，克隆 iframe 的高度仍是浏览器窗口高（约 800px），而 `#page1` 实测 1244px 高，html2canvas 只能在视口内取材，超出视口的部分会在拼接缝处被重复绘制** |
+| 导出时页面已滚动 → 整块内容错位 | `scrollX:0,scrollY:0` 显式归零（导出前通常已经滚到明细页） |
+| 趋势图卡被页边界切成两半（标题 / 图例 / 图表分离） | 分页改「段」式，切点落在**不可切块**（趋势图卡片、汇总卡）内部时**整块推到下一页**；切点落在明细表格行内部时**切点提前到该行顶边**，一行不会被切成两半 |
+| 打印兜底路径（`window.print()`）仍会把「导出 PDF」按钮印进 PDF | `@media print` 补 `#exportCard{display:none!important}` 与 `.tbl-wrap{overflow:visible}` |
+
+### 二、根因与设计取舍
+
+1. **重复的真正来源不是分页算法**：旧的分页是「整张长图按 190mm 偏移」——数学上不可能让同一块内容在两页各出现一次，所以重复只可能来自**画布本身画了两遍**；而 html2canvas 的克隆视口高度没给（默认取窗口高），超出视口的内容会在拼接缝处被重复绘制。
+2. **切点只提前、绝不推后**：把切点推到「下一行底边」会让本页内容超出页面容量 → 底部被裁。正确做法是切点**提前到该行顶边**，本页少放一行、下一行整行出现在下一页。
+3. **表格卡不算「不可切块」**：它比一页高（表格 13 行 + 汇总卡 ≈ 702px，一页容量 ≈ 761px，深圳实测几乎正好一页；换行数更多时仍会超），只能允许它在行边界断开；真正必须完整的是**趋势图卡片**与**汇总卡**（被切开就会出现「标题在这页、图例在下页」）。
+4. **用 headless Chrome 实测几何，而不是纸上推演**：本机无网络，html2canvas/jsPDF 取不到 CDN，无法端到端跑导出；改用 headless Chrome（CDP）在真实 DOM 里量测 `.history-view > .c` / `.sum-grid` / `#histTable tr` 的边界，复刻分页算法验证 —— 深圳 1180 视口实测 `#page1` 高 1244px、每页容量 761px、趋势图卡 top=739/h=505、汇总卡 top=625/h=77、明细 13 行边界齐全；结果 `cardCuts=[]`、`rowCuts=[]`、分段覆盖 1244/1244（gap=0）→ **没有任何卡片或行被切开，且内容不重不漏**。
+
+### 三、关键约束（不能破）
+
+1. **数值零改动**：`calc()` / `calcHist()` / `renderChart()` / `renderHistTable()` / `renderResult()` 一律不动；`check-golden` 16 用例 × 4 面板逐字节一致（DOM 结构未动，`res`/`bonus`/`hist`/`sum` 四面板均零差异）。
+2. **DOM markup 一字未动**：本批只改 `exportPDF()` 与 `@media print` 样式，历史 DOM id 一个不丢、也不多一个（105 个）。
+3. **第一百零一批的导出修复不能被破坏**：`.exp .tbl-wrap{overflow:visible}`、`.exp #exportCard{display:none}`、`EXPORT_W=1180`、A4 横向 + 10mm 页边距全部保留。
+4. **导出降级链不能破**：CDN 未就绪 / 画布生成失败 / PDF 组装失败三条路径仍要在超时后落到 `window.print()` 兜底（`tools/test-export.js` 5 项全绿）。
+
+### 四、落码清单
+
+| 文件 | 改动 |
+|---|---|
+| `skills/city-salary/assets/calculator.html` | ①`exportPDF()`：html2canvas 参数补 `windowHeight:exportH`（`var exportH=Math.max(nodeH+400,2400)`）、`scrollX:0,scrollY:0`；②`onclone` 里量测分页约束：`cardBounds`（`.history-view > .c` 跳过含 `#histTable` 的表格卡 + `.sum-grid`）、`rowEdges`（`#histTable tr` 的 top/bottom）、`cloneH`；③分页改「段」式（`rowMm` / `rowsPerPage` / `segs` 数组 / 逐段 `addImage` + `addPage`），旧的 `heightLeft-=ch` 整图偏移循环删除；④切点规则：不可切块内部 → `pushTo` 整块推到下一页；行内部 → 切点提前到该行顶边；④`@media print` 补 `#exportCard{display:none!important}` 与 `.tbl-wrap{overflow:visible}` |
+| `site/index.html` | 同步镜像（两文件 SHA256 相同，逐字节一致） |
+| `tools/test-calc.js` | section 34「导出 PDF 不重复渲染 + 卡片不断开（第一百零六批）」共 **17** 条断言（克隆视口 3 + 分页段式 5 + 量测与切点规则 5 + 纸张与导出模式 2 + 打印兜底 2 + 数值零改动 2，其中 section 34 内的断言文案随实现从「整卡推到下一页」细化为「不可切块推页 + 行边界吸附」） |
+| `tools/test-export.js` | 新增 `fakeHtml2canvas(opts,result)` 包装器：桩会调用 `o.onclone(document)`（document 桩无 `getBoundingClientRect` → 走 catch 分支），3 个用例改用该包装器 |
+
+### 五、本批数据变化
+
+- **数值零改动**（337 城全部维持；`check-golden` 16 用例 × 4 面板逐字节一致、`check-dom` 通过、`test-export` 通过）。
+- 断言数 9217 → **9234**（section 34 共 17 条）。
+- DOM id 总数仍 **105**（本批未新增/删除 id）。
+- 导出版面（深圳实测）：`#page1` 高 1244px → 2 页；第 1 页 = 明细表（表头 + 12 行）+ 汇总卡，第 2 页 = 完整趋势图卡（标题 + 图例 + 图表，不再被切开、不再重复）。

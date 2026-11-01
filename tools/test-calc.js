@@ -3916,13 +3916,13 @@ section('16. 珠海/东莞 2027 年度职工医保基数底数五重闭合与纯
   eq('第八十七批·F2.json 珠海 rawQuotes 含国办发13号逐字', cOf('zh').rawQuotes.some(q => /国办发〔2019〕13号/.test(q)), true);
   eq('第八十七批·F2.json 珠海 rawQuotes 含 62号文费率表逐字', cOf('zh').rawQuotes.some(q => /7\.5%/.test(q) && /单建统筹/.test(q)), true);
   eq('第八十七批·F2.json 珠海 rawQuotes 含 2027 件巡检结论', cOf('zh').rawQuotes.some(q => /发文窗口/.test(q)), true);
-  eq('第八十七批·F2.json 珠海 candidateBasis 载五重闭合', /五重闭合/.test(cOf('zh').candidateBasis || ''), true);
-  eq('第八十七批·F2.json 珠海 candidateConfidence 标注下限收敛', /收敛/.test((cOf('zh').candidateConfidence || {}).min || ''), true);
+  eq('第八十七批·F2.json 珠海五重闭合推定留痕仍在案卷（第九十五批改写 candidateBasis 后移入 rawNotes）', /五重闭合/.test(cOf('zh').rawNotes || ''), true);
+  eq('第八十七批·F2.json 珠海下限收敛留痕仍在案卷（第九十五批改写 candidateConfidence.min 后移入 rawNotes）', /收敛/.test(cOf('zh').rawNotes || ''), true);
   eq('第八十七批·F2.json 东莞 urls 含纯图 post_4520273', cOf('dg').urls.some(u => /4520273/.test(u)), true);
   eq('第八十七批·F2.json 东莞 urls 含东人社发35号 post_4596758', cOf('dg').urls.some(u => /4596758/.test(u)), true);
   eq('第八十七批·F2.json 东莞 rawQuotes 含 OCR 逐字', cOf('dg').rawQuotes.some(q => /OCR/.test(q)), true);
   eq('第八十七批·F2.json 东莞 rawQuotes 含 35号文逐字', cOf('dg').rawQuotes.some(q => /东人社发〔2026〕35号/.test(q)), true);
-  eq('第八十七批·F2.json 东莞 candidateMin 保留两分支并标低置信', [cOf('dg').candidateMin.join('/'), /低/.test((cOf('dg').candidateConfidence || {}).min || '')].join('/'), '5521/4785/true');
+  eq('第八十七批·F2.json 东莞 candidateMin 保留两分支且第三支仍标低置信（第九十五批起「低」落在 candidateConfidence.third）', [cOf('dg').candidateMin.join('/'), /低/.test((cOf('dg').candidateConfidence || {}).third || '')].join('/'), '5521/4785/true');
   eq('第八十七批·F2.json 两城 candidateMax 均 27603', [cOf('zh').candidateMax, cOf('dg').candidateMax].join('/'), '27603/27603');
   eq('第八十七批·F2.json 两城 candidateThird 均 7974', [cOf('zh').candidateThird, cOf('dg').candidateThird].join('/'), '7974/7974');
   eq('第八十七批·F2.json 两城 confirms 均含第八十七批', ['zh', 'dg'].every(k => /第八十七批/.test(cOf(k).confirms || '')), true);
@@ -3989,7 +3989,7 @@ section('17. 东莞公积金 36 号文闭合长期疑点 + 深圳公积金新办
     const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
     return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
   }, 0);
-  eq('第八十八批 B·全库 urls 总数 2823→2827（第八十九批 P10 后为 2837，第九十四批 B 后为 2843）', allUrls, 2843);
+  eq('第八十八批 B·全库 urls 总数 2823→2827（第八十九批 P10 后为 2837，第九十四批 B 后为 2843，第九十五批 F2 两城各 +4 后为 2851）', allUrls, 2851);
 
   // 七、口径并列（不得混用）
   eq('第八十八批 B·东莞下限仍按存量 2080（2027-01 起才转 2300）', dgc.hf.min, 2080);
@@ -4045,7 +4045,7 @@ section('18. 深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方
     const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
     return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
   }, 0);
-  eq('第八十九批·全库 urls 总数 2827→2837（第九十四批 B 后为 2843）', allUrls, 2843);
+  eq('第八十九批·全库 urls 总数 2827→2837（第九十四批 B 后为 2843，第九十五批 F2 两城各 +4 后为 2851）', allUrls, 2851);
 
   // 五、最低工资档位（2025 年表 / 2026 年表 OCR 两档一致）
   eq('第八十九批·2025 年省表 一类 深圳 2520 / 广州 2500', [2520, 2500].join('/'), '2520/2500');
@@ -4099,8 +4099,9 @@ section('19. 界面重构契约：sticky 顶栏 + 步骤化面板 + 新设计令
   ok('第九十批·步骤编号方块 step 存在', /class="step"/.test(UI90_MARKUP), true);
   eq('第九十批·步骤面板数量（1 独立 section + 3 个 details）', (UI90_MARKUP.match(/<section class="panel">/g) || []).length + (UI90_MARKUP.match(/<details class="panel"/g) || []).length, 4);
   ok('第九十批·社保与公积金 / 专项附加扣除 默认展开', /<details class="panel" open>/.test(UI90_MARKUP), true);
-  ok('第九十批·四个快捷月薪 chip 就位', (UI90_MARKUP.match(/class="chip salary-chip/g) || []).length === 4, true);
-  ok('第九十批·chip 带 data-salary 便于回写', /data-salary="30000"/.test(UI90_MARKUP), true);
+  ok('第九十六批·快捷月薪 chip 行已移除', (UI90_MARKUP.match(/class="chip salary-chip/g) || []).length === 0 && !/data-salary=/.test(UI90_MARKUP), true);
+  ok('第九十六批·手动输入的默认月薪为 10000', /id="salary" value="10000"/.test(UI90_MARKUP), true);
+  ok('第九十六批·恢复默认把月薪写回 10000', /function resetAll\(\)\{[\s\S]{0,200}setSalary\(10000\)/.test(html), true);
   ok('第九十批·恢复默认按钮绑定 resetAll', /class="reset-btn" onclick="resetAll\(\)"/.test(UI90_MARKUP), true);
   ok('第九十批·城市搜索框绑定 filterCity', /id="citySearch"[^>]*oninput="filterCity\(this\.value\)"/.test(UI90_MARKUP), true);
   ok('第九十批·城市选择按钮绑定 showOverlay', /class="city-picker" onclick="showOverlay\(\)"/.test(UI90_MARKUP), true);
@@ -4414,7 +4415,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十�
   eq('第九十四批·巡检工具含退出码语义（0 未命中 / 2 命中 / 1 取网失败）',
      /hits\.length \? 2 : \(errs \? 1 : 0\)/.test(tSrc), true);
   eq('第九十四批·巡检工具含省医保局 15 页栏目巡检', tSrc.indexOf('hsa.gd.gov.cn/zwgk/zcfg') >= 0 && tSrc.indexOf('i <= 15') >= 0, true);
-  eq('第九十四批·F2 两城 lastCheck 已推进至 2026-10-31', cOf94('zh').lastCheck === '2026-10-31' && cOf94('dg').lastCheck === '2026-10-31', true);
+  eq('第九十四批·F2 两城 lastCheck 已推进至 2026-10-31 之后（第九十五批复核后为 2026-11-01）', /^2026-(10|11|12)-/.test(cOf94('zh').lastCheck || '') && /^2026-(10|11|12)-/.test(cOf94('dg').lastCheck || ''), true);
   eq('第九十四批·两城 note 载第九十四批巡检复核', A.CITIES.zh.note.indexOf('第九十四批') >= 0 && A.CITIES.dg.note.indexOf('第九十四批') >= 0, true);
 
   emit('  337 城数值自洽性审计 8 类不变量全过 + P8 巡检工具契约锁定 ✓');
@@ -4477,6 +4478,783 @@ section('24. 值级反向检索：数值是否被官方件印出（第九十四�
   eq('第九十四批 B·汕尾失业上限仍 27849', A.CITIES.sw.unemp.max, 27849);
 
   emit('  值级反向检索：10 城逐值回扫，7 城零官方印数、4 城命中同值公积金件；数值零改动 ✓');
+})();
+
+/* =========================================================
+   第九十七批 · 底部「数据依据与核查说明」结构化排版
+   原实现把「数据依据 + 口径 + note 全文 + 核查日期」拼成一坨 11px 灰字，
+   长依据（最长 7336 字）全部挤在一行，既无法速览、也读不出层次。本批改为：
+     口径速览卡（4 格） + 官方依据条目列表（按「；」「。」两级拆分、原文逐字保留）
+     + 数据核查清单（胶囊） + 复核提示条；
+   note 先 HTML 转义再高亮文号/文件名，避免占位尖括号被当成标签解析。
+   数值口径零改动。
+   ========================================================= */
+section('25. 底部「数据依据与核查说明」结构化排版（第九十七批）');
+(function fnNote97(){
+  var S97 = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+
+  // 一、静态契约：样式 / 常量 / 函数 / 调用点
+  ok('第九十七批·速览卡样式 fn-grid 已定义', /\.fn-grid\{/.test(S97), true);
+  ok('第九十七批·依据条目样式 fn-list 已定义', /\.fn-list\{/.test(S97), true);
+  ok('第九十七批·核查清单样式 fn-chk 已定义', /\.fn-chk\{/.test(S97), true);
+  ok('第九十七批·提示条样式 fn-tip 已定义', /\.fn-tip\{/.test(S97), true);
+  ok('第九十七批·文号高亮样式 mark 已定义', /\.fn-list mark\{/.test(S97), true);
+  ok('第九十七批·核查清单常量 FN_CHECKS 已注入', /var FN_CHECKS=\[/.test(html), true);
+  ok('第九十七批·转义函数 fnEsc 已定义', /function fnEsc\(s\)/.test(html), true);
+  ok('第九十七批·高亮函数 fnHl 已定义', /function fnHl\(s\)/.test(html), true);
+  ok('第九十七批·切分函数 fnSplit 已定义', /function fnSplit\(t\)/.test(html), true);
+  ok('第九十七批·渲染函数 renderFootNote 已定义', /function renderFootNote\(\)/.test(html), true);
+  ok('第九十七批·selectCity 改为调用 renderFootNote', /renderFootNote\(\);/.test(html), true);
+  ok('第九十七批·旧的纯文本长串拼接已移除', !/· 数据核查：2026-09-19 已联网核查京沪/.test(html), true);
+  ok('第九十七批·首行仍以「数据依据：」开头（既有断言不变）', /\$\("footNote"\)\.innerHTML='数据依据：'/.test(html), true);
+
+  // 二、运行时：渲染出的三段式结构
+  var foot97 = function(){ return A._doc.getElementById('footNote').innerHTML; };
+  A.selectCity('sz');
+  var f97 = foot97();
+  ok('第九十七批·深圳页脚首行仍以「数据依据：」开头', f97.indexOf('数据依据：深圳 2025-2026年度') === 0, true);
+  ok('第九十七批·含口径速览卡 fn-grid', f97.indexOf('class="fn-grid"') > 0, true);
+  ok('第九十七批·速览卡四格齐全（基数口径/数据年度/公积金比例/医保大额）',
+     ['基数口径', '数据年度', '公积金比例', '医保大额（个人）'].every(function(k){ return f97.indexOf('>' + k + '<') > 0; }), true);
+  ok('第九十七批·含官方依据条目列表 fn-list', f97.indexOf('class="fn-list"') > 0, true);
+  ok('第九十七批·含数据核查清单 fn-chk', f97.indexOf('class="fn-chk"') > 0, true);
+  ok('第九十七批·含复核提示条 fn-tip', f97.indexOf('class="fn-tip"') > 0, true);
+  ok('第九十七批·文号被高亮为 mark', f97.indexOf('<mark>') > 0, true);
+  ok('第九十七批·核查清单含广东基数核查日期 2026-08-12', f97.indexOf('2026-08-12') > 0, true);
+
+  // 三、依据原文逐字保留（按「；」分段核对，不丢内容）
+  var plain97 = f97.replace(/<[^>]*>/g, '').replace(/\s+/g, '');
+  var parts97 = (A.CITIES.sz.note || '').split(/[；;]/);
+  var lost97 = parts97.filter(function(p){
+    var key = p.replace(/[<>&]/g, '').replace(/\s+/g, '').slice(0, 20);
+    return key.length >= 8 && plain97.indexOf(key) < 0;
+  });
+  eq('第九十七批·深圳依据各段逐字保留（无内容丢失）', lost97.length, 0);
+
+  // 四、含尖括号的 note 必须转义（不能被当成标签解析）
+  var escBad97 = 0, escTot97 = 0;
+  for (var k97 in A.CITIES) {
+    var m97 = (A.CITIES[k97].note || '').match(/<[A-Za-z][A-Za-z0-9_]{1,20}/g);
+    if (!m97) continue;
+    escTot97++;
+    A.selectCity(k97);
+    var fk97 = foot97();
+    m97.forEach(function(t97){ if (fk97.indexOf(t97) >= 0) escBad97++; });
+  }
+  eq('第九十七批·note 中的尖括号占位符全部转义', escBad97, 0);
+  ok('第九十七批·存在含尖括号的 note（转义分支被真实覆盖）', escTot97 > 0, true);
+
+  // 五、数值零改动
+  eq('第九十七批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第九十七批·深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
+  eq('第九十七批·东莞公积金上限仍 27700', A.CITIES.dg.hf.max, 27700);
+  eq('第九十七批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  底部「数据依据与核查说明」改为速览卡 + 依据条目 + 核查清单三段式（数值零改动）✓');
+})();
+
+/* =========================================================
+   第九十八批 · 手机端表单优先：税前月薪输入框不再要滚到页面中部
+   原实现 ≤780px 用 .results{grid-row:1} / .panel-stack{grid-row:2} 把结果区顶到最前，
+   「1 基本信息」（含税前月薪输入框）被压到页面中部，手机上要滚半屏才够得着。
+   本批：取消该反转（DOM 顺序本就是 输入面板 → 结果区）、压缩移动端页头、
+        输入框字号提到 16px（iOS 聚焦不再自动缩放页面）、加「查看测算结果 ↓」锚点。
+   桌面两栏与全部数值口径零改动。
+   ========================================================= */
+section('26. 手机端表单优先（第九十八批）');
+(function gdMobile98(){
+  var M98_MARKUP = html.slice(0, html.indexOf('<script>'));
+  var M98_STYLE = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+  var M98_780 = (function(){
+    var i = M98_STYLE.indexOf('@media(max-width:780px)');
+    var j = M98_STYLE.indexOf('@media(max-width:520px)');
+    return (i < 0) ? '' : M98_STYLE.slice(i, j < 0 ? M98_STYLE.length : j);
+  })();
+
+  // 一、移动端不再反转两栏顺序（输入面板在前）
+  ok('第九十八批·移动端不再把结果区顶到最前',
+     !/\.results\{grid-row:1\}/.test(M98_780) && !/\.panel-stack\{grid-row:2\}/.test(M98_780), true);
+  ok('第九十八批·输入面板在 DOM 中位于结果区之前',
+     M98_MARKUP.indexOf('class="panel-stack"') > 0 &&
+     M98_MARKUP.indexOf('class="panel-stack"') < M98_MARKUP.indexOf('class="results"'), true);
+  ok('第九十八批·桌面两栏栅格未被改动',
+     /grid-template-columns:\s*minmax\(350px,\s*400px\)/.test(M98_STYLE), true);
+
+  // 二、移动端页头压缩
+  ok('第九十八批·移动端页头留白已压缩', /\.page-head\{padding:14px 0 12px/.test(M98_780), true);
+  ok('第九十八批·移动端标题字号收到 24px', /h1\{font-size:24px/.test(M98_780), true);
+  ok('第九十八批·移动端描述限两行', /-webkit-line-clamp:2/.test(M98_780), true);
+
+  // 三、iOS 聚焦自动缩放修复
+  ok('第九十八批·移动端输入框字号 16px（iOS 不再自动放大）', /\.input\{font-size:16px\}/.test(M98_780), true);
+  ok('第九十八批·税前月薪输入框仍为大字号（20px 优先）',
+     /\.input\.has-prefix\{padding-left:34px;font-size:20px/.test(M98_STYLE), true);
+
+  // 四、「查看测算结果 ↓」锚点
+  ok('第九十八批·锚点按钮桌面端隐藏', /\.go-res\{display:none\}/.test(M98_STYLE), true);
+  ok('第九十八批·锚点按钮移动端显示', /\.go-res\{display:flex/.test(M98_780), true);
+  ok('第九十八批·锚点按钮已就位', /<a class="go-res" href="#calcResults">/.test(M98_MARKUP), true);
+  ok('第九十八批·锚点目标 calcResults 已就位', /<section class="results" id="calcResults"/.test(M98_MARKUP), true);
+  ok('第九十八批·锚点按钮排在税前月薪输入框之后、结果区之前',
+     M98_MARKUP.indexOf('id="salary"') < M98_MARKUP.indexOf('class="go-res"') &&
+     M98_MARKUP.indexOf('class="go-res"') < M98_MARKUP.indexOf('id="calcResults"'), true);
+  ok('第九十八批·sticky 顶栏的锚点偏移仍保留', /scroll-padding-top:88px/.test(M98_STYLE), true);
+
+  // 五、运行时：锚点目标与输入框在 DOM 中真实存在
+  ok('第九十八批·运行时 calcResults 元素存在', !!A._doc.getElementById('calcResults'), true);
+  ok('第九十八批·运行时 salary 输入框存在', !!A._doc.getElementById('salary'), true);
+
+  // 六、数值零改动
+  eq('第九十八批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第九十八批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  手机端表单优先：输入面板前置 + 页头压缩 + 16px 输入字号 + 结果锚点（数值零改动）✓');
+})();
+
+/* =========================================================
+   第九十九批 · 滑块手柄溢出修复：公积金比例拉到 12% 时手柄跑出卡片
+   原实现 .sld input[type=range]{flex:1;height:5px;...}：
+     ① flex 项目默认 min-width:auto，range 有固有宽度，窄容器里不收缩 → 撑破卡片；
+     ② 手柄在 0%/最大值时悬在轨道端点外侧，右侧没有预留空间 → 拖到 12% 时手柄被卡片右缘裁掉。
+   本批：min-width:0 允许收缩 + margin:0 10px 两端为手柄预留空间。
+   纯样式改动，计算引擎与全部数值口径零改动。
+   ========================================================= */
+section('27. 滑块手柄不溢出卡片（第九十九批）');
+(function gdSlider99(){
+  var M99_STYLE = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
+  var M99_MARKUP = html.slice(0, html.indexOf('<script>'));
+  var M99_SLD = (function(){
+    var m = M99_STYLE.match(/\.sld input\[type=range\]\{[^}]*\}/);
+    return m ? m[0] : '';
+  })();
+
+  // 一、滑块自身的收缩与预留
+  ok('第九十九批·滑块允许在窄容器收缩（min-width:0）', /min-width:0/.test(M99_SLD), true);
+  ok('第九十九批·滑块两端为手柄预留 10px 空间', /margin:0 10px/.test(M99_SLD), true);
+  ok('第九十九批·旧的未预留写法已移除',
+     !/\.sld input\[type=range\]\{flex:1;height:5px;accent-color:var\(--primary\);cursor:pointer\}/.test(M99_STYLE), true);
+  ok('第九十九批·滑块容器仍是 flex（两端 margin 生效）', /\.sld\{display:flex/.test(M99_STYLE), true);
+
+  // 二、两个公积金比例滑块
+  ok('第九十九批·个人公积金比例滑块存在且上限 12',
+     /<input type="range" id="hfRate" min="0" max="12"/.test(M99_MARKUP), true);
+  ok('第九十九批·单位公积金比例滑块存在且上限 12',
+     /<input type="range" id="hfRateComp" min="0" max="12"/.test(M99_MARKUP), true);
+  ok('第九十九批·两个滑块都放在 .sld 容器里',
+     /<div class="sld">[^]*?id="hfRate"/.test(M99_MARKUP) &&
+     /<div class="sld">[^]*?id="hfRateComp"/.test(M99_MARKUP), true);
+
+  // 三、运行时：滑块元素真实存在
+  ok('第九十九批·运行时 hfRate 滑块存在', !!A._doc.getElementById('hfRate'), true);
+
+  // 四、数值零改动
+  eq('第九十九批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第九十九批·深圳公积金比例上限仍 12%', A.CITIES.sz.hfRateMax, 12);
+  eq('第九十九批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  滑块两端预留手柄空间 + min-width:0 可收缩，12% 时手柄不再溢出卡片（数值零改动）✓');
+})();
+
+/* =========================================================
+   第一百批 · 企业年金比例上限回写：不能选超过 4% 的比例
+   原实现：<input type="number" id="annuity" max="4"> 的 max 只是 HTML 软限制，
+   浏览器不阻止手动输入 5/8 等超限值；而渲染层用原始 gv("annuity") 拼百分比，
+   于是界面显示 5%、计算却按 4%（cl 夹取），显示与口径不一致。
+   本批：超限时按上限回写输入框并给出提示；渲染改用夹取后的比例。
+   口径表达式 cl(gv("annuity"),0,4)/100 不变 → 全部数值零改动。
+   ========================================================= */
+section('28. 企业年金比例上限回写（第一百批）');
+(function gdAnnuity100(){
+  var M100_SCRIPT = html.slice(html.indexOf('<script>'));
+  var M100_MARKUP = html.slice(0, html.indexOf('<script>'));
+
+  // 一、静态契约
+  ok('第一百批·输入框声明 max=4', /<input type="number" id="annuity" value="0" min="0" max="4"/.test(M100_MARKUP), true);
+  ok('第一百批·提示元素 annuityWarn 存在且默认隐藏',
+     /id="annuityWarn" style="display:none/.test(M100_MARKUP), true);
+  ok('第一百批·口径表达式 cl(gv("annuity"),0,4)/100 原样保留',
+     /cl\(gv\("annuity"\),0,4\)\/100/.test(M100_SCRIPT), true);
+  ok('第一百批·超限时按上限回写输入框',
+     /if\(anOver\)\$\("annuity"\)\.value=\(anRaw>4\)\?4:0;/.test(M100_SCRIPT), true);
+  ok('第一百批·超限提示文案已就位',
+     /上限 4%（缴费工资基数），已按 4% 计算/.test(M100_SCRIPT), true);
+  ok('第一百批·渲染不再用原始输入值拼百分比',
+     !/企业年金\(个人'\+gv\("annuity"\)/.test(M100_SCRIPT), true);
+
+  // 二、运行时：超限值被回写
+  eq('第一百批·输入 8 被回写为 4',
+     (function(){ A._setMany({ annuity: 8 }); A.calc(); return Number(A._doc.getElementById('annuity').value); })(), 4);
+  eq('第一百批·输入 -3 被回写为 0',
+     (function(){ A._setMany({ annuity: -3 }); A.calc(); return Number(A._doc.getElementById('annuity').value); })(), 0);
+
+  // 三、运行时：渲染口径与界面一致
+  ok('第一百批·超限时结果显示 4% 而不是 8%',
+     (function(){ A._setMany({ annuity: 8 }); A.calc(); return A._html('res').indexOf('企业年金(个人4%)') > -1 &&
+                                                        A._html('res').indexOf('企业年金(个人8%)') === -1; })(), true);
+  ok('第一百批·合法值 2.5 不被改写',
+     (function(){ A._setMany({ annuity: 2.5 }); A.calc(); return Number(A._doc.getElementById('annuity').value); })(), 2.5);
+  ok('第一百批·合法值 2.5 渲染为 2.5%',
+     (function(){ A._setMany({ annuity: 2.5 }); A.calc(); return A._html('res').indexOf('企业年金(个人2.5%)') > -1; })(), true);
+
+  // 四、数值零改动
+  eq('第一百批·年金 4% 的年度金额仍按养老缴费基数计',
+     (function(){ A._setMany({ salary: 30000, pBase: 7270, mBase: 30000, uBase: 30000, mtBase: 30000, ijBase: 30000, hfBase: 30000, hfRate: 12, persPen: 0, healthIns: 0, annuity: 4 }); A.calc();
+       var m = A._html('res').match(/企业年金\(个人4%\)<\/label><span class="v" style="color:#0d9488">([\d,.]+)/);
+       return m ? parseFloat(m[1].replace(/,/g, '')) : null; })(), (7270 * 0.04) * 12, 0.02);
+  eq('第一百批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  企业年金比例超限即回写上限并提示，渲染与计算口径一致（数值零改动）✓');
+})();
+
+/* =========================================================
+   第一百零一批 · PDF 导出版面：横向铺开 + 不再把「导出 PDF」按钮印进 PDF
+   原实现：html2canvas 按 node.scrollWidth（= 导出当时的窗口宽度）截图，
+   再把整页长图等比压到 A4 全宽 210mm → 1154px 桌面布局被压到 0.52 倍，
+   表格右侧「实发工资」列、图表右轴刻度、标题行末尾全部被裁掉；
+   且导出按钮卡片在 #page1 内，html2canvas 不套用 @media print 的 .export-btn{display:none}。
+   本批：导出渲染宽度固定 EXPORT_W=1180（与窗口宽度无关），克隆文档进入 .exp 导出模式
+   （表格不横向溢出 / 输入框显示为纯文本 / 标题行换行 / 隐藏导出按钮卡片），
+   纸张改 A4 横向 + 10mm 页边距，图表 viewBox 留余量。
+   计算引擎与全部数值零改动。
+   ========================================================= */
+section('29. PDF 导出版面（第一百零一批）');
+(function gdExport101(){
+  var M101_SCRIPT = html.slice(html.indexOf('<script>'));
+  var M101_MARKUP = html.slice(0, html.indexOf('<script>'));
+
+  // 一、导出模式样式（只作用在 html2canvas 的克隆文档上，页面本身不受影响）
+  ok('第一百零一批·导出模式放开表格横向溢出',
+     /\.exp \.tbl-wrap\{overflow:visible\}/.test(M101_MARKUP), true);
+  ok('第一百零一批·导出模式把可编辑输入框显示为纯文本',
+     /\.exp table\.hist td input\{width:auto;min-width:0/.test(M101_MARKUP), true);
+  ok('第一百零一批·导出模式允许标题行换行',
+     /\.exp \.tbl-title\{flex-wrap:wrap/.test(M101_MARKUP), true);
+  ok('第一百零一批·导出模式隐藏导出按钮卡片',
+     /\.exp #exportCard\{display:none\}/.test(M101_MARKUP), true);
+  ok('第一百零一批·导出按钮卡片带 id 以便在导出模式隐藏',
+     /<div class="c" id="exportCard"/.test(M101_MARKUP), true);
+
+  // 二、导出参数
+  ok('第一百零一批·导出渲染宽度固定 1180', /var EXPORT_W=1180;/.test(M101_SCRIPT), true);
+  ok('第一百零一批·不再按窗口宽度截图',
+     !/windowWidth:node\.scrollWidth/.test(M101_SCRIPT), true);
+  ok('第一百零一批·截图使用固定渲染宽度',
+     /windowWidth:EXPORT_W/.test(M101_SCRIPT), true);
+  ok('第一百零一批·纸张为 A4 横向',
+     /orientation:"landscape"/.test(M101_SCRIPT), true);
+  ok('第一百零一批·纵向 A4 的旧写法已移除',
+     !/new jspdf\.jsPDF\("p","mm","a4"\)/.test(M101_SCRIPT), true);
+  ok('第一百零一批·四周留 10mm 页边距',
+     /var EXPORT_PDF=\{pw:297,ph:210,mx:10,my:10\}/.test(M101_SCRIPT), true);
+  ok('第一百零一批·图表 viewBox 留出余量防右轴裁切',
+     /var EXPORT_CHART_VB="0 -12 784 304"/.test(M101_SCRIPT), true);
+  ok('第一百零一批·克隆文档进入导出模式',
+     /classList\.add\("exp"\)/.test(M101_SCRIPT), true);
+  ok('第一百零一批·克隆文档里重设图表 viewBox',
+     /setAttribute\("viewBox",EXPORT_CHART_VB\)/.test(M101_SCRIPT), true);
+
+  // 三、运行时与静态：页面本身保持原样（导出模式只改克隆文档）
+  ok('第一百零一批·页面上的图表 viewBox 未被改动',
+     /<svg id="chart" width="100%" viewBox="0 0 760 280"/.test(M101_MARKUP), true);
+  ok('第一百零一批·历史表仍含实发工资列',
+     /<th>实发工资<\/th>/.test(M101_SCRIPT), true);
+  ok('第一百零一批·导出按钮仍在页面里（只是 PDF 内隐藏）',
+     /onclick="exportPDF\(\)"/.test(M101_MARKUP), true);
+
+  // 四、数值零改动
+  eq('第一百零一批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第一百零一批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  PDF 导出改 A4 横向、固定渲染宽度并隐藏导出按钮卡片（数值零改动）✓');
+})();
+
+/* =========================================================
+   第一百零二批 · 收入构成占比条 + 历史明细页移动端适配
+   需求：①结果区给出「实发 / 五险一金 / 个税」占税前工资的占比条与图例，
+        并提供「年度明细 →」跳转按钮；
+        ②年度明细页（#page1）在手机上没适配：15 列表格被挤成一团、图表右轴被切。
+   实现：占比条先做成独立卡片 #mixCard（在 #res 之外单独渲染，避免污染
+        check-golden 捕获的 res 面板快照）；第一百零五批起该卡片已并入税后实发
+        主卡内部（mixBarHtml 返回 HTML 片段，由 renderResult 嵌进 hero），断言同步更新；
+        分母统一取税前工资 sal，
+        三段（+ 补充扣除时第四段）合计 100%；
+        手机端表格改为最小宽度 1120px + 横向滚动（配滑动提示文案），
+        图表容器可横滑、输入框与字号收窄。
+   计算引擎与全部数值零改动。
+   ========================================================= */
+section('30. 收入构成占比条与历史明细移动端适配（第一百零二批）');
+(function gdMix102(){
+  var M102_SCRIPT = html.slice(html.indexOf('<script>'));
+  var M102_MARKUP = html.slice(0, html.indexOf('<script>'));
+  var M102_780 = M102_MARKUP.slice(M102_MARKUP.indexOf('@media(max-width:780px)'),
+                                   M102_MARKUP.indexOf('@media(max-width:520px)'));
+
+  // 一、占比条：样式、卡片、渲染函数
+  ok('第一百零二批·占比条样式存在',
+     /\.hero \.hb\{display:flex/.test(M102_MARKUP), true);
+  ok('第一百零二批·图例样式存在',
+     /\.hero \.hlg\{display:flex/.test(M102_MARKUP), true);
+  ok('第一百零二批·底部行（图例+按钮）样式存在',
+     /\.hero \.hm\{display:flex/.test(M102_MARKUP), true);
+  ok('第一百零二批·年度明细按钮样式存在',
+     /\.hero \.go-hist\{/.test(M102_MARKUP), true);
+  ok('第一百零二批·占比条曾做成独立卡片（第一百零五批起并入主卡）',
+     /<div class="hero" id="mixCard"/.test(M102_MARKUP), false);
+  ok('第一百零二批·mixBarHtml 已定义',
+     /function mixBarHtml\(net,siE,hfE,curT,sal,suppCash\)/.test(M102_SCRIPT), true);
+  ok('第一百零二批·结果渲染时嵌入占比条',
+     /h\+=mixBarHtml\(net,siE,hfE,curT,sal,D\.suppCash\);/.test(M102_SCRIPT), true);
+  ok('第一百零二批·占比条分母取税前工资',
+     /var base=sal>0\?sal:0/.test(M102_SCRIPT), true);
+  ok('第一百零二批·按钮跳到年度明细页',
+     /class="go-hist" onclick="switchTab\(1\)"/.test(M102_SCRIPT), true);
+
+  // 二、运行时：三段占比合计 100%，图例齐全
+  (function(){
+    A._setMany({ salary: 20000, month: 7, startMonth: 1, pBase: 20000, mBase: 20000,
+                 uBase: 20000, mtBase: 20000, ijBase: 20000, hfBase: 20000, hfRate: 12 });
+    A.calc();
+    var mix = (A._html('res').match(/<div class="mx">[\s\S]*?<\/div><\/div><div class="cd">/) || [''])[0];
+    var ws = (mix.match(/width:([\d.]+)%/g) || [])
+      .map(function(s){ return parseFloat(s.replace(/[^0-9.]/g, '')); });
+    eq('第一百零二批·占比条各段合计 100%',
+       ws.reduce(function(a, b){ return a + b; }, 0), 100, 0.05);
+    ok('第一百零二批·图例含实发/五险一金/个税',
+       /实发 [\d.]+%/.test(mix) && /五险一金 [\d.]+%/.test(mix) && /个税 [\d.]+%/.test(mix), true);
+    ok('第一百零二批·占比条已渲染进结果面板',
+       mix.indexOf('<div class="mx">') >= 0, true);
+  })();
+
+  // 三、历史明细页手机端适配
+  ok('第一百零二批·桌面端隐藏滑动提示',
+     /\.tbl-hint\{display:none\}/.test(M102_MARKUP), true);
+  ok('第一百零二批·手机端显示滑动提示',
+     /\.tbl-hint\{display:block/.test(M102_780), true);
+  ok('第一百零二批·手机端表格保留最小宽度（横滑而非挤压）',
+     /table\.hist\{min-width:1120px/.test(M102_780), true);
+  ok('第一百零二批·手机端表格输入框收窄',
+     /table\.hist td input\{width:58px/.test(M102_780), true);
+  ok('第一百零二批·手机端图表可横向滚动',
+     /\.chart-box\{overflow-x:auto\}/.test(M102_780), true);
+  ok('第一百零二批·滑动提示文案已写进页面',
+     /左右滑动查看全部 15 列/.test(M102_MARKUP), true);
+
+  // 四、数值零改动
+  eq('第一百零二批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第一百零二批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  收入构成占比条与历史明细移动端适配已落地（数值零改动）✓');
+})();
+
+/* =========================================================
+   第一百零三批 · 城市选择器改版：去掉「全部」、默认广东、城市网格横排
+   需求：①省份胶囊里的「全部」去掉；②默认就是广东；
+         ③选中省后，下方空白处把该省各个市排版好（网格横排），不要竖直长列。
+   实现：省份胶囊只列 34 个省（默认选中广东）；常态只渲染当前省，
+         省下城市用 repeat(auto-fill,minmax(168px,1fr)) 网格横排成卡片；
+         搜索时临时渲染全部省份以保证跨省命中，清空后回到当前省。
+   计算引擎与全部数值零改动。
+   ========================================================= */
+section('31. 城市选择器改版（第一百零三批）');
+(function(){
+  var M103_MARKUP = html.slice(0, html.indexOf('<script>'));
+  var M103_SCRIPT = html.slice(html.indexOf('<script>'));
+
+  // 一、省份胶囊：去「全部」、默认广东
+  ok('第一百零三批·默认省份为广东',
+     /var prov="广东"/.test(M103_SCRIPT), true);
+  ok('第一百零三批·「全部」选项已移除',
+     !/setProv\('\'\)/.test(M103_SCRIPT) && !/>全部</.test(M103_SCRIPT), true);
+  ok('第一百零三批·常态只渲染当前省的城市',
+     /if\(!citySearchMode&&p\.n!==prov\)continue;/.test(M103_SCRIPT), true);
+  ok('第一百零三批·搜索时临时渲染全部省份以支持跨省检索',
+     /if\(wantAll!==citySearchMode\)\{citySearchMode=wantAll;buildCityGrid\(\);\}/.test(M103_SCRIPT), true);
+  ok('第一百零三批·切换省份默认回退广东',
+     /function setProv\(r\)\{prov=r\|\|"广东"/.test(M103_SCRIPT), true);
+  ok('第一百零三批·打开弹层默认回退广东',
+     /provOfCity\(curCityKey\)\|\|"广东"/.test(M103_SCRIPT), true);
+  ok('第一百零三批·弹层说明标注默认广东',
+     /默认广东/.test(M103_MARKUP), true);
+
+  // 二、网格排版：城市横排成卡片
+  ok('第一百零三批·城市区改为单列省份块',
+     /\.city-grid\{display:grid;grid-template-columns:1fr/.test(M103_MARKUP), true);
+  ok('第一百零三批·省内城市用网格横排',
+     /\.tree-cities\{[^}]*display:grid;grid-template-columns:repeat\(auto-fill,minmax\(168px,1fr\)\)/.test(M103_MARKUP), true);
+  ok('第一百零三批·城市改为卡片式',
+     /\.tree-city\{border:1px solid var\(--line\);border-radius:12px/.test(M103_MARKUP), true);
+  ok('第一百零三批·旧的三列竖排布局已移除',
+     !/grid-template-columns:repeat\(3,1fr\);gap:10px\}/.test(M103_MARKUP), true);
+  ok('第一百零三批·第九十一批折叠节点契约未被破坏',
+     /class="tree-prov"/.test(M103_SCRIPT) && /class="tree-city"/.test(M103_SCRIPT) &&
+     /querySelectorAll\("\.tree-prov"\)/.test(M103_SCRIPT) && /\.tree-prov\{/.test(M103_MARKUP), true);
+
+  // 三、运行时：默认渲染广东 21 市
+  (function(){
+    var tabs = A._html('provTabs') || '';
+    var grid = A._html('cityGrid') || '';
+    ok('第一百零三批·省份胶囊不再有「全部」', tabs.indexOf('全部') < 0, true);
+    ok('第一百零三批·广东为默认选中省份',
+       /class="prov-tab a" data-prov="广东"/.test(tabs), true);
+    eq('第一百零三批·城市区只渲染一个省份块',
+       (grid.match(/class="tree-prov"/g) || []).length, 1);
+    ok('第一百零三批·省份块为广东且不含其它省',
+       /data-prov="广东"/.test(grid) && !/data-prov="浙江"/.test(grid), true);
+    eq('第一百零三批·广东 21 市全部列出',
+       (grid.match(/class="tree-city"/g) || []).length, 21);
+    ok('第一百零三批·含深圳/广州/汕头等城市',
+       /深圳/.test(grid) && /广州/.test(grid) && /汕头/.test(grid), true);
+  })();
+
+  // 四、数值零改动
+  eq('第一百零三批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第一百零三批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  城市选择器改版已落地（去「全部」/ 默认广东 / 城市网格横排，数值零改动）✓');
+})();
+
+/* =========================================================
+   section 32：历史明细表固定列宽（第一百零四批）
+   ========================================================= */
+section('32. 历史明细表固定列宽（第一百零四批）');
+(function(){
+  var M104_CSS = html.slice(0, html.indexOf('<script>'));
+  var M104_SCRIPT = html.slice(html.indexOf('<script>'));
+  var M104_780 = M104_CSS.slice(M104_CSS.indexOf('@media(max-width:780px)'), M104_CSS.indexOf('@media(max-width:520px)'));
+
+  // 一、根因修复：表格固定列宽 + 容器不再被 min-content 顶宽
+  ok('第一百零四批·表格改为固定列宽',
+     /table\.hist\{[^}]*table-layout:fixed/.test(M104_CSS), true);
+  ok('第一百零四批·表格保留最小宽度 960px',
+     /table\.hist\{[^}]*min-width:960px/.test(M104_CSS), true);
+  ok('第一百零四批·勾选列固定 30px',
+     /table\.hist th:first-child,table\.hist td:first-child\{width:30px\}/.test(M104_CSS), true);
+  ok('第一百零四批·月份列固定 58px',
+     /table\.hist th:nth-child\(2\),table\.hist td:nth-child\(2\)\{width:58px\}/.test(M104_CSS), true);
+  ok('第一百零四批·表头允许换行',
+     /table\.hist th\{[^}]*white-space:normal/.test(M104_CSS), true);
+  ok('第一百零四批·数字列字号 11px',
+     /table\.hist td\{[^}]*font-size:11px/.test(M104_CSS), true);
+  ok('第一百零四批·可编辑框按列宽铺满',
+     /table\.hist td input\{width:100%;max-width:78px/.test(M104_CSS), true);
+  ok('第一百零四批·滚动容器允许收缩',
+     /\.tbl-wrap\{[^}]*min-width:0/.test(M104_CSS), true);
+  ok('第一百零四批·历史明细容器允许收缩',
+     /\.history-view\{[^}]*min-width:0/.test(M104_CSS), true);
+  ok('第一百零四批·标题行文字允许断行',
+     /\.tbl-title \.tt\{[^}]*overflow-wrap:anywhere/.test(M104_CSS), true);
+  ok('第一百零四批·旧 auto 布局写法已移除',
+     !/table\.hist\{width:100%;border-collapse/.test(M104_CSS), true);
+  ok('第一百零四批·旧输入框定宽写法已移除',
+     !/table\.hist td input\{width:80px/.test(M104_CSS), true);
+  ok('第一百零四批·旧滚动容器写法已移除',
+     !/\.tbl-wrap\{overflow-x:auto\}/.test(M104_CSS), true);
+
+  // 二、手机端仍横滑，但按新的列宽需求给足宽度
+  ok('第一百零四批·手机端表格最小宽度 1120px',
+     /table\.hist\{min-width:1120px/.test(M104_780), true);
+  ok('第一百零四批·手机端单元格内边距收紧',
+     /table\.hist td\{padding:7px 4px\}/.test(M104_780), true);
+
+  // 三、导出模式回归：第一百零一批的 PDF 修复不能被破坏
+  ok('第一百零四批·导出模式仍放开表格横向溢出',
+     /\.exp \.tbl-wrap\{overflow:visible\}/.test(M104_CSS), true);
+  ok('第一百零四批·导出模式仍隐藏导出按钮',
+     /\.exp #exportCard\{display:none\}/.test(M104_CSS), true);
+  ok('第一百零四批·导出宽度常量未变',
+     /var EXPORT_W=1180;/.test(M104_SCRIPT), true);
+  ok('第一百零四批·PDF 仍为 A4 横向',
+     /orientation:"landscape"/.test(M104_SCRIPT), true);
+  ok('第一百零四批·导出时输入框仍显示为纯文本',
+     /\.exp table\.hist td input\{width:auto/.test(M104_CSS), true);
+
+  // 四、markup 未动（golden 的 hist 面板快照不受影响）
+  ok('第一百零四批·历史表格 markup 未改',
+     /<table class="hist" id="histTable"><\/table>/.test(M104_CSS), true);
+  ok('第一百零四批·表格仍由 renderHistTable 渲染',
+     /function renderHistTable\(\)/.test(M104_SCRIPT), true);
+  ok('第一百零四批·表头仍含实发工资列',
+     /实发工资/.test(M104_SCRIPT), true);
+
+  // 五、数值零改动
+  eq('第一百零四批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第一百零四批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  历史明细表固定列宽已落地（表格不再撑破容器，右侧列不再被裁，数值零改动）✓');
+})();
+
+/* =========================================================
+   第一百零五批 · 收入构成占比条并入税后实发主卡
+   需求：「收入构成」原来是一张独立卡片（#mixCard），用户要求它放在
+        「税后实发（城市 · 月）」那个模块下面，两个模块合并成一张卡，
+        不要单独再开一个模块。
+   实现：①renderMixBar 改名 mixBarHtml，改为返回 HTML 片段（不再自己找 DOM 写入）；
+        ②renderResult 在 hero 主卡的「税后实发」那一行（.tp）之后、
+          三列明细（.cd）之前插入该片段；
+        ③删除 markup 里独立的 <div class="hero" id="mixCard">；
+        ④新增 .hero .mx 分隔区样式（保留 .hb/.hlg/.hm 原有样式）。
+   影响：hero 主卡结构变化 → check-golden 的 res 面板快照需重新冻结；
+        已逐用例验证「去掉 mx 区块后与旧快照逐字节一致」，
+        bonus / hist / sum 三个面板完全未变（数值零改动）。
+   ========================================================= */
+section('33. 收入构成占比条并入税后实发主卡（第一百零五批）');
+(function gdMix105(){
+  var M105_SCRIPT = html.slice(html.indexOf('<script>'));
+  var M105_MARKUP = html.slice(0, html.indexOf('<script>'));
+
+  // 一、结构：不再有独立卡片，改为片段并入 hero
+  ok('第一百零五批·独立占比条卡片已移除',
+     /id="mixCard"/.test(M105_MARKUP), false);
+  ok('第一百零五批·mixBarHtml 已定义并返回 HTML 片段',
+     /function mixBarHtml\(net,siE,hfE,curT,sal,suppCash\)\{[\s\S]*?return h;/.test(M105_SCRIPT), true);
+  ok('第一百零五批·renderResult 内嵌占比条片段',
+     /h\+=mixBarHtml\(net,siE,hfE,curT,sal,D\.suppCash\);/.test(M105_SCRIPT), true);
+  ok('第一百零五批·旧的独立渲染调用已删除',
+     /renderMixBar\(/.test(M105_SCRIPT), false);
+  ok('第一百零五批·mx 分隔区样式存在',
+     /\.hero \.mx\{position:relative/.test(M105_MARKUP), true);
+  ok('第一百零五批·mx 内部占比条间距已收紧',
+     /\.hero \.mx \.hb\{margin-top:10px\}/.test(M105_MARKUP), true);
+  ok('第一百零五批·占比条底色与图例样式沿用',
+     /\.hero \.hb\{display:flex/.test(M105_MARKUP) &&
+     /\.hero \.hlg\{display:flex/.test(M105_MARKUP) &&
+     /\.hero \.hm\{display:flex/.test(M105_MARKUP), true);
+  ok('第一百零五批·年度明细按钮仍跳到年度明细页',
+     /class="go-hist" onclick="switchTab\(1\)"/.test(M105_SCRIPT), true);
+
+  // 二、运行时：占比条在 hero 内部、位置在税后实发行之下、三列明细之上
+  (function(){
+    A._setMany({ salary: 20000, month: 7, startMonth: 1, pBase: 20000, mBase: 20000,
+                 uBase: 20000, mtBase: 20000, ijBase: 20000, hfBase: 20000, hfRate: 12 });
+    A.calc();
+    var res = A._html('res');
+    var heroStart = res.indexOf('<div class="hero">');
+    var heroEnd = res.indexOf('<div class="c">', heroStart);
+    var hero = res.slice(heroStart, heroEnd);
+    var iMx = hero.indexOf('<div class="mx">');
+    ok('第一百零五批·占比条在 hero 主卡内部',
+       iMx >= 0, true);
+    ok('第一百零五批·占比条位于税后实发行之后',
+       iMx > hero.indexOf('<div class="tp">'), true);
+    ok('第一百零五批·占比条位于三列明细之前',
+       iMx < hero.indexOf('<div class="cd">'), true);
+    var mx = hero.slice(iMx);
+    var ws = (mx.match(/width:([\d.]+)%/g) || [])
+      .map(function(s){ return parseFloat(s.replace(/[^0-9.]/g, '')); });
+    eq('第一百零五批·占比条各段合计 100%',
+       ws.reduce(function(a, b){ return a + b; }, 0), 100, 0.05);
+    ok('第一百零五批·图例含实发/五险一金/个税',
+       /实发 [\d.]+%/.test(mx) && /五险一金 [\d.]+%/.test(mx) && /个税 [\d.]+%/.test(mx), true);
+    ok('第一百零五批·占比条标题与分母说明在位',
+       /收入构成/.test(mx) && /占税前工资/.test(mx), true);
+  })();
+
+  // 三、数值零改动
+  eq('第一百零五批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第一百零五批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  收入构成占比条已并入税后实发主卡（两模块合并，数值零改动）✓');
+})();
+
+/* =========================================================
+   第一百零六批 · 导出 PDF 不再重复渲染 + 卡片不被页边界切开
+   需求：用户反馈导出的 PDF 里「每月工资 · 五险一金 · 个税趋势图」的标题
+        在第 1 页底部和第 2 页顶部各完整出现一次（截图两处标题逐像素相同），
+        底部那半截还被页边界切开。
+   根因：①旧实现只给 html2canvas 传了 windowWidth，克隆 iframe 的高度仍是
+        浏览器窗口高（约 800px），而 #page1 实测约 1400px —— html2canvas 只能
+        在视口内取材，超出视口的部分会在拼接缝处被重复绘制；
+        ②导出时页面通常已经滚动，旧实现继承 window.pageYOffset，造成错位；
+        ③分页按固定 190mm 切长图，切点可能落在卡片中间，把「标题 + 图例 + 图表」
+        切成两半。
+   实现：①显式传 windowHeight（内容全高 + 400px 余量，下限 2400px）并把
+        scrollX/scrollY 归零，让整块内容一次渲染完；
+        ②分页改为「段」式：按画布行算切点，切点落在卡片内部时把该卡片整体
+          推到下一页；
+        ③打印兜底路径（window.print()）同样隐藏导出按钮卡片、放开表格横向裁切。
+   影响：只改 exportPDF() 与 @media print 样式，不动 DOM 结构与计算逻辑
+        → check-golden 的四个面板快照均不受影响，数值零改动。
+   ========================================================= */
+section('34. 导出 PDF 不重复渲染 + 卡片不断开（第一百零六批）');
+(function gdPdf106(){
+  var M106_SCRIPT = html.slice(html.indexOf('<script>'));
+  var M106_MARKUP = html.slice(0, html.indexOf('<script>'));
+  var printStart = M106_MARKUP.indexOf('@media print{');
+  var printEnd = M106_MARKUP.indexOf('/* ===== 第一百零一批：PDF 导出模式');
+  var M106_PRINT = (printStart >= 0 && printEnd > printStart) ? M106_MARKUP.slice(printStart, printEnd) : '';
+
+  // 一、克隆视口：高度给足 + 滚动归零（重复渲染的根因）
+  ok('第一百零六批·导出时克隆视口高度按内容全高给足',
+     /var exportH=Math\.max\(nodeH\+400,2400\);/.test(M106_SCRIPT), true);
+  ok('第一百零六批·克隆视口高度与滚动量都写进 html2canvas 参数',
+     /windowWidth:EXPORT_W,windowHeight:exportH,scrollX:0,scrollY:0/.test(M106_SCRIPT), true);
+  ok('第一百零六批·不再拿浏览器窗口高当克隆高度',
+     /windowHeight:window\.innerHeight/.test(M106_SCRIPT), false);
+
+  // 二、分页：段式 + 卡片避让
+  ok('第一百零六批·分页改为按画布行计算每页容量',
+     /var rowMm=imgH\/canvas\.height;/.test(M106_SCRIPT) &&
+     /var rowsPerPage=Math\.max\(1,Math\.floor\(ch\/rowMm\)\);/.test(M106_SCRIPT), true);
+  ok('第一百零六批·切点落在卡片内部时整卡推到下一页',
+     /if\(ct<segEnd&&cb>segEnd&&ct>segStart&&\(cb-ct\)<=rowsPerPage&&\(pushTo<0\|\|ct<pushTo\)\)pushTo=ct;/.test(M106_SCRIPT) &&
+     /if\(pushTo>0\)segEnd=pushTo;/.test(M106_SCRIPT), true);
+  ok('第一百零六批·每段单独成页且首尾相接',
+     /pdf\.addImage\(img,"PNG",P\.mx,P\.my-segs\[si\]\[0\]\*rowMm,imgW,imgH\);/.test(M106_SCRIPT), true);
+  ok('第一百零六批·旧的整图偏移循环已删除',
+     /heightLeft-=ch/.test(M106_SCRIPT), false);
+  ok('第一百零六批·克隆文档里量测卡片边界',
+     /cardBounds\.push\(\{top:c1\.top,h:c1\.h\}\)/.test(M106_SCRIPT) &&
+     /querySelectorAll\("\.history-view > \.c"\)/.test(M106_SCRIPT) &&
+     /querySelectorAll\("\.sum-grid"\)/.test(M106_SCRIPT), true);
+  ok('第一百零六批·表格卡本身不算不可切块（内部可在行边界断开）',
+     /querySelector&&cs\[i\]\.querySelector\("#histTable"\)\)continue;/.test(M106_SCRIPT), true);
+
+  // 二之二、明细表格按行边界切：一行不会被切成两半
+  ok('第一百零六批·克隆文档里量测表格行边界',
+     /querySelectorAll\("#histTable tr"\)/.test(M106_SCRIPT) &&
+     /rowEdges\.push\(\{top:t1\.top,b:t1\.b\}\)/.test(M106_SCRIPT), true);
+  ok('第一百零六批·切点落在行内部时切点提前到该行顶边',
+     /if\(rt<segEnd&&rb>segEnd\)\{if\(rt>segStart\)segEnd=rt;break;\}/.test(M106_SCRIPT), true);
+
+  // 三、纸张与导出模式规则保持不变
+  ok('第一百零六批·仍是 A4 横向并留 10mm 页边距',
+     /var EXPORT_PDF=\{pw:297,ph:210,mx:10,my:10\}/.test(M106_SCRIPT) &&
+     /orientation:"landscape"/.test(M106_SCRIPT), true);
+  ok('第一百零六批·导出模式仍隐藏导出按钮卡片',
+     /\.exp #exportCard\{display:none\}/.test(M106_MARKUP), true);
+
+  // 四、打印兜底路径同样收口
+  ok('第一百零六批·打印兜底也隐藏导出按钮卡片',
+     /#exportCard\{display:none!important\}/.test(M106_PRINT), true);
+  ok('第一百零六批·打印兜底放开表格横向裁切',
+     /\.tbl-wrap\{overflow:visible\}/.test(M106_PRINT), true);
+
+  // 五、数值零改动
+  eq('第一百零六批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('第一百零六批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  emit('  导出 PDF 不再重复渲染、卡片不被页边界切开（数值零改动）✓');
+})();
+
+/* =========================================================
+   35. 广东职工医保法定口径档（F3.json）+ 珠海/东莞 2027 候选值口径订正
+   =========================================================
+   背景：第九十五批（2026-11-01）在工作区落码了新的法定口径档 F3.json，并订正
+        了 F2.json 中珠海/东莞 2027 年度职工医保候选值的推导口径——原表述把
+        2025 年**全省**全口径推定值 9201 当作**本市**全口径使用。法定口径实为
+        「本市上上年度全口径城镇单位就业人员月平均工资×300%（上限）/×60%（下限）」。
+        本批只补断言与文档，把这批「数据已落码、断言与文档未跟上」的改动收口：
+          ① 新建 F3.json（只记口径规则、不记城市数值 → provinces 为空数组，
+             不参与 tools/source-records.js 的最佳条目评选与链接统计）；
+          ② F2.json 两城 candidateBasis 改为「路径A 延续跟省养老 / 路径B 按
+             本市全口径」两支表述，新增 candidateRule2027 与 candidateAlt；
+          ③ 两城 lastCheck 推进到 2026-11-01、urls 各 +4 条。
+        数值口径零改动：候选上限 27603、下限 5521/4785、第三支 7974 全部不变。
+   ========================================================= */
+section('35. 广东职工医保法定口径档 F3.json 与珠海/东莞 2027 候选值口径订正（第九十五批）');
+(function gdMedLegal95(){
+  const SRC95 = path.join(__dirname, '..', 'docs', 'sources');
+  const F3 = JSON.parse(fs.readFileSync(path.join(SRC95, 'F3.json'), 'utf8'));
+  const F2 = JSON.parse(fs.readFileSync(path.join(SRC95, 'F2.json'), 'utf8'));
+  const cOf95 = k => F2.provinces[0].cities.filter(c => c.key === k)[0];
+  const ruleOf = k => (F3.rules || []).filter(r => r.key === k)[0];
+
+  // 一、F3.json 法定口径档：结构与边界
+  eq('第九十五批·F3.json 存在且可解析', typeof F3.group === 'string' && F3.group.length > 0, true);
+  eq('第九十五批·F3 归档组名载第九十五批与法定口径',
+     /第九十五批/.test(F3.group || '') && /300%/.test(F3.group || '') && /60%/.test(F3.group || ''), true);
+  eq('第九十五批·F3 生成日期为 2026-11-01', F3.generatedAt, '2026-11-01');
+  eq('第九十五批·F3 legalBasis 载国办发〔2019〕13号', /国办发〔2019〕13号/.test((F3.legalBasis || {}).title || ''), true);
+  eq('第九十五批·F3 note 声明只记口径规则不记城市数值',
+     /不记录任何城市数值/.test(F3.note || ''), true);
+  eq('第九十五批·F3 provinces 为空数组（不参与最佳条目评选与链接统计）',
+     Array.isArray(F3.provinces) && F3.provinces.length, 0);
+  eq('第九十五批·F3 省级口径链接 3 条', (F3.provinceWideUrls || []).length, 3);
+  eq('第九十五批·F3 口径规则 7 条', (F3.rules || []).length, 7);
+  eq('第九十五批·F3 规则覆盖茂名/中山/佛山/广州/东莞/珠海/省统计局',
+     ['mm','zs','fs','gz','dg','zh','gd_stats'].every(k => !!ruleOf(k)), true);
+
+  // 二、七条口径规则的逐字依据
+  eq('第九十五批·茂名条载 2025 全口径 7463 与上限 22389、下限 4478',
+     /7463/.test((ruleOf('mm').rawQuotes || []).join('')) &&
+     /22389/.test((ruleOf('mm').rawQuotes || []).join('')) &&
+     /4478/.test((ruleOf('mm').rawQuotes || []).join('')), true);
+  eq('第九十五批·茂名条载 2027-01-01 起执行',
+     /2027年1月1日起执行/.test((ruleOf('mm').rawQuotes || []).join('')), true);
+  eq('第九十五批·中山条载本市上上年度全口径与 300%/60% 上下限',
+     /本市上上年度全口径/.test((ruleOf('zs').rawQuotes || []).join('')) &&
+     /300%/.test((ruleOf('zs').rawQuotes || []).join('')) &&
+     /60%/.test((ruleOf('zs').rawQuotes || []).join('')), true);
+  eq('第九十五批·佛山条载全口径加权计算口径',
+     /加权计算/.test((ruleOf('fs').rawQuotes || []).join('')), true);
+  eq('第九十五批·广州条载上限 300% 与下限 60%',
+     /300%/.test((ruleOf('gz').rawQuotes || []).join('')) &&
+     /60%/.test((ruleOf('gz').rawQuotes || []).join('')), true);
+  eq('第九十五批·东莞条载东府〔2023〕60号第十四条',
+     /东府〔2023〕60号/.test((ruleOf('dg').rawQuotes || []).join('')), true);
+  eq('第九十五批·珠海条载 2022 全省 8807 与第二类片区含珠海 7577',
+     /8807/.test((ruleOf('zh').rawQuotes || []).join('')) &&
+     /7577/.test((ruleOf('zh').rawQuotes || []).join('')), true);
+  eq('第九十五批·省统计局条载「非省统计局业务」答复',
+     /非省统计局业务/.test((ruleOf('gd_stats').rawQuotes || []).join('')), true);
+
+  // 三、F2.json 两城口径订正：路径 A/B + 新字段
+  eq('第九十五批·两城 candidateBasis 载路径A 延续跟省养老',
+     ['zh','dg'].every(k => /路径A/.test(cOf95(k).candidateBasis || '') &&
+                             /延续跟省养老/.test(cOf95(k).candidateBasis || '')), true);
+  eq('第九十五批·两城 candidateBasis 载路径B 按本市全口径',
+     ['zh','dg'].every(k => /路径B/.test(cOf95(k).candidateBasis || '') &&
+                             /本市/.test(cOf95(k).candidateBasis || '')), true);
+  eq('第九十五批·两城 candidateBasis 载「本批不作数字推定」',
+     ['zh','dg'].every(k => /不作数字推定/.test(cOf95(k).candidateBasis || '')), true);
+  eq('第九十五批·两城 candidateRule2027 存在且载法定口径',
+     ['zh','dg'].every(k => /300%/.test(cOf95(k).candidateRule2027 || '') &&
+                             /60%/.test(cOf95(k).candidateRule2027 || '')), true);
+  eq('第九十五批·两城 candidateAlt 存在（路径B 订正说明）',
+     ['zh','dg'].every(k => typeof cOf95(k).candidateAlt === 'string' && cOf95(k).candidateAlt.length > 0), true);
+  eq('第九十五批·两城 candidateConfidence.min 载路径A 5521 中高',
+     ['zh','dg'].every(k => /路径A 5521 中高/.test((cOf95(k).candidateConfidence || {}).min || '')), true);
+  eq('第九十五批·两城 candidateConfidence.third 载 7974 低',
+     ['zh','dg'].every(k => /7974 低/.test((cOf95(k).candidateConfidence || {}).third || '')), true);
+  eq('第九十五批·两城 lastCheck 已推进至 2026-11-01',
+     ['zh','dg'].every(k => cOf95(k).lastCheck === '2026-11-01'), true);
+  eq('第九十五批·两城 urls 各 10 条（第九十五批各 +4）',
+     ['zh','dg'].map(k => cOf95(k).urls.length).join('/'), '10/10');
+  eq('第九十五批·两城 rawNotes 载第九十五批口径订正',
+     ['zh','dg'].every(k => /第九十五批/.test(cOf95(k).rawNotes || '')), true);
+  eq('第九十五批·F2 顶层 note 载第九十五批增量',
+     /第九十五批/.test(F2.note || ''), true);
+  eq('第九十五批·F2 省级说明载本市口径与 9183/9201 无逐字印数',
+     /本市口径而非全省口径/.test(F2.provinces[0].provinceWideNote || '') &&
+     /无逐字印数/.test(F2.provinces[0].provinceWideNote || ''), true);
+
+  // 四、界面 note 与数值零改动
+  eq('第九十五批·界面珠海 note 载第九十五批口径再校正',
+     A.CITIES.zh.note.indexOf('第九十五批') >= 0, true);
+  eq('第九十五批·界面东莞 note 载第九十五批口径再校正',
+     A.CITIES.dg.note.indexOf('第九十五批') >= 0, true);
+  eq('第九十五批·珠海职工医保基数仍 4775~27549',
+     [A.CITIES.zh.med.min, A.CITIES.zh.med.max].join('~'), '4775~27549');
+  eq('第九十五批·东莞职工医保基数仍 4775~27549',
+     [A.CITIES.dg.med.min, A.CITIES.dg.med.max].join('~'), '4775~27549');
+  eq('第九十五批·两城候选上限仍 27603',
+     [cOf95('zh').candidateMax, cOf95('dg').candidateMax].join('/'), '27603/27603');
+  eq('第九十五批·两城候选下限仍 5521（东莞保留 4785 弱分支）',
+     [cOf95('zh').candidateMin.join('/'), cOf95('dg').candidateMin.join('/')].join('/'), '5521/5521/4785');
+  eq('第九十五批·两城第三支仍 7974',
+     [cOf95('zh').candidateThird, cOf95('dg').candidateThird].join('/'), '7974/7974');
+  eq('第九十五批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+
+  // 五、来源库整体链接数与来源档数
+  const srcFiles = fs.readdirSync(SRC95).filter(f => /^[A-Z]\d+[a-z]?\.json$/.test(f));
+  eq('第九十五批·来源档 106 个（新增 F3.json）', srcFiles.length, 106);
+  const allUrls95 = srcFiles.reduce((t, f) => {
+    const j = JSON.parse(fs.readFileSync(path.join(SRC95, f), 'utf8'));
+    return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
+  }, 0);
+  eq('第九十五批·全库 urls 总数 2851（F3 provinces 为空不贡献）', allUrls95, 2851);
+
+  emit('  广东职工医保法定口径档（F3.json）7 条逐字 + 珠海/东莞两支口径订正已锁定（数值零改动）✓');
 })();
 
 /* =========================================================

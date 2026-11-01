@@ -148,6 +148,28 @@ h1{font-size:30px;line-height:1.25;letter-spacing:-.035em;margin:0 0 8px;font-we
 .hero .mn .ml{font-size:11px;color:rgba(255,255,255,.55);margin-bottom:3px}
 .hero .mn .mv{font-size:15px;font-weight:650;font-variant-numeric:tabular-nums}
 .hero .ex{position:relative;font-size:11px;color:rgba(255,255,255,.55);text-align:center;margin-top:14px}
+/* 收入构成占比条（第一百零二批；第一百零五批起并入税后实发主卡，不再单独成卡） */
+.hero .mx{position:relative;margin-top:20px;padding-top:18px;border-top:1px solid rgba(255,255,255,.13)}
+.hero .mx .hb{margin-top:10px}
+.hero .hb{display:flex;height:9px;border-radius:999px;overflow:hidden;margin-top:20px;background:rgba(255,255,255,.14)}
+.hero .hb span{display:block;height:100%;min-width:2px}
+.hero .hb .s1{background:var(--lime)}
+.hero .hb .s2{background:#5eead4}
+.hero .hb .s3{background:#fdba74}
+.hero .hb .s4{background:rgba(255,255,255,.42)}
+.hero .hlg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:11px;color:rgba(255,255,255,.72)}
+.hero .hlg span{display:inline-flex;align-items:center;gap:5px}
+.hero .hlg i{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.hero .hlg i.d1{background:var(--lime)}
+.hero .hlg i.d2{background:#5eead4}
+.hero .hlg i.d3{background:#fdba74}
+.hero .hlg i.d4{background:rgba(255,255,255,.42)}
+.hero .hm{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
+.hero .hm .hlg{margin-top:0}
+.hero .mix-hd{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.hero .go-hist{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.3);color:#fff;
+  border-radius:11px;padding:8px 14px;font-size:12px;font-weight:650;cursor:pointer;white-space:nowrap;transition:.15s}
+.hero .go-hist:hover{background:rgba(255,255,255,.18)}
 
 /* ================= 工资条汇总 ================= */
 .dk{background:#1b4740;border-radius:16px;padding:18px 20px;color:#fff}
@@ -175,7 +197,8 @@ h1{font-size:30px;line-height:1.25;letter-spacing:-.035em;margin:0 0 8px;font-we
 .chk input{width:16px;height:16px;accent-color:var(--primary)}
 .sld{display:flex;align-items:center;gap:12px;padding:7px 0}
 .sld label{font-size:13px;color:var(--muted);white-space:nowrap}
-.sld input[type=range]{flex:1;height:5px;accent-color:var(--primary);cursor:pointer}
+/* 滑块：min-width:0 允许在窄容器收缩（否则固有宽度撑破卡片）；margin 两端为手柄预留空间，避免拖到 0%/最大值时手柄溢出卡片 */
+.sld input[type=range]{flex:1;min-width:0;height:5px;accent-color:var(--primary);cursor:pointer;margin:0 10px}
 .sld .sv{font-size:13px;font-weight:700;color:var(--primary);width:44px;text-align:right;font-variant-numeric:tabular-nums}
 .base-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:7px 0}
 .base-row .bl{font-size:13px;color:var(--ink);font-weight:600}
@@ -189,10 +212,6 @@ h1{font-size:30px;line-height:1.25;letter-spacing:-.035em;margin:0 0 8px;font-we
 .qk{font-size:11px;padding:5px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface-soft);
   color:var(--muted);cursor:pointer;transition:.15s;font-weight:600}
 .qk:hover{border-color:#9cc4b7;color:var(--primary);background:var(--primary-soft)}
-.quick-row{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:var(--surface-soft);color:var(--muted);border-radius:8px;padding:5px 11px;
-  font-size:11px;min-height:30px;font-weight:600}
-.chip:hover,.chip.active{border-color:#9cc4b7;color:var(--primary);background:var(--primary-soft)}
 .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .field{margin-bottom:16px}
 .field:last-child{margin-bottom:0}
@@ -238,13 +257,21 @@ h1{font-size:30px;line-height:1.25;letter-spacing:-.035em;margin:0 0 8px;font-we
 .safe b{color:var(--primary-dark)}
 
 /* ================= 历史明细页 ================= */
-.tbl-wrap{overflow-x:auto}
-table.hist{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
-table.hist th{background:var(--surface-soft);color:var(--muted);font-weight:650;padding:11px 8px;
-  border-bottom:1px solid var(--line);white-space:nowrap;font-size:11px}
-table.hist td{padding:9px 8px;border-bottom:1px solid #edf0ee;text-align:right;white-space:nowrap}
+.tbl-hint{display:none}
+/* 第一百零四批：表格固定列宽。
+   原来表格是 auto 布局，列宽由内容撑开：15 列的 min-content 宽度（约 1660px）把 .history-view
+   这个 grid item 顶到 1660px（min-width:auto 压制了 max-width:var(--max)），于是表格与汇总卡
+   都溢出 #page1 的节点框 —— 网页端右侧列要横滑才看得到，导出 PDF 时被 html2canvas 按节点宽度裁掉。
+   改 table-layout:fixed 后表格宽度跟着容器走，列宽均匀铺开，右侧列不再被裁。 */
+.tbl-wrap{overflow-x:auto;min-width:0;max-width:100%}
+table.hist{width:100%;min-width:960px;table-layout:fixed;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+table.hist th:first-child,table.hist td:first-child{width:30px}
+table.hist th:nth-child(2),table.hist td:nth-child(2){width:58px}
+table.hist th{background:var(--surface-soft);color:var(--muted);font-weight:650;padding:11px 4px;
+  border-bottom:1px solid var(--line);white-space:normal;font-size:11px;line-height:1.35}
+table.hist td{padding:9px 4px;border-bottom:1px solid #edf0ee;text-align:right;white-space:nowrap;font-size:11px}
 table.hist td.l{text-align:left;color:var(--ink)}
-table.hist td input{width:80px;padding:4px 6px;text-align:right;border:1px solid #d8e1dc;border-radius:8px;
+table.hist td input{width:100%;max-width:78px;padding:4px 4px;text-align:right;border:1px solid #d8e1dc;border-radius:8px;
   font-size:12px;outline:none;background:#fff;font-variant-numeric:tabular-nums}
 table.hist td input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(23,107,91,.1)}
 table.hist tr:hover td{background:#fafcfb}
@@ -258,13 +285,34 @@ table.hist tr:hover td{background:#fafcfb}
 .legend input{width:14px;height:14px;cursor:pointer}
 .legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
 .tbl-title{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap}
-.tbl-title .tt{font-size:11px;color:var(--muted)}
+.tbl-title .tt{font-size:11px;color:var(--muted);min-width:0;overflow-wrap:anywhere}
 .export-btn{background:var(--primary);color:#fff;border:none;border-radius:11px;padding:10px 28px;font-size:13px;
   font-weight:650;cursor:pointer;transition:.15s}
 .export-btn:hover{background:var(--primary-dark)}
 .export-btn.alt{background:var(--primary-soft);color:var(--primary)}
 .export-btn.alt:hover{background:#dceee8}
 .ft{color:var(--muted);font-size:11px;margin-top:22px;line-height:1.85;padding:18px 0 30px;border-top:1px solid var(--line)}
+/* ===== 底部「数据依据与核查说明」结构化排版（第九十七批） ===== */
+.fn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin:12px 0 2px}
+.fn-kv{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-width:0}
+.fn-kv b{display:block;font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
+.fn-kv span{display:block;font-size:12.5px;font-weight:650;color:var(--ink);line-height:1.65;word-break:break-word}
+.fn-sec{margin-top:18px}
+.fn-sec-t{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--ink);letter-spacing:.04em;
+  margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.fn-sec-t i{font-style:normal;width:17px;height:17px;border-radius:5px;background:var(--primary-soft);color:var(--primary);
+  display:grid;place-items:center;font-size:10px}
+.fn-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.fn-list li{padding:9px 13px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--primary-soft);
+  border-radius:8px;font-size:12px;line-height:1.9;color:var(--muted);transition:.15s}
+.fn-list li:hover{border-left-color:var(--primary)}
+.fn-list mark{background:var(--primary-soft);color:var(--primary-dark);padding:0 3px;border-radius:4px;font-weight:600}
+.fn-chk{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
+.fn-chk li{display:inline-flex;align-items:baseline;gap:7px;background:var(--surface);border:1px solid var(--line);
+  border-radius:999px;padding:5px 12px;font-size:11.5px;color:var(--muted);line-height:1.5}
+.fn-chk b{color:var(--primary);font-weight:700;font-variant-numeric:tabular-nums}
+.fn-tip{margin-top:10px;font-size:11.5px;line-height:1.8;color:var(--muted);background:var(--primary-soft);
+  border-radius:9px;padding:9px 12px}
 .chart-box{position:relative}
 .chart-tip{position:absolute;pointer-events:none;background:var(--primary-dark);color:#fff;font-size:11px;padding:5px 10px;
   border-radius:8px;white-space:nowrap;display:none;z-index:5;box-shadow:0 4px 14px rgba(18,63,56,.28);transform:translate(-50%,-130%)}
@@ -293,7 +341,8 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 .prov-tab:hover{border-color:#9cc4b7;color:var(--primary)}
 .prov-tab.a{background:var(--primary);border-color:var(--primary);color:#fff}
 .city-content{padding:0 26px 24px;overflow:auto}
-.city-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+/* 城市选择：单列省份块；选中省份的城市以网格横排铺开，不再竖直长列（第一百零三批） */
+.city-grid{display:grid;grid-template-columns:1fr;gap:10px}
 .city-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:left;cursor:pointer;
   transition:.15s;color:var(--ink);min-height:62px;display:flex;flex-direction:column;justify-content:center}
 .city-card:hover{border-color:#8abaab;background:var(--primary-soft)}
@@ -346,22 +395,36 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
   .tab{min-width:100px}
   .tab.a:after{top:0;bottom:auto;border-radius:0 0 3px 3px}
   .header-actions .text-btn span{display:none}
-  .page-head{padding:24px 0 18px;align-items:flex-start;flex-direction:column;gap:14px}
-  h1{font-size:25px}
-  .page-desc{font-size:12px}
+  .page-head{padding:14px 0 12px;align-items:stretch;flex-direction:column;gap:10px}
+  .eyebrow{font-size:11px;margin-bottom:4px}
+  h1{font-size:24px;margin-bottom:6px}
+  .page-desc{font-size:12px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .head-tools{width:100%;justify-content:space-between}
+  .city-picker{flex:1}
+  .input{font-size:16px}
   .workspace{grid-template-columns:1fr;gap:16px;padding-bottom:26px}
-  .results{grid-row:1}
-  .panel-stack{grid-row:2}
   .hero{padding:22px}
+  .go-res{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;height:46px;
+    border-radius:12px;background:var(--primary-soft);color:var(--primary);font-weight:700;font-size:14px;text-decoration:none}
+  .go-res:active{background:#d5e9e2}
   .hero .bg{font-size:36px}
   .ft{padding-bottom:96px}
+  /* 历史明细页移动端适配（第一百零二批） */
+  .tbl-hint{display:block;font-size:11px;color:var(--muted);text-align:center;margin:-2px 0 8px}
+  .history-view .nt{font-size:11px;line-height:1.75}
+  table.hist{min-width:1120px;font-size:11px}
+  table.hist th{padding:9px 4px;font-size:10px}
+  table.hist td{padding:7px 4px}
+  table.hist td input{width:58px;padding:3px 4px;font-size:11px}
+  .chart-box{overflow-x:auto}
+  .chart-box svg{min-width:620px}
 }
 @media(max-width:520px){
   .shell{width:calc(100% - 24px)}
   .header-inner{gap:10px}
   .header-actions{gap:0}
   .c,.panel-body{padding:17px 16px}
-  h1{font-size:23px}
+  h1{font-size:22px}
   .hero{border-radius:18px;padding:20px 18px}
   .hero .bg{font-size:32px}
   .hero .pc{font-size:16px}
@@ -378,7 +441,27 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
   .workspace{grid-template-columns:1fr}
   .c,.panel,.sum-box{box-shadow:none;break-inside:avoid}
   .shell{width:100%}
+  /* 第一百零六批：打印兜底路径（CDN 不可用时导出 PDF 走 window.print()）同样要
+     ①隐藏「导出 PDF」按钮卡片、②放开表格横向裁切 —— 否则打印出来的 PDF 底部
+     会出现按钮本身，右侧列也会被切掉。 */
+  #exportCard{display:none!important}
+  .tbl-wrap{overflow:visible}
 }
+
+/* ===== 第一百零一批：PDF 导出模式 =====
+   导出时给 html2canvas 的**克隆文档**的 <html> 加 .exp 类，下面的规则只在这个模式里生效，
+   页面本身完全不受影响。要解决的两个实测问题：
+   ①右侧被裁切 —— 旧实现按当前窗口宽度截图再等比压到 A4 宽（210mm），
+     1154px 的桌面布局被压到 0.52 倍，表格右侧列、图表右轴刻度、标题行尾巴都被裁掉；
+   ②PDF 里还带着「导出 PDF」按钮本身。
+   规则本身保持克制：只放开横向溢出、把可编辑输入框显示成纯文本数值、标题行允许换行、
+   隐藏导出按钮卡片；页面字体与配色一律沿用。 */
+.exp .tbl-wrap{overflow:visible}                 /* 表格不再横向滚动 → 右侧列不再被裁 */
+.exp table.hist td input{width:auto;min-width:0;max-width:100%;border:0;background:transparent;
+  padding:0;text-align:right;color:var(--ink);font-size:12px}   /* 可编辑框显示为纯文本数值 */
+.exp .tbl-title{flex-wrap:wrap;gap:4px}          /* 「统计区间…」较长时换行，不再溢出右缘 */
+.exp .tbl-title .tt{white-space:normal}
+.exp #exportCard{display:none}                    /* PDF 里不该出现「导出 PDF」按钮 */
 
 /* ===== 第九十批：details 面板 / 标题区 / 辅助控件 ===== */
 .section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px}
@@ -400,10 +483,11 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
 .reset-btn{width:100%;min-height:44px;border:1px solid var(--line);border-radius:var(--radius-sm);background:transparent;color:var(--muted);font:inherit;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:background .16s ease,color .16s ease,border-color .16s ease}
 .reset-btn:hover{background:var(--surface);color:var(--primary);border-color:var(--primary-soft)}
 .reset-btn .icon{width:16px;height:16px}
-.history-view{display:grid;gap:16px;max-width:var(--max)}
-.salary-chip{font-variant-numeric:tabular-nums}
-.salary-chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
-.salary-chip.active:hover{background:var(--primary-dark)}
+/* 移动端「查看测算结果」快捷锚点：桌面端隐藏（右侧已有完整结果区），手机端填完工资可一键跳到结果 */
+.go-res{display:none}
+/* min-width:0：让这个 grid item 可以收缩到 max-width:var(--max)，
+   否则内部表格的 min-content 宽度会把它顶宽（第一百零四批） */
+.history-view{display:grid;gap:16px;max-width:var(--max);min-width:0}
 /* ===== 省市县三级树 + 数据依据折叠（第九十一批） ===== */
 .prov-tab .pv{margin-left:5px;opacity:.55;font-size:11px;font-variant-numeric:tabular-nums}
 .tree-prov{border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:8px;background:var(--surface);overflow:hidden}
@@ -414,9 +498,10 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
 .tree-sum2 b.city-name{font-size:13px;font-weight:600}
 .tree-meta{margin-left:auto;font-size:11px;color:var(--muted);white-space:nowrap}
 .tree-meta.warn{color:var(--amber)}
-.tree-cities{padding:0 10px 8px}
-.tree-city{border-top:1px dashed var(--line)}
-.tree-areas{display:flex;flex-wrap:wrap;gap:6px;padding:6px 12px 12px}
+.tree-cities{padding:2px 10px 10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:8px;align-items:start}
+.tree-city{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden;transition:.15s}
+.tree-city[open]{border-color:#9cc4b7;box-shadow:0 4px 14px rgba(10,31,27,.06)}
+.tree-areas{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px 10px;border-top:1px dashed var(--line)}
 .area-chip,.area-pick{background:var(--surface-soft);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:11px;color:var(--muted);cursor:pointer;font-family:inherit}
 .area-chip:hover{border-color:#9cc4b7;color:var(--primary);background:var(--primary-soft)}
 .area-pick{background:var(--primary-soft);border-color:var(--primary-soft);color:var(--primary);font-weight:600}
@@ -512,13 +597,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
             </div>
             <div class="field">
               <label class="field-label" for="salary">税前月薪 <span class="field-hint">固定月薪，不含年终奖</span></label>
-              <div class="input-wrap"><span class="input-prefix">¥</span><input class="input has-prefix" type="number" id="salary" value="20000" min="0" step="100"></div>
-              <div class="quick-row" aria-label="常用月薪">
-                <button class="chip salary-chip" data-salary="15000" onclick="setSalary(15000)">¥15,000</button>
-                <button class="chip salary-chip active" data-salary="20000" onclick="setSalary(20000)">¥20,000</button>
-                <button class="chip salary-chip" data-salary="30000" onclick="setSalary(30000)">¥30,000</button>
-                <button class="chip salary-chip" data-salary="50000" onclick="setSalary(50000)">¥50,000</button>
-              </div>
+              <div class="input-wrap"><span class="input-prefix">¥</span><input class="input has-prefix" type="number" id="salary" value="10000" min="0" step="100"></div>
             </div>
             <div class="field-grid">
               <div class="field">
@@ -539,6 +618,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
               <label>医疗档次 <span class="h" id="medNote"></span></label>
               <div class="bt" id="medBtns"></div>
             </div>
+            <a class="go-res" href="#calcResults">查看测算结果 <span aria-hidden="true">↓</span></a>
           </div>
         </section>
 
@@ -619,7 +699,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
             <div class="nt" style="margin-top:0;margin-bottom:8px">补充扣除（年度）</div>
             <div class="r"><label>税优健康险<span class="h">≤200元/月</span></label><div style="display:flex;align-items:center"><input type="number" id="healthIns" value="0" min="0" max="200" step="10"><span class="u">元/月</span></div></div>
             <div class="r"><label>个人养老金<span class="h">≤1000元/月</span></label><div style="display:flex;align-items:center"><input type="number" id="persPen" value="0" min="0" max="1000" step="100"><span class="u">元/月</span></div></div>
-            <div class="r"><label>企业年金（个人）<span class="h">≤缴费工资基数4%</span></label><div style="display:flex;align-items:center"><input type="number" id="annuity" value="0" min="0" max="4" step="0.5" style="width:64px"><span class="u">%</span></div></div>
+            <div class="r"><label>企业年金（个人）<span class="h">≤缴费工资基数4%</span><span class="h" id="annuityWarn" style="display:none;color:var(--danger)"></span></label><div style="display:flex;align-items:center"><input type="number" id="annuity" value="0" min="0" max="4" step="0.5" style="width:64px"><span class="u">%</span></div></div>
             <div class="sp"></div>
             <div class="nt" style="margin-top:0;margin-bottom:8px">其他所得（年度金额 · 与工资分开预扣，年度汇算并入综合所得）</div>
             <div class="r"><label>劳务报酬<span class="h">减 20% 后并入</span></label><div style="display:flex;align-items:center"><input type="number" id="incLabor" value="0" min="0" step="1000"><span class="u">元/年</span></div></div>
@@ -640,7 +720,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
         <button class="reset-btn" onclick="resetAll()"><svg class="icon"><use href="#i-reset"/></svg>恢复默认设置</button>
       </div>
 
-      <section class="results" aria-label="计算结果">
+      <section class="results" id="calcResults" aria-label="计算结果">
         <div id="res"></div>
         <div class="c">
           <div class="st vi">年终奖 · 临界值陷阱速查</div>
@@ -656,6 +736,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
       <div class="c">
         <div class="tbl-title"><span class="st bl" style="margin:0;border:none;padding:0">逐月工资与五险一金（<span id="histCity"></span>）</span><span class="tt" id="rangeLabel"></span></div>
         <div class="nt" style="margin-bottom:8px">每月工资、五险基数、公积金基数、公积金比例均可独立调整（默认继承第一页数值；已修改的月份在切换页面或调整默认值后保留）。<b>专项附加扣除取自第 1 页、各月相同</b>。个税按累计预扣预缴从首月起累计，当前月之后为预测月份（蓝色）。<b>本页累计个税为月度预扣口径</b>，不含仅年度汇算可扣的大病医疗（对比见第一页「年度预估」）。生育/工伤基数仅影响单位侧缴费，不参与「到手现金」计算，列出仅为完整性。</div>
+        <div class="tbl-hint">← 左右滑动查看全部 15 列 →</div>
         <div class="tbl-wrap">
           <table class="hist" id="histTable"></table>
         </div>
@@ -669,7 +750,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
         <div class="chart-box"><svg id="chart" width="100%" viewBox="0 0 760 280" style="display:block;margin-top:4px"></svg><div class="chart-tip" id="chartTip"></div></div>
       </div>
 
-      <div class="c" style="text-align:center">
+      <div class="c" id="exportCard" style="text-align:center">
         <button class="export-btn" onclick="exportPDF()"><svg class="icon" style="width:16px;height:16px;vertical-align:-3px"><use href="#i-download"/></svg> 导出 PDF</button>
         <span class="nt" style="display:block;margin-top:8px">导出当前页面为 PDF 文件（含表格、汇总与趋势图）</span>
       </div>
@@ -687,7 +768,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
   <div class="modal">
     <div class="modal-head">
       <h2>选择工作城市</h2>
-      <p class="os">先选省份，再选城市（标注「数据待确认」的城市部分参数待官方确认，仅供参考）</p>
+      <p class="os">先选省份，再选城市（默认广东；标注「数据待确认」的城市部分参数待官方确认，仅供参考）</p>
     </div>
     <div class="city-search">
       <svg class="icon"><use href="#i-search"/></svg>
@@ -769,7 +850,7 @@ var CITIES={
      tiers:[{name:"医疗保险-统账(有个账)",comp:.05,emp:.02},
      {name:"医疗保险-统账(无个账)",comp:.045,emp:.005},
      {name:"医疗保险-单建统筹",comp:.0245,emp:.005}],
-     note:"公积金依东公积金通〔2026〕36号《关于调整住房公积金缴存基数范围的通知》（东莞市住房公积金管理中心，2026-08-28 发布并落款）逐字：上限「结合本市统计部门公布的2025年度全市在岗职工月平均工资，自2026年7月份起，住房公积金缴存基数上限由27391元调整为27700元」→上限 27391 改 27700 并已全面生效；下限「新参加工作或新调入的职工缴存2026年9月及后续月份的住房公积金，其缴存基数不得低于2300元」、灵活就业自 2026-09-01 起不得低于 2300 元，但「存量缴存人缴存基数低于2300元的，无需按照本次最低工资标准进行调整，其缴存基数仍为缴存人上一年度月平均工资，但不得低于2080元。缴存2027年1月及后续月份的住房公积金，须执行缴存基数不得低于2300元的规定」→下限 2080 保留至 2026-12，2027-01 起强制 2300（2300＝粤府函〔2026〕188号二类标准，东府函〔2026〕129号）；失业保险下限2300（依《广东省失业保险条例》第八条＝本市现行最低工资标准，2026-09-01起二类2300元，2026-07-01至08-31期间下限为2080元）、上限27702（东莞人社局《关于公布2026社会保险年度我市失业保险缴费基数上限的通知》，2026-07-09，索引号11441900MB2C899432/2026-00597，逐字「结合…2025年东莞市城镇非私营单位在岗职工年平均工资110803元…上限由26298元调整为27702元，执行时间2026年7月1日至2027年6月30日」；官方件自校验110803÷12=9233.58→9234元/月×3=27702，即本市先按月取整再乘3，与佛山/深圳/河源/潮州同法；🔴该值与本市公积金上限27700相差2元，是「失业上限照抄公积金上限」被证伪的第二例）；🩺医保基数4775~27549（第八十二批市级件坐实，零偏差；粤人社发〔2026〕24号只调【养老保险】缴费基数上下限、不含医保）：东莞市医疗保障局 东莞市财政局 国家税务总局东莞市税务局《关于公布2026年度职工基本医疗保险缴费基数有关事项的通知》东医保〔2025〕34号（索引号11441900MB2C90186Q/2025-00234，2025-12-19成文、2025-12-23发布）逐字「2026年度我市职工基本医疗保险缴费基数上限为27549元，下限为4775元，2026年度达到法定退休年龄而未达职工基本医疗保险规定缴费年限的，其缴费基数按7958元执行。执行时间为2026年1月1日至2026年12月31日；执行期间，国家、省、市有新规定的，从其规定」——执行期是自然年度1月1日至12月31日，非社保年度7月1日至次年6月30日；法定口径见《东莞市医疗保障办法》（东府〔2023〕60号）第十四条：以本市上上年度城镇非私营单位就业人员平均工资和城镇私营单位就业人员平均工资加权计算的全口径城镇单位就业人员平均工资（该办法称“职工月平均工资”）核定个人缴费基数上下限，上限按其300%、下限按其60%；东府规〔2026〕5号（2026-06-29发布、2026-07-01起实施）只调单建统筹费率（单位含生育3.0%→3.15%、个人0.5%不变）与年度最高支付限额（在岗职工年平均工资6倍），不触及缴费基数；⭐费率表《2026年度下半年医疗保险缴费基数和费率表（202607-202612）》（2026-06-25发布）载统账(有个账)5%/2%、统账(无个账)4.5%/0.5%、单建统筹2.45%/0.5%、生育0.7%单位、大额补助0.5%单位，与本表三档逐字一致（2.45%+0.7%=3.15%即东府规〔2026〕5号单位含生育率）；⭐该表发布于2026-07-01（粤人社发〔2026〕24号调整养老基数同日）之后仍写4775/27549，可证养老新值5521/27603不传导至东莞医保；⭐2025年度医保基数为上限27501、下限4767（东莞市医保局2025年度件），与2026年度的27549/4775不同，可见本值出自医保自身年度件而非照抄养老；口径闭合27549÷3=9183、7958×0.6=4774.8→4775；第八十六批（2026-10-22）2027 年度件回访（本批只补机制与排班，数值不改）：东医保〔2025〕34号正文（https://www.dg.gov.cn/ylbzj/gkmlpt/content/4/4479/post_4479485.html，索引号11441900MB2C90186Q/2025-00234，成文2025-12-19、发布2025-12-23）逐字「根据《东莞市人民政府关于印发东莞市医疗保障办法的通知》（东府〔2023〕60号）等有关文件规定，现将2026年度我市职工基本医疗保险缴费基数有关事项公布如下：2026年度我市职工基本医疗保险缴费基数上限为27549元，下限为4775元，2026年度达到法定退休年龄而未达职工基本医疗保险规定缴费年限的，其缴费基数按7958元执行。执行时间为2026年1月1日至2026年12月31日；执行期间，国家、省、市有新规定的，从其规定。」与珠海62号不同，该件只载结果值与依据文件名、不写计算公式，故下限4775的来源在本件内并不自证。口径回推：9183（2024年广东省全口径城镇单位就业人员月平均工资）×300%=27549、×60%=5510（对省养老下限）、×52%=4775.2取整为4775，三个数值与同一基数9183闭合；第四个数（达到法定退休年龄而未达规定缴费年限者）件载7958，而9183×13/15=7958.60，若四舍五入则7959，与件载7958不等（上一年度件7945＝9167×13/15=7944.73取整为7945，用的是四舍五入），两年取整方向相反 → 该数另有更精确基数（7958×15/13=9182.31量级），故记为「数值闭合、机制无逐字出处」；另7958×60%=4774.8取整同样得4775，属另一条机制不同的等值路径，两条路径在2026年度偶然同值，判定2027年度取值时须以发文口径为准。2027年度候选值（以发文为准）：上限27603高置信（2025年全省全口径月均＝27603÷3＝9201，且5521÷9201＝60%双向闭合，该基数本身来自粤人社发〔2026〕24号给出的企业职工缴费基数下限5521与上限27603）；下限两分支——跟随省养老口径则为5521，维持9183到9201同一比例52%则为4785；因2026年度件发文于2025-12-23、当时省养老下限2026年1月档尚在制定，取值偏向省养老口径，但两分支均以发文为准。退休补缴第三个数候选7974（9201×13/15＝7974.2）。发文规律：东医保〔2024〕45号（2024-12-30）对2025年度、东医保〔2025〕34号（2025-12-23）对2026年度，医保基数按自然年度一次性发文、社保年度7月切换只影响费率不重发基数件 → 2027年度件预计2026年12月中下旬发布，落在医保局3322政策法规栏目（https://www.dg.gov.cn/ylbzj/，该栏目全量仅38条已逐条翻查），文号应为东医保〔2026〕XX号。巡检手段为该站postmeta JSON端点 https://www.dg.gov.cn/ylbzj/postmeta/g/<classifyId>_<page>.json（字段articles[]），是东莞医保与人社两站唯一可靠的列表手段；医保局xxgk_/tzgg路径返回404，改用3335通知公告栏目。2027社保年度件预计2027年7月初发布且只影响失业字段，其上限依赖2026年东莞市城镇非私营单位在岗职工年平均工资（2027年6至7月才公布），本轮不预判。另补正一条时间细节：2026年度下半年费率件为东府规〔2026〕5号，成文2026-06-29、发布2026-06-30；该件只调单建统筹费率与年度最高支付限额，逐字给出职工月平均工资公式「[(非私营年均×人数+私营年均×人数)/(人数合计)]/12…由市统计部门根据省统计部门反馈数据提供」，不触及缴费基数。2026-07-01之后东莞市医保局发布的2026年度下半年医疗保险缴费基数和费率表仍载4775与27549，可证粤人社发〔2026〕24号的新值在2026年内不传导至东莞医保；第八十六批补充（二轮取证）：上限27549与本市W(7958)×300%=23874不等 → 可证东莞医保上限并非按本市口径自算，而是与省企业职工养老保险上下限同值（粤人社发〔2025〕32号转发件逐字「自2025年7月1日起，企业职工基本养老保险缴费基数上限为27549元/月，下限为4775元/月」），但该等式在东莞侧无逐字出处，故记为「数值闭合、机制无逐字出处」；另一分支：东府规〔2026〕5号第四条首次公开本市基数核定公式（非私营年均×人数与私营年均×人数加权÷12，由市统计部门根据省统计部门反馈数据提供），若2027年度件改按该公式，上限将大幅偏离，但该公式需年均人数而统计局只公布平均工资、不公布人数，故该分支不可推算，本轮不预判；巡检接口补充 https://www.dg.gov.cn/ylbzj/gkmlpt/api/all/{classifyId}?page=N&sid=769081（医保局 sid=769081）、http://dghrss.dg.gov.cn/gkmlpt/api/all/{classifyId}?page=N&sid=769035（人社局 sid=769035），每页100条；另《一图看懂2026年东莞市医疗保险缴费基数调整》（post_4520273）正文为纯图，图内文字本批未取到，其中可能含官方口径解释，本批不据以立论；第八十七批（2026-10-23）收官复核：2027 年度件本轮巡检仍处于发文窗口之外（东莞医保局政策法规 3322 栏目仍为 38 条、最新为 2025-12-23 的东医保〔2025〕34号，2027 年度件预期东医保〔2026〕XX号）。上一批唯一遗留缺口已闭合：《一图看懂2026年东莞市医疗保险缴费基数调整》（post_4520273）正文为纯图，经本地 OCR 两档放大（2倍与3倍各切4块，103行对103行、去重后 62 行两档完全一致）提取逐字：2026年1月起我市医疗保险缴费基数有调整，上限为27549元、下限为4775元；2026年度医疗保险缴费基数和费率表（上半年）载缴费基数下限 4775、上限 27549、达到法定退休年龄 7958；统账结合（有账）单位 4.3% 个人 2%、统账结合（无个账）3.8% 与 0.5%、单建统筹 2.3% 与 0.5%、生育 0.7% 与 0.5%、大额补助 0.8%；居民医保载本市上上年度居民人均可支配收入 68308、财政补助暂定 700元每人每年。图内无任何计算公式，反证东莞侧基数机制无逐字出处。★市级逐字件新增：东人社发〔2026〕35号（成文 2026-10-16、发布 2026-10-20、索引号 11441900MB2C899432/2026-00918）转发粤人社发〔2026〕24号并逐字载三档执行标准：自2026年1月1日起企业职工养老上限维持 27549、下限 5510；自2026年7月1日起企业职工养老上限 27603、下限 5521；自2026年1月1日起机关事业单位养老上限 27603、下限 5521；自2026年7月1日起失业保险上限 27702、下限 2080，自2026年9月1日起失业保险下限 2300。全文不提医保——市级逐字证据表明 24号文新值在 2026 年内不传导到东莞医保。2025 年广东省全口径 9201 的五重闭合推定与珠海同源：2027 年度医保上限候选 27603、下限候选 5521（双路径收敛），4785 分支依据薄弱。本批数值零改动。；第八十八批 B（2026-10-25）公积金件补证：东公积金通〔2026〕36号《关于调整住房公积金缴存基数范围的通知》原文 http://dggjj.dg.gov.cn/gkmlpt/content/4/4577/post_4577664.html （东莞市住房公积金管理中心 2026-08-28 发布并落款，附件为该文 PDF）逐字「结合本市统计部门公布的2025年度全市在岗职工月平均工资，自2026年7月份起，住房公积金缴存基数上限由27391元调整为27700元」「因调整基数计划原因造成职工当年少缴的，应同时为职工办理补缴手续」；下限「新参加工作或新调入的职工缴存2026年9月及后续月份的住房公积金，其缴存基数不得低于2300元」「从2026年9月1日起，灵活就业人员办理灵活缴存登记业务的缴存基数不得低于2300元」「存量缴存人缴存基数低于2300元的，无需按照本次最低工资标准进行调整，其缴存基数仍为缴存人上一年度月平均工资，但不得低于2080元。缴存2027年1月及后续月份的住房公积金，须执行缴存基数不得低于2300元的规定」→ 上限 27700 与下限存量 2080 均与仓库 hf 逐字一致（2026-12-31 前 2080 仍适用，2027-01 起转 2300），数值不改；第九十三批（2026-10-27）P8 巡检：按排班复查东莞医保局政策法规（栏目 3322）与通知公告（3335），3322 最新件为 2026-06-29 的东府规〔2026〕5号、3335 最新件为 2026-10-27 的定点医药机构协议状态变更名单；市人社局通知公告（453）最新为 2026-10-20 的省 24 号文转发，均无 2027 年度职工医保件。省医保局政策文件栏目（15 页）仍无职工医保缴费基数文件；省级 2025 年全省全口径月平均工资亦无逐字公布件，底数 9201 维持五重闭合推定。规则与候选值不变：上限 27603、下限 5521（4785 低置信）、第三个数 7974。；第九十四批（2026-10-31）用入库脚本 tools/p8-check.js 复核：东莞医保局 4 个栏目、市人社局 3 个栏目与省医保局 15 页政策文件全部实查，2027 年度职工医保基数件仍未进入发文窗口，规则与候选值（上限 27603、下限 5521、退休补缴 7974）不变。"}),
+     note:"公积金依东公积金通〔2026〕36号《关于调整住房公积金缴存基数范围的通知》（东莞市住房公积金管理中心，2026-08-28 发布并落款）逐字：上限「结合本市统计部门公布的2025年度全市在岗职工月平均工资，自2026年7月份起，住房公积金缴存基数上限由27391元调整为27700元」→上限 27391 改 27700 并已全面生效；下限「新参加工作或新调入的职工缴存2026年9月及后续月份的住房公积金，其缴存基数不得低于2300元」、灵活就业自 2026-09-01 起不得低于 2300 元，但「存量缴存人缴存基数低于2300元的，无需按照本次最低工资标准进行调整，其缴存基数仍为缴存人上一年度月平均工资，但不得低于2080元。缴存2027年1月及后续月份的住房公积金，须执行缴存基数不得低于2300元的规定」→下限 2080 保留至 2026-12，2027-01 起强制 2300（2300＝粤府函〔2026〕188号二类标准，东府函〔2026〕129号）；失业保险下限2300（依《广东省失业保险条例》第八条＝本市现行最低工资标准，2026-09-01起二类2300元，2026-07-01至08-31期间下限为2080元）、上限27702（东莞人社局《关于公布2026社会保险年度我市失业保险缴费基数上限的通知》，2026-07-09，索引号11441900MB2C899432/2026-00597，逐字「结合…2025年东莞市城镇非私营单位在岗职工年平均工资110803元…上限由26298元调整为27702元，执行时间2026年7月1日至2027年6月30日」；官方件自校验110803÷12=9233.58→9234元/月×3=27702，即本市先按月取整再乘3，与佛山/深圳/河源/潮州同法；🔴该值与本市公积金上限27700相差2元，是「失业上限照抄公积金上限」被证伪的第二例）；🩺医保基数4775~27549（第八十二批市级件坐实，零偏差；粤人社发〔2026〕24号只调【养老保险】缴费基数上下限、不含医保）：东莞市医疗保障局 东莞市财政局 国家税务总局东莞市税务局《关于公布2026年度职工基本医疗保险缴费基数有关事项的通知》东医保〔2025〕34号（索引号11441900MB2C90186Q/2025-00234，2025-12-19成文、2025-12-23发布）逐字「2026年度我市职工基本医疗保险缴费基数上限为27549元，下限为4775元，2026年度达到法定退休年龄而未达职工基本医疗保险规定缴费年限的，其缴费基数按7958元执行。执行时间为2026年1月1日至2026年12月31日；执行期间，国家、省、市有新规定的，从其规定」——执行期是自然年度1月1日至12月31日，非社保年度7月1日至次年6月30日；法定口径见《东莞市医疗保障办法》（东府〔2023〕60号）第十四条：以本市上上年度城镇非私营单位就业人员平均工资和城镇私营单位就业人员平均工资加权计算的全口径城镇单位就业人员平均工资（该办法称“职工月平均工资”）核定个人缴费基数上下限，上限按其300%、下限按其60%；东府规〔2026〕5号（2026-06-29发布、2026-07-01起实施）只调单建统筹费率（单位含生育3.0%→3.15%、个人0.5%不变）与年度最高支付限额（在岗职工年平均工资6倍），不触及缴费基数；⭐费率表《2026年度下半年医疗保险缴费基数和费率表（202607-202612）》（2026-06-25发布）载统账(有个账)5%/2%、统账(无个账)4.5%/0.5%、单建统筹2.45%/0.5%、生育0.7%单位、大额补助0.5%单位，与本表三档逐字一致（2.45%+0.7%=3.15%即东府规〔2026〕5号单位含生育率）；⭐该表发布于2026-07-01（粤人社发〔2026〕24号调整养老基数同日）之后仍写4775/27549，可证养老新值5521/27603不传导至东莞医保；⭐2025年度医保基数为上限27501、下限4767（东莞市医保局2025年度件），与2026年度的27549/4775不同，可见本值出自医保自身年度件而非照抄养老；口径闭合27549÷3=9183、7958×0.6=4774.8→4775；第八十六批（2026-10-22）2027 年度件回访（本批只补机制与排班，数值不改）：东医保〔2025〕34号正文（https://www.dg.gov.cn/ylbzj/gkmlpt/content/4/4479/post_4479485.html，索引号11441900MB2C90186Q/2025-00234，成文2025-12-19、发布2025-12-23）逐字「根据《东莞市人民政府关于印发东莞市医疗保障办法的通知》（东府〔2023〕60号）等有关文件规定，现将2026年度我市职工基本医疗保险缴费基数有关事项公布如下：2026年度我市职工基本医疗保险缴费基数上限为27549元，下限为4775元，2026年度达到法定退休年龄而未达职工基本医疗保险规定缴费年限的，其缴费基数按7958元执行。执行时间为2026年1月1日至2026年12月31日；执行期间，国家、省、市有新规定的，从其规定。」与珠海62号不同，该件只载结果值与依据文件名、不写计算公式，故下限4775的来源在本件内并不自证。口径回推：9183（2024年广东省全口径城镇单位就业人员月平均工资）×300%=27549、×60%=5510（对省养老下限）、×52%=4775.2取整为4775，三个数值与同一基数9183闭合；第四个数（达到法定退休年龄而未达规定缴费年限者）件载7958，而9183×13/15=7958.60，若四舍五入则7959，与件载7958不等（上一年度件7945＝9167×13/15=7944.73取整为7945，用的是四舍五入），两年取整方向相反 → 该数另有更精确基数（7958×15/13=9182.31量级），故记为「数值闭合、机制无逐字出处」；另7958×60%=4774.8取整同样得4775，属另一条机制不同的等值路径，两条路径在2026年度偶然同值，判定2027年度取值时须以发文口径为准。2027年度候选值（以发文为准）：上限27603高置信（2025年全省全口径月均＝27603÷3＝9201，且5521÷9201＝60%双向闭合，该基数本身来自粤人社发〔2026〕24号给出的企业职工缴费基数下限5521与上限27603）；下限两分支——跟随省养老口径则为5521，维持9183到9201同一比例52%则为4785；因2026年度件发文于2025-12-23、当时省养老下限2026年1月档尚在制定，取值偏向省养老口径，但两分支均以发文为准。退休补缴第三个数候选7974（9201×13/15＝7974.2）。发文规律：东医保〔2024〕45号（2024-12-30）对2025年度、东医保〔2025〕34号（2025-12-23）对2026年度，医保基数按自然年度一次性发文、社保年度7月切换只影响费率不重发基数件 → 2027年度件预计2026年12月中下旬发布，落在医保局3322政策法规栏目（https://www.dg.gov.cn/ylbzj/，该栏目全量仅38条已逐条翻查），文号应为东医保〔2026〕XX号。巡检手段为该站postmeta JSON端点 https://www.dg.gov.cn/ylbzj/postmeta/g/<classifyId>_<page>.json（字段articles[]），是东莞医保与人社两站唯一可靠的列表手段；医保局xxgk_/tzgg路径返回404，改用3335通知公告栏目。2027社保年度件预计2027年7月初发布且只影响失业字段，其上限依赖2026年东莞市城镇非私营单位在岗职工年平均工资（2027年6至7月才公布），本轮不预判。另补正一条时间细节：2026年度下半年费率件为东府规〔2026〕5号，成文2026-06-29、发布2026-06-30；该件只调单建统筹费率与年度最高支付限额，逐字给出职工月平均工资公式「[(非私营年均×人数+私营年均×人数)/(人数合计)]/12…由市统计部门根据省统计部门反馈数据提供」，不触及缴费基数。2026-07-01之后东莞市医保局发布的2026年度下半年医疗保险缴费基数和费率表仍载4775与27549，可证粤人社发〔2026〕24号的新值在2026年内不传导至东莞医保；第八十六批补充（二轮取证）：上限27549与本市W(7958)×300%=23874不等 → 可证东莞医保上限并非按本市口径自算，而是与省企业职工养老保险上下限同值（粤人社发〔2025〕32号转发件逐字「自2025年7月1日起，企业职工基本养老保险缴费基数上限为27549元/月，下限为4775元/月」），但该等式在东莞侧无逐字出处，故记为「数值闭合、机制无逐字出处」；另一分支：东府规〔2026〕5号第四条首次公开本市基数核定公式（非私营年均×人数与私营年均×人数加权÷12，由市统计部门根据省统计部门反馈数据提供），若2027年度件改按该公式，上限将大幅偏离，但该公式需年均人数而统计局只公布平均工资、不公布人数，故该分支不可推算，本轮不预判；巡检接口补充 https://www.dg.gov.cn/ylbzj/gkmlpt/api/all/{classifyId}?page=N&sid=769081（医保局 sid=769081）、http://dghrss.dg.gov.cn/gkmlpt/api/all/{classifyId}?page=N&sid=769035（人社局 sid=769035），每页100条；另《一图看懂2026年东莞市医疗保险缴费基数调整》（post_4520273）正文为纯图，图内文字本批未取到，其中可能含官方口径解释，本批不据以立论；第八十七批（2026-10-23）收官复核：2027 年度件本轮巡检仍处于发文窗口之外（东莞医保局政策法规 3322 栏目仍为 38 条、最新为 2025-12-23 的东医保〔2025〕34号，2027 年度件预期东医保〔2026〕XX号）。上一批唯一遗留缺口已闭合：《一图看懂2026年东莞市医疗保险缴费基数调整》（post_4520273）正文为纯图，经本地 OCR 两档放大（2倍与3倍各切4块，103行对103行、去重后 62 行两档完全一致）提取逐字：2026年1月起我市医疗保险缴费基数有调整，上限为27549元、下限为4775元；2026年度医疗保险缴费基数和费率表（上半年）载缴费基数下限 4775、上限 27549、达到法定退休年龄 7958；统账结合（有账）单位 4.3% 个人 2%、统账结合（无个账）3.8% 与 0.5%、单建统筹 2.3% 与 0.5%、生育 0.7% 与 0.5%、大额补助 0.8%；居民医保载本市上上年度居民人均可支配收入 68308、财政补助暂定 700元每人每年。图内无任何计算公式，反证东莞侧基数机制无逐字出处。★市级逐字件新增：东人社发〔2026〕35号（成文 2026-10-16、发布 2026-10-20、索引号 11441900MB2C899432/2026-00918）转发粤人社发〔2026〕24号并逐字载三档执行标准：自2026年1月1日起企业职工养老上限维持 27549、下限 5510；自2026年7月1日起企业职工养老上限 27603、下限 5521；自2026年1月1日起机关事业单位养老上限 27603、下限 5521；自2026年7月1日起失业保险上限 27702、下限 2080，自2026年9月1日起失业保险下限 2300。全文不提医保——市级逐字证据表明 24号文新值在 2026 年内不传导到东莞医保。2025 年广东省全口径 9201 的五重闭合推定与珠海同源：2027 年度医保上限候选 27603、下限候选 5521（双路径收敛），4785 分支依据薄弱。本批数值零改动。；第八十八批 B（2026-10-25）公积金件补证：东公积金通〔2026〕36号《关于调整住房公积金缴存基数范围的通知》原文 http://dggjj.dg.gov.cn/gkmlpt/content/4/4577/post_4577664.html （东莞市住房公积金管理中心 2026-08-28 发布并落款，附件为该文 PDF）逐字「结合本市统计部门公布的2025年度全市在岗职工月平均工资，自2026年7月份起，住房公积金缴存基数上限由27391元调整为27700元」「因调整基数计划原因造成职工当年少缴的，应同时为职工办理补缴手续」；下限「新参加工作或新调入的职工缴存2026年9月及后续月份的住房公积金，其缴存基数不得低于2300元」「从2026年9月1日起，灵活就业人员办理灵活缴存登记业务的缴存基数不得低于2300元」「存量缴存人缴存基数低于2300元的，无需按照本次最低工资标准进行调整，其缴存基数仍为缴存人上一年度月平均工资，但不得低于2080元。缴存2027年1月及后续月份的住房公积金，须执行缴存基数不得低于2300元的规定」→ 上限 27700 与下限存量 2080 均与仓库 hf 逐字一致（2026-12-31 前 2080 仍适用，2027-01 起转 2300），数值不改；第九十三批（2026-10-27）P8 巡检：按排班复查东莞医保局政策法规（栏目 3322）与通知公告（3335），3322 最新件为 2026-06-29 的东府规〔2026〕5号、3335 最新件为 2026-10-27 的定点医药机构协议状态变更名单；市人社局通知公告（453）最新为 2026-10-20 的省 24 号文转发，均无 2027 年度职工医保件。省医保局政策文件栏目（15 页）仍无职工医保缴费基数文件；省级 2025 年全省全口径月平均工资亦无逐字公布件，底数 9201 维持五重闭合推定。规则与候选值不变：上限 27603、下限 5521（4785 低置信）、第三个数 7974。；第九十四批（2026-10-31）用入库脚本 tools/p8-check.js 复核：东莞医保局 4 个栏目、市人社局 3 个栏目与省医保局 15 页政策文件全部实查，2027 年度职工医保基数件仍未进入发文窗口，规则与候选值（上限 27603、下限 5521、退休补缴 7974）不变。；第九十五批（2026-11-01）2027 年度口径再校正（本批只更规则、数值零改动）：⭐东莞的法定口径本库早已记载——东府〔2023〕60号第十四条以本市上上年度城镇非私营单位与私营单位就业人员平均工资加权计算的全口径城镇单位就业人员平均工资（该办法称职工月平均工资）核定个人缴费基数上下限，上限按其300%、下限按其60%；东府规〔2026〕5号把该工资的算法写实为「(非私营年均×人数+私营年均×人数)/(人数合计)÷12…由市统计部门根据省统计部门反馈数据提供」。本轮在广东全省索引实查到 2027 年度职工医保基数件已由部分城市于 2026-10-30 起发布，发文窗口比原先按历史件推算的 12 月下旬提前约三周——茂名茂医保〔2026〕20号逐字「我市职工基本医疗保险（含生育保险）缴费基数上限和下限分别按照我市上上年度全口径城镇单位就业人员月平均工资的300%和60%确定…调整为我市2025年全口径城镇单位就业人员月平均工资7463元的300%和60%，即缴费基数上限为22389元/月，缴费基数下限为4478元/月…本通知自2027年1月1日起执行」；中山市《中山市医疗保障办法》（中府〔2026〕185号，2026-10-08）逐字「个人缴费基数设定上下限，超过本市上上年度全口径城镇单位就业人员月平均工资300%的，按300%确定上限；低于本市上上年度全口径城镇单位就业人员月平均工资60%的，按60%确定下限」；广州市三部门 2026-09-23 件与佛山市 2026-09-10 件同款逐字。⇒ 法定口径是本市上上年度全口径乘300%或60%，属本市口径而非全省口径（茂名 2024 年全市全口径 7265 元与全省 9183 元相差 1918 元即为实证，茂名 2026 年度上限 21795、下限 4359 与 7265 双向闭合）；东莞 2026 年度实行的 4775~27549 属跟随省公布职工养老基数的做法，2027 年度是否回到法定口径以本市 2025 年全口径计缴须以本市年度件为准，故原候选上限 27603 应理解为延续跟省养老这一支，路径B 须按本市 2025 年全口径重算；另本轮值级反向检索证实 2025 年全省全口径推定值 9201 与 2024 年的 9183 在广东政务全文索引中均无逐字印数，省统计局互动交流（pid=3437019）官方答复「省统计局只发布城镇非私营单位和城镇私营单位就业人员年平均工资…养老保险缴费基数上限计算，非省统计局业务」，故 9183 与 9201 只能作闭合推定值使用；⚠️本轮巡检（2026-11-01）：东莞医保局政策法规 3322 最新 2026-06-29 东府规〔2026〕5号、通知公告 3335 与其他 3334 最新 2026-10-29、政策 3321 最新 2026-09-23，市人社局通知公告 453 最新 2026-10-26、规范性文件 432 最新 2026-10-28、统计信息 446 最新 2026-09-16，省医保局政策文件 15 页共 906 条，2027 年度职工医保基数件仍在发文窗口之外。"}),
   fs:CI("佛山",
     {min:4669,max:9660,comp:.045,emp:.02},
     {min:4669,max:9660,comp:.01},
@@ -786,7 +867,7 @@ var CITIES={
      unemp:{min:2300,max:36279,comp:.008,emp:.002},
      tiers:[{name:"一档(统账)",comp:.06,emp:.015},
      {name:"二档(单建)",comp:.03,emp:0}],
-     note:"一档单位费率含生育0.5%；失业保险依珠人社发〔2026〕4号《关于公布2026社会保险年度我市失业保险缴费基数上下限和待遇核定基数的通知》（落款2026-07-03，索引号11440400698143109W/2026-00726，社保年度2026-07-01至2027-06-30）逐字「失业保险缴费基数上限为36279元，下限为本市最低工资标准」——下限数值取自珠府函〔2026〕135号：二类标准2300元/月自2026-09-01起执行（此前珠府函〔2025〕16号为2080元，故2026-07-01至08-31期间下限为2080元）；原件未写上限基准，但待遇核定基数12093元（2025年本市在岗职工月平均工资）×3=36279恰好闭合；该件未含养老；🩹工伤（第八十一批）普通单位职工法定无缴费基数上下限：珠海2023年度件珠人社发〔2023〕2号逐字「工伤保险费由用人单位按照本单位职工工资总额乘以单位缴费费率之积缴纳。其中，“八类”特定人员参加工伤保险，月缴费基数上限和下限按照全省全口径城镇单位就业人员月平均工资的300%和60%确定，即26421元和5284元」；2024年度起珠海社保年度通知只含失业、不再含工伤（珠人社发〔2024〕14号起）→ inj 改 0/0；🩺医保2026年度依珠医保〔2025〕62号《关于公布2026年珠海市职工基本医疗保险缴费基数上下限有关事项的通知》（珠海市医疗保障局，2025-12-10）逐字「2026年珠海市职工基本医疗保险缴费基数按照2024年广东省全口径城镇单位就业人员平均工资计算，上下限按照《关于公布2025年职工基本养老保险缴费基数上下限和基本养老金计发基数有关问题的通知》（粤人社发〔2025〕32号）规定执行。执行期间，国家、省关于缴费基数有新规定的，另行发文执行」——⚠️该通知正文只定规则、不载数值；数值 4775~27549 出自配套政策问答的《2026年珠海市职工基本医疗保险缴费基数及缴费费率一览表》（https://zhsi.zhuhai.gov.cn/zcjd/content/post_3863065.html）逐字「职工缴费工资上限为27549元，下限为4775元」（统账 7.5%含生育0.5%/单位6%/个人1.5%；单建统筹 3%含生育0.5%；灵活就业 7%/2.5%），问答另逐字「2026年医保缴费基数上下限的执行时间…2026年1月1日至12月31日」（自然年度，非社保年度 7/1-次年6/30）→ 现值 4775~27549 正确不改（第八十三批只改归属表述、不改数值）。⚠️粤人社发〔2026〕24号只管养老保险、不含医保：其下限片区废止与下限统一5510自2026-01-01起、企业职工5521/27603自2026-07-01起，而62号文留了兜底句「国家、省关于缴费基数有新规定的，另行发文执行」；截至2026-10-20珠海医保局没有任何跟随件（医保局政策文件/政策解读/公告公示栏目全量翻页、9个站点码×8组关键词单站端点、广东省医保局6页全量、门户部门文件与政府公报逐月、2026年每份相关件逐份打开正文检索，2026-07-01后仅新增1件即24号文转载，全数0命中）→ 医保基数现值成立；若日后省里另发医保基数文件，候选值 5521~27603。另：珠海市统计局《2025年珠海市城镇单位就业人员年平均工资情况》（2026-06-30，https://tjj.zhuhai.gov.cn/tjsj/tjzl/tjjpcgb/content/post_3920286.html）载「在岗职工年平均工资为145121元」（就业人员口径144394元、私营81128元），与失业件所载月均12093元完全闭合：145121÷12=12093.42→12093 元/月×3=36279（仓库旧用的 145116 是 12093×12 的反推值、并非官方逐字，残差 5 元属年化取整）；公积金下限2300经珠房金委字〔2026〕5号（成文2026-08-19、自2026-09-01执行）逐字复核「一、缴存基数下限 本市住房公积金缴存基数下限调整为2,300元…三、执行时间 上述调整后的标准自2026年9月1日起正式执行」——无过渡条款、无更高值，现值正确不改；第八十六批（2026-10-22）2027 年度件回访（本批只补机制与排班，数值不改）：本批最重要的机制订正——2026 年度医保基数上下限并非本市自算，而是跟随省公布的职工养老基数。珠医保〔2025〕62号正文（https://zhsi.zhuhai.gov.cn/zcfg/content/post_3863060.html，成文2025-12-10、发布2025-12-17）逐字「2026年珠海市职工基本医疗保险缴费基数按照2024年广东省全口径城镇单位就业人员平均工资计算，上下限按照《关于公布2025年职工基本养老保险缴费基数上下限和基本养老金计发基数有关问题的通知》（粤人社发〔2025〕32号）规定执行。执行期间，国家、省关于缴费基数有新规定的，另行发文执行。」正文只定规则不载数值；配套政策问答（https://zhsi.zhuhai.gov.cn/zcjd/content/post_3863065.html）逐字「2026年珠海市职工基本医疗保险缴费基数上下限将按照广东省公布的职工基本养老保险缴费基数上下限执行，职工基本医疗保险与目前执行职工基本养老保险缴费基数上下限保持一致」，并逐字「职工缴费工资上限为27549元，下限为4775元」、执行期「2026年1月1日至12月31日」→ 即2026年度医保上下限＝粤人社发〔2025〕32号的省职工养老上下限4775~27549。由此订正第八十三批的兜底表述：候选值挂在「省里另发医保基数文件」上并不精确，真正决定2027年度取值的是省人社厅公布的职工基本养老保险缴费基数上下限本身（医保办据此发文），无需省医保局单独发基数文件。省医保局栏目佐证：政策文件栏目15页共290条（2018-12-27至2026-10-14，https://hsa.gd.gov.cn/zwgk/zcfg/）通篇无职工医保缴费基数文件，仅2022-07-19阶段性缓缴件与2021-07-01港澳台参保指南两条含「缴费」字样，即该局近8年不发布此类文件。法定公式备查：珠府〔2024〕57号《珠海市基本医疗保险办法》第十条（https://zhsi.zhuhai.gov.cn/zcfg/content/post_3685813.html）逐字「职工本人月工资收入、灵活就业人员个人申报的月工资收入、工伤职工的月伤残津贴超过本市公布执行的社平工资300%以上的部分不计征职工医保费；低于本市公布执行的社平工资60%的，按本市公布执行的社平工资的60%计征职工医保费」，其中社平工资指本市公布执行的全口径城镇单位就业人员月平均工资。历年口径切换链：2022年度珠医保〔2021〕97号（2021-12-07）按2020年广东省第二类片区全口径从业人员月平均工资6597元自算，上限19791、下限3958（6597×300%与×60%）；2025年度珠医保〔2024〕104号（2024-12-30）按2022年广东省第二类片区全口径城镇单位就业人员月平均工资7577元自算，2月起上限22731、下限4546（7577×300%与×60%），1月沿用2024年公布的19791/3958；2026年度起改按省养老上下限，下限不再等于全口径×60%（9183×0.6=5510，与4775不等），故下限口径已换，不得再用7577或9183的60%反推。2027年度件按发文惯例（97号2021-12-07、104号2024-12-30、62号2025-12-10）预计2026年12月下旬至2027年1月上旬出现，文号应为珠医保〔2026〕XX号（≥51号），且数值仍只落在附件一览表或政策解读栏目，故巡检必须同扫政策法规9090与政策解读9088两个栏目（接口 https://zhsi.zhuhai.gov.cn/postmeta/i/<CAT>.json 一次返全量）；2023、2024两个年度珠海并未发独立件（沿用先例），因此也不能假定每年必发。巡检排班：2026-12-10起每3天、2026-12-17起每日、至2027-01-20；兜底同扫人社局政策文件6555首条是否出现「粤人社发〔2027〕」。候选值 med.min=5521、med.max=27603（＝粤人社发〔2026〕24号自2026-07-01起全省企业职工养老保险缴费基数下限与上限，珠海属企业职工口径），现值4775与27549在2026-01-01至12-31期间继续有效，故本批不改数值。另：珠医保〔2026〕35号（2026-06-15，post_3915004）公布的2027年珠海市城乡居民基本医疗保险个人筹资标准（城乡居民556元/年、学生和未成年人417元/年）属居民医保筹资标准，全文不含职工缴费基数上下限，与本字段无关，不得混用；第八十七批（2026-10-23）收官复核：2027 年度件本轮巡检仍处于发文窗口之外（珠海最新年度件仍为 2025-12-17 的珠医保〔2025〕62号，2027 年度件预期珠医保〔2026〕XX号）。补入上位法：珠医保〔2025〕62号政策问答逐字引《国务院办公厅关于印发降低社会保险费率综合方案的通知》（国办发〔2019〕13号）——各省以本省城镇非私营与私营单位就业人员平均工资加权计算的全口径城镇单位就业人员平均工资核定社保个人缴费基数上下限；并引珠府〔2024〕57号明确本市以公布执行的全口径城镇单位就业人员月平均工资为社平工资。62号文配套费率表逐字：统账结合职工医保总费率 7.5%（含生育保险 0.5%）、单位 6%、个人 1.5%；单建统筹职工 3%（含生育 0.5%）、单位 3%；按月领取失业保险金人员与达到法定退休年龄的续缴人员缴费基数为 2024年广东省全口径城镇单位就业人员平均工资，费率 5.5%（统账结合）或 2.5%（单建统筹）——与本库费率字段逐字吻合。★核心推定：2025年广东省全口径城镇单位就业人员月平均工资为 9201元/月，依据五重算式闭合（9183×3=27549、9201×3=27603、9183×0.6 取整=5510、9201×0.6 取整=5521、9183×0.52 取整=4775）加增量一致（9167 至 9183 增 16、9183 至 9201 增 18，年增 0.17% 与 0.20%）。故路径A（跟随省养老）与路径B（本市按全口径自算）在上限 27603 与下限 5521 上完全收敛，2027 年度下限取 5521 的置信度显著提升；维持 52% 比例的 4785 分支依据薄弱（省养老下限比例已由 52% 变为 60%）。粤人社发〔2026〕24号标题文种为关于公布2026年职工基本养老保险缴费基数上下限有关问题的通知，不含全口径，故 2025 年全省全口径公布件尚未在广东省统一搜索索引出现，9201 目前仍属推定值而非逐字坐实。退休续缴第三个数候选 7974（9201×13/15 取整）。本批数值零改动。；第九十三批（2026-10-27）P8 巡检：按排班复查珠海医保局政策法规（栏目 9090）与政策解读（栏目 9088），最新件仍为 2026-10-13 的省养老 24 号文转发与 2026-06-15 的 2027 年居民医保筹资件，2027 年度职工医保件尚未进入发文窗口；珠海市人社局政策文件（栏目 6555）最新为 2026-10-08 同件、通知公告（6583）与政策解读（6556）最新为 2026-10-26 的招聘类事务公告，均无 2027 年度基数件。省医保局政策文件栏目（15 页）仍无职工医保缴费基数文件；省级 2025 年全省全口径月平均工资亦无逐字公布件，底数 9201 维持五重闭合推定。规则与候选值不变：上限 27603、下限 5521、第三个数 7974。；第九十四批（2026-10-31）用入库脚本 tools/p8-check.js 复核：珠海医保局 3 个栏目、市人社局 3 个栏目与省医保局 15 页政策文件全部实查，2027 年度职工医保基数件仍未进入发文窗口，规则与候选值（上限 27603、下限 5521、退休补缴 7974）不变。"}),
+     note:"一档单位费率含生育0.5%；失业保险依珠人社发〔2026〕4号《关于公布2026社会保险年度我市失业保险缴费基数上下限和待遇核定基数的通知》（落款2026-07-03，索引号11440400698143109W/2026-00726，社保年度2026-07-01至2027-06-30）逐字「失业保险缴费基数上限为36279元，下限为本市最低工资标准」——下限数值取自珠府函〔2026〕135号：二类标准2300元/月自2026-09-01起执行（此前珠府函〔2025〕16号为2080元，故2026-07-01至08-31期间下限为2080元）；原件未写上限基准，但待遇核定基数12093元（2025年本市在岗职工月平均工资）×3=36279恰好闭合；该件未含养老；🩹工伤（第八十一批）普通单位职工法定无缴费基数上下限：珠海2023年度件珠人社发〔2023〕2号逐字「工伤保险费由用人单位按照本单位职工工资总额乘以单位缴费费率之积缴纳。其中，“八类”特定人员参加工伤保险，月缴费基数上限和下限按照全省全口径城镇单位就业人员月平均工资的300%和60%确定，即26421元和5284元」；2024年度起珠海社保年度通知只含失业、不再含工伤（珠人社发〔2024〕14号起）→ inj 改 0/0；🩺医保2026年度依珠医保〔2025〕62号《关于公布2026年珠海市职工基本医疗保险缴费基数上下限有关事项的通知》（珠海市医疗保障局，2025-12-10）逐字「2026年珠海市职工基本医疗保险缴费基数按照2024年广东省全口径城镇单位就业人员平均工资计算，上下限按照《关于公布2025年职工基本养老保险缴费基数上下限和基本养老金计发基数有关问题的通知》（粤人社发〔2025〕32号）规定执行。执行期间，国家、省关于缴费基数有新规定的，另行发文执行」——⚠️该通知正文只定规则、不载数值；数值 4775~27549 出自配套政策问答的《2026年珠海市职工基本医疗保险缴费基数及缴费费率一览表》（https://zhsi.zhuhai.gov.cn/zcjd/content/post_3863065.html）逐字「职工缴费工资上限为27549元，下限为4775元」（统账 7.5%含生育0.5%/单位6%/个人1.5%；单建统筹 3%含生育0.5%；灵活就业 7%/2.5%），问答另逐字「2026年医保缴费基数上下限的执行时间…2026年1月1日至12月31日」（自然年度，非社保年度 7/1-次年6/30）→ 现值 4775~27549 正确不改（第八十三批只改归属表述、不改数值）。⚠️粤人社发〔2026〕24号只管养老保险、不含医保：其下限片区废止与下限统一5510自2026-01-01起、企业职工5521/27603自2026-07-01起，而62号文留了兜底句「国家、省关于缴费基数有新规定的，另行发文执行」；截至2026-10-20珠海医保局没有任何跟随件（医保局政策文件/政策解读/公告公示栏目全量翻页、9个站点码×8组关键词单站端点、广东省医保局6页全量、门户部门文件与政府公报逐月、2026年每份相关件逐份打开正文检索，2026-07-01后仅新增1件即24号文转载，全数0命中）→ 医保基数现值成立；若日后省里另发医保基数文件，候选值 5521~27603。另：珠海市统计局《2025年珠海市城镇单位就业人员年平均工资情况》（2026-06-30，https://tjj.zhuhai.gov.cn/tjsj/tjzl/tjjpcgb/content/post_3920286.html）载「在岗职工年平均工资为145121元」（就业人员口径144394元、私营81128元），与失业件所载月均12093元完全闭合：145121÷12=12093.42→12093 元/月×3=36279（仓库旧用的 145116 是 12093×12 的反推值、并非官方逐字，残差 5 元属年化取整）；公积金下限2300经珠房金委字〔2026〕5号（成文2026-08-19、自2026-09-01执行）逐字复核「一、缴存基数下限 本市住房公积金缴存基数下限调整为2,300元…三、执行时间 上述调整后的标准自2026年9月1日起正式执行」——无过渡条款、无更高值，现值正确不改；第八十六批（2026-10-22）2027 年度件回访（本批只补机制与排班，数值不改）：本批最重要的机制订正——2026 年度医保基数上下限并非本市自算，而是跟随省公布的职工养老基数。珠医保〔2025〕62号正文（https://zhsi.zhuhai.gov.cn/zcfg/content/post_3863060.html，成文2025-12-10、发布2025-12-17）逐字「2026年珠海市职工基本医疗保险缴费基数按照2024年广东省全口径城镇单位就业人员平均工资计算，上下限按照《关于公布2025年职工基本养老保险缴费基数上下限和基本养老金计发基数有关问题的通知》（粤人社发〔2025〕32号）规定执行。执行期间，国家、省关于缴费基数有新规定的，另行发文执行。」正文只定规则不载数值；配套政策问答（https://zhsi.zhuhai.gov.cn/zcjd/content/post_3863065.html）逐字「2026年珠海市职工基本医疗保险缴费基数上下限将按照广东省公布的职工基本养老保险缴费基数上下限执行，职工基本医疗保险与目前执行职工基本养老保险缴费基数上下限保持一致」，并逐字「职工缴费工资上限为27549元，下限为4775元」、执行期「2026年1月1日至12月31日」→ 即2026年度医保上下限＝粤人社发〔2025〕32号的省职工养老上下限4775~27549。由此订正第八十三批的兜底表述：候选值挂在「省里另发医保基数文件」上并不精确，真正决定2027年度取值的是省人社厅公布的职工基本养老保险缴费基数上下限本身（医保办据此发文），无需省医保局单独发基数文件。省医保局栏目佐证：政策文件栏目15页共290条（2018-12-27至2026-10-14，https://hsa.gd.gov.cn/zwgk/zcfg/）通篇无职工医保缴费基数文件，仅2022-07-19阶段性缓缴件与2021-07-01港澳台参保指南两条含「缴费」字样，即该局近8年不发布此类文件。法定公式备查：珠府〔2024〕57号《珠海市基本医疗保险办法》第十条（https://zhsi.zhuhai.gov.cn/zcfg/content/post_3685813.html）逐字「职工本人月工资收入、灵活就业人员个人申报的月工资收入、工伤职工的月伤残津贴超过本市公布执行的社平工资300%以上的部分不计征职工医保费；低于本市公布执行的社平工资60%的，按本市公布执行的社平工资的60%计征职工医保费」，其中社平工资指本市公布执行的全口径城镇单位就业人员月平均工资。历年口径切换链：2022年度珠医保〔2021〕97号（2021-12-07）按2020年广东省第二类片区全口径从业人员月平均工资6597元自算，上限19791、下限3958（6597×300%与×60%）；2025年度珠医保〔2024〕104号（2024-12-30）按2022年广东省第二类片区全口径城镇单位就业人员月平均工资7577元自算，2月起上限22731、下限4546（7577×300%与×60%），1月沿用2024年公布的19791/3958；2026年度起改按省养老上下限，下限不再等于全口径×60%（9183×0.6=5510，与4775不等），故下限口径已换，不得再用7577或9183的60%反推。2027年度件按发文惯例（97号2021-12-07、104号2024-12-30、62号2025-12-10）预计2026年12月下旬至2027年1月上旬出现，文号应为珠医保〔2026〕XX号（≥51号），且数值仍只落在附件一览表或政策解读栏目，故巡检必须同扫政策法规9090与政策解读9088两个栏目（接口 https://zhsi.zhuhai.gov.cn/postmeta/i/<CAT>.json 一次返全量）；2023、2024两个年度珠海并未发独立件（沿用先例），因此也不能假定每年必发。巡检排班：2026-12-10起每3天、2026-12-17起每日、至2027-01-20；兜底同扫人社局政策文件6555首条是否出现「粤人社发〔2027〕」。候选值 med.min=5521、med.max=27603（＝粤人社发〔2026〕24号自2026-07-01起全省企业职工养老保险缴费基数下限与上限，珠海属企业职工口径），现值4775与27549在2026-01-01至12-31期间继续有效，故本批不改数值。另：珠医保〔2026〕35号（2026-06-15，post_3915004）公布的2027年珠海市城乡居民基本医疗保险个人筹资标准（城乡居民556元/年、学生和未成年人417元/年）属居民医保筹资标准，全文不含职工缴费基数上下限，与本字段无关，不得混用；第八十七批（2026-10-23）收官复核：2027 年度件本轮巡检仍处于发文窗口之外（珠海最新年度件仍为 2025-12-17 的珠医保〔2025〕62号，2027 年度件预期珠医保〔2026〕XX号）。补入上位法：珠医保〔2025〕62号政策问答逐字引《国务院办公厅关于印发降低社会保险费率综合方案的通知》（国办发〔2019〕13号）——各省以本省城镇非私营与私营单位就业人员平均工资加权计算的全口径城镇单位就业人员平均工资核定社保个人缴费基数上下限；并引珠府〔2024〕57号明确本市以公布执行的全口径城镇单位就业人员月平均工资为社平工资。62号文配套费率表逐字：统账结合职工医保总费率 7.5%（含生育保险 0.5%）、单位 6%、个人 1.5%；单建统筹职工 3%（含生育 0.5%）、单位 3%；按月领取失业保险金人员与达到法定退休年龄的续缴人员缴费基数为 2024年广东省全口径城镇单位就业人员平均工资，费率 5.5%（统账结合）或 2.5%（单建统筹）——与本库费率字段逐字吻合。★核心推定：2025年广东省全口径城镇单位就业人员月平均工资为 9201元/月，依据五重算式闭合（9183×3=27549、9201×3=27603、9183×0.6 取整=5510、9201×0.6 取整=5521、9183×0.52 取整=4775）加增量一致（9167 至 9183 增 16、9183 至 9201 增 18，年增 0.17% 与 0.20%）。故路径A（跟随省养老）与路径B（本市按全口径自算）在上限 27603 与下限 5521 上完全收敛，2027 年度下限取 5521 的置信度显著提升；维持 52% 比例的 4785 分支依据薄弱（省养老下限比例已由 52% 变为 60%）。粤人社发〔2026〕24号标题文种为关于公布2026年职工基本养老保险缴费基数上下限有关问题的通知，不含全口径，故 2025 年全省全口径公布件尚未在广东省统一搜索索引出现，9201 目前仍属推定值而非逐字坐实。退休续缴第三个数候选 7974（9201×13/15 取整）。本批数值零改动。；第九十三批（2026-10-27）P8 巡检：按排班复查珠海医保局政策法规（栏目 9090）与政策解读（栏目 9088），最新件仍为 2026-10-13 的省养老 24 号文转发与 2026-06-15 的 2027 年居民医保筹资件，2027 年度职工医保件尚未进入发文窗口；珠海市人社局政策文件（栏目 6555）最新为 2026-10-08 同件、通知公告（6583）与政策解读（6556）最新为 2026-10-26 的招聘类事务公告，均无 2027 年度基数件。省医保局政策文件栏目（15 页）仍无职工医保缴费基数文件；省级 2025 年全省全口径月平均工资亦无逐字公布件，底数 9201 维持五重闭合推定。规则与候选值不变：上限 27603、下限 5521、第三个数 7974。；第九十四批（2026-10-31）用入库脚本 tools/p8-check.js 复核：珠海医保局 3 个栏目、市人社局 3 个栏目与省医保局 15 页政策文件全部实查，2027 年度职工医保基数件仍未进入发文窗口，规则与候选值（上限 27603、下限 5521、退休补缴 7974）不变。；第九十五批（2026-11-01）2027 年度口径再校正（本批只更规则、数值零改动）：⭐本轮在广东全省索引实查到 2027 年度职工医保基数件已由部分城市于 2026-10-30 起发布，发文窗口比原先按历史件推算的 12 月下旬提前约三周——茂名茂医保〔2026〕20号逐字「我市职工基本医疗保险（含生育保险）缴费基数上限和下限分别按照我市上上年度全口径城镇单位就业人员月平均工资的300%和60%确定…调整为我市2025年全口径城镇单位就业人员月平均工资7463元的300%和60%，即缴费基数上限为22389元/月，缴费基数下限为4478元/月…本通知自2027年1月1日起执行」；中山市《中山市医疗保障办法》（中府〔2026〕185号，2026-10-08）逐字「个人缴费基数设定上下限，超过本市上上年度全口径城镇单位就业人员月平均工资300%的，按300%确定上限；低于本市上上年度全口径城镇单位就业人员月平均工资60%的，按60%确定下限」；广州市三部门 2026-09-23 件与佛山市 2026-09-10 件同款。⇒ 广东职工医保基数的法定口径是本市上上年度全口径城镇单位就业人员月平均工资乘300%或60%，属本市口径而非全省口径：茂名 2024 年全市全口径 7265 元与全省 9183 元相差 1918 元即为实证（茂名 2026 年度上限 21795、下限 4359 与 7265 双向闭合）；珠海 2026 年度实行的 4775~27549 属跟随省公布职工养老基数的做法，2027 年度是否回到法定口径以本市 2025 年全口径计缴须以本市年度件为准，故原候选上限 27603 应理解为延续跟省养老这一支，路径B 须按本市 2025 年全口径重算；另本轮值级反向检索证实 2025 年全省全口径推定值 9201 与 2024 年的 9183 在广东政务全文索引中均无逐字印数，且省统计局互动交流（pid=3437019）官方答复「省统计局只发布城镇非私营单位和城镇私营单位就业人员年平均工资…养老保险缴费基数上限计算，非省统计局业务」，故 9183 与 9201 只能作闭合推定值使用；全市 2025 年在岗职工月均 16157 元已由统计局公报坐实，可作全口径推算的上界参照；⚠️本轮巡检（2026-11-01）：珠海医保局政策法规 9090 最新 2026-10-13、政策解读 9088 最新 2026-07-02、通知公告 9082 最新 2026-10-30，市人社局政策文件 6555 最新 2026-10-21、政策解读 6556 最新 2026-10-29、通知公告 6583 最新 2026-10-30，省医保局政策文件 15 页共 906 条，两城 2027 年度职工医保基数件仍在发文窗口之外。"}),
   hz:CI("惠州",
     {min:4463,max:22315,comp:.056,emp:.02},
     null,
@@ -4201,11 +4282,12 @@ var PROV_TREE=[
 {k:"ylz",d:"伊犁",a:"察布查尔锡伯自治县,巩留县,霍城县,霍尔果斯市,奎屯市,尼勒克县,特克斯县,新源县,伊宁市,伊宁县,昭苏县"}
 ]}
 ];
-var prov=null;            /* null = 显示全部省份 */
+var prov="广东";           /* 当前省份：默认广东；顶部省份胶囊不再提供「全部」选项（第一百零三批） */
+var citySearchMode=false;  /* 搜索态：临时渲染全部省份，命中后自动展开，保证跨省检索（第一百零三批） */
 var curCityKey=null;
 function provOfCity(k){for(var i=0;i<PROV_TREE.length;i++){var cs=PROV_TREE[i].c;for(var j=0;j<cs.length;j++){if(cs[j].k===k)return PROV_TREE[i].n;}}return null;}
 function buildProvTabs(){
-  var h='<button class="prov-tab'+(prov===null?' a':'')+'" onclick="setProv(\'\')">全部</button>';
+  var h="";
   for(var i=0;i<PROV_TREE.length;i++){
     var p=PROV_TREE[i];
     h+='<button class="prov-tab'+(prov===p.n?' a':'')+'" data-prov="'+p.n+'" onclick="setProv(\''+p.n+'\')">'+p.n+'<span class="pv">'+p.s+'</span></button>';
@@ -4213,12 +4295,17 @@ function buildProvTabs(){
   $("provTabs").innerHTML=h;
 }
 function buildCityGrid(){
-  var h="";
+  var h="",list=[];
   for(var i=0;i<PROV_TREE.length;i++){
     var p=PROV_TREE[i];
-    if(prov&&p.n!==prov)continue;
+    /* 常态只渲染当前省：下方空白处用网格铺开该省全部城市，不再竖直长列堆叠 */
+    if(!citySearchMode&&p.n!==prov)continue;
+    list.push(p);
+  }
+  for(var i=0;i<list.length;i++){
+    var p=list[i];
     var cs=p.c.slice().sort(function(a,b){return a.d.localeCompare(b.d,"zh-Hans-CN");});
-    h+='<details class="tree-prov" id="tp'+i+'" data-prov="'+p.n+'"'+(prov===p.n?' open':'')+'><summary class="tree-sum"><b>'+p.n+'</b><span class="tree-meta">'+p.s+' 画 · '+cs.length+' 城</span></summary><div class="tree-cities">';
+    h+='<details class="tree-prov" id="tp'+i+'" data-prov="'+p.n+'"'+(p.n===prov?' open':'')+'><summary class="tree-sum"><b>'+p.n+'</b><span class="tree-meta">'+p.s+' 画 · '+cs.length+' 城</span></summary><div class="tree-cities">';
     for(var j=0;j<cs.length;j++){
       var c=cs[j],cw=CITIES[c.k]||{};
       var areas=c.a?c.a.split(","):[];
@@ -4232,9 +4319,70 @@ function buildCityGrid(){
   }
   $("cityGrid").innerHTML=h;
 }
-function setProv(r){prov=r||null;buildProvTabs();buildCityGrid();}
+function setProv(r){prov=r||"广东";citySearchMode=false;var s=$("citySearch");if(s)s.value="";buildProvTabs();buildCityGrid();}
 buildProvTabs();buildCityGrid();
-function showOverlay(){if(CITY&&curCityKey)prov=provOfCity(curCityKey)||null;buildProvTabs();buildCityGrid();$("cityOverlay").style.display="flex"}
+function showOverlay(){if(CITY&&curCityKey)prov=provOfCity(curCityKey)||"广东";citySearchMode=false;var s=$("citySearch");if(s)s.value="";buildProvTabs();buildCityGrid();$("cityOverlay").style.display="flex"}
+/* ===== 底部「数据依据与核查说明」结构化渲染（第九十七批） =====
+   既有约束：footNote.innerHTML 必须以「数据依据：<城市> <年度>」开头（第九十一批断言），
+   故首行保留裸文本摘要行，其后为结构化块：口径速览卡 + 官方依据条目 + 核查清单。
+   note 原文逐字保留，只做「；」「。」两级拆分与文号/文件名浅色高亮（先转义再包裹，
+   避免 note 里的尖括号被当成标签解析）。 */
+var FN_CHECKS=[
+  {d:"2026-09-19",t:"京沪（已联网核查）"},
+  {d:"2026-08-12",t:"广东基数"},
+  {d:"2026-09-23",t:"四川"},
+  {d:"2026-09-26",t:"重庆 / 山东 / 辽宁 / 吉林 / 黑龙江"},
+  {d:"2026-09-26",t:"天津 / 江苏 / 浙江"},
+  {d:"2026-09-26",t:"河南 / 湖北 / 湖南 / 安徽 / 福建 / 江西"},
+  {d:"2026-09-26",t:"河北 / 山西 / 陕西 / 广西 / 云南 / 贵州"},
+  {d:"2026-09-26",t:"甘肃 / 宁夏 / 内蒙古 / 新疆 / 青海 / 海南"},
+  {d:"2026-09-26",t:"西藏"}
+];
+function fnEsc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function fnHl(s){
+  var t=fnEsc(s);
+  t=t.replace(/《[^》]{2,60}》/g,function(m){return "<mark>"+m+"</mark>"});
+  t=t.replace(/[一-龥]{1,8}〔\d{4}〕\d+号/g,function(m){return "<mark>"+m+"</mark>"});
+  t=t.replace(/第[一二三四五六七八九十百零\d]+批/g,function(m){return "<mark>"+m+"</mark>"});
+  return t;
+}
+function fnSplit(t){
+  /* 长依据拆条目：先按「；」，超过 220 字再按「。」二级拆分；原文逐字保留 */
+  var out=[],parts=String(t||"").split(/[；;]/);
+  parts.forEach(function(p){
+    p=p.trim();
+    if(!p)return;
+    if(p.length<=220){out.push(p);return;}
+    var subs=p.split("。"),buf="";
+    subs.forEach(function(s,idx){
+      var piece=(idx<subs.length-1)?s+"。":s;
+      if(buf.length+piece.length>220&&buf){out.push(buf);buf=piece}
+      else buf+=piece;
+    });
+    if(buf)out.push(buf);
+  });
+  return out;
+}
+function renderFootNote(){
+  var scope=CITY.region==="广东"?"养老按广东省统一基数，失业/工伤/医保/公积金按本市口径":"五险按当地统一基数区间，医保/公积金按当地标准";
+  var note=CITY.note||"官方数据";
+  /* 首行裸文本摘要（既有断言要求 innerHTML 以「数据依据：」开头） */
+  $("footNote").innerHTML='数据依据：'+CITY.name+' '+CITY.dataYear+'年度'+(CITY.dataNext?'（'+CITY.dataNext+'年度待公布）':'')+' · '+scope;
+  var h='<div class="fn-grid">'
+    +'<div class="fn-kv"><b>基数口径</b><span>'+fnEsc(scope)+'</span></div>'
+    +'<div class="fn-kv"><b>数据年度</b><span>'+fnEsc(CITY.dataYear)+(CITY.dataNext?'（'+fnEsc(CITY.dataNext)+' 年度待公布）':' 年度')+'</span></div>'
+    +'<div class="fn-kv"><b>公积金比例</b><span>5% ~ '+fnEsc(CITY.hfRateMax)+'%</span></div>'
+    +'<div class="fn-kv"><b>医保大额（个人）</b><span>'+(CITY.medFixEmp>0?fnEsc(fm(CITY.medFixEmp))+' 元/月':'无固定额')+'</span></div>'
+    +'</div>'
+    +'<div class="fn-sec"><div class="fn-sec-t"><i>依</i>官方依据</div><ul class="fn-list">';
+  fnSplit(note).forEach(function(p){h+='<li>'+fnHl(p)+'</li>'});
+  h+='</ul></div>'
+    +'<div class="fn-sec"><div class="fn-sec-t"><i>核</i>数据核查</div><ul class="fn-chk">';
+  FN_CHECKS.forEach(function(c){h+='<li><b>'+c.d+'</b><span>'+fnEsc(c.t)+'</span></li>'});
+  h+='</ul><div class="fn-tip">每年 1 月（医保）/ 7 月（养老公积金）及限期费率到期需重新核查</div></div>';
+  $("footNote").innerHTML=$("footNote").innerHTML+h;
+  if($("ftNoteSum"))$("ftNoteSum").textContent=CITY.name;
+}
 function selectCity(k){
   CITY=CITIES[k];
   curCityKey=k;
@@ -4279,12 +4427,7 @@ function selectCity(k){
     }
   })();
   /* dataNext 非空时显式提示"下一年度待公布"，避免用户把现行年度误读成已更新 */
-  $("footNote").innerHTML='数据依据：'+CITY.name+' '+CITY.dataYear+'年度'+(CITY.dataNext?'（'+CITY.dataNext+'年度待公布）':'')+' · '+
-    (CITY.region==="广东"?'养老按广东省统一基数，失业/工伤/医保/公积金按本市口径':'五险按当地统一基数区间，医保/公积金按当地标准')+
-    '（'+(CITY.note||"官方数据")+'）<br>公积金 5%-'+CITY.hfRateMax+'%'+
-    (CITY.medFixEmp>0?' · 医保个人另缴大额医疗互助 '+fm(CITY.medFixEmp)+' 元/月':'')+
-    ' · 数据核查：2026-09-19 已联网核查京沪 · 广东基数核查于 2026-08-12 · 四川核查于 2026-09-23 · 重庆/山东/辽宁/吉林/黑龙江核查于 2026-09-26 · 天津/江苏/浙江核查于 2026-09-26 · 河南/湖北/湖南/安徽/福建/江西核查于 2026-09-26 · 河北/山西/陕西/广西/云南/贵州核查于 2026-09-26 · 甘肃/宁夏/内蒙古/新疆/青海/海南核查于 2026-09-26 · 西藏核查于 2026-09-26 · 每年1月(医保)/7月(养老公积金)及限期费率到期需重新核查';
-  if($("ftNoteSum"))$("ftNoteSum").textContent=CITY.name;
+  renderFootNote();
   histRows=[];
   histCity=null;
   calc();
@@ -4437,8 +4580,14 @@ function calcDeductions(I){
   $("spTot").textContent=fm(spT)+" 元/月"+(medicalA>0?"（另有大病医疗 "+fm(medicalA)+" 元/月，仅年度汇算扣除）":"");
   /* 补充扣除：既减少应纳税所得额（月度预扣即可享受），又是个人实际支出的现金 */
   var hi=cl(gv("healthIns"),0,200),pp=cl(gv("persPen"),0,1000);
+  /* 企业年金个人缴费上限＝本人缴费工资计税基数的4%，此处以养老缴费基数作为缴费工资基数。
+     HTML 的 max 只是软限制（浏览器不阻止手动输入超限值），这里按上限回写输入框并给出提示，
+     保证界面显示与计算口径一致；口径表达式 cl(gv("annuity"),0,4)/100 本身不变。 */
+  var anRaw=gv("annuity"),anOver=(anRaw>4||anRaw<0);
   var anPct=cl(gv("annuity"),0,4)/100;
-  /* 企业年金个人缴费上限＝本人缴费工资计税基数的4%，此处以养老缴费基数作为缴费工资基数 */
+  if(anOver)$("annuity").value=(anRaw>4)?4:0;
+  var anw=$("annuityWarn");
+  if(anw){anw.style.display=anOver?"":"none";anw.textContent=anOver?"上限 4%（缴费工资基数），已按 4% 计算":"";}
   var anAmt=I.pB*anPct;
   var suppM=hi+pp+anAmt,suppCash=suppM;
   currentSupp=suppCash;
@@ -4533,6 +4682,21 @@ function calcTax(I,C,D){
 /* ---- 第 5 段：渲染 ----
    只读入参与前四段的结果，不再重新计算；年终奖面板写到 bonusResult，
    结果面板写到 res。 */
+/* 收入构成占比条（第一百零二批；第一百零五批起并入税后实发主卡）：
+   实发 / 五险一金 / 个税（+ 补充扣除）均以税前工资为分母，
+   四段合计 100%（net = sal − 五险一金 − 个税 − 补充扣除）。
+   第一百零五批：不再单独成卡，改为返回 HTML 片段，由 renderResult() 嵌进 hero 主卡
+   （税后实发那一行之下），两个模块合并成一张卡。 */
+function mixBarHtml(net,siE,hfE,curT,sal,suppCash){
+  var base=sal>0?sal:0;
+  var pNet=base>0?net/base*100:0,pSI=base>0?(siE+hfE)/base*100:0,pTx=base>0?curT/base*100:0,pSup=base>0?suppCash/base*100:0;
+  var h='<div class="mx">';
+  h+='<div class="mix-hd"><span class="lb">收入构成</span><span class="lb">占税前工资 '+fm(sal)+' 元</span></div>';
+  h+='<div class="hb"><span class="s1" style="width:'+pNet.toFixed(2)+'%"></span><span class="s2" style="width:'+pSI.toFixed(2)+'%"></span><span class="s3" style="width:'+pTx.toFixed(2)+'%"></span>'+(pSup>0?'<span class="s4" style="width:'+pSup.toFixed(2)+'%"></span>':'')+'</div>';
+  h+='<div class="hm"><div class="hlg"><span><i class="d1"></i>实发 '+pNet.toFixed(1)+'%</span><span><i class="d2"></i>五险一金 '+pSI.toFixed(1)+'%</span><span><i class="d3"></i>个税 '+pTx.toFixed(1)+'%</span>'+(pSup>0?'<span><i class="d4"></i>补充扣除 '+pSup.toFixed(1)+'%</span>':'')+'</div><button class="go-hist" onclick="switchTab(1)">年度明细 →</button></div>';
+  h+='</div>';
+  return h;
+}
 function renderResult(I,C,D,T){
   var P=I.P,M=I.M,U=I.U,MT=I.MT,IJ=I.IJ,HF=I.HF,mo=I.mo,mW=I.mW,aM=I.aM,startM=I.startM,hfR=I.hfR,hfRComp=I.hfRComp,hB=I.hB;
   var ml=I.ml,md=I.md,ltc=I.ltc,medFix=I.medFix,pB=I.pB,mB=I.mB,uB=I.uB;
@@ -4541,6 +4705,7 @@ function renderResult(I,C,D,T){
   $("baseNote").innerHTML="养老 "+fm(P.min)+"~"+fm(P.max)+" · "+ml+" "+fm(M.min)+"~"+fm(M.max)+" · 失业 "+fm(U.min)+"~"+fm(U.max)+"<br>公积金 "+fm(HF.min)+"~"+fm(HF.max)+" · 基数每年7月15日调整";
   var h="";
   h+='<div class="hero"><div class="tp"><div><div class="lb">税后实发（'+CITY.name+' · '+mo+'月）</div><div class="bg"><span id="resNet">'+fm(net)+'</span><span>元</span></div></div><div style="text-align:right"><div class="lb">实发比例</div><div class="pc">'+ratio.toFixed(1)+'%</div></div></div>';
+  h+=mixBarHtml(net,siE,hfE,curT,sal,D.suppCash);
   h+='<div class="cd"><div class="mn"><div class="ml">五险一金(个人)</div><div class="mv">'+fm(siE+hfE)+'</div></div><div class="mn"><div class="ml">个人所得税</div><div class="mv">'+fm(curT)+'</div></div><div class="mn"><div class="ml">扣除合计</div><div class="mv">'+fm(totD)+'</div></div></div>';
   h+='<div class="ex">本年度已就业 '+mW+' 个月（'+startM+'月入职）</div></div>';
   h+='<div class="c"><div class="st gr">社保缴费明细（'+CITY.name+(CITY.hukou?(hk===1?' · 深户':' · 非深户'):'')+'）</div>';
@@ -4573,7 +4738,7 @@ function renderResult(I,C,D,T){
   if(D.medicalA>0)h+='<div class="r ind"><label>− 大病医疗（全年 · 限额80000）</label><span class="v" style="color:#0d9488">'+fm(D.medicalAnnual)+'</span></div>';
   if(D.hi>0)h+='<div class="r ind"><label>− 税优健康险</label><span class="v" style="color:#0d9488">'+fm(D.hi*aM)+'</span></div>';
   if(D.pp>0)h+='<div class="r ind"><label>− 个人养老金</label><span class="v" style="color:#0d9488">'+fm(D.pp*aM)+'</span></div>';
-  if(D.anAmt>0)h+='<div class="r ind"><label>− 企业年金(个人'+gv("annuity")+'%)</label><span class="v" style="color:#0d9488">'+fm(D.anAmt*aM)+'</span></div>';
+  if(D.anAmt>0)h+='<div class="r ind"><label>− 企业年金(个人'+(Math.round(D.anPct*1000)/10)+'%)</label><span class="v" style="color:#0d9488">'+fm(D.anAmt*aM)+'</span></div>';
   h+='<div class="sp"></div>';
   h+='<div class="r"><label style="font-weight:600">年度应纳税所得额</label><span class="v b" id="resATx">'+fm(T.aTx)+'</span></div>';
   h+='<div class="r ind"><label style="font-size:11px;color:#9ca3af">补充扣除年度节税约</label><span style="font-size:11px;color:#0d9488;font-variant-numeric:tabular-nums">'+fm(T.suppSave)+'</span></div>';
@@ -4920,6 +5085,17 @@ function loadScript(src, integrity){
   });
   return scriptCache[src];
 }
+/* ===== 第一百零一批：PDF 导出的版面参数 =====
+   旧实现的问题（用户实测导出后反馈）：
+   ①截图宽度取 node.scrollWidth（=导出当时的窗口宽度），再把整页长图等比压到 A4 宽 210mm；
+     1154px 的桌面布局被压到 0.52 倍，字号被挤小，且表格横向溢出部分、图表右轴刻度、
+     标题行末尾都被裁掉 —— 这就是「右侧被挤压」；
+   ②PDF 里还带着「导出 PDF」按钮本身。
+   现在：导出渲染宽度固定（与窗口宽度无关），克隆文档进入 .exp 导出模式重排，
+   纸张改 A4 横向并留页边距。 */
+var EXPORT_W=1180;          /* 导出渲染视口宽（px，@96dpi ≈ 312mm，与 --max 一致） */
+var EXPORT_CHART_VB="0 -12 784 304";  /* 图表 viewBox 四周留余量，避免右轴刻度被裁 */
+var EXPORT_PDF={pw:297,ph:210,mx:10,my:10};  /* A4 横向 + 上下左右页边距（mm） */
 function exportPDF(){
   /* printed=已走打印兜底；saved=PDF已成功保存。只有保存成功才阻断兜底，
      否则"画布生成失败/组装PDF抛错"时两条兜底路径都会被误判为已完成而静默失效 */
@@ -4937,20 +5113,93 @@ function exportPDF(){
     if(printed)return;
     clearTimeout(fb);fb=setTimeout(tryPrint,6000);
     var node=$("page1");
-    return html2canvas(node,{scale:2,useCORS:true,backgroundColor:"#f8fafc",windowWidth:node.scrollWidth}).then(function(canvas){
+    /* 第一百零六批：克隆视口必须完整包住整块内容，且不继承当前滚动位置。
+       旧实现只给了 windowWidth，克隆 iframe 的高度仍是浏览器窗口高（约 800px），
+       而 #page1 实测有 1400px 高 —— html2canvas 只能在视口内取材，超出视口的部分
+       会在拼接缝处被**重复绘制**：导出 PDF 里「趋势图」标题在第 1 页底部和第 2 页
+       顶部各完整出现一次。现在显式给出 windowHeight（内容全高 + 400px 余量，且
+       不低于 2400px，保证克隆宽度 1180 下的实际高度也被覆盖），并把 scrollX/scrollY
+       归零（导出时页面往往已滚动，旧实现继承滚动量会再次造成错位/重复）。 */
+    var nodeH=Math.max((node&&node.scrollHeight)||0,(node&&node.offsetHeight)||0,0);
+    var exportH=Math.max(nodeH+400,2400);
+    var cardBounds=[],rowEdges=[],cloneH=0;
+    return html2canvas(node,{scale:2,useCORS:true,backgroundColor:"#f8fafc",
+      windowWidth:EXPORT_W,windowHeight:exportH,scrollX:0,scrollY:0,
+      onclone:function(doc){
+        /* 只改克隆文档：.exp 打开导出模式样式（表格不横向溢出、输入框显示为纯文本、
+           标题行换行、隐藏导出按钮卡片） */
+        var de=doc.documentElement;
+        if(de&&de.classList)de.classList.add("exp");
+        var svg=doc.getElementById("chart");
+        if(svg)svg.setAttribute("viewBox",EXPORT_CHART_VB);
+        /* 记录克隆文档里的分页约束：
+           ①「不可切块」= 趋势图卡片、汇总卡（它们被切开就会标题/数字与图表分离）；
+           ②「可切点」= 明细表格的行底边（切在行边界上，不会把一行切成两半）。
+           表格卡本身不做成不可切块——它比一页高，只能在行边界处断开。 */
+        try{
+          var p1=doc.getElementById("page1");
+          if(p1&&p1.getBoundingClientRect){
+            var pr=p1.getBoundingClientRect();
+            cloneH=Math.max(p1.scrollHeight||0,p1.offsetHeight||0,Math.round(pr.height||0));
+            function rel(el){var r=el.getBoundingClientRect();return {top:Math.round(r.top-pr.top),h:Math.round(r.height||0),b:Math.round(r.bottom-pr.top)};}
+            var cs=p1.querySelectorAll?p1.querySelectorAll(".history-view > .c"):[];
+            for(var i=0;i<cs.length;i++){
+              if(cs[i].querySelector&&cs[i].querySelector("#histTable"))continue;
+              var c1=rel(cs[i]);
+              cardBounds.push({top:c1.top,h:c1.h});
+            }
+            var sums=p1.querySelectorAll?p1.querySelectorAll(".sum-grid"):[];
+            for(var j=0;j<sums.length;j++){
+              var s1=rel(sums[j]);
+              cardBounds.push({top:s1.top,h:s1.h});
+            }
+            var trs=p1.querySelectorAll?p1.querySelectorAll("#histTable tr"):[];
+            for(var k=0;k<trs.length;k++){
+              var t1=rel(trs[k]);
+              rowEdges.push({top:t1.top,b:t1.b});
+            }
+          }
+        }catch(e){/* 克隆文档不可用时按默认整段分页 */}
+      }}).then(function(canvas){
       if(printed)return;
       var img=canvas.toDataURL("image/png");
-      var pdf=new jspdf.jsPDF("p","mm","a4");
-      var pw=210,ph=297;
-      var imgW=pw,imgH=canvas.height*pw/canvas.width;
-      var position=0,heightLeft=imgH;
-      pdf.addImage(img,"PNG",0,position,imgW,imgH);
-      heightLeft-=ph;
-      while(heightLeft>0){
-        position=heightLeft-imgH;
-        pdf.addPage();
-        pdf.addImage(img,"PNG",0,position,imgW,imgH);
-        heightLeft-=ph;
+      /* A4 横向：内容按「页宽 - 左右边距」等比放置，上下各留 my 边距；
+         内容高于一页时按「段」分页 —— 每段单独算好起点画长图，后续页 y 为负，
+         段与段首尾相接（不重复、不丢内容）；切点若落在某张卡片中间，
+         就把该卡片整体推到下一页，避免标题与图表被页边界切开。 */
+      var P=EXPORT_PDF;
+      var pdf=new jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
+      var cw=P.pw-2*P.mx,ch=P.ph-2*P.my;
+      var imgW=cw,imgH=canvas.height*cw/canvas.width;
+      var rowMm=imgH/canvas.height;                    /* 每行画布像素对应多少 mm */
+      var rowsPerPage=Math.max(1,Math.floor(ch/rowMm)); /* 每页能放多少行画布 */
+      var kScale=(cloneH>0?canvas.height/cloneH:(nodeH>0?canvas.height/nodeH:1));
+      var segs=[],segStart=0,guard=0;
+      while(segStart<canvas.height&&guard++<80){
+        var segEnd=Math.min(segStart+rowsPerPage,canvas.height);
+        /* ① 切点落在「不可切块」（趋势图卡片 / 汇总卡）内部，且该块本身放得下一整页
+              → 整块推到下一页，避免标题、图例与图表被页边界切成两半； */
+        var pushTo=-1;
+        for(var ci=0;ci<cardBounds.length;ci++){
+          var ct=cardBounds[ci].top*kScale,cb=ct+cardBounds[ci].h*kScale;
+          if(ct<segEnd&&cb>segEnd&&ct>segStart&&(cb-ct)<=rowsPerPage&&(pushTo<0||ct<pushTo))pushTo=ct;
+        }
+        if(pushTo>0)segEnd=pushTo;
+        /* ② 切点落在明细表格的行内部 → 切点提前到该行顶边，一行不会被切成两半
+              （切点只提前、绝不推后，避免超出本页容量导致内容被裁）； */
+        else if(rowEdges.length){
+          for(var ri=0;ri<rowEdges.length;ri++){
+            var rt=rowEdges[ri].top*kScale,rb=rowEdges[ri].b*kScale;
+            if(rt<segEnd&&rb>segEnd){if(rt>segStart)segEnd=rt;break;}
+          }
+        }
+        if(segEnd<=segStart)segEnd=Math.min(segStart+rowsPerPage,canvas.height);
+        segs.push([segStart,segEnd]);
+        segStart=segEnd;
+      }
+      for(var si=0;si<segs.length;si++){
+        if(si>0)pdf.addPage();
+        pdf.addImage(img,"PNG",P.mx,P.my-segs[si][0]*rowMm,imgW,imgH);
       }
       pdf.save(CITY.name+"工资历史明细.pdf");
       saved=true;
@@ -4962,23 +5211,20 @@ var now=new Date();
 $("month").value=now.getMonth()+1;
 
 /* ============ UI 辅助（第九十批：配合新版界面） ============ */
-/* 快捷月薪 chip：写入输入框并立即重算。
-   桩环境（tools/calc-harness.js 的最小 DOM）里 querySelectorAll 返回空数组，
-   因此这里的循环在测试中不会执行，不影响任何断言。 */
+/* 写入月薪并立即重算。
+   快捷月薪 chip 已于第九十六批移除（界面只保留手动输入框），
+   因此这里不再维护 chip 的 active 态。 */
 function setSalary(v){
   var el=$("salary");
   if(el)el.value=v;
-  var chips=document.querySelectorAll(".salary-chip");
-  for(var i=0;i<chips.length;i++){
-    var c=chips[i];
-    var on=(c.getAttribute&&c.getAttribute("data-salary")===String(v));
-    c.className=on?"chip salary-chip active":"chip salary-chip";
-  }
   calc();
 }
 /* 城市搜索：跨省 / 市 / 县三级匹配，命中自动展开（桩里集合为空，循环不执行）。 */
 function filterCity(q){
   q=(q||"").trim().toLowerCase();
+  /* 搜索态临时渲染全部省份，保证跨省命中；清空后回到当前省（第一百零三批） */
+  var wantAll=!!q;
+  if(wantAll!==citySearchMode){citySearchMode=wantAll;buildCityGrid();}
   var ps=document.querySelectorAll(".tree-prov");
   for(var i=0;i<ps.length;i++){
     var pd=ps[i],any=false;
@@ -5004,11 +5250,11 @@ function filterCity(q){
     if((any||phit)&&q)pd.open=true;
   }
 }
-/* 恢复默认设置：月薪回到 20000、奖金清零、各险种基数回到本市下限。 */
+/* 恢复默认设置：月薪回到 10000、奖金清零、各险种基数回到本市下限。 */
 function resetAll(){
   var b=$("bonus");
   if(b)b.value=0;
-  setSalary(20000);
+  setSalary(10000);
   if(typeof setAllBase==="function")setAllBase("min");
 }
 </script>

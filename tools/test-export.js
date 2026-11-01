@@ -43,22 +43,34 @@ const document = {
   querySelectorAll: () => [],
 };
 
+/* 第一百零六批：导出实现新增了 html2canvas 的 onclone 量测逻辑（记录卡片边界，
+   让分页不在卡片中间断开），并且 onclone 里会访问克隆文档的 getElementByRect。
+   桩里模拟一次真实的 onclone 调用，确保这段逻辑在降级链里不会抛错。 */
+function fakeHtml2canvas(opts, result) {
+  return function (node, o) {
+    if (o && typeof o.onclone === 'function') {
+      try { o.onclone(document); } catch (e) { /* 克隆文档不完整时忽略 */ }
+    }
+    return Promise.resolve(result);
+  };
+}
+
 const CASES = [
   {
     name: 'html2canvas 成功，但 toDataURL 抛错（画布污染）',
-    html2canvas: () => Promise.resolve({ width: 800, height: 3000, toDataURL() { throw new Error('tainted canvas'); } }),
+    html2canvas: fakeHtml2canvas(null, { width: 800, height: 3000, toDataURL() { throw new Error('tainted canvas'); } }),
     jspdf: { jsPDF: function () { return { addImage() {}, addPage() {}, save() {} }; } },
     expectPrint: true,
   },
   {
     name: 'jsPDF 组装阶段抛错',
-    html2canvas: () => Promise.resolve({ width: 800, height: 3000, toDataURL() { return 'data:image/png;base64,x'; } }),
+    html2canvas: fakeHtml2canvas(null, { width: 800, height: 3000, toDataURL() { return 'data:image/png;base64,x'; } }),
     jspdf: { jsPDF: function () { throw new Error('jspdf boom'); } },
     expectPrint: true,
   },
   {
     name: '全链路成功（不应触发打印兜底）',
-    html2canvas: () => Promise.resolve({ width: 800, height: 3000, toDataURL() { return 'data:image/png;base64,x'; } }),
+    html2canvas: fakeHtml2canvas(null, { width: 800, height: 3000, toDataURL() { return 'data:image/png;base64,x'; } }),
     jspdf: { jsPDF: function () { return { addImage() {}, addPage() {}, save() {} }; } },
     expectPrint: false,
   },
