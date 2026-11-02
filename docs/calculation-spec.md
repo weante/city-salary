@@ -15,12 +15,40 @@
 
 | # | 步骤 | 输入 | 输出 | 代码 |
 |:-:|------|------|------|------|
-| 1 | **输入归一化** | 界面上的原始输入 | 夹取后的工资、各险种基数、公积金比例 | `readInputs()` |
-| 2 | **五险一金** | 基数 + 城市费率 | 个人缴费 `siE`+`hfE`、单位缴费 `siC` | `calcContrib()` |
-| 3 | **专项附加扣除** | 七项勾选与金额 | 月度可扣 `spT`、年度汇算项 `medicalAnnual` | `calcDeductions()` |
-| 4 | **补充扣除** | 税优险/个人养老金/企业年金 | 减税基数 `suppM` = 真实现金支出 `suppCash` | `calcDeductions()` |
-| 5 | **个税** | 上述全部 | 当月个税 `curT`、年度预估 `aT`、年终奖 `bi.t` | `calcTax()` |
-| 6 | **到手现金** | 税前 − 五险一金 − 个税 − 补充扣除 | `net` | `calcTax()` |
+| 1 | **输入归一化** | 界面上的原始输入 | 夹取后的工资、各险种基数、公积金比例 | `readInputs(ctx)` |
+| 2 | **五险一金** | 基数 + 城市费率 | 个人缴费 `siE`+`hfE`、单位缴费 `siC` | `calcContrib(I, ctx)` |
+| 3 | **专项附加扣除** | 七项勾选与金额 | 月度可扣 `spT`、年度汇算项 `medicalAnnual` | `calcDeductions(I, ctx)` |
+| 4 | **补充扣除** | 税优险/个人养老金/企业年金 | 减税基数 `suppM` = 真实现金支出 `suppCash` | `calcDeductions(I, ctx)` |
+| 5 | **个税** | 上述全部 | 当月个税 `curT`、年度预估 `aT`、年终奖 `bi.t` | `calcTax(I, C, D)` |
+| 6 | **到手现金** | 税前 − 五险一金 − 个税 − 补充扣除 | `net` | `calcTax(I, C, D)` |
+
+上表只列计算链。`renderResult(I, C, D, T, ctx)` 不在计算链内，只负责把结果拼成 HTML 写回页面。
+
+### 函数签名与 ctx（以当前代码为准）
+
+`calc()` 只做编排，并在入口处把顶层 UI 状态一次性收成 `ctx`：
+
+```js
+ctx = { city: CITY, med, hk, houseMode, lastHFBase }
+```
+
+- `readInputs(ctx)`：读取 `ctx.city` / `ctx.med` / `ctx.lastHFBase`，返回归一化输入，
+  并把更新后的 `lastHFBase` 一并返回，由 `calc()` 写回顶层（见 `skills/city-salary/assets/calculator.html#L4523-4554`）。
+- `calcContrib(I, ctx)`：只读 `ctx.city` 与 `ctx.hk`；深圳户籍差异使用 `ctx.hk`（`#L4559-4569`）。
+- `calcDeductions(I, ctx)`：只读 `ctx.city` 与 `ctx.houseMode`；返回 `spT` / `suppCash`，
+  **不再写顶层 `currentSpT` / `currentSupp`**（`#L4573-4601`）。
+- `calcTax(I, C, D)`：不读 ctx，只依赖三个对象。
+- `renderResult(I, C, D, T, ctx)`：只读 `ctx.city` 与 `ctx.hk`，不再直接读顶层 `CITY` / `hk`
+  （`#L4711-4835`）。
+
+历史页不复用单月页的 `ctx`，而是由 `buildHistory()` 从 `calc()` 的返回值快照一份：
+
+```js
+histCtx = { city: CITY, med, spT: calcOut.ded.spT, supp: calcOut.ded.suppCash }
+```
+
+`calcHist(histCtx)` 只从这份快照取城市、医保档次和扣除口径（`#L4901`、`#L4954`）；
+`currentSpT` / `currentSupp` 两个顶层变量已删除，历史页的事件处理器也显式把 `histCtx` 传进去。
 
 **到手现金的完整定义**（不是"实发工资"）：
 
@@ -296,6 +324,10 @@ settleTotal  = settleSalary + settleOther + settleRelief
 | 专项附加扣除 | 本页输入 | **取自单月页、各月相同** |
 | 大病医疗 | 进年度预估 | **不参与**（月度预扣口径） |
 
+实现上，`buildHistory()` 先调 `calc()`，再把 `{city, med, spT: calcOut.ded.spT, supp: calcOut.ded.suppCash}`
+快照进 `histCtx`，然后调 `calcHist(histCtx)`；历史页的编辑/勾选事件同样传 `histCtx`。
+这样可以保证“各月相同”的扣除口径来自同一次单月计算结果，而不是从顶层 `currentSpT` / `currentSupp` 隐式读取。
+
 **预测月份**：当前月之后的月份自动生成，标记为预测（界面蓝色、图表虚线），可单独取消勾选。
 取消勾选的月份按 0 计缴，不进入累计。
 
@@ -307,16 +339,16 @@ settleTotal  = settleSalary + settleOther + settleRelief
 
 | 常量 | 值 | 单位 | 实现位置 |
 |------|----:|------|---------|
-| 个税减除费用（起征点） | 5000 | 元/月 | `calcTax()` |
-| 子女教育 / 婴幼儿照护上限 | 10000 | 元/月 | `calcDeductions()` |
-| 继续教育上限 | 400 | 元/月 | `calcDeductions()` |
-| 住房贷款利息 | 1000 | 元/月 | `calcDeductions()` |
-| 赡养老人上限 | 3000 | 元/月 | `calcDeductions()` |
-| 大病医疗起付线 | 15000 | 元/年 | `calcDeductions()` |
-| 大病医疗年度限额 | 80000 | 元/年 | `calcDeductions()` |
-| 税优健康险上限 | 200 | 元/月 | `calcDeductions()` |
-| 个人养老金上限 | 1000 | 元/月 | `calcDeductions()` |
-| 企业年金个人比例上限 | 4 | % | `calcDeductions()` |
+| 个税减除费用（起征点） | 5000 | 元/月 | `calcTax(I, C, D)` |
+| 子女教育 / 婴幼儿照护上限 | 10000 | 元/月 | `calcDeductions(I, ctx)` |
+| 继续教育上限 | 400 | 元/月 | `calcDeductions(I, ctx)` |
+| 住房贷款利息 | 1000 | 元/月 | `calcDeductions(I, ctx)` |
+| 赡养老人上限 | 3000 | 元/月 | `calcDeductions(I, ctx)` |
+| 大病医疗起付线 | 15000 | 元/年 | `calcDeductions(I, ctx)` |
+| 大病医疗年度限额 | 80000 | 元/年 | `calcDeductions(I, ctx)` |
+| 税优健康险上限 | 200 | 元/月 | `calcDeductions(I, ctx)` |
+| 个人养老金上限 | 1000 | 元/月 | `calcDeductions(I, ctx)` |
+| 企业年金个人比例上限 | 4 | % | `calcDeductions(I, ctx)` |
 | 公积金比例下限 | 5 | % | `normHF()` |
 | 公积金比例默认上限 | 12 | % | `normHF()` |
 
@@ -339,7 +371,7 @@ settleTotal  = settleSalary + settleOther + settleRelief
 | 6 | 深户养老单位费率 **+1%** | 深圳地方补充养老保险 | 仅影响单位侧展示 |
 | 7 | 历史页专项附加**取自单月页且各月相同** | 简化；现实中扣除项年中可能变化 | 年中新增扣除项的场景算不准，需自行在单月页调整 |
 | 8 | 累计预扣按**自然月连续**计算 | 与实际预缴周期一致 | 年中换工作、断缴的情形未建模 |
-| 9 | 公积金**单位比例 = 个人比例**（写死，界面只给一个比例输入框） | 多数城市两者确实相同，且单位侧不影响到手现金 | **上海明确"单位可自主确定"**（各 5%~7%）；若单位缴得比个人多，公积金入账合计会被低估 |
+| 9 | 公积金**个人与单位比例可独立设置**（`hfRate` / `hfRateComp`，各自受该市上限约束） | 上海等单位可自主确定单位比例；单位侧不影响到手现金 | 若只填一个比例，公积金入账合计会被低估或高估；界面已拆成两个输入框 |
 | 10 | 历史页专项附加**各月相同**、不随月份变化 | 简化 | 年中新增/取消扣除项（如孩子满 3 岁、租房换城市）算不准 |
 
 **未建模的缴存项**：上海**补充公积金**（单位与个人各 1%~5%，自愿参加）——`SKILL.md` 已注明"本工具未建模"，此处一并登记。

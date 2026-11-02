@@ -3837,7 +3837,7 @@ var CITIES={
      warn:true,
      note:"2026年度基数7172.4~35862；医保单位7%、个人2%；公积金2026年度通知未找到（仅见灵活就业办法征求意见稿），下限按全区最低工资2360、上限暂按西藏已知最低值（拉萨42214）估算待核实——⚠️第五十三批实测 42214 并非西藏通用上限（昌都43049、山南44202、林芝42581 三城一手件反例），42214 只是拉萨的数；⚠️同时纠正前次表述：住建局站 zjj.al.gov.cn 真实可达（HTTP 200、78711 B、全站40栏目已核，只有 gjj./zfcxjst./zfgjj. 确属 NXDOMAIN），「四组域名全部 NXDOMAIN」有误；该站无缴存基数件，唯一公积金栏目 zfgjj.htm 仅 1 篇征求意见稿（不采信）；行署门户部门文件库只有行署办公室一家发文，其政策文件库是 Vue 表格、渲染后关键词零命中；租金800（地区无市辖区）"})
 };
-var CITY=null,med=1,hk=0,childMode=0,houseMode=0,currentSpT=0,currentSupp=0,lastHFBase=2520;
+var CITY=null,med=1,hk=0,childMode=0,houseMode=0,lastHFBase=2520;
 var BR=[[36000,.03,0],[144000,.10,2520],[300000,.20,16920],[420000,.25,31920],[660000,.30,52920],[960000,.35,85920],[1/0,.45,181920]];
 var BBR=[[3000,.03,0],[12000,.10,210],[25000,.20,1410],[35000,.25,2660],[55000,.30,4410],[80000,.35,7160],[1/0,.45,15160]];
 var TRAPS=[[36000,2309.10],[144000,13199.20],[300000,13749.25],[420000,19249.30],[660000,30249.35],[960000,87999.45]];
@@ -4520,9 +4520,11 @@ function onDedToggle(key){
 /* ---- 第 1 段：输入归一化 ----
    读 DOM、做夹取、同步受输入影响的界面元素（公积金比例显示、起始月提示、
    公积金基数输入框的启用与回填）。副作用集中在这里，后面四段都是纯计算。 */
-function readInputs(){
-  /* 命名约定：M=CITY.med（城市医保参数对象），med=档次索引（1-based），md=当前医疗档次数据（tiers[med-1] 或 M） */
-  var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf,ts=CITY.tiers||[];
+function readInputs(ctx){
+  /* 命名约定：M=city.med（城市医保参数对象），med=档次索引（1-based），md=当前医疗档次数据（tiers[med-1] 或 M）。
+     ctx 显式携带本次计算需要的城市参数与界面状态，函数内不再读写顶层同名变量。 */
+  var city=ctx.city,med=ctx.med,lastHFBase=ctx.lastHFBase;
+  var P=city.pension,M=city.med,U=city.unemp,MT=city.mat,IJ=city.inj,HF=city.hf,ts=city.tiers||[];
   var sal=gv("salary"),mo=cl(gv("month"),1,12),startRaw=cl(gv("startMonth"),1,12),startM=effStart(mo,startRaw);
   /* 起始月晚于当前月时按当前月计，并明示用户——不静默改输入框里的值，
      否则用户输"12"会被逐个字符改掉，反而更难纠正 */
@@ -4530,35 +4532,37 @@ function readInputs(){
   $("startWarn").style.display=startClamped?"":"none";
   $("startWarn").textContent=startClamped?"不能晚于当前月份，已按 "+mo+" 月计":"";
   var mW=Math.max(1,mo-startM+1),aM=Math.max(1,12-startM+1);
-  var hfR=normHF(gv("hfRate"),CITY.hfRateMax);$("hfRate").value=hfR;$("hfRateV").textContent=hfR===0?"0%(不缴)":hfR+"%";var hfD=hfR/100;
+  var hfR=normHF(gv("hfRate"),city.hfRateMax);$("hfRate").value=hfR;$("hfRateV").textContent=hfR===0?"0%(不缴)":hfR+"%";var hfD=hfR/100;
       /* 公积金单位比例：可与个人不同（如单位 12%、个人 5%），同样受该市上限约束 */
-      var hfRComp=normHF(gv("hfRateComp"),CITY.hfRateMax);$("hfRateComp").value=hfRComp;$("hfRateCompV").textContent=hfRComp===0?"0%(不缴)":hfRComp+"%";
+      var hfRComp=normHF(gv("hfRateComp"),city.hfRateMax);$("hfRateComp").value=hfRComp;$("hfRateCompV").textContent=hfRComp===0?"0%(不缴)":hfRComp+"%";
       var hfDComp=hfRComp/100;
   if(gv("hfBase")>0)lastHFBase=gv("hfBase");
   if(hfR===0){$("hfBase").value=0;$("hfBase").disabled=true;}
   else{$("hfBase").disabled=false;if(gv("hfBase")<=0)$("hfBase").value=lastHFBase>0?lastHFBase:HF.min;}
   var md=ts.length>=2?ts[med-1]:M;
   var ml=ts.length>=2?md.name:"医疗保险";
-  var ltc=CITY.ltc&&$("ltcOn").checked;
+  var ltc=city.ltc&&$("ltcOn").checked;
   var pB=cl(gv("pBase"),P.min,P.max);
   var mB=M.min?cl(gv("mBase"),M.min,M.max):0;
   var uB=cl(gv("uBase"),U.min,U.max);
   var mtB=MT.min?cl(gv("mtBase"),MT.min,MT.max):0;
   var ijB=cl0(gv("ijBase"),IJ.min,IJ.max);
   var hB=cl(gv("hfBase"),HF.min,HF.max);
-  var medFix=CITY.medFixEmp||0;
+  var medFix=city.medFixEmp||0;
   return {P:P,M:M,U:U,MT:MT,IJ:IJ,HF:HF,sal:sal,mo:mo,startM:startM,mW:mW,aM:aM,
-          hfR:hfR,hfRComp:hfRComp,hfD:hfD,hfDComp:hfDComp,md:md,ml:ml,ltc:ltc,pB:pB,mB:mB,uB:uB,mtB:mtB,ijB:ijB,hB:hB,medFix:medFix};
+          hfR:hfR,hfRComp:hfRComp,hfD:hfD,hfDComp:hfDComp,md:md,ml:ml,ltc:ltc,pB:pB,mB:mB,uB:uB,mtB:mtB,ijB:ijB,hB:hB,medFix:medFix,
+          lastHFBase:lastHFBase};
 }
 
 /* ---- 第 2 段：社保与公积金缴费 ----
    个人侧（决定到手现金）与单位侧（仅展示）分别算。 */
-function calcContrib(I){
-  var pE=I.pB*I.P.emp,mE=I.mB*I.md.emp+I.medFix,uE=I.uB*I.U.emp,ltcE=I.ltc?I.pB*CITY.ltc.emp:0;
+function calcContrib(I,ctx){
+  var city=ctx.city,hk=ctx.hk;
+  var pE=I.pB*I.P.emp,mE=I.mB*I.md.emp+I.medFix,uE=I.uB*I.U.emp,ltcE=I.ltc?I.pB*city.ltc.emp:0;
   var siE=pE+mE+uE+ltcE;
   /* 深圳按户籍区分养老单位费率（深户 +1% 地方补充） */
-  var pComp=CITY.hukou?(hk===1?I.P.comp+.01:I.P.comp):I.P.comp;
-  var siC=I.pB*pComp+I.mB*I.md.comp+I.uB*I.U.comp+I.mtB*I.MT.comp+I.ijB*I.IJ.comp+(I.ltc?I.pB*CITY.ltc.comp:0);
+  var pComp=city.hukou?(hk===1?I.P.comp+.01:I.P.comp):I.P.comp;
+  var siC=I.pB*pComp+I.mB*I.md.comp+I.uB*I.U.comp+I.mtB*I.MT.comp+I.ijB*I.IJ.comp+(I.ltc?I.pB*city.ltc.comp:0);
       /* 公积金：个人与单位比例**相互独立**（单位可在该市 5%~上限之间另选） */
       var hfE=I.hB*I.hfD,hfC=I.hB*(I.hfDComp===undefined?I.hfD:I.hfDComp);
   return {pE:pE,mE:mE,uE:uE,ltcE:ltcE,siE:siE,pComp:pComp,siC:siC,hfE:hfE,hfC:hfC};
@@ -4566,10 +4570,11 @@ function calcContrib(I){
 
 /* ---- 第 3 段：专项附加扣除与补充扣除 ----
    专项附加七项（互斥关系由界面按钮保证）；补充扣除三项既减税、也是个人真实现金支出。 */
-function calcDeductions(I){
+function calcDeductions(I,ctx){
+  var city=ctx.city,houseMode=ctx.houseMode;
   var childA=$("childOn").checked?cl(gv("childAmt"),0,10000):0;
   var eduA=$("eduOn").checked?cl(gv("eduAmt"),0,400):0;
-  var houseA=$("houseOn").checked?cl(gv("houseAmt"),0,houseMode===0?1000:CITY.rent):0;
+  var houseA=$("houseOn").checked?cl(gv("houseAmt"),0,houseMode===0?1000:city.rent):0;
   var elderlyA=$("elderlyOn").checked?cl(gv("elderlyAmt"),0,3000):0;
   /* 大病医疗按规定只能在年度汇算清缴时据实扣除，不进月度预扣预缴。
      输入为**一个纳税年度内的医保目录内自付合计**（元/年）；
@@ -4578,7 +4583,6 @@ function calcDeductions(I){
   var medicalSelf=$("medicalOn").checked?Math.max(0,gv("medicalAmt")):0;
   var spT=childA+eduA+houseA+elderlyA;      /* 可用于月度预扣的专项附加 */
   var medicalAnnual=Math.min(Math.max(0,medicalSelf-15000),80000);
-  currentSpT=spT;
   $("spTot").textContent=fm(spT)+" 元/月"+(medicalSelf>0?"（另有大病医疗可扣 "+fm(medicalAnnual)+" 元/年，仅年度汇算扣除）":"");
   /* 补充扣除：既减少应纳税所得额（月度预扣即可享受），又是个人实际支出的现金 */
   var hi=cl(gv("healthIns"),0,200),pp=cl(gv("persPen"),0,1000);
@@ -4592,7 +4596,6 @@ function calcDeductions(I){
   if(anw){anw.style.display=anOver?"":"none";anw.textContent=anOver?"上限 4%（缴费工资基数），已按 4% 计算":"";}
   var anAmt=I.pB*anPct;
   var suppM=hi+pp+anAmt,suppCash=suppM;
-  currentSupp=suppCash;
   return {childA:childA,eduA:eduA,houseA:houseA,elderlyA:elderlyA,medicalSelf:medicalSelf,spT:spT,
           medicalAnnual:medicalAnnual,hi:hi,pp:pp,anPct:anPct,anAmt:anAmt,suppM:suppM,suppCash:suppCash};
 }
@@ -4705,25 +4708,26 @@ function mixBarHtml(net,siE,hfE,curT,sal,suppCash){
   h+='</div>';
   return h;
 }
-function renderResult(I,C,D,T){
+function renderResult(I,C,D,T,ctx){
+  var city=ctx.city;
   var P=I.P,M=I.M,U=I.U,MT=I.MT,IJ=I.IJ,HF=I.HF,mo=I.mo,mW=I.mW,aM=I.aM,startM=I.startM,hfR=I.hfR,hfRComp=I.hfRComp,hB=I.hB;
   var ml=I.ml,md=I.md,ltc=I.ltc,medFix=I.medFix,pB=I.pB,mB=I.mB,uB=I.uB;
   var pE=C.pE,mE=C.mE,uE=C.uE,ltcE=C.ltcE,siE=C.siE,siC=C.siC,pComp=C.pComp,hfE=C.hfE,hfC=C.hfC;
   var curT=T.curT,net=T.net,ratio=T.ratio,totD=T.totD,sal=I.sal;
   $("baseNote").innerHTML="养老 "+fm(P.min)+"~"+fm(P.max)+" · "+ml+" "+fm(M.min)+"~"+fm(M.max)+" · 失业 "+fm(U.min)+"~"+fm(U.max)+"<br>公积金 "+fm(HF.min)+"~"+fm(HF.max)+" · 基数每年7月15日调整";
   var h="";
-  h+='<div class="hero"><div class="tp"><div><div class="lb">税后实发（'+CITY.name+' · '+mo+'月）</div><div class="bg"><span id="resNet">'+fm(net)+'</span><span>元</span></div></div><div style="text-align:right"><div class="lb">实发比例</div><div class="pc">'+ratio.toFixed(1)+'%</div></div></div>';
+  h+='<div class="hero"><div class="tp"><div><div class="lb">税后实发（'+city.name+' · '+mo+'月）</div><div class="bg"><span id="resNet">'+fm(net)+'</span><span>元</span></div></div><div style="text-align:right"><div class="lb">实发比例</div><div class="pc">'+ratio.toFixed(1)+'%</div></div></div>';
   h+=mixBarHtml(net,siE,hfE,curT,sal,D.suppCash);
   h+='<div class="cd"><div class="mn"><div class="ml">五险一金(个人)</div><div class="mv">'+fm(siE+hfE)+'</div></div><div class="mn"><div class="ml">个人所得税</div><div class="mv">'+fm(curT)+'</div></div><div class="mn"><div class="ml">扣除合计</div><div class="mv">'+fm(totD)+'</div></div></div>';
   h+='<div class="ex">本年度已就业 '+mW+' 个月（'+startM+'月入职）</div></div>';
-  h+='<div class="c"><div class="st gr">社保缴费明细（'+CITY.name+(CITY.hukou?(hk===1?' · 深户':' · 非深户'):'')+'）</div>';
+  h+='<div class="c"><div class="st gr">社保缴费明细（'+city.name+(city.hukou?(ctx.hk===1?' · 深户':' · 非深户'):'')+'）</div>';
   h+='<div class="grid4"><span>险种</span><span style="text-align:right">基数</span><span style="text-align:right">个人%</span><span style="text-align:right">个人金额</span></div>';
   var medLabel=medFix>0?ml+"(含"+medFix+"元互助)":ml;
   var rows=[["养老保险",pB,P.emp,pE],[medLabel,mB,md.emp,mE],["失业保险",uB,U.emp,uE]];
-  if(ltc)rows.push(["长期护理险",pB,CITY.ltc.emp,ltcE]);
+  if(ltc)rows.push(["长期护理险",pB,city.ltc.emp,ltcE]);
   rows.forEach(function(r,i){h+='<div class="grid4r"><span style="color:#6b7280">'+r[0]+'</span><span id="ob'+i+'" style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fm(r[1])+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">'+fmtPct(r[2])+'%</span><span style="text-align:right;font-variant-numeric:tabular-nums">'+fm(r[3])+'</span></div>';});
   h+='<div class="ss"></div><div class="r"><label style="font-weight:600;color:#1f2937">个人社保合计</label><span class="v b" id="resSI" style="color:#059669">'+fm(siE)+' 元</span></div>';
-  h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+fmtPct(pComp)+'%+医疗'+fmtPct(md.comp)+'%+失业'+fmtPct(U.comp)+'%+工伤'+fmtPct(IJ.comp)+'%'+(MT.comp>0?'+生育'+fmtPct(MT.comp)+'%':'，生育并入医保')+(ltc?'+长护'+fmtPct(CITY.ltc.comp)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
+  h+='<div class="r"><label style="font-size:10px;color:#9ca3af">单位合计（养老'+fmtPct(pComp)+'%+医疗'+fmtPct(md.comp)+'%+失业'+fmtPct(U.comp)+'%+工伤'+fmtPct(IJ.comp)+'%'+(MT.comp>0?'+生育'+fmtPct(MT.comp)+'%':'，生育并入医保')+(ltc?'+长护'+fmtPct(city.ltc.comp)+'%':'')+'）</label><span style="font-size:10px;color:#9ca3af;font-variant-numeric:tabular-nums">'+fm(siC)+'</span></div></div>';
   h+='<div class="c"><div class="st sk">住房公积金'+(hfR===0?'（未缴存）':'')+'</div>';
   h+='<div class="r"><label>基数 '+fm(hB)+'</label><span class="v" style="font-size:11px;color:#9ca3af">个人 '+hfR+'% / 单位 '+hfRComp+'%</span></div>';
   h+='<div class="r"><label>个人缴存</label><span class="v" id="resHF" style="color:#0284c7">'+fm(hfE)+'</span></div>';
@@ -4816,7 +4820,7 @@ function renderResult(I,C,D,T){
   bh+='<div class="grid4"><span>临界点</span><span style="text-align:right">陷阱区间</span><span style="text-align:right">多1元少拿</span><span style="text-align:right">状态</span></div>';
   TRAPS.forEach(function(t){var lo=t[0],loss=t[1];var netLo=lo-btx(lo).t;var hiP=lo;for(var x=lo+100;x<=lo*1.3;x+=100){if(x-btx(x).t>=netLo){hiP=x;break;}}var status="";if(T.bonus>lo&&T.bonus<=hiP)status='<span style="color:#dc2626;font-weight:600">⚠ 命中</span>';else if(T.bonus>hiP)status='<span style="color:#16a34a">✓ 安全</span>';else status='<span style="color:#9ca3af">—</span>';bh+='<div class="grid4r" style="font-size:11px"><span style="color:#6b7280;font-variant-numeric:tabular-nums">'+fm(lo)+'</span><span style="text-align:right;color:#6b7280;font-variant-numeric:tabular-nums">~'+fm(hiP)+'</span><span style="text-align:right;color:#dc2626;font-variant-numeric:tabular-nums">'+fm(loss)+'</span><span style="text-align:right">'+status+'</span></div>';});
   $("bonusResult").innerHTML=bh;
-  h+='<div class="dk"><div class="dt">工资条汇总（'+CITY.name+' · '+mo+'月）</div>';
+  h+='<div class="dk"><div class="dt">工资条汇总（'+city.name+' · '+mo+'月）</div>';
   h+='<div class="dr"><span class="dl">税前工资</span><span class="dv" style="font-weight:500">'+fm(sal)+'</span></div>';
   h+='<div class="dr"><span class="dl">− 养老保险</span><span class="dv" style="color:#34d399">'+fm(pE)+'</span></div>';
   h+='<div class="dr"><span class="dl">− '+medLabel+'</span><span class="dv" style="color:#34d399">'+fm(mE)+'</span></div>';
@@ -4832,20 +4836,27 @@ function renderResult(I,C,D,T){
 }
 
 /* ---- 编排：五段依次调用，本函数只负责顺序 ----
-   注意 readInputs 有副作用（写 hfRate/hfBase/startWarn），
-   必须先于其余四段执行。 */
+   顶层状态在这里**一次性**收成 ctx，再显式传给各段；
+   各段不再直接读 hk / med / houseMode / CITY / currentSpT / currentSupp。
+   readInputs 有副作用（写 hfRate/hfBase/startWarn），必须先于其余段执行。 */
 function calc(){
   if(!CITY)return;
-  var inp=readInputs();
-  var con=calcContrib(inp);
-  var ded=calcDeductions(inp);
+  var ctx={city:CITY,med:med,hk:hk,houseMode:houseMode,lastHFBase:lastHFBase};
+  var inp=readInputs(ctx);
+  lastHFBase=inp.lastHFBase;
+  var con=calcContrib(inp,ctx);
+  var ded=calcDeductions(inp,ctx);
   var tax=calcTax(inp,con,ded);
-  renderResult(inp,con,ded,tax);
+  renderResult(inp,con,ded,tax,ctx);
+  return {ctx:ctx,inp:inp,con:con,ded:ded,tax:tax};
 }
 
 /* ============ 页面2：历史明细 ============ */
 var histRows=[];
 var histCity=null;
+/* 历史页复用的单月页扣除口径：buildHistory() 从 calc() 的返回结果快照一次，
+   calcHist 只读这份 ctx，不再依赖顶层 currentSpT/currentSupp。 */
+var histCtx=null;
 var HIST_F=["sal","pb","mb","ub","mtb","ijb","hfb","rate"];
 var SERIES=[
   {key:"sal",name:"税前工资",color:"#2563eb",on:true},
@@ -4867,7 +4878,7 @@ function switchTab(t){
 function buildHistory(){
   if(!CITY)return;
   var mo=cl(gv("month"),1,12),startM=effStart(mo,cl(gv("startMonth"),1,12));
-  calc();
+  var calcOut=calc();
   var defSal=gv("salary"),defPB=gv("pBase"),defMB=gv("mBase"),defUB=gv("uBase"),defMTB=gv("mtBase"),defIJB=gv("ijBase"),defHfb=gv("hfBase"),defRate=gv("hfRate");
   var seed={sal:defSal,pb:defPB,mb:defMB,ub:defUB,mtb:defMTB,ijb:defIJB,hfb:defHfb,rate:defRate};
   var old=histCity===CITY?histRows:null;
@@ -4887,8 +4898,9 @@ function buildHistory(){
   for(var m=startM;m<=mo;m++)histRows.push(row(m,false));
   if(mo<12){for(var m2=mo+1;m2<=12;m2++)histRows.push(row(m2,true));}
   histCity=CITY;
+  histCtx={city:CITY,med:med,spT:calcOut.ded.spT,supp:calcOut.ded.suppCash};
   renderHistTable();
-  calcHist();
+  calcHist(histCtx);
   renderLegend();
 }
 function renderHistTable(){
@@ -4919,7 +4931,7 @@ function renderHistTable(){
       var v=parseFloat(el.value)||0;
       if(f==="rate"){v=normHF(v,CITY.hfRateMax);el.value=v;}
       histRows[i][f]=v;
-      calcHist();
+      calcHist(histCtx);
     });
   });
   var realCnt=histRows.filter(function(r){return !r.future}).length,predCnt=histRows.length-realCnt;
@@ -4932,17 +4944,18 @@ function toggleHist(i,on){
   row.style.background=on?bg:(bg||"#fafafa");
   row.style.opacity=on?"":".45";
   row.querySelectorAll("input[type=number]").forEach(function(el){el.disabled=!on});
-  calcHist();
+  calcHist(histCtx);
 }
 function toggleAllHist(on){
   histRows.forEach(function(r){r.on=on});
   renderHistTable();
-  calcHist();
+  calcHist(histCtx);
 }
-function calcHist(){
-  var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf,ts=CITY.tiers||[];
+function calcHist(ctx){
+  var city=ctx.city,med=ctx.med,spT=ctx.spT,supp=ctx.supp;
+  var P=city.pension,M=city.med,U=city.unemp,MT=city.mat,IJ=city.inj,HF=city.hf,ts=city.tiers||[];
   var md=ts.length>=2?ts[med-1]:M;
-  var ltc=CITY.ltc&&$("ltcOn").checked;
+  var ltc=city.ltc&&$("ltcOn").checked;
   var cumIncome=0,cumDed=0,prevTax=0,totSal=0,totSi=0,totHf=0,totTax=0,totNet=0,totSupp=0;
   histRows.forEach(function(r){
     var on=r.on!==false;
@@ -4951,18 +4964,18 @@ function calcHist(){
     var mB=M.min?cl(r.mb,M.min,M.max):0;
     var uB=cl(r.ub,U.min,U.max);
     var hB=cl(r.hfb,HF.min,HF.max);
-    var rate=normHF(r.rate,CITY.hfRateMax)/100;
-    var medFix=CITY.medFixEmp||0;
-    r.pi=pB*P.emp;r.mi=mB*md.emp+medFix;r.ui=uB*U.emp;r.li=ltc?pB*CITY.ltc.emp:0;
+    var rate=normHF(r.rate,city.hfRateMax)/100;
+    var medFix=city.medFixEmp||0;
+    r.pi=pB*P.emp;r.mi=mB*md.emp+medFix;r.ui=uB*U.emp;r.li=ltc?pB*city.ltc.emp:0;
     r.si=r.pi+r.mi+r.ui+r.li;
     r.hf=hB*rate;
-    var mDed=r.si+r.hf+5000+currentSpT+currentSupp;
+    var mDed=r.si+r.hf+5000+spT+supp;
     cumIncome+=r.sal;cumDed+=mDed;
     var cumTax=Math.max(0,tx(Math.max(0,cumIncome-cumDed)).t);
     r.tax=Math.max(0,cumTax-prevTax);
     prevTax=cumTax;
-    r.net=r.sal-r.si-r.hf-r.tax-currentSupp;
-    totSal+=r.sal;totSi+=r.si;totHf+=r.hf;totTax+=r.tax;totNet+=r.net;totSupp+=currentSupp;
+    r.net=r.sal-r.si-r.hf-r.tax-supp;
+    totSal+=r.sal;totSi+=r.si;totHf+=r.hf;totTax+=r.tax;totNet+=r.net;totSupp+=supp;
   });
   histRows.forEach(function(r,idx){
     $("csi"+idx).textContent=fm(r.si);

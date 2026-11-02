@@ -104,7 +104,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 ### `docs/calculation-spec.md`：计算口径白皮书
 
-从税前工资到"到手现金"的**完整规则定义**——公式、常量、以及所有"这里其实做过一个选择"的地方（§十一 列了 8 条口径选择与各自的理由/风险）。README 的口径说明只是要点摘录，白皮书才是权威版本。
+从税前工资到"到手现金"的**完整规则定义**——公式、常量、以及所有"这里其实做过一个选择"的地方（§十一 列了 10 条口径选择与各自的理由/风险）。README 的口径说明只是要点摘录，白皮书才是权威版本。
 
 **它由检查 I 守着，这一点是它可信的全部理由**：通篇都是公式与常量，这类文档最大的风险不是写错，而是**写得对、然后代码改了没人改它**——它会变成一份"权威的错误答案"，比没有文档更糟。检查 I 把白皮书里的 12 个标量常量、3 张税率表（综合所得预扣率 / 年终奖月换算 / 六个临界值）、租金 3 档**逐项拉回实现比对**，双向都能拦：改文档不改代码会红，改代码不改文档也会红。
 
@@ -112,17 +112,28 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 ## 四、计算器代码结构
 
-`calculator.html` 里的 `calc()` 原先是一个 131 行的单体函数（读输入、算社保、算公积金、算扣除、算个税、拼 HTML 全挤在一起）。现已按职责拆成五段，`calc()` 只做编排（8 行）：
+`calculator.html` 里的 `calc()` 原先是一个 131 行的单体函数（读输入、算社保、算公积金、算扣除、算个税、拼 HTML 全挤在一起）。现已按职责拆成五段，`calc()` 只做编排并把顶层 UI 状态收成 `ctx`（约 10 行）：
 
 | 段 | 函数 | 职责 | 有无副作用 |
 |:--:|------|------|-----------|
-| 1 | `readInputs()` | 读 DOM、夹取基数、归一化公积金比例；同步受输入影响的界面元素 | **有**（写 `hfRate`/`hfBase`/`startWarn`） |
-| 2 | `calcContrib(I)` | 社保与公积金缴费（个人侧决定到手现金，单位侧仅展示） | 无 |
-| 3 | `calcDeductions(I)` | 七项专项附加扣除 + 三项补充扣除 | 写 `spTot`、`currentSpT`、`currentSupp` |
+| 1 | `readInputs(ctx)` | 读 DOM、夹取基数、归一化公积金比例；同步受输入影响的界面元素 | **有**（写 `hfRate`/`hfBase`/`startWarn`；把 `lastHFBase` 一并返回） |
+| 2 | `calcContrib(I, ctx)` | 社保与公积金缴费（个人侧决定到手现金，单位侧仅展示） | 无 |
+| 3 | `calcDeductions(I, ctx)` | 七项专项附加扣除 + 三项补充扣除 | 写 `spTot` / 年金提示 DOM；**不写全局计算状态** |
 | 4 | `calcTax(I,C,D)` | 累计预扣预缴、年度预估、年终奖与临界值陷阱 | 无 |
-| 5 | `renderResult(I,C,D,T)` | 拼 HTML，写 `res` 与 `bonusResult` | 写 DOM |
+| 5 | `renderResult(I,C,D,T,ctx)` | 拼 HTML，写 `res` 与 `bonusResult` | 写 DOM |
 
-四段之间用对象传递：`I`=inputs、`C`=contrib、`D`=deductions、`T`=tax。**第 1 段必须先执行**（它的副作用是后四段的输入）。
+计算段之间用对象传递：`I`=inputs、`C`=contrib、`D`=deductions、`T`=tax；`calc()` 另外构造
+`ctx = {city, med, hk, houseMode, lastHFBase}`，显式下发给第 1/2/3/5 段。第 2、3 段不再直接读顶层
+`CITY` / `hk` / `houseMode`，第 3 段也不再写 `currentSpT` / `currentSupp`，`spT` / `suppCash` 只随返回对象传递。
+**第 1 段必须先执行**（它的副作用是后续计算与渲染的输入）。
+
+历史页的 ctx 是另一份快照：`buildHistory()` 调 `calc()` 后取
+`histCtx = {city, med, spT: calcOut.ded.spT, supp: calcOut.ded.suppCash}`，再传给 `calcHist(histCtx)`；
+`currentSpT` / `currentSupp` 两个顶层变量已删除，历史页所有事件处理器都显式传 `histCtx`。
+
+> 表格里的“无副作用”指**不读写顶层计算状态、不写 DOM**。后四段已不依赖
+> `CITY` / `hk` / `med` / `houseMode` / `currentSpT` / `currentSupp` 这些顶层状态，所需值全部由参数与 `ctx` 传入；
+> 但 `calcDeductions` 仍会同步 `spTot` 与年金提示，`renderResult` 仍写 DOM，所以它们不是“纯函数”，只是“不依赖全局状态”。
 
 文件顶部有一份**命名约定表**（`cl`/`gv`/`fm`/`fmtPct`/`tx`/`btx`/`normHF`/`effStart` 各自的含义），改代码前先看一眼。
 

@@ -88,7 +88,7 @@ const A = loadCalculator();
 section('公积金单位比例');
 {
   eq('公积金·存在独立的单位比例输入', /id="hfRateComp"/.test(html), true);
-  eq('公积金·单位比例同样受该市上限约束', /hfRComp=normHF\(gv\("hfRateComp"\),CITY\.hfRateMax\)/.test(html), true);
+  eq('公积金·单位比例同样受该市上限约束', /hfRComp=normHF\(gv\("hfRateComp"\),city\.hfRateMax\)/.test(html), true);
   eq('公积金·单位缴存用独立比例（不再等于个人）', /hfC=I\.hB\*\(I\.hfDComp===undefined\?I\.hfD:I\.hfDComp\)/.test(html), true);
   eq('公积金·hfRComp 已放进 readInputs 返回对象', /hfR:hfR,hfRComp:hfRComp,/.test(html), true);
   eq('公积金·renderResult 已取出 hfRComp', /hfR=I\.hfR,hfRComp=I\.hfRComp,/.test(html), true);
@@ -2948,7 +2948,7 @@ section('9. 历史明细页');
   A.calc(); A.buildHistory();
   const netBefore = A.histRows()[0].net;
   A.histRows()[0].mtb = 99999; A.histRows()[0].ijb = 99999;
-  A.calcHist();
+  A.calcHist(A.histCtx());
   eq('历史页·生育/工伤基数变化不影响个人实发', A.histRows()[0].net, netBefore);
 })();
 

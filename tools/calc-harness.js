@@ -52,7 +52,7 @@ function makeCanvas() {
 /* 暴露给测试的 API 是**超集**：各脚本按需取用，避免每加一个测试就改一次导出清单。 */
 const API_NAMES = 'tx,btx,TRAPS,BR,BBR,CITIES,CLAMP:cl,cl0,normHF,effStart,calc,selectCity,' +
   'setHk,setMed,setChild,setHouse,switchTab,buildHistory,calcHist,exportPDF,planSegments,' +
-  'histRows:function(){return histRows}';
+  'histRows:function(){return histRows},histCtx:function(){return histCtx}';
 
 function loadCalculator(opts) {
   opts = opts || {};
