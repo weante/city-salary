@@ -193,7 +193,7 @@ eq('source-records·有 url 即视为已填', isFilled({ confirms: 'x', urls: ['
    >0 可退、<0 需补。两者口径差异主要来自「大病医疗只在汇算可扣」。
    手工校验（北京 月薪20000 无专项附加）：
      月扣除 9503 → 全年预扣 10076.40；无大病医疗时汇算应纳同为 10076.40 → 退补 0 ✓
-     加大病医疗 30000 → 汇算应纳 7076.40 → 可退 3000 = 30000×10%（正确边际税率）✓ */
+     加大病医疗年度自付 45000（可扣 30000）→ 汇算应纳 7076.40 → 可退 3000 = 30000×10%（正确边际税率）✓ */
 eq('source-records·汇算退补字段存在', typeof A.CITIES.bj === 'object', true);
 eq('source-records·占位特征词正则覆盖三种历史写法',
   STUB_RE.test('待核查') && STUB_RE.test('') && STUB_RE.test('（尚未核查，占位）'), true);
@@ -505,7 +505,9 @@ section('6. D1 大病医疗只进年度汇算');
   const taxBefore = A._num('resTax');
   const annualBefore = A._num('resATax');
 
-  A._check('medicalOn', true); A._set('medicalAmt', 6667); A.calc();
+  /* 新口径：输入为「年度自付合计」，可扣 = min(max(自付 − 15000, 0), 80000)。
+     用 95000 元自付触发满额扣除（95000 − 15000 = 80000）。 */
+  A._check('medicalOn', true); A._set('medicalAmt', 95000); A.calc();
   const taxAfter = A._num('resTax');
   const annualAfter = A._num('resATax');
   const spTotText = A._text('spTot');
@@ -515,27 +517,65 @@ section('6. D1 大病医疗只进年度汇算');
   ok('提示文案说明仅年度汇算扣除', spTotText.indexOf('仅年度汇算扣除') > -1, true);
   ok('年度税因大病医疗而下降', annualAfter < annualBefore, true);
   ok('年度预估段带口径说明', /口径说明/.test(A._html('res')), true);
-  emit(`  大病医疗 6667 填入前后当月个税：${fmt(taxBefore)} → ${fmt(taxAfter)}（应相等）`);
+  emit(`  大病医疗年度自付 95000 填入前后当月个税：${fmt(taxBefore)} → ${fmt(taxAfter)}（应相等）`);
   emit(`  年度预估税：${fmt(annualBefore)} → ${fmt(annualAfter)}（降 ${fmt(annualBefore - annualAfter)}）`);
 
-  /* F8 回归：年度大病医疗 = min(月均×12, 80000)，不随就业月数折算。
-     1月入职时 aM=12，"×12"与"×aM"结果相同（仅差封顶4元），所以真正的判别用例是年中入职。 */
+  /* 年度自付 95000 → 扣除 = min(95000 − 15000, 80000) = 80000，不随就业月数折算。 */
   const siE0 = 27000 * (0.08 + 0.02 + 0.002), hfE0 = 27000 * 0.05;
   const mDed0 = siE0 + hfE0 + 5000;
-  const medAnnual = Math.min(6667 * 12, 80000);
-  ok('年度大病医疗封顶 80000（6667×12=80004）', medAnnual, 80000);
+  const medAnnual = 80000;
+  ok('年度大病医疗封顶 80000（自付 95000 − 起付 15000）', medAnnual, 80000);
   ok('1月入职：年度税 = 独立复算（扣全年80000）',
     annualAfter, Math.max(0, officialTx(Math.max(0, 40000 * 12 - mDed0 * 12 - medAnnual))), 0.02);
 
-  /* 7月入职（就业6个月）：若错误地按就业月数折算，扣除只有40002，年度税会偏高 */
+  /* 起付线边界：自付 10000 < 15000 → 可扣 0，年度税回到无大病医疗水平 */
+  A._set('medicalAmt', 10000); A.calc();
+  ok('自付 10000 未超 15000 起付线：可扣 0、年度税不变', A._num('resATax'), annualBefore, 0.02);
+  ok('未超起付线时界面明示可扣 0', /未超 15000 起付线/.test(A._html('res')), true);
+
+  /* 中间段：自付 30000 → 扣除 15000（不是 ×12，也不是全额） */
+  A._set('medicalAmt', 30000); A.calc();
+  ok('自付 30000 可扣 15000',
+    A._num('resATax'), Math.max(0, officialTx(Math.max(0, 40000 * 12 - mDed0 * 12 - 15000))), 0.02);
+
+  /* 7月入职（就业6个月）：恢复满额扣除后再验证"不随就业月数折算" */
+  A._set('medicalAmt', 95000);
   A._setMany({ startMonth: 7, month: 12 });
   A.calc();
   const aM6 = 6;
   const expect6 = Math.max(0, officialTx(Math.max(0, 40000 * aM6 - mDed0 * aM6 - medAnnual)));
-  const wrong6 = Math.max(0, officialTx(Math.max(0, 40000 * aM6 - mDed0 * aM6 - 6667 * aM6)));
+  const wrong6 = Math.max(0, officialTx(Math.max(0, 40000 * aM6 - mDed0 * aM6 - (80000 / 12) * aM6)));
   ok('7月入职：大病医疗仍按全年80000扣（不随就业月数折算）', A._num('resATax'), expect6, 0.02);
   ok('7月入职：与"按就业月数折算"的错误结果确有差异', Math.abs(expect6 - wrong6) > 1, true);
   emit(`  7月入职：正确年度税=${fmt(expect6)}，若按就业月数折算会得到=${fmt(wrong6)}（差 ${fmt(wrong6 - expect6)}）`);
+})();
+
+/* =========================================================
+   6b. 全口径税额与汇算退补：单月页只保留一个"年度个税"口径
+   ========================================================= */
+section('6b. 全口径税额与汇算退补');
+(function unifiedTaxCase() {
+  A.selectCity('bj');
+  A._setMany({
+    salary: 20000, month: 12, startMonth: 1,
+    pBase: 20000, mBase: 20000, uBase: 20000, mtBase: 20000, ijBase: 20000, hfBase: 20000,
+    hfRate: 12, bonus: 0, healthIns: 0, persPen: 0, annuity: 0,
+    incLabor: 50000, incRoyal: 0, incLic: 0, reliefPct: 50,
+  });
+  A._check('medicalOn', false); A._check('childOn', false); A._check('eduOn', false);
+  A._check('houseOn', false); A._check('elderlyOn', false);
+  A.calc();
+  const annualTax = A._num('resATax'), allPanel = A._num('resOtherSettle');
+  const relief = A._num('resRelief'), finalTax = A._num('resFinalTax');
+  const total = A._num('resSettle'), prepaid = A._num('resPrepaid');
+  const salaryPart = A._num('resSettleSalary'), otherPart = A._num('resSettleOther'), reliefPart = A._num('resSettleRelief');
+  emit(`  全口径年度税 ${fmt(annualTax)}，减免 ${fmt(relief)}，汇算应纳 ${fmt(finalTax)}`);
+  emit(`  全年预扣 ${fmt(prepaid)}，汇算退补 ${fmt(total)} = ${fmt(salaryPart)} + ${fmt(otherPart)} + ${fmt(reliefPart)}`);
+  ok('年度个税只有一个口径：主卡 = 其他所得面板', annualTax, allPanel, 0.02);
+  ok('汇算应纳 = 全口径年度税 − 减免', finalTax, annualTax - relief, 0.02);
+  ok('汇算退补 = 全年预扣 − 汇算应纳', total, prepaid - finalTax, 0.02);
+  ok('汇算退补分解恒等：工资 + 其他所得 + 减免', total, salaryPart + otherPart + reliefPart, 0.02);
+  ok('减免后年度个税 = 汇算应纳', A._num('resATaxAfterRelief'), finalTax, 0.02);
 })();
 
 /* =========================================================
@@ -3132,7 +3172,7 @@ section('14. 年终奖计税方式对比');
   /* 低所得：各基数被夹到北京下限，aTx 很小；高所得：基数顶到上限、公积金 12% */
   const LOW = { salary: 6000, month: 12, startMonth: 1, pBase: 6000, mBase: 6000, uBase: 6000, mtBase: 6000, ijBase: 6000, hfBase: 6000, hfRate: 0 };
   const HIGH = { salary: 40000, month: 12, startMonth: 1, pBase: 36348, mBase: 36348, uBase: 36348, mtBase: 36348, ijBase: 36348, hfBase: 36348, hfRate: 12 };
-  const ZERO = { persPen: 0, healthIns: 0, annuity: 0, childAmt: 0, eduAmt: 0, houseAmt: 0, elderlyAmt: 0, medicalAmt: 0 };
+  const ZERO = { persPen: 0, healthIns: 0, annuity: 0, childAmt: 0, eduAmt: 0, houseAmt: 0, elderlyAmt: 0, medicalAmt: 0, incLabor: 0, incRoyal: 0, incLic: 0, reliefPct: 0 };
 
   const run = (base, bonus) => {
     A.selectCity('bj');
