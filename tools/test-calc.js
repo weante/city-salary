@@ -4799,7 +4799,7 @@ section('29. PDF 导出版面（第一百零一批）');
   ok('第一百零一批·历史表仍含实发工资列',
      /<th>实发工资<\/th>/.test(M101_SCRIPT), true);
   ok('第一百零一批·导出按钮仍在页面里（只是 PDF 内隐藏）',
-     /onclick="exportPDF\(\)"/.test(M101_MARKUP), true);
+     /onclick="exportPDF\(CITY\)"/.test(M101_MARKUP), true);
 
   // 四、数值零改动
   eq('第一百零一批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
@@ -5012,7 +5012,7 @@ section('32. 历史明细表固定列宽（第一百零四批）');
   ok('第一百零四批·历史表格 markup 未改',
      /<table class="hist" id="histTable"><\/table>/.test(M104_CSS), true);
   ok('第一百零四批·表格仍由 renderHistTable 渲染',
-     /function renderHistTable\(\)/.test(M104_SCRIPT), true);
+     /function renderHistTable\(city\)/.test(M104_SCRIPT), true);
   ok('第一百零四批·表头仍含实发工资列',
      /实发工资/.test(M104_SCRIPT), true);
 

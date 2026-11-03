@@ -112,7 +112,7 @@ function functionBody(name) {
   }
   return null;
 }
-const GUARDED_FNS = ['calcContrib', 'calcDeductions', 'calcHist', 'renderResult', 'renderFootNote'];
+const GUARDED_FNS = ['calcContrib', 'calcDeductions', 'calcHist', 'renderResult', 'renderFootNote', 'renderHistTable', 'exportPDF'];
 const BARE_STATE = [
   { name: 'CITY.', re: /\bCITY\./g },
   { name: 'hk', re: /(?<![.\w$])hk\b/g },

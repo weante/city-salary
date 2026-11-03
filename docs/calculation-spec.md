@@ -43,6 +43,10 @@ ctx = { city: CITY, med, hk, houseMode, lastHFBase }
 - `renderFootNote(city)`：脚注只读传入的 `city`；`selectCity(k)` 是事件入口，仍维护顶层
   `CITY` / `hk` / `houseMode` / `lastHFBase`，但内部渲染通过局部 `city` 显式下发给
   `renderFootNote(city)` / `renderMedBtns(city)`。
+- `renderHistTable(city)`：历史表格只读 `city.mat` / `city.hfRateMax`；`toggleAllHist` 从 `histCtx.city` 取城市。
+- `buildHistory()`：历史页事件入口，从顶层 `CITY` 取一次当前城市并维护 `histRows` / `histCity`，
+  内部使用局部 `city` 与 `calcOut.ctx.med`，不再直接读 `CITY.` / `med`。
+- `exportPDF(city)`：只用 `city.name` 拼接 PDF 文件名；文件名格式仍为「城市名 + 工资历史明细.pdf」。
 
 历史页不复用单月页的 `ctx`，而是由 `buildHistory()` 从 `calc()` 的返回值快照一份：
 
@@ -54,8 +58,8 @@ histCtx = { city: CITY, med, spT: calcOut.ded.spT, supp: calcOut.ded.suppCash }
 `currentSpT` / `currentSupp` 两个顶层变量已删除，历史页的事件处理器也显式把 `histCtx` 传进去。
 
 `tools/check-dom.js` 的第 6 项检查会静态校验 `calcContrib` / `calcDeductions` / `calcHist` /
-`renderResult` / `renderFootNote` 的函数体内不得出现裸 `CITY.` / `hk` / `med` / `houseMode` /
-`currentSpT` / `currentSupp`，防止后续改动把全局读取加回来。
+`renderResult` / `renderFootNote` / `renderHistTable` / `exportPDF` 的函数体内不得出现裸
+`CITY.` / `hk` / `med` / `houseMode` / `currentSpT` / `currentSupp`，防止后续改动把全局读取加回来。
 
 **到手现金的完整定义**（不是"实发工资"）：
 

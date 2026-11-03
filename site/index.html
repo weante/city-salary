@@ -751,7 +751,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
       </div>
 
       <div class="c" id="exportCard" style="text-align:center">
-        <button class="export-btn" onclick="exportPDF()"><svg class="icon" style="width:16px;height:16px;vertical-align:-3px"><use href="#i-download"/></svg> 导出 PDF</button>
+        <button class="export-btn" onclick="exportPDF(CITY)"><svg class="icon" style="width:16px;height:16px;vertical-align:-3px"><use href="#i-download"/></svg> 导出 PDF</button>
         <span class="nt" style="display:block;margin-top:8px">导出当前页面为 PDF 文件（含表格、汇总与趋势图）</span>
       </div>
     </div>
@@ -4878,12 +4878,13 @@ function switchTab(t){
   if(t===1)buildHistory();
 }
 function buildHistory(){
-  if(!CITY)return;
+  var city=CITY;
+  if(!city)return;
   var mo=cl(gv("month"),1,12),startM=effStart(mo,cl(gv("startMonth"),1,12));
   var calcOut=calc();
   var defSal=gv("salary"),defPB=gv("pBase"),defMB=gv("mBase"),defUB=gv("uBase"),defMTB=gv("mtBase"),defIJB=gv("ijBase"),defHfb=gv("hfBase"),defRate=gv("hfRate");
   var seed={sal:defSal,pb:defPB,mb:defMB,ub:defUB,mtb:defMTB,ijb:defIJB,hfb:defHfb,rate:defRate};
-  var old=histCity===CITY?histRows:null;
+  var old=histCity===city?histRows:null;
   var byM={};
   if(old)for(var i=0;i<old.length;i++)byM[old[i].m]=old[i];
   function row(m,future){
@@ -4899,15 +4900,15 @@ function buildHistory(){
   histRows=[];
   for(var m=startM;m<=mo;m++)histRows.push(row(m,false));
   if(mo<12){for(var m2=mo+1;m2<=12;m2++)histRows.push(row(m2,true));}
-  histCity=CITY;
-  histCtx={city:CITY,med:med,spT:calcOut.ded.spT,supp:calcOut.ded.suppCash};
-  renderHistTable();
+  histCity=city;
+  histCtx={city:city,med:calcOut.ctx.med,spT:calcOut.ded.spT,supp:calcOut.ded.suppCash};
+  renderHistTable(city);
   calcHist(histCtx);
   renderLegend();
 }
-function renderHistTable(){
+function renderHistTable(city){
   /* 生育并入医保的城市（mat.comp=0）不显示生育基数列 */
-  var mtCol=CITY.mat.comp>0;
+  var mtCol=city.mat.comp>0;
   var h='<tr><th style="width:30px"><input type="checkbox" id="histAll" checked onchange="toggleAllHist(this.checked)" title="全选/全不选"></th><th>月份</th><th>税前工资</th><th>养老基数</th><th>医疗基数</th><th>失业基数</th>'+(mtCol?'<th title="仅影响单位侧缴费，不影响个人实发">生育基数</th>':'')+'<th title="仅影响单位侧缴费，不影响个人实发">工伤基数</th><th>公积金基数</th><th>公积金比例</th><th>五险(个人)</th><th>公积金</th><th>个税</th><th>实发工资</th></tr>';
   histRows.forEach(function(r,idx){
     var on=r.on!==false;
@@ -4922,7 +4923,7 @@ function renderHistTable(){
     if(mtCol)h+='<td><input type="number" title="仅影响单位侧缴费，不影响个人实发" value="'+r.mtb+'" min="0" step="100" data-i="'+idx+'" data-f="mtb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" title="仅影响单位侧缴费，不影响个人实发" value="'+r.ijb+'" min="0" step="100" data-i="'+idx+'" data-f="ijb"'+(on?'':' disabled')+'></td>';
     h+='<td><input type="number" value="'+r.hfb+'" min="0" step="100" data-i="'+idx+'" data-f="hfb"'+(on?'':' disabled')+'></td>';
-    h+='<td><input type="number" value="'+r.rate+'" min="0" max="'+CITY.hfRateMax+'" step="1" data-i="'+idx+'" data-f="rate" style="width:46px"'+(on?'':' disabled')+'></td>';
+    h+='<td><input type="number" value="'+r.rate+'" min="0" max="'+city.hfRateMax+'" step="1" data-i="'+idx+'" data-f="rate" style="width:46px"'+(on?'':' disabled')+'></td>';
     h+='<td id="csi'+idx+'"></td><td id="chf'+idx+'"></td><td id="ctx'+idx+'"></td><td id="cnet'+idx+'" style="font-weight:600"></td>';
     h+='</tr>';
   });
@@ -4931,13 +4932,13 @@ function renderHistTable(){
     el.addEventListener("input",function(){
       var i=parseInt(el.dataset.i),f=el.dataset.f;
       var v=parseFloat(el.value)||0;
-      if(f==="rate"){v=normHF(v,CITY.hfRateMax);el.value=v;}
+      if(f==="rate"){v=normHF(v,city.hfRateMax);el.value=v;}
       histRows[i][f]=v;
       calcHist(histCtx);
     });
   });
   var realCnt=histRows.filter(function(r){return !r.future}).length,predCnt=histRows.length-realCnt;
-  $("rangeLabel").textContent="统计区间："+new Date().getFullYear()+"年 "+histRows[0].m+" 月 ~ "+histRows[histRows.length-1].m+" 月（实际"+realCnt+"个月"+(predCnt>0?" + 预测"+predCnt+"个月(蓝色)":"")+" · 五险基数各自独立 · 公积金比例仅0或5-"+CITY.hfRateMax+"%）";
+  $("rangeLabel").textContent="统计区间："+new Date().getFullYear()+"年 "+histRows[0].m+" 月 ~ "+histRows[histRows.length-1].m+" 月（实际"+realCnt+"个月"+(predCnt>0?" + 预测"+predCnt+"个月(蓝色)":"")+" · 五险基数各自独立 · 公积金比例仅0或5-"+city.hfRateMax+"%）";
 }
 function toggleHist(i,on){
   histRows[i].on=on;
@@ -4950,7 +4951,7 @@ function toggleHist(i,on){
 }
 function toggleAllHist(on){
   histRows.forEach(function(r){r.on=on});
-  renderHistTable();
+  renderHistTable(histCtx?histCtx.city:CITY);
   calcHist(histCtx);
 }
 function calcHist(ctx){
@@ -5168,7 +5169,7 @@ function planSegments(totalPx,pageCapPx,trendTopPx,cards,rows){
   }
   return segs;
 }
-function exportPDF(){
+function exportPDF(city){
   /* printed=已走打印兜底；saved=PDF已成功保存。只有保存成功才阻断兜底，
      否则"画布生成失败/组装PDF抛错"时两条兜底路径都会被误判为已完成而静默失效 */
   var printed=false,saved=false;
@@ -5272,7 +5273,7 @@ function exportPDF(){
         if(si>0)pdf.addPage();
         pdf.addImage(cut.toDataURL("image/png"),"PNG",P.mx,P.my,imgW,hMm);
       }
-      pdf.save(CITY.name+"工资历史明细.pdf");
+      pdf.save(city.name+"工资历史明细.pdf");
       saved=true;
     });
   }).catch(function(){clearTimeout(fb);tryPrint()});

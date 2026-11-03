@@ -117,11 +117,11 @@ function cacheCase() {
   appended.length = 0;
   const window = { print() {}, html2canvas: undefined, jspdf: undefined };
   const api = new Function('document', 'window', 'console', 'setTimeout', 'Promise', 'html2canvas', 'jspdf',
-    src + '\n;return {selectCity,calc,exportPDF};')(document, window, console, setTimeout, Promise, undefined, undefined);
+    src + '\n;return {selectCity,calc,exportPDF,city:function(){return CITY}};')(document, window, console, setTimeout, Promise, undefined, undefined);
   api.selectCity('sz');
   api.calc();
-  api.exportPDF();
-  api.exportPDF();
+  api.exportPDF(api.city());
+  api.exportPDF(api.city());
   const uniq = [...new Set(appended)];
   const good = appended.length === 2 && uniq.length === 2;
   console.log(`  ${good ? '✓' : '✗'} 连续两次导出只注入 2 个 CDN script（实际注入 ${appended.length} 个，去重后 ${uniq.length} 个）`);
@@ -143,11 +143,11 @@ function runNext() {
      必须把桩同时挂到 window 上，否则测的是"CDN 下载失败"路径而不是目标路径。 */
   const window = { print() { printed = true; }, html2canvas: c.html2canvas, jspdf: c.jspdf };
   const api = new Function('document', 'window', 'console', 'setTimeout', 'Promise', 'html2canvas', 'jspdf',
-    src + '\n;return {selectCity,calc,exportPDF};')(document, window, console, setTimeout, Promise,
+    src + '\n;return {selectCity,calc,exportPDF,city:function(){return CITY}};')(document, window, console, setTimeout, Promise,
     c.html2canvas, c.jspdf);
   api.selectCity('sz');
   api.calc();
-  api.exportPDF();
+  api.exportPDF(api.city());
   /* 6 秒兜底 + 一点余量 */
   setTimeout(() => {
     const good = printed === c.expectPrint;

@@ -137,8 +137,15 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 脚注与城市切换也按同一规则：`renderFootNote(city)` 只接收城市对象；`selectCity(k)` 作为事件入口仍负责维护顶层
 `CITY` / `hk` / `houseMode` / `lastHFBase`，但内部渲染改用局部 `city`，并显式传给 `renderFootNote(city)` / `renderMedBtns(city)`。
-`tools/check-dom.js` 的第 6 项守卫会静态检查 `calcContrib` / `calcDeductions` / `calcHist` / `renderResult` / `renderFootNote`
-的函数体内不得出现裸 `CITY.` / `hk` / `med` / `houseMode` / `currentSpT` / `currentSupp`（允许 `ctx.*` / `city.*`）。
+
+历史页与导出层同样显式：`renderHistTable(city)` 只接收城市对象，`toggleAllHist` 从 `histCtx.city` 取；
+`exportPDF(city)` 只用 `city.name` 拼 PDF 文件名（格式仍为「城市名 + 工资历史明细.pdf」）。`buildHistory()` 是历史页
+事件入口，仍从顶层 `CITY` 取一次当前城市并维护 `histRows` / `histCity`，之后内部使用局部 `city` 与 `calcOut.ctx.med`，
+因此**不加入静态守卫**——它是入口/编排函数，不是纯渲染函数。
+
+`tools/check-dom.js` 的第 6 项守卫会静态检查 7 个函数：
+`calcContrib` / `calcDeductions` / `calcHist` / `renderResult` / `renderFootNote` / `renderHistTable` / `exportPDF`，
+函数体内不得出现裸 `CITY.` / `hk` / `med` / `houseMode` / `currentSpT` / `currentSupp`（允许 `ctx.*` / `city.*`）。
 
 文件顶部有一份**命名约定表**（`cl`/`gv`/`fm`/`fmtPct`/`tx`/`btx`/`normHF`/`effStart` 各自的含义），改代码前先看一眼。
 
