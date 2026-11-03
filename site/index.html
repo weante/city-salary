@@ -4363,16 +4363,16 @@ function fnSplit(t){
   });
   return out;
 }
-function renderFootNote(){
-  var scope=CITY.region==="广东"?"养老按广东省统一基数，失业/工伤/医保/公积金按本市口径":"五险按当地统一基数区间，医保/公积金按当地标准";
-  var note=CITY.note||"官方数据";
+function renderFootNote(city){
+  var scope=city.region==="广东"?"养老按广东省统一基数，失业/工伤/医保/公积金按本市口径":"五险按当地统一基数区间，医保/公积金按当地标准";
+  var note=city.note||"官方数据";
   /* 首行裸文本摘要（既有断言要求 innerHTML 以「数据依据：」开头） */
-  $("footNote").innerHTML='数据依据：'+CITY.name+' '+CITY.dataYear+'年度'+(CITY.dataNext?'（'+CITY.dataNext+'年度待公布）':'')+' · '+scope;
+  $("footNote").innerHTML='数据依据：'+city.name+' '+city.dataYear+'年度'+(city.dataNext?'（'+city.dataNext+'年度待公布）':'')+' · '+scope;
   var h='<div class="fn-grid">'
     +'<div class="fn-kv"><b>基数口径</b><span>'+fnEsc(scope)+'</span></div>'
-    +'<div class="fn-kv"><b>数据年度</b><span>'+fnEsc(CITY.dataYear)+(CITY.dataNext?'（'+fnEsc(CITY.dataNext)+' 年度待公布）':' 年度')+'</span></div>'
-    +'<div class="fn-kv"><b>公积金比例</b><span>5% ~ '+fnEsc(CITY.hfRateMax)+'%</span></div>'
-    +'<div class="fn-kv"><b>医保大额（个人）</b><span>'+(CITY.medFixEmp>0?fnEsc(fm(CITY.medFixEmp))+' 元/月':'无固定额')+'</span></div>'
+    +'<div class="fn-kv"><b>数据年度</b><span>'+fnEsc(city.dataYear)+(city.dataNext?'（'+fnEsc(city.dataNext)+' 年度待公布）':' 年度')+'</span></div>'
+    +'<div class="fn-kv"><b>公积金比例</b><span>5% ~ '+fnEsc(city.hfRateMax)+'%</span></div>'
+    +'<div class="fn-kv"><b>医保大额（个人）</b><span>'+(city.medFixEmp>0?fnEsc(fm(city.medFixEmp))+' 元/月':'无固定额')+'</span></div>'
     +'</div>'
     +'<div class="fn-sec"><div class="fn-sec-t"><i>依</i>官方依据</div><ul class="fn-list">';
   fnSplit(note).forEach(function(p){h+='<li>'+fnHl(p)+'</li>'});
@@ -4381,30 +4381,32 @@ function renderFootNote(){
   FN_CHECKS.forEach(function(c){h+='<li><b>'+c.d+'</b><span>'+fnEsc(c.t)+'</span></li>'});
   h+='</ul><div class="fn-tip">每年 1 月（医保）/ 7 月（养老公积金）及限期费率到期需重新核查</div></div>';
   $("footNote").innerHTML=$("footNote").innerHTML+h;
-  if($("ftNoteSum"))$("ftNoteSum").textContent=CITY.name;
+  if($("ftNoteSum"))$("ftNoteSum").textContent=city.name;
 }
 function selectCity(k){
   CITY=CITIES[k];
+  /* 入口负责维护顶层状态；后续渲染/计算统一用局部 city 显式下发，不再直接读顶层 CITY */
+  var city=CITY;
   curCityKey=k;
   prov=provOfCity(k)||prov;
   $("cityOverlay").style.display="none";
-  $("cityTag").textContent=CITY.name;
-  $("histCity").textContent=CITY.name;
-  $("hkRow").style.display=CITY.hukou?"":"none";
-  $("ltcWrap").style.display=CITY.ltc?"":"none";
-  $("ltcRate").textContent=CITY.ltc?"个人"+fmtPct(CITY.ltc.emp)+"% · "+fmtPct(CITY.ltc.comp)+"%":"";
-  if(!CITY.hukou)hk=0;
+  $("cityTag").textContent=city.name;
+  $("histCity").textContent=city.name;
+  $("hkRow").style.display=city.hukou?"":"none";
+  $("ltcWrap").style.display=city.ltc?"":"none";
+  $("ltcRate").textContent=city.ltc?"个人"+fmtPct(city.ltc.emp)+"% · "+fmtPct(city.ltc.comp)+"%":"";
+  if(!city.hukou)hk=0;
   $("hk0").className=hk===0?"a":"";$("hk1").className=hk===1?"a":"";
-  renderMedBtns();
-  $("hfRate").max=CITY.hfRateMax;
-  $("hfRateHint").textContent="0 或 5~"+CITY.hfRateMax+"%";
+  renderMedBtns(city);
+  $("hfRate").max=city.hfRateMax;
+  $("hfRateHint").textContent="0 或 5~"+city.hfRateMax+"%";
   if(houseMode===1){
-    $("houseLabel").textContent="住房租金("+CITY.name+")";
-    $("houseHint").textContent=CITY.rent+"元/月(当地标准)";
-    $("houseAmt").max=CITY.rent;
-    if(gv("houseAmt")>CITY.rent)$("houseAmt").value=CITY.rent;
+    $("houseLabel").textContent="住房租金("+city.name+")";
+    $("houseHint").textContent=city.rent+"元/月(当地标准)";
+    $("houseAmt").max=city.rent;
+    if(gv("houseAmt")>city.rent)$("houseAmt").value=city.rent;
   }
-  var P=CITY.pension,M=CITY.med,U=CITY.unemp,MT=CITY.mat,IJ=CITY.inj,HF=CITY.hf;
+  var P=city.pension,M=city.med,U=city.unemp,MT=city.mat,IJ=city.inj,HF=city.hf;
   /* 生育并入医保的城市（mat.comp=0）隐藏生育基数输入框：该输入不影响任何计算 */
   $("mtRow").style.display=MT.comp>0?"":"none";
   $("pBase").value=P.min;$("mBase").value=M.min||P.min;$("uBase").value=U.min;$("mtBase").value=MT.min||M.min||P.min;$("ijBase").value=IJ.min||P.min;$("hfBase").value=HF.min;
@@ -4416,7 +4418,7 @@ function selectCity(k){
      在界面上以补充说明呈现。普通单位职工工伤按「本单位职工工资总额×费率」计缴、
      法定不设上下限，故 rngIJ 仍显示「无上下限」，此处不改其文案。 */
   (function(){
-    var IS=CITY.injSpecial,el=$("ijSpecialHint");
+    var IS=city.injSpecial,el=$("ijSpecialHint");
     if(!el)return;
     if(IS){
       el.textContent="特定人员单项工伤保险缴费基数："+IS.min+"~"+IS.max+" 元/月（适用 "+IS.from+" 至 "+IS.to+"；依据 "+IS.src+"）——仅限八类特定人员；普通单位职工工伤仍按工资总额计缴、不设上下限。";
@@ -4427,17 +4429,17 @@ function selectCity(k){
     }
   })();
   /* dataNext 非空时显式提示"下一年度待公布"，避免用户把现行年度误读成已更新 */
-  renderFootNote();
+  renderFootNote(city);
   histRows=[];
   histCity=null;
   calc();
 }
-function renderMedBtns(){
-  var ts=CITY.tiers||[];
+function renderMedBtns(city){
+  var ts=city.tiers||[];
   if(ts.length<2){$("medRow").style.display="none";med=1;return;}
   if(med>ts.length)med=ts.length;
   $("medRow").style.display="";
-  var locked=CITY.hukou&&hk===1;
+  var locked=city.hukou&&hk===1;
   $("medNote").textContent=locked?"深户仅限一档":"";
   var h="";
   ts.forEach(function(t,i){
@@ -4447,8 +4449,8 @@ function renderMedBtns(){
   $("medBtns").innerHTML=h;
   if(locked)med=1;
 }
-function setHk(v){if(!CITY||!CITY.hukou)return;hk=v;$("hk0").className=v===0?"a":"";$("hk1").className=v===1?"a":"";if(hk===1)med=1;renderMedBtns();calc()}
-function setMed(v){if(!CITY)return;var ts=CITY.tiers||[];if(v<1||v>ts.length)return;if(CITY.hukou&&hk===1&&v!==1)return;med=v;renderMedBtns();calc()}
+function setHk(v){if(!CITY||!CITY.hukou)return;hk=v;$("hk0").className=v===0?"a":"";$("hk1").className=v===1?"a":"";if(hk===1)med=1;renderMedBtns(CITY);calc()}
+function setMed(v){if(!CITY)return;var ts=CITY.tiers||[];if(v<1||v>ts.length)return;if(CITY.hukou&&hk===1&&v!==1)return;med=v;renderMedBtns(CITY);calc()}
 function setChild(v){childMode=v;$("cg0").className=v===0?"a":"";$("cg1").className=v===1?"a":"";$("childLabel").textContent=v===0?"子女教育":"3岁以下婴幼儿照护";calc()}
 function setHouse(v){
   houseMode=v;
@@ -4557,11 +4559,11 @@ function readInputs(ctx){
 /* ---- 第 2 段：社保与公积金缴费 ----
    个人侧（决定到手现金）与单位侧（仅展示）分别算。 */
 function calcContrib(I,ctx){
-  var city=ctx.city,hk=ctx.hk;
+  var city=ctx.city;
   var pE=I.pB*I.P.emp,mE=I.mB*I.md.emp+I.medFix,uE=I.uB*I.U.emp,ltcE=I.ltc?I.pB*city.ltc.emp:0;
   var siE=pE+mE+uE+ltcE;
   /* 深圳按户籍区分养老单位费率（深户 +1% 地方补充） */
-  var pComp=city.hukou?(hk===1?I.P.comp+.01:I.P.comp):I.P.comp;
+  var pComp=city.hukou?(ctx.hk===1?I.P.comp+.01:I.P.comp):I.P.comp;
   var siC=I.pB*pComp+I.mB*I.md.comp+I.uB*I.U.comp+I.mtB*I.MT.comp+I.ijB*I.IJ.comp+(I.ltc?I.pB*city.ltc.comp:0);
       /* 公积金：个人与单位比例**相互独立**（单位可在该市 5%~上限之间另选） */
       var hfE=I.hB*I.hfD,hfC=I.hB*(I.hfDComp===undefined?I.hfD:I.hfDComp);
@@ -4571,10 +4573,10 @@ function calcContrib(I,ctx){
 /* ---- 第 3 段：专项附加扣除与补充扣除 ----
    专项附加七项（互斥关系由界面按钮保证）；补充扣除三项既减税、也是个人真实现金支出。 */
 function calcDeductions(I,ctx){
-  var city=ctx.city,houseMode=ctx.houseMode;
+  var city=ctx.city;
   var childA=$("childOn").checked?cl(gv("childAmt"),0,10000):0;
   var eduA=$("eduOn").checked?cl(gv("eduAmt"),0,400):0;
-  var houseA=$("houseOn").checked?cl(gv("houseAmt"),0,houseMode===0?1000:city.rent):0;
+  var houseA=$("houseOn").checked?cl(gv("houseAmt"),0,ctx.houseMode===0?1000:city.rent):0;
   var elderlyA=$("elderlyOn").checked?cl(gv("elderlyAmt"),0,3000):0;
   /* 大病医疗按规定只能在年度汇算清缴时据实扣除，不进月度预扣预缴。
      输入为**一个纳税年度内的医保目录内自付合计**（元/年）；
@@ -4952,9 +4954,9 @@ function toggleAllHist(on){
   calcHist(histCtx);
 }
 function calcHist(ctx){
-  var city=ctx.city,med=ctx.med,spT=ctx.spT,supp=ctx.supp;
+  var city=ctx.city,spT=ctx.spT,supp=ctx.supp;
   var P=city.pension,M=city.med,U=city.unemp,MT=city.mat,IJ=city.inj,HF=city.hf,ts=city.tiers||[];
-  var md=ts.length>=2?ts[med-1]:M;
+  var md=ts.length>=2?ts[ctx.med-1]:M;
   var ltc=city.ltc&&$("ltcOn").checked;
   var cumIncome=0,cumDed=0,prevTax=0,totSal=0,totSi=0,totHf=0,totTax=0,totNet=0,totSupp=0;
   histRows.forEach(function(r){

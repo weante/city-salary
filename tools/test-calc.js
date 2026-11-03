@@ -4242,7 +4242,7 @@ section('20. 省市县三级导航与数据依据折叠（第九十一批）');
   ok('第九十一批·provOfCity 反查所属省', /function provOfCity\(k\)/.test(html), true);
   ok('第九十一批·filterCity 改为跨三级检索', /querySelectorAll\("\.tree-prov"\)/.test(html), true);
   ok('第九十一批·市县按中文拼音序排序', /localeCompare\([^)]*"zh-Hans-CN"\)/.test(html), true);
-  ok('第九十一批·折叠标题随城市同步', /ftNoteSum"\)\)\$?\("ftNoteSum"\)\.textContent=CITY\.name/.test(html), true);
+  ok('第九十一批·折叠标题随城市同步', /ftNoteSum"\)\)\$?\("ftNoteSum"\)\.textContent=city\.name/.test(html), true);
 
   // 七、样式契约
   ok('第九十一批·树形样式 tree-prov 已定义', /\.tree-prov\{/.test(T91_STYLE), true);
@@ -4269,7 +4269,7 @@ section('21. 特定人员单项工伤保险的界面呈现（第九十二批）'
   // 一、界面契约
   ok('第九十二批·界面存在 injSpecial 提示容器', /id="ijSpecialHint"/.test(M92), true);
   ok('第九十二批·提示容器样式已定义', /\.rng-hint\{/.test(S92), true);
-  ok('第九十二批·赋值逻辑读取 CITY.injSpecial', /CITY\.injSpecial/.test(html), true);
+  ok('第九十二批·赋值逻辑读取 city.injSpecial', /city\.injSpecial/.test(html), true);
   ok('第九十二批·rngIJ 文案未被改动（仍按 inj.max 决定）', /IJ\.max\?IJ\.min\+"~"\+IJ\.max:"无上下限"/.test(html), true);
 
   // 二、广东城市：提示有内容
@@ -4543,8 +4543,8 @@ section('25. 底部「数据依据与核查说明」结构化排版（第九十�
   ok('第九十七批·转义函数 fnEsc 已定义', /function fnEsc\(s\)/.test(html), true);
   ok('第九十七批·高亮函数 fnHl 已定义', /function fnHl\(s\)/.test(html), true);
   ok('第九十七批·切分函数 fnSplit 已定义', /function fnSplit\(t\)/.test(html), true);
-  ok('第九十七批·渲染函数 renderFootNote 已定义', /function renderFootNote\(\)/.test(html), true);
-  ok('第九十七批·selectCity 改为调用 renderFootNote', /renderFootNote\(\);/.test(html), true);
+  ok('第九十七批·渲染函数 renderFootNote 已定义', /function renderFootNote\(city\)/.test(html), true);
+  ok('第九十七批·selectCity 改为调用 renderFootNote', /renderFootNote\(city\);/.test(html), true);
   ok('第九十七批·旧的纯文本长串拼接已移除', !/· 数据核查：2026-09-19 已联网核查京沪/.test(html), true);
   ok('第九十七批·首行仍以「数据依据：」开头（既有断言不变）', /\$\("footNote"\)\.innerHTML='数据依据：'/.test(html), true);
 

@@ -83,6 +83,69 @@ if (dupKeys.length || dupNames.length) {
   fail++;
 } else console.log('   ✓ 无重复 key、无重复城市名');
 
+/* 6. 计算/渲染函数的顶层状态裸引用
+       calcContrib / calcDeductions / calcHist / renderResult / renderFootNote 已收口为
+       显式 ctx / city 入参；函数体内不得再直接读顶层 CITY / hk / med / houseMode /
+       currentSpT / currentSupp。ctx.city、ctx.hk、city.* 这类显式形式允许。
+       守卫自证：向副本注入一处 `CITY.` 引用，本检查必须失败。 */
+function stripComments(src) {
+  return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/[^\n]*/gm, '$1');
+}
+const guardedCode = stripComments(js);
+function functionBody(name) {
+  const hit = new RegExp('function\\s+' + name + '\\s*\\(').exec(guardedCode);
+  if (!hit) return null;
+  let i = guardedCode.indexOf('{', hit.index);
+  let depth = 0;
+  for (; i < guardedCode.length; i++) {
+    const ch = guardedCode[i];
+    if (ch === '"' || ch === "'" || ch === '`') {
+      const quote = ch;
+      for (i++; i < guardedCode.length; i++) {
+        if (guardedCode[i] === '\\') { i++; continue; }
+        if (guardedCode[i] === quote) break;
+      }
+      continue;
+    }
+    if (ch === '{') depth++;
+    else if (ch === '}' && --depth === 0) return guardedCode.slice(hit.index, i + 1);
+  }
+  return null;
+}
+const GUARDED_FNS = ['calcContrib', 'calcDeductions', 'calcHist', 'renderResult', 'renderFootNote'];
+const BARE_STATE = [
+  { name: 'CITY.', re: /\bCITY\./g },
+  { name: 'hk', re: /(?<![.\w$])hk\b/g },
+  { name: 'med', re: /(?<![.\w$])med\b/g },
+  { name: 'houseMode', re: /(?<![.\w$])houseMode\b/g },
+  { name: 'currentSpT', re: /\bcurrentSpT\b/g },
+  { name: 'currentSupp', re: /\bcurrentSupp\b/g },
+];
+console.log('\n6. 计算/渲染函数禁止裸读顶层状态');
+let guardHits = 0;
+for (const name of GUARDED_FNS) {
+  const body = functionBody(name);
+  if (!body) {
+    console.log(`   ✗ 找不到函数 ${name}（改名或删除后请同步更新守卫清单）`);
+    guardHits++; fail++;
+    continue;
+  }
+  for (const rule of BARE_STATE) {
+    rule.re.lastIndex = 0;
+    let m;
+    while ((m = rule.re.exec(body)) !== null) {
+      const from = Math.max(0, m.index - 36);
+      const snippet = body.slice(from, m.index + m[0].length + 36).replace(/\s+/g, ' ').trim();
+      console.log(`   ✗ ${name} 内出现裸 ${rule.name} 引用：…${snippet}…`);
+      console.log('      应改为显式形式（ctx.city / ctx.hk / ctx.med / ctx.houseMode），或通过参数传入');
+      guardHits++; fail++;
+    }
+  }
+}
+if (!guardHits) {
+  console.log(`   ✓ ${GUARDED_FNS.length} 个函数均通过：${GUARDED_FNS.join(' / ')}`);
+}
+
 /* 汇总 */
 const lines = html.split('\n').length;
 const fns = [...js.matchAll(/function\s+([\w$]+)\s*\(/g)].map(m => m[1]);

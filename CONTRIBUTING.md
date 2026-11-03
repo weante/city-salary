@@ -27,9 +27,9 @@ node tools/sync.js        # 源 → 镜像
 
 ```bash
 npm test                    # 一次跑完下面五项（零依赖，无需 npm install）
-node tools/test-calc.js     # 6670 项计算断言
+node tools/test-calc.js     # 9299 项断言
 node tools/check-golden.js  # 黄金用例：16 用例 × 4 面板逐字节比对
-node tools/check-dom.js     # 单文件 HTML 的静态结构
+node tools/check-dom.js     # 单文件 HTML 静态结构 + 计算/渲染函数的全局裸引用守卫
 node tools/check-sync.js    # 漂移检查 A–I
 node tools/test-export.js   # 导出 PDF 降级链
 node tools/ci-selfcheck.js  # 零依赖红线自检
@@ -134,6 +134,11 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 > 表格里的“无副作用”指**不读写顶层计算状态、不写 DOM**。后四段已不依赖
 > `CITY` / `hk` / `med` / `houseMode` / `currentSpT` / `currentSupp` 这些顶层状态，所需值全部由参数与 `ctx` 传入；
 > 但 `calcDeductions` 仍会同步 `spTot` 与年金提示，`renderResult` 仍写 DOM，所以它们不是“纯函数”，只是“不依赖全局状态”。
+
+脚注与城市切换也按同一规则：`renderFootNote(city)` 只接收城市对象；`selectCity(k)` 作为事件入口仍负责维护顶层
+`CITY` / `hk` / `houseMode` / `lastHFBase`，但内部渲染改用局部 `city`，并显式传给 `renderFootNote(city)` / `renderMedBtns(city)`。
+`tools/check-dom.js` 的第 6 项守卫会静态检查 `calcContrib` / `calcDeductions` / `calcHist` / `renderResult` / `renderFootNote`
+的函数体内不得出现裸 `CITY.` / `hk` / `med` / `houseMode` / `currentSpT` / `currentSupp`（允许 `ctx.*` / `city.*`）。
 
 文件顶部有一份**命名约定表**（`cl`/`gv`/`fm`/`fmtPct`/`tx`/`btx`/`normHF`/`effStart` 各自的含义），改代码前先看一眼。
 

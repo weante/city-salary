@@ -40,6 +40,9 @@ ctx = { city: CITY, med, hk, houseMode, lastHFBase }
 - `calcTax(I, C, D)`：不读 ctx，只依赖三个对象。
 - `renderResult(I, C, D, T, ctx)`：只读 `ctx.city` 与 `ctx.hk`，不再直接读顶层 `CITY` / `hk`
   （`#L4711-4835`）。
+- `renderFootNote(city)`：脚注只读传入的 `city`；`selectCity(k)` 是事件入口，仍维护顶层
+  `CITY` / `hk` / `houseMode` / `lastHFBase`，但内部渲染通过局部 `city` 显式下发给
+  `renderFootNote(city)` / `renderMedBtns(city)`。
 
 历史页不复用单月页的 `ctx`，而是由 `buildHistory()` 从 `calc()` 的返回值快照一份：
 
@@ -49,6 +52,10 @@ histCtx = { city: CITY, med, spT: calcOut.ded.spT, supp: calcOut.ded.suppCash }
 
 `calcHist(histCtx)` 只从这份快照取城市、医保档次和扣除口径（`#L4901`、`#L4954`）；
 `currentSpT` / `currentSupp` 两个顶层变量已删除，历史页的事件处理器也显式把 `histCtx` 传进去。
+
+`tools/check-dom.js` 的第 6 项检查会静态校验 `calcContrib` / `calcDeductions` / `calcHist` /
+`renderResult` / `renderFootNote` 的函数体内不得出现裸 `CITY.` / `hk` / `med` / `houseMode` /
+`currentSpT` / `currentSupp`，防止后续改动把全局读取加回来。
 
 **到手现金的完整定义**（不是"实发工资"）：
 
