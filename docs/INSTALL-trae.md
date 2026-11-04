@@ -12,13 +12,14 @@ git clone https://github.com/weante/city-salary.git
 
 ## 方式二：合并到现有项目
 
-将 `AGENTS.md` 复制到项目根目录（或按 TRAE 的规则管理功能导入）：
+将 `AGENTS.md` 复制到项目根目录（或按 TRAE 的规则管理功能导入），同时复制 `skills/`——`AGENTS.md` 只含指针，参数在 `skills/city-salary/references/`：
 
 ```bash
 cp city-salary/AGENTS.md <你的项目>/
+cp -r city-salary/skills <你的项目>/
 ```
 
-若 TRAE 版本支持 Skills 导入，把 `skills/city-salary/` 目录导入 TRAE 的 skills 目录即可获得完整交互式计算器（含 `calculator.html`）。
+把 `skills/city-salary/` 目录导入 TRAE 的 skills 目录即可获得完整交互式计算器（含 `calculator.html` 与 `references/`）。
 
 ## 验证
 

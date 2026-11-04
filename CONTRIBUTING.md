@@ -158,7 +158,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 1. 在 `calculator.html` 的 `CITIES` 里按工厂格式加**一段**（`CI()` 广东型 / `CIU()` 直辖市型；省内差异用 `opt` 浅覆盖，如 `opt.med`）。每个城市占多行、`opt` 的字段各占一行——这样改一个字段只动一行，diff 干净。
 2. **`opt` 里必须显式写 `region` 与 `dataYear`**（省级年度见 `tools/province-year.js`）。漏写 `dataYear` 会让页脚显示错误年度——这正是 E 检查存在的原因。
 3. 同步文档（缺一即被 B/C 拦下）：
-   - `AGENTS.md`：省份规则行 + 第 1 条城市清单
+   - `AGENTS.md`：只维护 references 指针与计算/交互要点，**不再复制参数行或城市清单**（B-4 会拦下回流）
    - `skills/city-salary/SKILL.md`：城市清单与能力描述；参数行、省份小节年度标题写到 `skills/city-salary/references/city-parameters.md`（优先补进表格）
    - `README.md`：首段城市数、城市清单、数据说明
    - 数据来源写进 `docs/policy-<省拼音>-<年度>.md`，查不到的写"未找到"并标 `warn`
@@ -170,7 +170,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 1. **先改基线表** `tools/province-year.js`（它是 E/F 的唯一事实来源），同步更新 `docs/baseline-year-map.md`
 2. 改 `calculator.html` 里受影响的 `CITIES` 条目（含 `dataYear` / `dataNext`）
-3. 改 `AGENTS.md` 的参数行，以及 `skills/city-salary/references/city-parameters.md` 的参数行**与年度标题**；`SKILL.md` 只改「数据状态」表的年度列（F 检查）
+3. 改 `skills/city-salary/references/city-parameters.md` 的**参数行与年度标题**；`SKILL.md` 只改「数据状态」表的年度列（F 检查），`AGENTS.md` 不动（只留指针）
 4. **涉及限期费率**（阶段性降费、有有效期的文件）→ 改 `tools/policy-expiry.js` 的 `current`/`until`，清空 `acknowledged`，并同步 `SKILL.md` 的限期费率表（G 检查）
 5. 跑第二节的全套命令
 

@@ -21,8 +21,8 @@ cp -r city-salary/skills <你的项目>/
 
 ## 方式三：全局规则（可选）
 
-将 `AGENTS.md` 内容追加到 opencode 全局规则文件（`~/.config/opencode/AGENTS.md`），使所有项目都可用。
+将 `AGENTS.md` 内容追加到 opencode 全局规则文件（`~/.config/opencode/AGENTS.md`），使所有项目都可用；同时把 `skills/city-salary/references/` 放到该规则可访问的仓库内（`AGENTS.md` 的指针按仓库相对路径解析，单独追加规则文件不会带上参数）。
 
 ## 验证
 
-`opencode` 会话中询问任一内置城市，确认回复使用 AGENTS.md 中的参数表计算；需要可视化时让 agent 打开 `skills/city-salary/assets/calculator.html`。
+`opencode` 会话中询问任一内置城市，确认回复按 AGENTS.md 的规则、并读取 `skills/city-salary/references/city-parameters.md` 的参数计算；需要可视化时让 agent 打开 `skills/city-salary/assets/calculator.html`。

@@ -46,15 +46,15 @@ console.log('\nB. 城市参数与文档的一致性');
 const CITIES = loadCalculator().CITIES;
 /* 守卫一律读**源文件**；镜像与源的一致性由 A 检查单独负责。
    （B 曾经读根级镜像、F 读源文件，规则不统一，排查时容易误判是谁在报错。） */
-/* 参数表已从 SKILL.md 拆到 skill 内的 references（SKILL.md 只留指针，避免每次加载
-   都携带 5 万多字符）。B 的锚定对象因此改为 references 文件：
-   - AGENTS.md 仍逐市核对（它保留了自己的参数行）；
-   - city-parameters.md 逐表逐格 + 散文锚定；
-   - README.md 只核对城市名。
+/* 参数表分两轮迁出：先由 SKILL.md 拆到 references，再由 AGENTS.md 拆到同一文件
+   （两份每次必读文档都只留指针，避免加载时携带十万级字符）。B 的锚定对象：
+   - city-parameters.md 逐表逐格 + 散文锚定（唯一文档真源）；
+   - README.md 只核对城市名（数值由 B-3 单独核对）。
+   AGENTS.md 不再要求逐市出现，改由 B-4「指针与去重」检查兜底：
+   必须指到 references，且不得再复制参数表——否则瘦身会悄悄退化。
    references 不参与 C/D（陈旧措辞、断言数）扫描，避免把“按需查阅”的大文件当成每次必读文档。 */
 const PARAM_DOC = 'skills/city-salary/references/city-parameters.md';
 const docs = {
-  'AGENTS.md': { content: read('AGENTS.md'), checkValues: true },
   [PARAM_DOC]: { content: read(PARAM_DOC), checkValues: true },
   'README.md': { content: read('README.md'), checkValues: false },
 };
@@ -281,6 +281,33 @@ if (!missing) {
     return a.namesOnly ? `${d}（仅核对城市名）` : `${d}（表格逐格 ${a.tabled} + 散文锚定 ${a.prose}）`;
   }).join('、');
   console.log(`  ✓ ${Object.keys(CITIES).length} 个城市按城市名锚定核对通过：${parts}；${REGIONS.length} 个省份分组名均已出现`);
+}
+
+/* ---- B-4. AGENTS.md 指针与去重 ----
+   AGENTS.md 瘦身后不再逐市列参数，若 B 只是把它从 docs 里删掉，就变成"假通过"：
+   文档可以悄悄退回成一份完整参数表，或反过来把指针删掉、Agent 再也找不到 references。
+   两条都守：① 指针必须在；② 参数表特征不能回流。 */
+{
+  const agents = read('AGENTS.md');
+  const need = [
+    'skills/city-salary/references/city-parameters.md',
+    'skills/city-salary/references/agents-history.md',
+  ];
+  let b4 = 0;
+  for (const p of need) {
+    if (agents.indexOf(p) < 0) {
+      console.log(`  ✗ AGENTS.md 缺少指向 ${p} 的指针（瘦身后必须保留按需查阅入口）`);
+      b4++; fail++;
+    }
+  }
+  const reflow = [];
+  if (/^\|\s*城市\s*\|/m.test(agents)) reflow.push('城市参数表');
+  if (/\*\*五险统一基数\*\*/.test(agents)) reflow.push('分省参数条目');
+  if (reflow.length) {
+    console.log(`  ✗ AGENTS.md 重新内嵌了参数内容（${reflow.join('、')}），应只留指针，参数写入 ${PARAM_DOC}`);
+    b4++; fail++;
+  }
+  if (!b4) console.log(`  ✓ AGENTS.md 只留 references 指针，未内嵌参数表（指针 ${need.length} 个均在）`);
 }
 
 /* ---------- C. 文档陈旧表述 lint ----------

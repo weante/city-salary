@@ -2,7 +2,7 @@
 
 > 这份文档回答一个问题：**从税前工资到"到手现金"，每一步到底怎么算的。**
 >
-> 它不是使用说明（见 [README](../README.md)），也不是城市参数表（见 `skills/city-salary/references/city-parameters.md` / `AGENTS.md`），
+> 它不是使用说明（见 [README](../README.md)），也不是城市参数表（见 `skills/city-salary/references/city-parameters.md`；`AGENTS.md` 只留指针），
 > 而是**计算规则的完整定义**——公式、常量、以及所有"这里其实做过一个选择"的地方。
 >
 > **与代码的关系**：本文的每个常量、每张税率表都由 `check-sync` 的**检查 I** 与

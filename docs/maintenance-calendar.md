@@ -21,7 +21,7 @@
 
 | 日期 | 检查点 | 要做的事 | 输出 |
 |------|:------:|---------|------|
-| **01-01** | ① 医保 | 逐省核查医保/生育基数与费率；确认限期费率中落在 1 月前后的条目 | 更新 `CITIES`、`AGENTS.md`、`SKILL.md`、`README.md`；刷新「数据状态」表的**最近核查日期** |
+| **01-01** | ① 医保 | 逐省核查医保/生育基数与费率；确认限期费率中落在 1 月前后的条目 | 更新 `CITIES`、`skills/city-salary/references/city-parameters.md`、`SKILL.md`、`README.md`；刷新「数据状态」表的**最近核查日期** |
 | **01-01** | ③ 限期费率 | 检查 `policy-expiry.js` 中 `until` 落在本时点前后的条目 | 更新 `current`/`until`，清空 `acknowledged` |
 | **07-15** | ② 养老公积金 | 逐省核查养老/失业/工伤基数与公积金上下限 | 同上 |
 | **07-15** | ③ 限期费率 | 同上 | 同上 |
@@ -138,7 +138,7 @@
    > 格式建议：在来源列里直接写 `文号（YYYY-MM-DD，URL）`，
    > 或单独一节「来源链接」逐条列出。**优先记 .gov.cn 原文页，不记转载页。**
 4. **改 `CITIES`**：按工厂格式更新数值；`opt` 里保留 `region`/`dataYear`/`dataNext`。
-5. **文档涟漪五件套**：`AGENTS.md`、`SKILL.md`（清单+能力描述）、`skills/city-salary/references/city-parameters.md`（小节+参数表）、`README.md`、`SKILL.md`「数据状态」表，以及 `check-sync` 的陈旧表述模式。
+5. **文档涟漪五件套**：`SKILL.md`（清单+能力描述）、`skills/city-salary/references/city-parameters.md`（小节+参数表）、`skills/city-salary/references/agents-history.md`（新批次日志）、`README.md`、`SKILL.md`「数据状态」表，以及 `check-sync` 的陈旧表述模式；`AGENTS.md` 只留指针，不随参数更新。
 6. **测试**：`test-calc.js` 增/改该省参数抽查断言。
 7. **六连验证**：`sync.js` → `test-calc.js` → `check-golden.js` → `check-dom.js` → `check-sync.js` → `test-export.js`，必须全绿。
 8. **收尾**：若 warn 集合有变化，跑 `node tools/gen-warn-backlog.js --update`；提交推送；**抓线上页面 <https://city-salary.pages.dev/> 核验**（Cloudflare Pages 自动部署，换行规范化后与 `site/index.html` 逐字节比对）；确认 CI 绿。

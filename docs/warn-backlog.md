@@ -266,7 +266,7 @@
 ## 五、维护方式
 
 1. 取到官方文件后：更新 `calculator.html` 的 `CITIES` 条目（数值 + `note`），**去掉 `warn:true`**；
-2. 同步 `AGENTS.md` / `skills/city-salary/references/city-parameters.md` / `README.md` 的对应参数行；
+2. 同步 `skills/city-salary/references/city-parameters.md` / `README.md` 的对应参数行（`AGENTS.md` 只留指针）；
 3. 跑 `node tools/gen-warn-backlog.js --update` 重新生成本清单；
 4. 跑 `npm test` 全套确认。
 

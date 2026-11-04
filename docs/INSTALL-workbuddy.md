@@ -8,7 +8,7 @@ WorkBuddy 支持基于 **AGENTS.md** 的项目指令与 Agent Skills 导入机�
 git clone https://github.com/weante/city-salary.git
 ```
 
-将仓库目录挂载/导入 WorkBuddy 后，在会话中直接询问工资计算，WorkBuddy 会读取 `AGENTS.md` 中的完整规则。
+将仓库目录挂载/导入 WorkBuddy 后，在会话中直接询问工资计算，WorkBuddy 会读取 `AGENTS.md` 的规则，并按需读取其指向的 `skills/city-salary/references/city-parameters.md` 参数。
 
 ## 方式二：合并到现有项目
 
@@ -19,7 +19,7 @@ cp -r city-salary/skills <你的项目>/
 
 ## 方式三：Skills 导入（如版本支持）
 
-把 `skills/city-salary/`（含 SKILL.md 与 assets/calculator.html）按 WorkBuddy 的 Skills 导入流程安装，可获得完整的交互式计算器界面。
+把 `skills/city-salary/`（含 SKILL.md、references/ 与 assets/calculator.html）按 WorkBuddy 的 Skills 导入流程安装，可获得完整的交互式计算器界面与按需参数。
 
 ## 验证
 
