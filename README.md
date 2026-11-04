@@ -80,7 +80,9 @@ city-salary/
 ├── AGENTS.md                # 通用 Agent 项目指令（Codex/opencode/TRAE 等读取）
 ├── skills/
 │   └── city-salary/
-│       ├── SKILL.md         # ★ 源文件：Anthropic Agent Skills 标准格式
+│       ├── SKILL.md         # ★ 源文件：Anthropic Agent Skills 标准格式（每次必读，保留能力边界/口径/流程）
+│       ├── references/
+│       │   └── city-parameters.md  # 按需查阅：337 城参数表与 CI/CIU 扩展方法（不随 SKILL.md 每次加载）
 │       └── assets/
 │           └── calculator.html  # ★ 源文件：完整交互式计算器（单文件 HTML，零依赖）
 ├── site/
@@ -161,7 +163,7 @@ Agent 会自动提取参数、追问缺失项、按所选城市政策计算并�
 
 ## 扩展全国地市
 
-在 `skills/city-salary/assets/calculator.html` 的 `CITIES` 对象中新增一行，并在 `SKILL.md` / `AGENTS.md` 参数表补一行（`node tools/check-sync.js` 会检查有没有漏）。两种城市形态各有工厂函数：
+在 `skills/city-salary/assets/calculator.html` 的 `CITIES` 对象中新增一行，并在 `skills/city-salary/references/city-parameters.md` / `AGENTS.md` 参数表补一行（`node tools/check-sync.js` 的 B 项会按城市名核对这两份文档，漏改会红）。两种城市形态各有工厂函数：
 
 ```js
 // 广东型：五险基数各自独立

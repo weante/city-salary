@@ -71,7 +71,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 现在按城市名锚定，分两档：
 
-1. **表格逐格比对**（最强）：`SKILL.md` 里那张 `| 城市 | 医保费率 | 医保基数下限 | 医保基数上限 | 公积金下限 | 公积金上限 |` 表，若某城在其中，就逐格与代码比对。数值被写到相邻行会立刻暴露。
+1. **表格逐格比对**（最强）：`skills/city-salary/references/city-parameters.md` 里那张 `| 城市 | 医保费率 | 医保基数下限 | 医保基数上限 | 公积金下限 | 公积金上限 |` 表，若某城在其中，就逐格与代码比对。数值被写到相邻行会立刻暴露。
 2. **散文锚定**：其余城市走散文。
    - **公积金**值必须在「**该城市名之后、下一个城市名之前**」的片段内（公积金基数一律城市专属）；
    - **医保**值放宽到「含该城市名的**任一行**内」——因为很多省是省级统一基数，值写在省名附近而不是市名后面。
@@ -159,7 +159,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 2. **`opt` 里必须显式写 `region` 与 `dataYear`**（省级年度见 `tools/province-year.js`）。漏写 `dataYear` 会让页脚显示错误年度——这正是 E 检查存在的原因。
 3. 同步文档（缺一即被 B/C 拦下）：
    - `AGENTS.md`：省份规则行 + 第 1 条城市清单
-   - `skills/city-salary/SKILL.md`：城市清单、省份小节的年度标题、参数表（若能，优先补进表格）
+   - `skills/city-salary/SKILL.md`：城市清单与能力描述；参数行、省份小节年度标题写到 `skills/city-salary/references/city-parameters.md`（优先补进表格）
    - `README.md`：首段城市数、城市清单、数据说明
    - 数据来源写进 `docs/policy-<省拼音>-<年度>.md`，查不到的写"未找到"并标 `warn`
 4. `test-calc.js`：更新城市总数断言 + 该省 ≥3 条参数抽查
@@ -170,7 +170,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 1. **先改基线表** `tools/province-year.js`（它是 E/F 的唯一事实来源），同步更新 `docs/baseline-year-map.md`
 2. 改 `calculator.html` 里受影响的 `CITIES` 条目（含 `dataYear` / `dataNext`）
-3. 改 `AGENTS.md` 与 `SKILL.md` 的参数行**与年度标题**，以及 `SKILL.md`「数据状态」表的年度列（F 检查）
+3. 改 `AGENTS.md` 的参数行，以及 `skills/city-salary/references/city-parameters.md` 的参数行**与年度标题**；`SKILL.md` 只改「数据状态」表的年度列（F 检查）
 4. **涉及限期费率**（阶段性降费、有有效期的文件）→ 改 `tools/policy-expiry.js` 的 `current`/`until`，清空 `acknowledged`，并同步 `SKILL.md` 的限期费率表（G 检查）
 5. 跑第二节的全套命令
 

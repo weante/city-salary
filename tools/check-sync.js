@@ -4,7 +4,7 @@
  *
  * 五类检查：
  *   A. 镜像文件是否与源文件逐字节相同（防止改了 calculator.html 忘了同步 site/index.html）
- *   B. 各城市参数是否在文档中都有记录（防止加了城市忘了写文档）
+ *   B. 各城市参数是否在 references/city-parameters.md 中都有记录（防止加了城市忘了写文档）
  *   C. 文档陈旧表述 lint（防止机制改版时漏改措辞）
  *   D. 文档断言数与 test-calc.js 实际输出一致（防止加了测试忘了改文档）
  *   E. 各城市 dataYear/dataNext 是否与省份年度基线表一致（防止年度口径标错年份）
@@ -46,9 +46,16 @@ console.log('\nB. 城市参数与文档的一致性');
 const CITIES = loadCalculator().CITIES;
 /* 守卫一律读**源文件**；镜像与源的一致性由 A 检查单独负责。
    （B 曾经读根级镜像、F 读源文件，规则不统一，排查时容易误判是谁在报错。） */
+/* 参数表已从 SKILL.md 拆到 skill 内的 references（SKILL.md 只留指针，避免每次加载
+   都携带 5 万多字符）。B 的锚定对象因此改为 references 文件：
+   - AGENTS.md 仍逐市核对（它保留了自己的参数行）；
+   - city-parameters.md 逐表逐格 + 散文锚定；
+   - README.md 只核对城市名。
+   references 不参与 C/D（陈旧措辞、断言数）扫描，避免把“按需查阅”的大文件当成每次必读文档。 */
+const PARAM_DOC = 'skills/city-salary/references/city-parameters.md';
 const docs = {
   'AGENTS.md': { content: read('AGENTS.md'), checkValues: true },
-  'SKILL.md':  { content: read('skills/city-salary/SKILL.md'), checkValues: true },
+  [PARAM_DOC]: { content: read(PARAM_DOC), checkValues: true },
   'README.md': { content: read('README.md'), checkValues: false },
 };
 
@@ -86,7 +93,7 @@ function nameHits(text) {
   return out;
 }
 
-/* SKILL.md 的城市参数表（表头：城市 | 医保费率 | 医保基数下限 | 医保基数上限 | 公积金下限 | 公积金上限）。
+/* references/city-parameters.md 的城市参数表（表头：城市 | 医保费率 | 医保基数下限 | 医保基数上限 | 公积金下限 | 公积金上限）。
    有表就逐格比 —— 这是最强的一档，能直接发现"数值被写到相邻行"。 */
 function parseCityTable(text) {
   const lines = text.split(/\r?\n/);
@@ -227,7 +234,7 @@ for (const dname in docs) {
    五险基数（决定养老/失业/工伤缴费）在 SKILL.md 里**无任何记录**，且守卫不会报警。
    实测：只改 CITIES 的 pension 而不动文档，守卫 A/D 会因镜像与断言报警，
    但**守卫 B 沉默** —— 也就是说两份 HTML 与测试都同步后，文档仍可能漏记。
-   本检查：凡有城市 pension≠med 的省，其 pension 上下限必须出现在 SKILL.md 中。 */
+   本检查：凡有城市 pension≠med 的省，其 pension 上下限必须出现在 references/city-parameters.md 中。 */
 {
   const byRegion = {};
   for (const key in CITIES) {
@@ -235,22 +242,22 @@ for (const dname in docs) {
     const r = c.region || '其他';
     (byRegion[r] = byRegion[r] || []).push(c);
   }
-  const skillDoc = docs['SKILL.md'];
-  if (skillDoc) {
+  const paramDoc = docs[PARAM_DOC];
+  if (paramDoc) {
     let b2 = 0;
     for (const r of Object.keys(byRegion)) {
       const cs = byRegion[r];
       if (!cs.some(c => Number(c.pension.min) !== Number(c.med.min) || Number(c.pension.max) !== Number(c.med.max))) continue;
       const c = cs[0];
-      const nums = numbersIn(skillDoc.content);
+      const nums = numbersIn(paramDoc.content);
       for (const [label, v] of [['五险基数下限', c.pension.min], ['五险基数上限', c.pension.max]]) {
         if (!nums.has(Number(v))) {
-          console.log(`  ✗ ${r} 的医保基数与五险基数口径不同，但 ${label}=${v}（以 ${c.name} 为例）未出现在 SKILL.md 中`);
+          console.log(`  ✗ ${r} 的医保基数与五险基数口径不同，但 ${label}=${v}（以 ${c.name} 为例）未出现在 ${PARAM_DOC} 中`);
           b2++; missing++; fail++;
         }
       }
     }
-    if (!b2) console.log(`  ✓ 医保基数与五险基数口径不同的省份，其五险基数均已记录在 SKILL.md`);
+    if (!b2) console.log(`  ✓ 医保基数与五险基数口径不同的省份，其五险基数均已记录在 ${PARAM_DOC}`);
   }
 }
 
