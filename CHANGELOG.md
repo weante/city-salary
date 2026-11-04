@@ -6,6 +6,11 @@
 
 ### 新增
 
+- **`tools/gen-city-params.js` + `skills/city-salary/data/cities.json`** —— 城市参数表生成机制：
+  `data/cities.json` 是文档侧参数的单一来源（与 `CITIES` 逐字段一致），生成器把
+  `references/city-parameters.md` 的 `<!-- generated:begin/end -->` 标记区机械重写，
+  标记外的分省散文与文号说明保持人工维护。检查 B 从"文档字符串包含某参数"改为
+  "生成物与磁盘逐行 diff"，并保留 JSON↔`CITIES` 逐字段核对。
 - **`tools/gen-params.js`** —— 从 `CITIES` 生成文档用的参数串
   （`node tools/gen-params.js 安徽`、`--field hf|med|rent`）。
   背景：AGENTS.md / SKILL.md 里的「城市名+数值」参数串原为手写维护，

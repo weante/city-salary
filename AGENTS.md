@@ -18,9 +18,9 @@
 
 ## 仓库约定与红线
 
-- 数值唯一真源是 `skills/city-salary/assets/calculator.html` 的 `CITIES`；文档参数只维护 `skills/city-salary/references/city-parameters.md`，`AGENTS.md` 不再复制参数表。
+- 数值唯一真源是 `skills/city-salary/assets/calculator.html` 的 `CITIES`；文档参数由 `skills/city-salary/data/cities.json` 生成到 `skills/city-salary/references/city-parameters.md` 的 generated 区（`<!-- generated:begin -->` 至 `<!-- generated:end -->`，勿手改），`AGENTS.md` 不再复制参数表。
 - 改数值必须同步跑 `node tools/sync.js`、`node tools/test-calc.js`、`node tools/check-golden.js`、`node tools/check-dom.js`、`node tools/check-sync.js`、`node tools/test-export.js`；黄金快照禁止用 `--update` 造绿。
-- 新增或修改城市参数：改 `CITIES` → 补 references 参数行/小节 → 跑 `check-sync` 的 B 项（按城市名逐格锚定）。
+- 新增或修改城市参数：改 `CITIES` 与 `skills/city-salary/data/cities.json`（两者必须一致）→ 跑 `node tools/gen-city-params.js --write` 重写 references 生成区 → 跑 `check-sync` 的 B 项（生成物 diff + JSON↔CITIES 逐字段）。
 - 文档里的断言数、机制规模数字由 `check-sync` 的 C/D 项守卫，不要手写旧数字。
 - 维护流程见 `CONTRIBUTING.md`，年度节奏见 `docs/maintenance-calendar.md`，安装说明见 `docs/INSTALL-*.md`。
 

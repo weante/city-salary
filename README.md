@@ -82,8 +82,10 @@ city-salary/
 │   └── city-salary/
 │       ├── SKILL.md         # ★ 源文件：Anthropic Agent Skills 标准格式（每次必读，保留能力边界/口径/流程）
 │       ├── references/
-│       │   ├── city-parameters.md  # 按需查阅：337 城参数表与 CI/CIU 扩展方法（不随 SKILL.md/AGENTS.md 每次加载）
+│       │   ├── city-parameters.md  # 按需查阅：337 城参数表（生成区由 data/cities.json 生成）与 CI/CIU 扩展方法
 │       │   └── agents-history.md   # 按需查阅：分省取证与批次核查日志（自 AGENTS.md 迁出）
+│       ├── data/
+│       │   └── cities.json         # 参数单一来源：生成 references 参数表的 generated 区（check-sync B 校验 diff）
 │       └── assets/
 │           └── calculator.html  # ★ 源文件：完整交互式计算器（单文件 HTML，零依赖）
 ├── site/
@@ -94,11 +96,12 @@ city-salary/
 │   ├── check-golden.js      #   黄金用例：16 用例 × 4 面板逐字节比对（重构安全网）
 │   ├── golden-cases.json    #   黄金用例快照（由 check-golden.js --update 生成）
 │   ├── check-dom.js         #   静态结构检查：重复 id、悬空引用、未定义处理器
-│   ├── check-sync.js        #   漂移检查 A–I：镜像/文档锚定/陈旧表述/断言数/年度口径/数据状态表/限期费率/warn 清单/计算口径
+│   ├── check-sync.js        #   漂移检查 A–I：镜像/生成物 diff/陈旧表述/断言数/年度口径/数据状态表/限期费率/warn 清单/计算口径
 │   ├── test-export.js       #   导出 PDF 的降级链测试
 │   ├── province-year.js     #   省份年度基线表（检查 E/F 的唯一事实来源）
 │   ├── policy-expiry.js     #   限期费率清单（检查 G 的唯一事实来源）
 │   ├── gen-warn-backlog.js  #   生成 warn 缺口清单（检查 H 校验其与 CITIES 一致）
+│   ├── gen-city-params.js   #   从 data/cities.json 生成 references 参数表（检查 B 比对生成物 diff）
 │   ├── research.js          #   联网核查工具：Brave 搜索 + Jina 抓页（年度复核用，唯一联网脚本）
 │   ├── ci-selfcheck.js      #   CI 自检：零依赖红线 + Node 版本
 │   └── sync.js              #   把 skills/ 下的源文件同步到镜像位置
@@ -120,7 +123,7 @@ npm test                    # ★ 一次跑完下面五项（零依赖，无需 
 node tools/test-calc.js     # 计算回归（改参数/改逻辑后必跑）
 node tools/check-golden.js  # 黄金用例：整块渲染输出的逐字节比对
 node tools/check-dom.js     # 单文件 HTML 的静态结构检查
-node tools/check-sync.js    # 漂移检查 A–I：镜像 / 城市参数锚定 / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单 / 计算口径
+node tools/check-sync.js    # 漂移检查 A–I：镜像 / 生成物 diff（JSON↔CITIES） / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单 / 计算口径
 node tools/test-export.js   # 导出 PDF 降级链
 node tools/ci-selfcheck.js  # 零依赖红线自检（CI 也会跑）
 node tools/sync.js          # 同步源文件到镜像位置
@@ -164,7 +167,7 @@ Agent 会自动提取参数、追问缺失项、按所选城市政策计算并�
 
 ## 扩展全国地市
 
-在 `skills/city-salary/assets/calculator.html` 的 `CITIES` 对象中新增一行，并在 `skills/city-salary/references/city-parameters.md` 补一行（`node tools/check-sync.js` 的 B 项会按城市名逐格核对这份参数文件，漏改会红；`AGENTS.md` 只留指针，不复制参数）。两种城市形态各有工厂函数：
+在 `skills/city-salary/assets/calculator.html` 的 `CITIES` 对象中新增一段，并在 `skills/city-salary/data/cities.json` 加对应条目，跑 `node tools/gen-city-params.js --write` 生成 `skills/city-salary/references/city-parameters.md` 的参数表（`node tools/check-sync.js` 的 B 项做生成物 diff 与 JSON↔CITIES 逐字段核对，漏改会红；`AGENTS.md` 只留指针，不复制参数）。两种城市形态各有工厂函数：
 
 ```js
 // 广东型：五险基数各自独立

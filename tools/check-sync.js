@@ -2,9 +2,9 @@
 /*
  * 漂移检查（CI 守卫）。
  *
- * 五类检查：
+ * A–I 九类检查：
  *   A. 镜像文件是否与源文件逐字节相同（防止改了 calculator.html 忘了同步 site/index.html）
- *   B. 各城市参数是否在 references/city-parameters.md 中都有记录（防止加了城市忘了写文档）
+ *   B. references 的城市参数表是否等于 data/cities.json 的生成物，且 JSON 与 CITIES 逐字段一致
  *   C. 文档陈旧表述 lint（防止机制改版时漏改措辞）
  *   D. 文档断言数与 test-calc.js 实际输出一致（防止加了测试忘了改文档）
  *   E. 各城市 dataYear/dataNext 是否与省份年度基线表一致（防止年度口径标错年份）
@@ -18,6 +18,7 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
 const { loadCalculator } = require('./calc-harness.js');
+const CITIES = loadCalculator().CITIES;
 
 let fail = 0;
 
@@ -39,248 +40,45 @@ for (const [src, dst] of PAIRS) {
   }
 }
 
-/* ---------- B. 城市参数是否都在文档里 ---------- */
-console.log('\nB. 城市参数与文档的一致性');
-/* 用共享脚手架取出 CITIES（原先本文件自带一份 DOM 桩，与 test-calc /
-   test-export 三份重复）。 */
-const CITIES = loadCalculator().CITIES;
-/* 守卫一律读**源文件**；镜像与源的一致性由 A 检查单独负责。
-   （B 曾经读根级镜像、F 读源文件，规则不统一，排查时容易误判是谁在报错。） */
-/* 参数表分两轮迁出：先由 SKILL.md 拆到 references，再由 AGENTS.md 拆到同一文件
-   （两份每次必读文档都只留指针，避免加载时携带十万级字符）。B 的锚定对象：
-   - city-parameters.md 逐表逐格 + 散文锚定（唯一文档真源）；
-   - README.md 只核对城市名（数值由 B-3 单独核对）。
-   AGENTS.md 不再要求逐市出现，改由 B-4「指针与去重」检查兜底：
-   必须指到 references，且不得再复制参数表——否则瘦身会悄悄退化。
-   references 不参与 C/D（陈旧措辞、断言数）扫描，避免把“按需查阅”的大文件当成每次必读文档。 */
-const PARAM_DOC = 'skills/city-salary/references/city-parameters.md';
-const docs = {
-  [PARAM_DOC]: { content: read(PARAM_DOC), checkValues: true },
-  'README.md': { content: read('README.md'), checkValues: false },
-};
-
-/* ---- B 的锚定工具 ----
-   原实现是 content.indexOf(String(v))，只查"这个数值有没有在文档里出现过"，
-   不查它挂在哪座城市名下。审查报告指出：某市数值被错抄到相邻城市段落里，
-   检查照样通过。现在按城市名锚定，并把数值比较改成 token 集合——
-   文档写 5901.40 而代码是 5901.4，子串匹配会漏；反过来更长数字里的子串
-   （如 2330 命中 12330）也不会再被误判为命中。 */
-function numbersIn(text) {
-  const out = new Set();
-  const re = /\d[\d,]*(?:\.\d+)?/g;
-  let m;
-  while ((m = re.exec(text))) {
-    const n = Number(m[0].replace(/,/g, ''));
-    if (!Number.isNaN(n)) out.add(n);
-  }
-  return out;
-}
-const CITY_NAMES = Object.keys(CITIES).map(k => CITIES[k].name).filter((v, i, a) => a.indexOf(v) === i);
-
-/* 所有城市名的出现位置（按位置排序；同位置取最长名，避免"吉林市"被"吉林"截断） */
-function nameHits(text) {
-  const hits = [];
-  for (const n of CITY_NAMES) {
-    let i = text.indexOf(n);
-    while (i >= 0) { hits.push({ i, n }); i = text.indexOf(n, i + 1); }
-  }
-  hits.sort((a, b) => a.i - b.i || b.n.length - a.n.length);
-  const out = [];
-  for (const h of hits) {
-    if (out.length && h.i < out[out.length - 1].i + out[out.length - 1].n.length) continue;
-    out.push(h);
-  }
-  return out;
-}
-
-/* references/city-parameters.md 的城市参数表（表头：城市 | 医保费率 | 医保基数下限 | 医保基数上限 | 公积金下限 | 公积金上限）。
-   有表就逐格比 —— 这是最强的一档，能直接发现"数值被写到相邻行"。 */
-function parseCityTable(text) {
-  const lines = text.split(/\r?\n/);
-  let start = -1;
-  for (let i = 0; i < lines.length; i++) {
-    if (/^\|.*城市.*医保基数下限.*\|\s*$/.test(lines[i])) { start = i + 2; break; }
-  }
-  const map = {};
-  if (start < 0) return map;
-  for (let i = start; i < lines.length && /^\|/.test(lines[i]); i++) {
-    const c = lines[i].split('|').slice(1, -1).map(s => s.trim());
-    if (c.length < 6) continue;
-    const n = (s) => Number(String(s).replace(/\*\*/g, '').replace(/,/g, ''));
-    map[c[0].replace(/\*\*/g, '')] = { medMin: n(c[2]), medMax: n(c[3]), hfMin: n(c[4]), hfMax: n(c[5]), line: i + 1 };
-  }
-  return map;
-}
-
-let missing = 0;
-const anchored = {};
-for (const dname in docs) {
-  const { content, checkValues } = docs[dname];
-
-  if (!checkValues) {
-    /* README 只核对城市名（它不逐市列基数） */
-    let bad = 0;
-    for (const key in CITIES) {
-      if (content.indexOf(CITIES[key].name) < 0) {
-        console.log(`  ✗ 城市 ${CITIES[key].name} 未出现在 ${dname}`);
-        bad++; missing++; fail++;
-      }
-    }
-    anchored[dname] = { tabled: 0, prose: 0, namesOnly: true, bad };
-    continue;
-  }
-
-  const table = parseCityTable(content);
-  const hits = nameHits(content);
-  const lineStarts = [0];
-  for (let i = 0; i < content.length; i++) if (content[i] === '\n') lineStarts.push(i + 1);
-  const lines = content.split(/\r?\n/);
-  const lineOf = (idx) => {
-    let lo = 0, hi = lineStarts.length - 1;
-    while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (lineStarts[mid] <= idx) lo = mid; else hi = mid - 1; }
-    return lo;
-  };
-
-  let tabled = 0, prose = 0;
-  for (const key in CITIES) {
-    const c = CITIES[key];
-    if (content.indexOf(c.name) < 0) {
-      console.log(`  ✗ 城市 ${c.name} 未出现在 ${dname}`);
-      missing++; fail++;
-      continue;
-    }
-
-    /* 一档：有参数表格行 → 逐格精确比对 */
-    const row = table[c.name];
-    if (row) {
-      tabled++;
-      const bad = [];
-      if (row.medMin !== Number(c.med.min)) bad.push(`医保基数下限 表=${row.medMin} 代码=${c.med.min}`);
-      if (row.medMax !== Number(c.med.max)) bad.push(`医保基数上限 表=${row.medMax} 代码=${c.med.max}`);
-      if (row.hfMin !== Number(c.hf.min)) bad.push(`公积金下限 表=${row.hfMin} 代码=${c.hf.min}`);
-      if (row.hfMax !== Number(c.hf.max)) bad.push(`公积金上限 表=${row.hfMax} 代码=${c.hf.max}`);
-      /* 大额医疗固定额（medFixEmp）：表里写在费率列内（如「7%/2%（另大额18.33元/月）」），
-         故按"该行是否出现该数值"核对。此前完全未检查——2026-09-30 发现
-         AGENTS.md 记「三门峡/南阳/商丘未找到」而代码已有 18.33/19.16/12.5，
-         守卫却没报警，就是因为漏了这一项。
-         `0` 表示"个人不缴"，文档不会写这个数字，故跳过。 */
-      if (c.medFixEmp > 0 && !numbersIn(lines[row.line - 1] || '').has(Number(c.medFixEmp))) {
-        bad.push(`大额医疗固定额=${c.medFixEmp} 不在表格行内`);
-      }
-      if (bad.length) {
-        console.log(`  ✗ ${dname}:${row.line} ${c.name}(${key}) 表格与代码不符 —— ${bad.join('；')}`);
-        missing++; fail++;
-      }
-      continue;
-    }
-
-    /* 二档：散文 → 公积金值锚定到"本城市名之后、下一个城市名之前"的片段 */
-    prose++;
-    const mine = hits.filter(h => h.n === c.name);
-    const slotNums = numbersIn(mine.map(h => {
-      const nxt = hits.find(x => x.i > h.i);
-      return content.slice(h.i, nxt ? nxt.i : Math.min(content.length, h.i + 500));
-    }).join('\n'));
-    for (const [label, v] of [['公积金基数下限', c.hf.min], ['公积金基数上限', c.hf.max]]) {
-      if (!slotNums.has(Number(v))) {
-        console.log(`  ✗ ${c.name}(${key}) ${label}=${v} 不在 ${dname} 中"该城市名之后、下一个城市名之前"的片段内`);
-        missing++; fail++;
-      }
-    }
-    /* 医保值可能省级统一（写在省名附近而非市名后）→ 放宽到"含该城市名的任一行内" */
-    const lineNums = numbersIn([...new Set(mine.map(h => lineOf(h.i)))].map(i => lines[i]).join('\n'));
-    for (const [label, v] of [['医保基数下限', c.med.min], ['医保基数上限', c.med.max]]) {
-      if (!lineNums.has(Number(v))) {
-        console.log(`  ✗ ${c.name}(${key}) ${label}=${v} 不在 ${dname} 中含该城市名的任一行内`);
-        missing++; fail++;
-      }
-    }
-    /* 大额医疗固定额：两种写法都要认——
-       ① 逐市列出（「郑州10.83、开封15、…」）→ 落在"该城市名之后、下一个城市名之前"的片段内；
-       ② 全省统一（「个人2%+大病15元/月（全省统一）」）→ 落在该省份条目行内。
-       ⚠️ 必须**排除两个"派生提及"来源**，否则会漏报（实测 0/3 → 3/3 的关键）：
-         · 规则 1「先确认城市」的城市清单（「…漯河/三门峡/南阳/商丘…」）
-         · 规则 37「个人社保」的大额汇总（「…三门峡18.33元/月…」）
-       三门峡在 AGENTS.md 里共出现 7 次，其中这两处是**重复提及而非权威值**。
-       实测：只改省份条目里的值，若把这两处也算进片段并集，仍能从规则 37 找到旧值 → 漏报。
-       `0` 表示"个人不缴"，文档不会写这个数字，故跳过。 */
-    if (c.medFixEmp > 0) {
-      const DERIVED = /^\d+\.\s+\*\*(先确认城市|个人社保)\*\*/;
-      const authoritative = mine.filter(h => !DERIVED.test(lines[lineOf(h.i)] || ''));
-      const authNums = numbersIn(authoritative.map(h => {
-        const nxt = hits.find(x => x.i > h.i);
-        return content.slice(h.i, nxt ? nxt.i : Math.min(content.length, h.i + 500));
-      }).join('\n'));
-      /* 还要认"省份条目行"：全省统一的值常写在城市清单**之前**
-         （如湖南「个人2%+大病15元/月（全省统一）；公积金基数（下限~上限）长沙2200~32744…」），
-         此时按"城市名之后的片段"永远找不到。省份条目行本身是权威行，可以安全纳入。
-         直辖市没有「**直辖市**」条目行，此时只用权威片段。 */
-      const provRe = new RegExp('^\\d+\\.\\s+\\*\\*' + (c.region || '') + '\\*\\*');
-      const provLine = lines.findIndex(l => provRe.test(l));
-      const provNums = provLine >= 0 ? numbersIn(lines[provLine]) : new Set();
-      if (!authNums.has(Number(c.medFixEmp)) && !provNums.has(Number(c.medFixEmp))) {
-        console.log(`  ✗ ${c.name}(${key}) 大额医疗固定额=${c.medFixEmp} 不在 ${dname} 该城市的权威条目片段内，也不在「${c.region}」条目行内`);
-        missing++; fail++;
-      }
-    }
-  }
-  anchored[dname] = { tabled, prose };
-}
-
-/* B-2 五险基数（pension）锚定 —— 2026-09-30 补
-   缺口来源：守卫 B 原先只核对 medMin/medMax/hfMin/hfMax/medFixEmp，**pension 完全没锚定**。
-   SKILL.md 的表格列是「城市|医保费率|医保基数下限|医保基数上限|公积金下限|公积金上限」——
-   当某省的 **医保基数与五险基数口径不同**时（福建/贵州/内蒙古等），表格只记了 med，
-   五险基数（决定养老/失业/工伤缴费）在 SKILL.md 里**无任何记录**，且守卫不会报警。
-   实测：只改 CITIES 的 pension 而不动文档，守卫 A/D 会因镜像与断言报警，
-   但**守卫 B 沉默** —— 也就是说两份 HTML 与测试都同步后，文档仍可能漏记。
-   本检查：凡有城市 pension≠med 的省，其 pension 上下限必须出现在 references/city-parameters.md 中。 */
+/* ---------- B. 城市参数表 = 生成物（diff，不再按字符串锚定） ---------- */
+console.log('\nB. 城市参数表与生成物 diff');
+const gen = require('./gen-city-params.js');
 {
-  const byRegion = {};
-  for (const key in CITIES) {
-    const c = CITIES[key];
-    const r = c.region || '其他';
-    (byRegion[r] = byRegion[r] || []).push(c);
-  }
-  const paramDoc = docs[PARAM_DOC];
-  if (paramDoc) {
-    let b2 = 0;
-    for (const r of Object.keys(byRegion)) {
-      const cs = byRegion[r];
-      if (!cs.some(c => Number(c.pension.min) !== Number(c.med.min) || Number(c.pension.max) !== Number(c.med.max))) continue;
-      const c = cs[0];
-      const nums = numbersIn(paramDoc.content);
-      for (const [label, v] of [['五险基数下限', c.pension.min], ['五险基数上限', c.pension.max]]) {
-        if (!nums.has(Number(v))) {
-          console.log(`  ✗ ${r} 的医保基数与五险基数口径不同，但 ${label}=${v}（以 ${c.name} 为例）未出现在 ${PARAM_DOC} 中`);
-          b2++; missing++; fail++;
+  const doc = read(gen.DOC_PATH);
+  const block = gen.extractBlock(doc);
+  if (!block) {
+    console.log(`  ✗ ${gen.DOC_PATH} 缺少 generated:begin/end 标记（生成区被误删）`);
+    fail++;
+  } else {
+    const data = JSON.parse(read(gen.JSON_PATH));
+    const built = gen.buildBlock(data);
+    if (block.text === built) {
+      const regions = new Set(data.map(c => c.region || '其他'));
+      console.log(`  ✓ 生成物与磁盘一致：${data.length} 城、${regions.size} 个省份分组（B 已改为 diff）`);
+    } else {
+      const a = block.text.split('\n');
+      const b = built.split('\n');
+      let shown = 0, diffs = 0;
+      for (let i = 0; i < Math.max(a.length, b.length); i++) {
+        if (a[i] === b[i]) continue;
+        diffs++;
+        if (shown++ < 8) {
+          console.log(`  ✗ 第 ${block.beginLine + i} 行 diff`);
+          console.log(`      磁盘: ${a[i] === undefined ? '(缺行)' : a[i]}`);
+          console.log(`      生成: ${b[i] === undefined ? '(缺行)' : b[i]}`);
         }
       }
-    }
-    if (!b2) console.log(`  ✓ 医保基数与五险基数口径不同的省份，其五险基数均已记录在 ${PARAM_DOC}`);
-  }
-}
-
-/* 省份分组名必须被每份文档提到（防止新增省份时漏更新城市清单） */
-const REGIONS = [];
-for (const key in CITIES) {
-  const r = CITIES[key].region || '其他';
-  if (REGIONS.indexOf(r) < 0) REGIONS.push(r);
-}
-for (const r of REGIONS) {
-  for (const dname in docs) {
-    if (docs[dname].content.indexOf(r) < 0) {
-      console.log(`  ✗ 省份分组 ${r} 未出现在 ${dname}`);
-      missing++; fail++;
+      console.log(`  ✗ 生成物与磁盘不一致：${diffs} 行差异（先改 ${gen.JSON_PATH}，再运行 node tools/gen-city-params.js --write）`);
+      fail++;
     }
   }
-}
-if (!missing) {
-  const parts = Object.keys(anchored).map(d => {
-    const a = anchored[d];
-    return a.namesOnly ? `${d}（仅核对城市名）` : `${d}（表格逐格 ${a.tabled} + 散文锚定 ${a.prose}）`;
-  }).join('、');
-  console.log(`  ✓ ${Object.keys(CITIES).length} 个城市按城市名锚定核对通过：${parts}；${REGIONS.length} 个省份分组名均已出现`);
+  const mm = gen.jsonCitiesMismatch();
+  if (mm) {
+    console.log('  ✗ ' + mm);
+    fail++;
+  } else {
+    console.log(`  ✓ ${gen.JSON_PATH} 与 CITIES 逐字段一致（名称/地区/年度/五险/公积金/费率/备注）`);
+  }
 }
 
 /* ---- B-4. AGENTS.md 指针与去重 ----

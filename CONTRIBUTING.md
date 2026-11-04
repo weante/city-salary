@@ -47,7 +47,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 | 检查 | 断言 | 什么时候会红 |
 |------|------|-------------|
 | **A** 镜像一致性 | 源与镜像**逐字节**相同 | 改了源忘了跑 `sync.js` |
-| **B** 城市参数锚定 | 337 城的医保/公积金基数**挂在对的城市名下** | 数值写错、抄到相邻城市、新增城市忘了写文档 |
+| **B** 生成物 diff | `references/city-parameters.md` 的参数表 == `data/cities.json` 生成物；JSON 与 `CITIES`**逐字段**一致 | 生成区被手改、漏跑 `--write`、JSON 与代码不一致 |
 | **C** 陈旧表述 | 21 份文档里没有已被取代的措辞；**机制规模数字**（守卫数、验证链长度、`npm test` 命令数、过时的检查范围写法）与现状一致；部署地址一致 | 城市数、时效机制改版后漏改某份文档；**加了检查/命令却忘了改文档里的规模数字** |
 | **D** 文档断言数 | 文档里写的断言数 = `test-calc.js` 实际输出（覆盖 4 种句式） | 加了断言没改文档 |
 | **E** 省份年度口径 | 每城 `dataYear`/`dataNext` 与 `tools/province-year.js` 基线表一致 | 新增省份只覆盖 `region` 没覆盖 `dataYear` |
@@ -65,20 +65,16 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 >
 > ⚠️ **写这类说明时不要原样引用被拦截的旧串**——本条规则自己就踩过两次：第一次是把标记写法内联进本文，导致 CONTRIBUTING 被自己豁免；第二次是把过时的范围写法当例子粘进来，被当场拦下。**描述它，别引用它。**
 
-#### B 的两档判据（值得单独理解）
+#### B 的判据（单一来源 + 生成物）
 
-历史上 B 只做 `content.indexOf(数值)` —— 只问"这个数字有没有在文档里出现过"，不问它挂在哪座城市名下。**某市数值被错抄到相邻城市段落，检查照样通过。**
+B 不再从文档里正则找数字，而是**比对生成物**：
 
-现在按城市名锚定，分两档：
+1. `skills/city-salary/data/cities.json` 是文档侧参数的唯一来源；`check-sync` 先检查它与 `CITIES`（名称/地区/年度/五险/公积金/租金/费率上限/固定额/备注）**逐字段一致**，不一致直接报 `key(城市): 字段 JSON=… CITIES=…`。
+2. 再由 `tools/gen-city-params.js` 的 `buildBlock()` 从这份 JSON 生成参数表，与 `references/city-parameters.md` 中 `<!-- generated:begin -->` 与 `<!-- generated:end -->` 之间的内容**逐行 diff**；有差异就报「第 N 行 diff / 磁盘 / 生成」并失败。
 
-1. **表格逐格比对**（最强）：`skills/city-salary/references/city-parameters.md` 里那张 `| 城市 | 医保费率 | 医保基数下限 | 医保基数上限 | 公积金下限 | 公积金上限 |` 表，若某城在其中，就逐格与代码比对。数值被写到相邻行会立刻暴露。
-2. **散文锚定**：其余城市走散文。
-   - **公积金**值必须在「**该城市名之后、下一个城市名之前**」的片段内（公积金基数一律城市专属）；
-   - **医保**值放宽到「含该城市名的**任一行**内」——因为很多省是省级统一基数，值写在省名附近而不是市名后面。
+这样判据从「字符串是否出现」变成「生成物是否等于磁盘」：数值抄到相邻城市、漏写某列、生成区被手改，都会立刻暴露。生成区之外的分省散文与文号说明仍由人工维护，生成器只覆盖标记区。
 
-数值比较用的是 **token 集合**而非子串：文档写 `5901.40` 而代码是 `5901.4` 时子串匹配会漏；反过来 `2330` 也不会再被 `12330` 误伤。
-
-> 新增省份时，如果能顺手把该省城市补进上面那张表，B 的判据就从"散文锚定"升级为"逐格比对"——这是最划算的加固方式。
+流程：改 `CITIES` 与 `data/cities.json` → `node tools/gen-city-params.js --write` → `node tools/check-sync.js`。
 
 ### `test-calc.js`：计算回归
 
@@ -157,9 +153,10 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 1. 在 `calculator.html` 的 `CITIES` 里按工厂格式加**一段**（`CI()` 广东型 / `CIU()` 直辖市型；省内差异用 `opt` 浅覆盖，如 `opt.med`）。每个城市占多行、`opt` 的字段各占一行——这样改一个字段只动一行，diff 干净。
 2. **`opt` 里必须显式写 `region` 与 `dataYear`**（省级年度见 `tools/province-year.js`）。漏写 `dataYear` 会让页脚显示错误年度——这正是 E 检查存在的原因。
-3. 同步文档（缺一即被 B/C 拦下）：
+3. 同步参数与文档（缺一即被 B/C 拦下）：
+   - `skills/city-salary/data/cities.json`：加/改该城条目（子集字段与 `CITIES` 一致；`docRate`/`docNote` 是文档措辞的可选覆盖），再跑 `node tools/gen-city-params.js --write` 重写 `references/city-parameters.md` 的生成区（**生成区勿手改**）
    - `AGENTS.md`：只维护 references 指针与计算/交互要点，**不再复制参数行或城市清单**（B-4 会拦下回流）
-   - `skills/city-salary/SKILL.md`：城市清单与能力描述；参数行、省份小节年度标题写到 `skills/city-salary/references/city-parameters.md`（优先补进表格）
+   - `skills/city-salary/SKILL.md`：城市清单与能力描述；省份小节年度标题与分省散文写在 `references/city-parameters.md` 的**生成区之外**
    - `README.md`：首段城市数、城市清单、数据说明
    - 数据来源写进 `docs/policy-<省拼音>-<年度>.md`，查不到的写"未找到"并标 `warn`
 4. `test-calc.js`：更新城市总数断言 + 该省 ≥3 条参数抽查
@@ -170,7 +167,7 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 1. **先改基线表** `tools/province-year.js`（它是 E/F 的唯一事实来源），同步更新 `docs/baseline-year-map.md`
 2. 改 `calculator.html` 里受影响的 `CITIES` 条目（含 `dataYear` / `dataNext`）
-3. 改 `skills/city-salary/references/city-parameters.md` 的**参数行与年度标题**；`SKILL.md` 只改「数据状态」表的年度列（F 检查），`AGENTS.md` 不动（只留指针）
+3. 先改 `skills/city-salary/data/cities.json`（与 `CITIES` 保持一致），跑 `node tools/gen-city-params.js --write` 重写 `references/city-parameters.md` 生成区；省份小节年度标题写在生成区之外。`SKILL.md` 只改「数据状态」表的年度列（F 检查），`AGENTS.md` 不动（只留指针）
 4. **涉及限期费率**（阶段性降费、有有效期的文件）→ 改 `tools/policy-expiry.js` 的 `current`/`until`，清空 `acknowledged`，并同步 `SKILL.md` 的限期费率表（G 检查）
 5. 跑第二节的全套命令
 
