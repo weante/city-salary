@@ -66,7 +66,7 @@ version: 1.1.0
 > 为什么分三个检查点：广东医保基数按自然年（如 2026.1-12 执行），养老/失业按社保年度（如 2025.7-2026.6 执行），两者调整周期不同；只设 7 月一个检查点会让 1 月的医保调整被漏检。而阶段性降费率（如上海医保 9%）的文件有效期常常落在两个年度节点之间，只有单独按"到期日"触发才不会被漏掉——**这是最容易出现"标记为已核查、实际已过期"的场景**。
 
 联网搜索后的处理：
-- 官方基数有变化 → 更新 `assets/calculator.html` 中 `CITIES` 常量与 `data/cities.json`（两者保持一致），跑 `node tools/gen-city-params.js --write` 重写 `references/city-parameters.md` 的参数表生成区，更新模板页脚数据依据，并告知用户最新生效数字
+- 官方基数有变化 → 更新 `assets/calculator.html` 中 `CITIES` 常量，跑 `node tools/gen-city-params.js --extract` 把它重建进 `data/cities.json`（保留人工维护的 `docRate`/`docNote`），再跑 `node tools/gen-city-params.js --write` 重写 `references/city-parameters.md` 的参数表生成区，更新模板页脚数据依据，并告知用户最新生效数字
 - 官方确认未调整 → 更新对应分组的"最近核查日期"，沿用现有参数
 - 网络不可用 → 明确告知用户数据可能过期，用现有参数计算但标注"数据未经最新核查"
 
@@ -308,7 +308,7 @@ npm test                    # ★ 一次跑完下面五项
 node tools/test-calc.js     # 9299 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归/年度口径/起始月边界（北京 158 / 上海 144 / 深圳 209 / 成都 3 + 跨城市 337 + 抽查 295 + 租金档位 47 + 年度口径 40 + 起始月边界 9 + 年终奖计税对比 23）
 node tools/check-golden.js  # 黄金用例：16 用例 × 4 面板（res/bonus/hist/sum）逐字节比对
 node tools/check-dom.js     # 静态结构：重复 id、悬空 $() 引用、未定义事件处理器、CITIES 重复 key/城市名
-node tools/check-sync.js    # 漂移检查：A 镜像同步 / B 生成物 diff（JSON↔CITIES） / C 陈旧表述 / D 断言数 / E 省份年度口径 / F 数据状态表年度
+node tools/check-sync.js    # 漂移检查：A 镜像同步 / B 生成物 diff（JSON↔CITIES 提取结果 + docRate/docNote 措辞回溯） / C 陈旧表述 / D 断言数 / E 省份年度口径 / F 数据状态表年度
 node tools/test-export.js   # 导出 PDF 的降级链（4 条路径，含兜底等待）
 node tools/ci-selfcheck.js  # 零依赖红线自检（禁止声明依赖、禁止 scripts 调包管理器）
 node tools/sync.js          # 改完 skills/ 后同步到 site/index.html 与根级 SKILL.md

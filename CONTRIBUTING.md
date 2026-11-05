@@ -69,12 +69,13 @@ node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 
 B 不再从文档里正则找数字，而是**比对生成物**：
 
-1. `skills/city-salary/data/cities.json` 是文档侧参数的唯一来源；`check-sync` 先检查它与 `CITIES`（名称/地区/年度/五险/公积金/租金/费率上限/固定额/备注）**逐字段一致**，不一致直接报 `key(城市): 字段 JSON=… CITIES=…`。
+1. `skills/city-salary/data/cities.json` 由 `CITIES` 提取生成（`node tools/gen-city-params.js --extract`；`docRate`/`docNote` 人工字段按城市名保留）；`check-sync` 先检查它是否**完全等于** `CITIES` 的提取结果（含 `injSpecial`/`warn`/`tiers` 等运行期字段），不一致直接报 `key(城市): 字段 JSON=… CITIES=…（请运行 … --extract 重建 JSON）`。
 2. 再由 `tools/gen-city-params.js` 的 `buildBlock()` 从这份 JSON 生成参数表，与 `references/city-parameters.md` 中 `<!-- generated:begin -->` 与 `<!-- generated:end -->` 之间的内容**逐行 diff**；有差异就报「第 N 行 diff / 磁盘 / 生成」并失败。
+3. 同一段 B 还做措辞回溯：`docRate` 的费率对必须与 `med.comp`/`med.emp` 相符（`medFixEmp` 必须作为「N元」出现），`docNote` 中长度≥3 的数字必须能在该城 `CITIES` 字段或 `note` 中找到；已知不一致/无数字说明逐条登记白名单，白名单若过期或数值再变同样报错。
 
 这样判据从「字符串是否出现」变成「生成物是否等于磁盘」：数值抄到相邻城市、漏写某列、生成区被手改，都会立刻暴露。生成区之外的分省散文与文号说明仍由人工维护，生成器只覆盖标记区。
 
-流程：改 `CITIES` 与 `data/cities.json` → `node tools/gen-city-params.js --write` → `node tools/check-sync.js`。
+流程：改 `CITIES` → `node tools/gen-city-params.js --extract` → `node tools/gen-city-params.js --write` → `node tools/check-sync.js`。
 
 ### `test-calc.js`：计算回归
 
@@ -154,7 +155,7 @@ B 不再从文档里正则找数字，而是**比对生成物**：
 1. 在 `calculator.html` 的 `CITIES` 里按工厂格式加**一段**（`CI()` 广东型 / `CIU()` 直辖市型；省内差异用 `opt` 浅覆盖，如 `opt.med`）。每个城市占多行、`opt` 的字段各占一行——这样改一个字段只动一行，diff 干净。
 2. **`opt` 里必须显式写 `region` 与 `dataYear`**（省级年度见 `tools/province-year.js`）。漏写 `dataYear` 会让页脚显示错误年度——这正是 E 检查存在的原因。
 3. 同步参数与文档（缺一即被 B/C 拦下）：
-   - `skills/city-salary/data/cities.json`：加/改该城条目（子集字段与 `CITIES` 一致；`docRate`/`docNote` 是文档措辞的可选覆盖），再跑 `node tools/gen-city-params.js --write` 重写 `references/city-parameters.md` 的生成区（**生成区勿手改**）
+   - `skills/city-salary/data/cities.json`：先 `node tools/gen-city-params.js --extract` 由 `CITIES` 重建（`docRate`/`docNote` 是文档措辞的可选覆盖，会自动保留；新增城市要手工补 `docRate`），再跑 `node tools/gen-city-params.js --write` 重写 `references/city-parameters.md` 的生成区（**生成区勿手改**）
    - `AGENTS.md`：只维护 references 指针与计算/交互要点，**不再复制参数行或城市清单**（B-4 会拦下回流）
    - `skills/city-salary/SKILL.md`：城市清单与能力描述；省份小节年度标题与分省散文写在 `references/city-parameters.md` 的**生成区之外**
    - `README.md`：首段城市数、城市清单、数据说明
@@ -167,7 +168,7 @@ B 不再从文档里正则找数字，而是**比对生成物**：
 
 1. **先改基线表** `tools/province-year.js`（它是 E/F 的唯一事实来源），同步更新 `docs/baseline-year-map.md`
 2. 改 `calculator.html` 里受影响的 `CITIES` 条目（含 `dataYear` / `dataNext`）
-3. 先改 `skills/city-salary/data/cities.json`（与 `CITIES` 保持一致），跑 `node tools/gen-city-params.js --write` 重写 `references/city-parameters.md` 生成区；省份小节年度标题写在生成区之外。`SKILL.md` 只改「数据状态」表的年度列（F 检查），`AGENTS.md` 不动（只留指针）
+3. 跑 `node tools/gen-city-params.js --extract` 由 `CITIES` 重建 `skills/city-salary/data/cities.json`，再跑 `node tools/gen-city-params.js --write` 重写 `references/city-parameters.md` 生成区；省份小节年度标题写在生成区之外。`SKILL.md` 只改「数据状态」表的年度列（F 检查），`AGENTS.md` 不动（只留指针）
 4. **涉及限期费率**（阶段性降费、有有效期的文件）→ 改 `tools/policy-expiry.js` 的 `current`/`until`，清空 `acknowledged`，并同步 `SKILL.md` 的限期费率表（G 检查）
 5. 跑第二节的全套命令
 

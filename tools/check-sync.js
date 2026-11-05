@@ -4,7 +4,8 @@
  *
  * A–I 九类检查：
  *   A. 镜像文件是否与源文件逐字节相同（防止改了 calculator.html 忘了同步 site/index.html）
- *   B. references 的城市参数表是否等于 data/cities.json 的生成物，且 JSON 与 CITIES 逐字段一致
+ *   B. references 的城市参数表是否等于 JSON 生成物；JSON 是否等于 CITIES 的 --extract 结果；
+ *      docRate/docNote 的中文措辞能否回溯到 CITIES 数值
  *   C. 文档陈旧表述 lint（防止机制改版时漏改措辞）
  *   D. 文档断言数与 test-calc.js 实际输出一致（防止加了测试忘了改文档）
  *   E. 各城市 dataYear/dataNext 是否与省份年度基线表一致（防止年度口径标错年份）
@@ -72,12 +73,18 @@ const gen = require('./gen-city-params.js');
       fail++;
     }
   }
-  const mm = gen.jsonCitiesMismatch();
+  const mm = gen.jsonExtractMismatch();
   if (mm) {
     console.log('  ✗ ' + mm);
     fail++;
   } else {
-    console.log(`  ✓ ${gen.JSON_PATH} 与 CITIES 逐字段一致（名称/地区/年度/五险/公积金/费率/备注）`);
+    console.log(`  ✓ ${gen.JSON_PATH} 已与 CITIES 提取结果一致（含运行期字段；docRate/docNote 沿用人工值）`);
+  }
+  const text = gen.docTextCheck(JSON.parse(read(gen.JSON_PATH)));
+  for (const s of text.summary) console.log('  ' + s);
+  for (const p of text.problems) {
+    console.log('  ✗ ' + p);
+    fail++;
   }
 }
 

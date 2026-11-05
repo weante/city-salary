@@ -101,7 +101,7 @@ city-salary/
 │   ├── province-year.js     #   省份年度基线表（检查 E/F 的唯一事实来源）
 │   ├── policy-expiry.js     #   限期费率清单（检查 G 的唯一事实来源）
 │   ├── gen-warn-backlog.js  #   生成 warn 缺口清单（检查 H 校验其与 CITIES 一致）
-│   ├── gen-city-params.js   #   从 data/cities.json 生成 references 参数表（检查 B 比对生成物 diff）
+│   ├── gen-city-params.js   #   从 CITIES 提取 data/cities.json，并生成 references 参数表（检查 B 比对生成物 diff 与措辞回溯）
 │   ├── research.js          #   联网核查工具：Brave 搜索 + Jina 抓页（年度复核用，唯一联网脚本）
 │   ├── ci-selfcheck.js      #   CI 自检：零依赖红线 + Node 版本
 │   └── sync.js              #   把 skills/ 下的源文件同步到镜像位置
@@ -123,7 +123,7 @@ npm test                    # ★ 一次跑完下面五项（零依赖，无需 
 node tools/test-calc.js     # 计算回归（改参数/改逻辑后必跑）
 node tools/check-golden.js  # 黄金用例：整块渲染输出的逐字节比对
 node tools/check-dom.js     # 单文件 HTML 的静态结构检查
-node tools/check-sync.js    # 漂移检查 A–I：镜像 / 生成物 diff（JSON↔CITIES） / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单 / 计算口径
+node tools/check-sync.js    # 漂移检查 A–I：镜像 / 生成物 diff（JSON↔CITIES 提取结果 + docRate/docNote 措辞回溯） / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单 / 计算口径
 node tools/test-export.js   # 导出 PDF 降级链
 node tools/ci-selfcheck.js  # 零依赖红线自检（CI 也会跑）
 node tools/sync.js          # 同步源文件到镜像位置
@@ -167,7 +167,7 @@ Agent 会自动提取参数、追问缺失项、按所选城市政策计算并�
 
 ## 扩展全国地市
 
-在 `skills/city-salary/assets/calculator.html` 的 `CITIES` 对象中新增一段，并在 `skills/city-salary/data/cities.json` 加对应条目，跑 `node tools/gen-city-params.js --write` 生成 `skills/city-salary/references/city-parameters.md` 的参数表（`node tools/check-sync.js` 的 B 项做生成物 diff 与 JSON↔CITIES 逐字段核对，漏改会红；`AGENTS.md` 只留指针，不复制参数）。两种城市形态各有工厂函数：
+在 `skills/city-salary/assets/calculator.html` 的 `CITIES` 对象中新增一段，跑 `node tools/gen-city-params.js --extract` 把它提取进 `skills/city-salary/data/cities.json`（按城市名保留人工维护的 `docRate`/`docNote`），再跑 `node tools/gen-city-params.js --write` 生成 `skills/city-salary/references/city-parameters.md` 的参数表（`node tools/check-sync.js` 的 B 项做生成物 diff、JSON 是否等于提取结果与 docRate/docNote 措辞回溯，漏跑会红；`AGENTS.md` 只留指针，不复制参数）。两种城市形态各有工厂函数：
 
 ```js
 // 广东型：五险基数各自独立
