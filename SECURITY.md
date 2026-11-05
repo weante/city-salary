@@ -2,21 +2,48 @@
 
 ## 这个项目处理什么数据
 
-city-salary 是一个**纯本地、零依赖**的城市工资计算器：
+city-salary 的**交付物**是一个纯本地、零依赖的单文件 HTML 计算器：
 
 - **单文件 HTML**（`skills/city-salary/assets/calculator.html`），打开即用
-- **不联网、不上传、不收集任何数据**
+- 计算器本身**不联网、不上传、不收集任何数据**
 - 计算全部在浏览器本地完成
 - 输入内容（月薪、专项附加扣除等）**不落盘、不外发**
 
-因此本项目的安全面很窄，主要关注：
+但仓库里的 `tools/` 脚本**并非全部离线**，必须按脚本分类看待。
 
-| 类别 | 说明 |
+### 纯离线脚本（只读仓库内文件）
+
+| 脚本 | 用途 |
 |------|------|
-| **依赖安全** | 运行时零依赖；开发期仅用 Node.js 内置模块 |
-| **注入风险** | 计算器把城市数据以字符串形式内联在 `<script>` 中，**改动数据时需避免破坏 JS 语法或引入可执行内容** |
-| **供应链** | `tools/` 下的校验脚本只读仓库内文件，不访问网络 |
-| **数据准确性** | 见下方「数据准确性不是安全问题」 |
+| `test-calc.js` / `check-golden.js` / `check-dom.js` / `test-export.js` | 计算回归、黄金快照、DOM 结构、导出降级链 |
+| `check-sync.js` | 镜像 / 生成物 / 陈旧表述 / 年度口径等漂移检查 |
+| `gen-city-params.js` | 由 `CITIES` 重建 `data/cities.json`、生成参数表 |
+| `data-quality.js` / `source-records.js` | 离线统计 `docs/sources/*.json` 快照并做基线门禁 |
+| `sync.js` / `ci-selfcheck.js` / `calc-harness.js` | 镜像同步、零依赖自检、计算器加载 |
+| `gen-params.js` / `gen-warn-backlog.js` / `policy-expiry.js` / `province-year.js` | 文档生成与年度/限期清单核对 |
+
+这些脚本只 `require` Node 内置模块并读取仓库内文件，**不发起网络请求**。
+
+### 会联网的脚本（不进 CI）
+
+| 脚本 | 网络行为 | 边界 |
+|------|----------|------|
+| `research.js` | 通过 `curl` 调用 Brave Search / Jina Reader（可选 Chrome headless），**会把检索关键词发给第三方服务** | 仅供人工核查取素材；输出不入库、不参与构建 |
+| `p8-check.js` | 直接 `http/https` 抓珠海、东莞、广东省医保局栏目与全省检索 | 只读公开页面、不带凭证；**默认开启 TLS 证书校验**；证书异常时显式失败并打印 Node 错误码与站点，不静默降级；`--insecure` 是显式开关（默认关闭），启用时日志首行警告，结果只能用于定位证书问题，不得作为权威数据结论或据此改动 `CITIES` |
+
+### CI 是否需要网络
+
+**不需要。** `.github/workflows/ci.yml` 的 `guards` job 在 Node 18/20/22 矩阵里只跑离线脚本。
+新增的 `node tools/data-quality.js` 只读已提交的 `docs/sources/*.json` 快照与
+`docs/sources/_quality-baseline.json` 基线，零网络请求，不会因外部站点超时导致 flaky。
+两个联网脚本不在 CI 中，只能由维护者在本机手动执行或放进独立的定时任务。
+
+### 可复现性边界
+
+- **离线脚本**：同一提交、同一 Node 版本，结果确定；黄金快照逐字节比对。
+- **联网脚本**：受目标站点可用性、证书配置、反爬与限流影响，**不可复现**；
+  其输出只用于人工核查，不得直接写回 `CITIES`。任何数据改动都必须附带已提交的
+  来源快照（`docs/sources/*.json`）与核查记录，再由离线门禁校验。
 
 ## 数据准确性不是安全问题
 

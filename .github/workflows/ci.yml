@@ -1,6 +1,6 @@
 name: CI
 
-# 把仓库里已有的五套守卫真正变成门禁。
+# 把仓库里已有的守卫真正变成门禁。全部离线：只读仓库内文件，不跑 npm install、不联网。
 #
 # 设计说明（两条容易踩错的点）：
 #   1. 这里刻意**不跑** node tools/sync.js。sync 会把镜像"修好"，反而掩盖了
@@ -50,6 +50,9 @@ jobs:
 
       - name: 漂移检查（镜像 / 文档锚定 / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单）
         run: node tools/check-sync.js
+
+      - name: 数据质量门禁（离线：docs/sources/*.json 指标 vs 检入基线 + _summary.json 同步校验）
+        run: node tools/data-quality.js
 
       - name: 导出 PDF 降级链
         run: node tools/test-export.js

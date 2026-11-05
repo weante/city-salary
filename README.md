@@ -102,7 +102,10 @@ city-salary/
 │   ├── policy-expiry.js     #   限期费率清单（检查 G 的唯一事实来源）
 │   ├── gen-warn-backlog.js  #   生成 warn 缺口清单（检查 H 校验其与 CITIES 一致）
 │   ├── gen-city-params.js   #   从 CITIES 提取 data/cities.json，并生成 references 参数表（检查 B 比对生成物 diff 与措辞回溯）
-│   ├── research.js          #   联网核查工具：Brave 搜索 + Jina 抓页（年度复核用，唯一联网脚本）
+│   ├── source-records.js    #   离线统计 docs/sources/*.json（覆盖 / confirmed / partial / notFound / 链接 / mismatch）
+│   ├── data-quality.js      #   离线数据质量门禁：source-records 指标 vs _quality-baseline.json + `_summary.json` 同步校验（CI 阻塞；--write 重生成汇总物）
+│   ├── research.js          #   联网核查工具：Brave 搜索 + Jina 抓页（年度复核用；与 p8-check.js 是仅有的两个联网脚本）
+│   ├── p8-check.js          #   联网巡检：珠海/东莞/广东 2027 基数件（默认校验 TLS 证书，--insecure 需显式开启）
 │   ├── ci-selfcheck.js      #   CI 自检：零依赖红线 + Node 版本
 │   └── sync.js              #   把 skills/ 下的源文件同步到镜像位置
 ├── package.json             # 仅 scripts（零依赖）：npm test 统一入口
@@ -119,11 +122,12 @@ city-salary/
 ## 维护与测试
 
 ```bash
-npm test                    # ★ 一次跑完下面五项（零依赖，无需 npm install）
+npm test                    # ★ 一次跑完下面六项（零依赖，无需 npm install）
 node tools/test-calc.js     # 计算回归（改参数/改逻辑后必跑）
 node tools/check-golden.js  # 黄金用例：整块渲染输出的逐字节比对
 node tools/check-dom.js     # 单文件 HTML 的静态结构检查
 node tools/check-sync.js    # 漂移检查 A–I：镜像 / 生成物 diff（JSON↔CITIES 提取结果 + docRate/docNote 措辞回溯） / 陈旧表述 / 断言数 / 年度口径 / 数据状态表 / 限期费率 / warn 清单 / 计算口径
+node tools/data-quality.js  # 数据质量门禁：docs/sources 指标 vs 检入基线 + _summary.json 同步（离线）
 node tools/test-export.js   # 导出 PDF 降级链
 node tools/ci-selfcheck.js  # 零依赖红线自检（CI 也会跑）
 node tools/sync.js          # 同步源文件到镜像位置
@@ -136,7 +140,7 @@ npm run warn:update         # warn 集合变化后，重新生成缺口清单
 
 **黄金用例是什么**：`test-calc.js` 断言的是**具体数值**（9299 项断言），覆盖已知关注点；`check-golden.js` 捕获的是**整块渲染结果**（16 个用例覆盖结构差异：直辖市/省统一/多档医保/户籍区分/长护险/市级基数覆盖/跨年度/极端基数，输入变体覆盖触底与封顶夹取、公积金不缴、起始月晚于当前月、全部扣除、年终奖陷阱），覆盖所有没被单独断言到的字段。前者告诉你"哪个数错了"，后者告诉你"有什么变了"。改动渲染输出后跑 `npm run golden:update` 重新冻结。
 
-**CI 门禁**：`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 三个版本跑完整守卫链。注意 CI 里**刻意不跑 `sync.js`**——sync 会把镜像"修好"，反而掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查做逐字节比对。
+**CI 门禁**：`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 三个版本跑完整守卫链（含 `data-quality.js` 的数据质量基线门禁），全程离线、不联网。注意 CI 里**刻意不跑 `sync.js`**——sync 会把镜像"修好"，反而掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查做逐字节比对。`research.js` 与 `p8-check.js` 会联网，**不在 CI 中**（分类见 [SECURITY.md](SECURITY.md)）。
 
 全部为零依赖 Node 脚本，无需 `npm install`，`tools/ci-selfcheck.js` 会守住这条红线（禁止声明依赖、禁止在 scripts 里调用包管理器、禁止 `tools/` 下 require 第三方包）。测试的做法是**从 `calculator.html` 里抽取真实的 `<script>` 放到最小 DOM 桩上执行**——测的是真正会跑在用户浏览器里的那份代码，而不是测试文件里重写一遍的副本。
 

@@ -6,6 +6,21 @@
 
 ### 新增
 
+- **`tools/data-quality.js` + `docs/sources/_quality-baseline.json` —— 数据质量进 CI 门禁（纯离线）**：
+  用 `source-records.js` 的 `readRecords()` 实测「文件数 / 覆盖城 / confirmed / partial / notFound /
+  链接 / mismatch」并与检入基线比对，只拦变差方向（变大失败：partial / notFound / mismatch /
+  missingCities / parseErrors；变小失败：files / checked / confirmed / urls）。
+  基线取 2026-11-05 实测值而不是 0 —— 这些是存量核查记录而非错误数；收紧时在同一 PR 改基线并追加 `tightening`。
+  同批把 `docs/sources/_summary.json` 变成**生成物**：顶层标量与 `mismatches` 明细由
+  `node tools/data-quality.js --write` 重算，`*Note` / `note` / `statsSource` / `permanentNotFound`
+  人工内容按 key 保留；默认运行同时校验磁盘汇总物，陈旧即失败
+  （此前它停在「79 文件 / mismatch 393」，与实测「106 / 415」脱节）。
+- **`tools/p8-check.js` 默认开启 TLS 证书校验**（此前 `rejectUnauthorized: false`，
+  等于关掉校验去抓"权威数据"）。证书异常改为显式失败并给出错误码与处理方式；
+  `--insecure` 是显式开关且日志首行警告、不可用于"权威数据"结论。
+  `SECURITY.md` 按「纯离线 / 会联网」重分脚本类别，写明 CI 不需要网络、
+  联网脚本不在 CI、联网结论不可复现且不得直接写回 `CITIES`。
+
 - **`tools/gen-city-params.js` + `skills/city-salary/data/cities.json`** —— 城市参数表生成机制：
   `data/cities.json` 是文档侧参数的单一来源（与 `CITIES` 逐字段一致），生成器把
   `references/city-parameters.md` 的 `<!-- generated:begin/end -->` 标记区机械重写，

@@ -5,11 +5,17 @@
  *   node tools/p8-check.js                 巡检两城关键栏目（默认）
  *   node tools/p8-check.js --wide          追加省级医保局与全省检索
  *   node tools/p8-check.js --out <file>    把报告写到文件（默认同时打印）
+ *   node tools/p8-check.js --insecure      跳过 TLS 证书校验（默认关闭；日志会明确警告）
+ *
+ * TLS 策略：默认开启证书校验（rejectUnauthorized: true）。证书异常时**显式失败**，
+ * 报告具体的 Node 错误码与站点，不使用静默降级。只有人确认某政府站点证书配置确实
+ * 异常时，才可用 --insecure 复跑定位；此时报告首行会标注"已跳过证书校验"，
+ * 结果只能用于排查，不能当作权威数据结论。
  *
  * 退出码（供定时提醒判断）：
  *   0 = 未命中（发文窗口未到，属正常）
  *   2 = 命中（出现 2027 年度职工医保基数件，需人工处理）
- *   1 = 取网失败（网络或接口异常，不等于「没有」）
+ *   1 = 取网失败（网络 / TLS / 接口异常，不等于「没有」）
  *
  * 命中判据（与第九十三批一致）：
  *   标题或正文同时含「2027」与「职工基本医疗保险缴费基数」/「职工医保缴费基数」/
@@ -37,6 +43,15 @@ const zlib = require('zlib');
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
 
+/* TLS 证书校验：默认开启。--insecure 只用于人工确认某站点证书确实异常后的定位复跑。 */
+let INSECURE = false;
+const TLS_ERR_CODES = new Set([
+  'UNABLE_TO_VERIFY_LEAF_SIGNATURE', 'SELF_SIGNED_CERT_IN_CHAIN', 'DEPTH_ZERO_SELF_SIGNED_CERT',
+  'UNABLE_TO_GET_ISSUER_CERT_LOCALLY', 'CERT_HAS_EXPIRED', 'CERT_NOT_YET_VALID',
+  'ERR_TLS_CERT_ALTNAME_INVALID', 'ERR_SSL_WRONG_VERSION_NUMBER', 'EPROTO'
+]);
+const tlsFails = [];
+
 const out = [];
 function log(s) { out.push(String(s)); }
 
@@ -44,11 +59,11 @@ function log(s) { out.push(String(s)); }
 function get(url, redirects) {
   redirects = redirects || 0;
   return new Promise(function (resolve) {
-    if (redirects > 5) { resolve({ status: 0, body: '' }); return; }
+    if (redirects > 5) { resolve({ status: 0, body: '', err: '重定向超过 5 次' }); return; }
     const mod = url.indexOf('https:') === 0 ? https : http;
     const req = mod.get(url, {
       headers: { 'User-Agent': UA, 'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate' },
-      rejectUnauthorized: false,
+      rejectUnauthorized: !INSECURE,
       timeout: 60000
     }, function (res) {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
@@ -67,8 +82,17 @@ function get(url, redirects) {
       });
       stream.on('error', function () { resolve({ status: res.statusCode || 0, body: '' }); });
     });
-    req.on('timeout', function () { req.destroy(); resolve({ status: 0, body: '' }); });
-    req.on('error', function () { resolve({ status: 0, body: '' }); });
+    req.on('timeout', function () { req.destroy(); resolve({ status: 0, body: '', err: '请求超时（60s）' }); });
+    req.on('error', function (e) {
+      const code = (e && e.code) || '';
+      if (TLS_ERR_CODES.has(code)) {
+        const msg = 'TLS 证书校验失败（' + code + '）';
+        tlsFails.push({ url: url, code: code });
+        resolve({ status: 0, body: '', err: INSECURE ? msg : msg + '，默认不放行' });
+        return;
+      }
+      resolve({ status: 0, body: '', err: '网络错误' + (code ? '（' + code + '）' : '') });
+    });
   });
 }
 
@@ -115,7 +139,7 @@ function pick(a) {
 /* ---------- 各渠道抽取 ---------- */
 function fromZhPostmeta(cat) {
   return get('https://zhsi.zhuhai.gov.cn/postmeta/i/' + cat + '.json').then(function (r) {
-    if (!r.status || !r.body) return { cat: cat, items: [], err: 'HTTP ' + r.status };
+    if (!r.status || !r.body) return { cat: cat, items: [], err: r.err || ('HTTP ' + r.status) };
     let j;
     try { j = JSON.parse(r.body); } catch (e) { return { cat: cat, items: [], err: 'JSON parse fail' }; }
     const arr = j.articles || j.data || j.list || (Array.isArray(j) ? j : []);
@@ -124,7 +148,7 @@ function fromZhPostmeta(cat) {
 }
 function fromZhrsjPostmeta(cat) {
   return get('https://zhrsj.zhuhai.gov.cn/postmeta/i/' + cat + '.json').then(function (r) {
-    if (!r.status || !r.body) return { cat: cat, items: [], err: 'HTTP ' + r.status };
+    if (!r.status || !r.body) return { cat: cat, items: [], err: r.err || ('HTTP ' + r.status) };
     let j;
     try { j = JSON.parse(r.body); } catch (e) { return { cat: cat, items: [], err: 'JSON parse fail' }; }
     const arr = j.articles || j.data || j.list || (Array.isArray(j) ? j : []);
@@ -133,7 +157,7 @@ function fromZhrsjPostmeta(cat) {
 }
 function fromDgPostmeta(cat) {
   return get('https://www.dg.gov.cn/ylbzj/postmeta/g/' + cat + '_1.json').then(function (r) {
-    if (!r.status || !r.body) return { cat: cat, items: [], err: 'HTTP ' + r.status };
+    if (!r.status || !r.body) return { cat: cat, items: [], err: r.err || ('HTTP ' + r.status) };
     let j;
     try { j = JSON.parse(r.body); } catch (e) { return { cat: cat, items: [], err: 'JSON parse fail' }; }
     const arr = j.articles || j.data || j.list || (Array.isArray(j) ? j : []);
@@ -142,7 +166,7 @@ function fromDgPostmeta(cat) {
 }
 function fromDgHrss(cat) {
   return get('http://dghrss.dg.gov.cn/gkmlpt/api/all/' + cat + '?page=1&sid=769035').then(function (r) {
-    if (!r.status || !r.body) return { cat: cat, items: [], err: 'HTTP ' + r.status };
+    if (!r.status || !r.body) return { cat: cat, items: [], err: r.err || ('HTTP ' + r.status) };
     let j;
     try { j = JSON.parse(r.body); } catch (e) { return { cat: cat, items: [], err: 'JSON parse fail' }; }
     const arr = j.data || j.articles || j.list || (Array.isArray(j) ? j : []);
@@ -154,7 +178,7 @@ function gdAll(kw) {
   const url = 'https://search.gd.gov.cn/jsonp/search/all?callback=cb&site_id=553612&keywords=' +
     encodeURIComponent(kw) + '&range=province&pagesize=30&sort=time&position=all&page=1';
   return get(url).then(function (r) {
-    if (!r.status || !r.body) return { kw: kw, items: [], err: 'HTTP ' + r.status };
+    if (!r.status || !r.body) return { kw: kw, items: [], err: r.err || ('HTTP ' + r.status) };
     let body = r.body.trim();
     if (body.indexOf('cb(') === 0) body = body.slice(body.indexOf('(') + 1, body.lastIndexOf(')'));
     let j;
@@ -197,11 +221,13 @@ function hsaZcfg() {
 function main() {
   const argv = process.argv.slice(2);
   const wide = argv.indexOf('--wide') >= 0;
+  INSECURE = argv.indexOf('--insecure') >= 0;
   const outIdx = argv.indexOf('--out');
   const outFile = outIdx >= 0 ? argv[outIdx + 1] : null;
 
   log('P8 巡检 —— 珠海 / 东莞 2027 年度职工基本医疗保险缴费基数件');
   log('时间：' + new Date().toISOString());
+  if (INSECURE) log('⚠ 已启用 --insecure：跳过 TLS 证书校验。结果只能用于定位证书异常站点，不能作为"权威数据"结论或长期监测依据。');
   log('');
 
   const tasks = [];
@@ -238,6 +264,13 @@ function main() {
     });
   })).then(function () {
     log('');
+    if (tlsFails.length) {
+      log('⚠ TLS 证书校验失败 ' + tlsFails.length + ' 处：');
+      tlsFails.forEach(function (t) { log('    ' + t.code + '  ' + t.url); });
+      log('    处理：先用 openssl s_client / 浏览器确认证书链；确属站点证书异常时可用 --insecure 复跑定位，');
+      log('    但 --insecure 的结果不得作为权威数据结论，也不得据此改动 CITIES。');
+      log('');
+    }
     if (errs) log('⚠ 有 ' + errs + ' 个渠道取网失败 —— 不等于「没有」，请重跑。');
     log(hits.length ? ('★ 共 ' + hits.length + ' 处命中，需人工处理。') : '未命中 2027 年度职工医保基数件（发文窗口未到，属正常）。');
     const text = out.join('\n');

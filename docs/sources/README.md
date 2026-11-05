@@ -30,8 +30,16 @@
 | 收录链接 | **108 条** |
 | 与仓库不一致（待复核） | **16 条** |
 
-原始结果：`G1.json` ~ `G9.json`（每组一个），汇总见 `_summary.json`。
-**未被任何分组覆盖的 87 城**见 `_summary.json` 的 `missingCities`。
+原始结果：`G1.json` ~ `G9.json`（每组一个）。
+
+> `_summary.json` 是**生成物，不是手写文件**：顶层指标与 `mismatches` 明细由
+> `node tools/data-quality.js --write` 从本目录的 `*.json` 重新计算，
+> 人工内容（`*Note` / `note` / `statsSource` / `permanentNotFound`）按 key 原样保留。
+> **不要手改其中的数字**——`node tools/data-quality.js`（CI 会跑）会比对磁盘汇总物与
+> `readRecords()` 实测值，不一致即失败并提示重跑 `--write`。
+> 当前实测：106 文件 / 337 城全覆盖 / confirmed 241 / partial 93 / notFound 3 / 链接 1382 / 不一致 415。
+> 未覆盖城市清单见 `missingCities`（当前为空）。
+
 ## 待复核的不一致（子 Agent 报出，**尚未本人复核原文**）
 
 > ⚠️ **这些一律不能直接改数据**。前几轮有过"按结构特征把机关口径误判为企业口径"的先例。

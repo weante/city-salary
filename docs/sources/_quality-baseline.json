@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-11-05",
+  "basis": "阈值 = 2026-11-05 离线实测值；防回归而非清零，任何指标变化都需在同一 PR 内改本文件并说明原因",
+  "thresholds": {
+    "minFiles": 106,
+    "minChecked": 337,
+    "minConfirmed": 241,
+    "minUrls": 1382,
+    "maxPartial": 93,
+    "maxNotFound": 3,
+    "maxMismatch": 415,
+    "maxMissing": 0,
+    "maxParseErrors": 0
+  },
+  "tightening": [
+    "2026-11-05 首次建立：files 106 / checked 337 / confirmed 241 / partial 93 / notFound 3 / urls 1382 / mismatch 415 / missing 0。目标：missing 保持 0 → notFound 降到 0 → partial 逐年下降。"
+  ]
+}
