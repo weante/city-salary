@@ -9,10 +9,10 @@
     "url": "https://github.com/weante/city-salary.git"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20 <25"
   },
   "scripts": {
-    "test": "node tools/test-calc.js && node tools/check-golden.js && node tools/check-dom.js && node tools/check-sync.js && node tools/data-quality.js && node tools/test-export.js",
+    "test": "node tools/test-calc.js && node tools/check-golden.js && node tools/check-dom.js && node tools/check-sync.js && node tools/data-quality.js && node tools/test-export.js && node tools/e2e-smoke.js && node tools/check-jsdoc.js",
     "test:calc": "node tools/test-calc.js",
     "test:golden": "node tools/check-golden.js",
     "test:dom": "node tools/check-dom.js",
@@ -20,6 +20,8 @@
     "test:quality": "node tools/data-quality.js",
     "quality:write": "node tools/data-quality.js --write",
     "test:export": "node tools/test-export.js",
+    "test:e2e": "node tools/e2e-smoke.js",
+    "test:jsdoc": "node tools/check-jsdoc.js",
     "golden:update": "node tools/check-golden.js --update",
     "warn:update": "node tools/gen-warn-backlog.js --update",
     "sync": "node tools/sync.js"

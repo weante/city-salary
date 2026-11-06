@@ -67,11 +67,24 @@ console.log('\n4. Node 版本');
 const want = (pkg.engines && pkg.engines.node) || '';
 const major = Number(process.versions.node.split('.')[0]);
 const min = (want.match(/(\d+)/) || [])[1];
+const upper = want.match(/(<=?)\s*(\d+)/);
+let verOk = true;
 if (min && major < Number(min)) {
   console.log(`  ✗ 当前 Node ${process.versions.node}，engines 要求 ${want}`);
-  fail++;
-} else {
+  verOk = false;
+}
+if (upper) {
+  const lim = Number(upper[2]);
+  const ok = upper[1] === '<=' ? major <= lim : major < lim;
+  if (!ok) {
+    console.log(`  ✗ 当前 Node ${process.versions.node} 超出上界 ${upper[1]}${lim}（engines ${want}）`);
+    verOk = false;
+  }
+}
+if (verOk) {
   console.log(`  ✓ 当前 Node ${process.versions.node} 满足 engines ${want || '(未声明)'}`);
+} else {
+  fail++;
 }
 
 /* ---------- 5. test-calc 被 require 时必须静默 ----------

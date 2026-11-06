@@ -11,6 +11,9 @@
  * 各脚本对桩的要求略有差异，用 opts 表达：
  *   opts.window   —— 覆盖/扩展 window（如 test-export 注入 html2canvas 桩）
  *   opts.onAppend —— 追加 <script> 时的回调（test-export 用它验证去重缓存）
+ *   opts.source   —— 改读另一份 HTML（e2e-smoke 用它直接加载 site/index.html）
+ *   opts.sourceText —— 直接给脚本源码（跳过读文件；e2e-smoke 从 site/index.html 抽取）
+ *   opts.setTimeout —— 替换定时器（e2e-smoke 用它截获 exportPDF 的兜底打印计时）
  */
 'use strict';
 const fs = require('fs');
@@ -18,8 +21,8 @@ const path = require('path');
 
 const CALC_PATH = path.join(__dirname, '..', 'skills', 'city-salary', 'assets', 'calculator.html');
 
-function readCalculatorSource() {
-  const html = fs.readFileSync(CALC_PATH, 'utf8');
+function readCalculatorSource(filePath) {
+  const html = fs.readFileSync(filePath || CALC_PATH, 'utf8');
   const m = html.match(/<script>([\s\S]*)<\/script>/);
   if (!m) throw new Error('calculator.html 中找不到 <script> 块');
   return m[1];
@@ -70,9 +73,11 @@ function loadCalculator(opts) {
     querySelectorAll: () => [],
   };
   const window = Object.assign({ print() {} }, opts.window || {});
+  const scriptSrc = opts.sourceText !== undefined ? opts.sourceText : readCalculatorSource(opts.source);
+  const timer = opts.setTimeout || setTimeout;
   const api = new Function('document', 'window', 'console', 'setTimeout',
-    readCalculatorSource() + '\n;return {' + API_NAMES + '};'
-  )(document, window, console, setTimeout);
+    scriptSrc + '\n;return {' + API_NAMES + '};'
+  )(document, window, console, timer);
 
   api._doc = document;
   api._window = window;

@@ -87,7 +87,7 @@
 1. 改 `tools/province-year.js`（权威副本）+ 本文档第三节表格；
 2. 改 `skills/city-salary/assets/calculator.html` 中对应城市的 `opt` 覆盖（`dataYear` / `dataNext`）；
 3. 若涉及基数数值本身，跑 `node tools/gen-city-params.js --extract` 由 `CITIES` 重建 `skills/city-salary/data/cities.json`，再跑 `node tools/gen-city-params.js --write` 重写 `skills/city-salary/references/city-parameters.md` 的参数表生成区（勿手改）；`AGENTS.md` 只留指针，不复制参数；
-4. `node tools/sync.js` → `node tools/test-calc.js` → `node tools/check-golden.js` → `node tools/check-dom.js` → `node tools/check-sync.js` → `node tools/test-export.js` 六连验证；
+4. `node tools/sync.js` → `node tools/test-calc.js` → `node tools/check-golden.js` → `node tools/check-dom.js` → `node tools/check-sync.js` → `node tools/data-quality.js` → `node tools/test-export.js` → `node tools/e2e-smoke.js` → `node tools/check-jsdoc.js` 九连验证；
 5. 新增省份时，**必须同时在基线表登记**，否则检查 E 会报「省份分组未登记」。
 
 ## 六、写作注意

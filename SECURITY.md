@@ -15,7 +15,7 @@ city-salary 的**交付物**是一个纯本地、零依赖的单文件 HTML 计�
 
 | 脚本 | 用途 |
 |------|------|
-| `test-calc.js` / `check-golden.js` / `check-dom.js` / `test-export.js` | 计算回归、黄金快照、DOM 结构、导出降级链 |
+| `test-calc.js` / `check-golden.js` / `check-dom.js` / `test-export.js` / `e2e-smoke.js` / `check-jsdoc.js` | 计算回归、黄金快照、DOM 结构、导出降级链、最小离线 E2E（DOM 桩，无浏览器）、JSDoc 结构检查 |
 | `check-sync.js` | 镜像 / 生成物 / 陈旧表述 / 年度口径等漂移检查 |
 | `gen-city-params.js` | 由 `CITIES` 重建 `data/cities.json`、生成参数表 |
 | `data-quality.js` / `source-records.js` | 离线统计 `docs/sources/*.json` 快照并做基线门禁 |
@@ -33,7 +33,7 @@ city-salary 的**交付物**是一个纯本地、零依赖的单文件 HTML 计�
 
 ### CI 是否需要网络
 
-**不需要。** `.github/workflows/ci.yml` 的 `guards` job 在 Node 18/20/22 矩阵里只跑离线脚本。
+**不需要。** `.github/workflows/ci.yml` 的 `guards` job 在 Node 20/22/24 矩阵里只跑离线脚本。
 新增的 `node tools/data-quality.js` 只读已提交的 `docs/sources/*.json` 快照与
 `docs/sources/_quality-baseline.json` 基线，零网络请求，不会因外部站点超时导致 flaky。
 两个联网脚本不在 CI 中，只能由维护者在本机手动执行或放进独立的定时任务。

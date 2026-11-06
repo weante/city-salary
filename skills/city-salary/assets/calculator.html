@@ -3855,9 +3855,23 @@ var TRAPS=[[36000,2309.10],[144000,13199.20],[300000,13749.25],[420000,19249.30]
    I = inputs（readInputs 的结果）  C = contrib（社保+公积金）
    D = deductions（专项附加+补充扣除）  T = tax（个税与净额）
    城市参数对象：P=养老 M=城市医保 MT=生育 IJ=工伤 U=失业 HF=公积金 */
+/**
+ * 把 v 夹取到 [a, b] 区间。
+ * @param {number} v 待夹取的原始值
+ * @param {number} a 下限（调用方保证 a <= b）
+ * @param {number} b 上限
+ * @returns {number} 夹取后的值
+ */
 function cl(v,a,b){return Math.max(a,Math.min(b,v))}
 /* 工伤保险等「法定无缴费基数上下限」的险种：inj.max<=0 视为无上限（法规只规定
    「工资总额×费率」不设上下限），inj.min<=0 视为无下限；此时候选值只保非负、不夹取。 */
+/**
+ * 无法定上下限险种的夹取：上限 b<=0 表示"无上限"，此时只保证非负。
+ * @param {number} v 原始值
+ * @param {number} a 下限（<=0 表示无下限）
+ * @param {number} b 上限（<=0 表示无上限）
+ * @returns {number} 夹取后的值
+ */
 function cl0(v,a,b){return b>0?cl(v,a,b):Math.max(a||0,v)}
 /* 就业起始月夹取：本字段口径是"本年度开始就业时间"，同一年度内不可能出现
    "现在 3 月、但本年度 12 月才开始就业"，故起始月晚于当前月时按当前月计（即 1 个月）。
@@ -4558,6 +4572,14 @@ function readInputs(ctx){
 
 /* ---- 第 2 段：社保与公积金缴费 ----
    个人侧（决定到手现金）与单位侧（仅展示）分别算。 */
+/**
+ * 计算个人侧与单位侧的社保、公积金缴费额。
+ * @param {Object} I 归一化输入：pB/mB/uB/hB/mtB/ijB 为各险种缴费基数，P/U/md/MT/IJ 为费率，
+ *   hfD/hfDComp 为公积金个人/单位比例，ltc 为长期护理险是否参与
+ * @param {Object} ctx 计算上下文：city 城市参数对象、hk 户籍（1=深户）、houseMode 等
+ * @returns {{pE:number,mE:number,uE:number,ltcE:number,siE:number,pComp:number,siC:number,hfE:number,hfC:number}}
+ *   各险种个人缴费与单位社保合计（siE/siC），hfE/hfC 为公积金个人/单位额
+ */
 function calcContrib(I,ctx){
   var city=ctx.city;
   var pE=I.pB*I.P.emp,mE=I.mB*I.md.emp+I.medFix,uE=I.uB*I.U.emp,ltcE=I.ltc?I.pB*city.ltc.emp:0;
@@ -4572,6 +4594,14 @@ function calcContrib(I,ctx){
 
 /* ---- 第 3 段：专项附加扣除与补充扣除 ----
    专项附加七项（互斥关系由界面按钮保证）；补充扣除三项既减税、也是个人真实现金支出。 */
+/**
+ * 计算专项附加扣除与补充扣除（含企业年金 4% 上限回写与提示）。
+ * @param {Object} I 归一化输入（pB 养老基数等）
+ * @param {Object} ctx 计算上下文（city.rent 租房扣除上限、houseMode 等）
+ * @returns {{childA:number,eduA:number,houseA:number,elderlyA:number,medicalSelf:number,spT:number,
+ *   medicalAnnual:number,hi:number,pp:number,anPct:number,anAmt:number,suppM:number,suppCash:number}}
+ *   月度可扣除额 spT、年度专项医疗 medicalAnnual、补充扣除 suppM/suppCash 等
+ */
 function calcDeductions(I,ctx){
   var city=ctx.city;
   var childA=$("childOn").checked?cl(gv("childAmt"),0,10000):0;
@@ -4605,6 +4635,14 @@ function calcDeductions(I,ctx){
 /* ---- 第 4 段：个税 ----
    月度走累计预扣预缴；年度预估是汇算后口径（含大病医疗）；
    年终奖单独计税并检测六个临界值陷阱。 */
+/**
+ * 计算个税（月度累计预扣预缴 + 年度汇算预估 + 年终奖临界值检测）。
+ * @param {Object} I 归一化输入：sal 月薪、mW 本年度已计薪月数、aM 年度月数等
+ * @param {Object} C 缴费结果（calcContrib 的返回，含 siE/hfE）
+ * @param {Object} D 扣除结果（calcDeductions 的返回，含 spT/suppM/medicalAnnual 等）
+ * @returns {Object} 应纳税所得额、累计税额、当月税额、税后净额 net、税负比 ratio，
+ *   以及年度汇算与年终奖临界值相关字段（详见返回对象键名）
+ */
 function calcTax(I,C,D){
   var mDed=C.siE+C.hfE+5000+D.spT+D.suppM;
   var cumI=I.sal*I.mW,cumD=mDed*I.mW,cumTx=Math.max(0,cumI-cumD);
@@ -5138,6 +5176,15 @@ var EXPORT_PDF={pw:297,ph:210,mx:10,my:10};  /* A4 横向 + 上下左右页边�
    cards      不可切块 [{top,h}]（画布 px）
    rows       可切点 [{top,b}]（画布 px）
    返回 [[start,end],…]（画布 px，闭开区间）：段与段首尾相接、不重叠、不遗漏。 */
+/**
+ * 把 PDF 内容高度切成分页段：趋势图卡整块另起一页，卡片与表格行不被横切。
+ * @param {number} totalPx 内容总高度（px）
+ * @param {number} pageCapPx 单页可用高度（px）
+ * @param {number} trendTopPx 趋势图卡顶边（<=0 表示无此卡）
+ * @param {Array<{top:number,h:number}>} cards 不可切卡片（top + h 为底边）
+ * @param {Array<{top:number,b:number}>} rows 明细表行区间（top/b 为上下边）
+ * @returns {Array<[number,number]>} 每页的 [start,end] 像素区间
+ */
 function planSegments(totalPx,pageCapPx,trendTopPx,cards,rows){
   var segs=[],segStart=0,guard=0;
   cards=cards||[];rows=rows||[];

@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['18', '20', '22']
+        node: ['20', '22', '24']
 
     steps:
       - name: 检出
@@ -39,7 +39,7 @@ jobs:
       - name: 零依赖红线自检
         run: node tools/ci-selfcheck.js
 
-      - name: 计算回归（6600+ 项断言）
+      - name: 计算回归（9299 项断言）
         run: node tools/test-calc.js
 
       - name: 黄金用例快照（16 用例 × 4 面板逐字节比对）
@@ -56,3 +56,9 @@ jobs:
 
       - name: 导出 PDF 降级链
         run: node tools/test-export.js
+
+      - name: 最小离线 E2E（site/index.html 脚本 + DOM 桩，无浏览器）
+        run: node tools/e2e-smoke.js
+
+      - name: JSDoc 结构检查（关键计算函数注释与签名一致，零依赖不跑 tsc）
+        run: node tools/check-jsdoc.js

@@ -933,7 +933,7 @@ eq('郑州·保留 warn（医保基数市级口径与省级口径并存）', A.C
 eq('开封·保留 warn（医保费率仍是征求意见稿）', A.CITIES.kf.warn, true);
 eq('漯河·保留 warn（公积金 2026 年度件未找到）', A.CITIES.lh.warn, true);
 eq('南阳·保留 warn（大额基数是否随年度同步待核）', A.CITIES.ny.warn, true);
-eq('第六十二批·南阳大额个人月额由19.16更新为19.56（6520×0.3%，宛政办〔2021〕17号第十一条单位与个人各50%）', A.CITIES.ny.medFixEmp, 19.56);
+eq('南阳大额个人月额由19.16更新为19.56（6520×0.3%，宛政办〔2021〕17号第十一条单位与个人各50%）', A.CITIES.ny.medFixEmp, 19.56);
 eq('河南·暂保留 warn 的恰好 4 城', ['zzheng', 'kf', 'lh', 'ny'].filter(k => A.CITIES[k].warn).length, 4);
 eq('湖北·第1档武汉下限(鄂人社发〔2025〕28号)', A.CITIES.wuha.pension.min, 4498);
 eq('湖北·第1档武汉上限', A.CITIES.wuha.pension.max, 22488);
@@ -1078,12 +1078,12 @@ eq('浙江·丽水·医保个人2%', A.CITIES.lish.med.emp, 0.02);
 eq('浙江·丽水·公积金下限2180', A.CITIES.lish.hf.min, 2180);
 eq('浙江·丽水·公积金上限36405（2025年度暂用）', A.CITIES.lish.hf.max, 36405);
 eq('浙江·丽水·note含丽政办发〔2021〕61号', A.CITIES.lish.note.indexOf('丽政办发〔2021〕61号') >= 0, true);
-eq('第三十批B·南通仍warn（2026基数未公布+大病固定额无件）', A.CITIES.nt.warn, true);
-eq('第三十批B·泰州仍warn（公积金下限冲突）', A.CITIES.tz.warn, true);
-eq('第三十批B·无锡仍warn（生育费率无件）', A.CITIES.wx.warn, true);
-eq('第三十批B·金华仍warn（公积金上限无官方文本）', A.CITIES.jh.warn, true);
-eq('第三十批B·宁波仍warn（社保基数无件+公积金下限无件）', A.CITIES.nb.warn, true);
-eq('第三十批B·丽水仍warn（医保单位费率not-found）', A.CITIES.lish.warn, true);
+eq('南通仍warn（2026基数未公布+大病固定额无件）', A.CITIES.nt.warn, true);
+eq('泰州仍warn（公积金下限冲突）', A.CITIES.tz.warn, true);
+eq('无锡仍warn（生育费率无件）', A.CITIES.wx.warn, true);
+eq('金华仍warn（公积金上限无官方文本）', A.CITIES.jh.warn, true);
+eq('宁波仍warn（社保基数无件+公积金下限无件）', A.CITIES.nb.warn, true);
+eq('丽水仍warn（医保单位费率not-found）', A.CITIES.lish.warn, true);
 eq('安徽·基数下限(皖人社秘〔2026〕113号)', A.CITIES.hef.pension.min, 4354);
 eq('安徽·基数上限', A.CITIES.hef.pension.max, 21772);
 eq('安徽·失业单位0.5%', A.CITIES.hef.unemp.comp, 0.005);
@@ -1205,35 +1205,35 @@ eq('景德镇·公积金上限23000（估算，2026 年度件官网未发布）'
 eq('景德镇·warn 保留（2026 年度缴存基数件官网查无）', A.CITIES.jdz.warn, true);
 eq('三门峡·大额220元/年≈18.33元/月', A.CITIES.smx.medFixEmp, 18.33);
 eq('商丘·大额150元/年=12.5元/月', A.CITIES.sqiu.medFixEmp, 12.5);
-ok('第六十二批·南阳大额按0.6%总额、单位个人各50%即得19.56元/月', Math.round(6520*0.006/2*100)/100, A.CITIES.ny.medFixEmp);
-  eq('第六十一批·南阳 medComp 8.5% 不变（宛政办〔2021〕17号第五条企业口径）', A.CITIES.ny.med.comp, 0.085);
-  ok('第六十一批·南阳 8.5+2=10.5 企业合计、8+2=10 机关事业合计（同件两组数字互证）', Math.round((0.085+0.02)*1000)/1000, 0.105);
-  ok('第六十一批·南阳 企业口径高于机关事业口径（排除口径误判）', 0.085 > 0.08, true);
-  ok('第六十一批·南阳 note 记「河南省平均工资」定义为上年度河南省全口径城镇单位就业人员平均工资', A.CITIES.ny.note.indexOf('上年度河南省全口径城镇单位就业人员平均工资') >= 0, true);
-  ok('第六十一批·南阳 note 记录第三十九条自2021年6月1日起施行', A.CITIES.ny.note.indexOf('自2021年6月1日起施行') >= 0, true);
-  ok('第六十一批·南阳 warn 因清理结果附件未解析而保留', A.CITIES.ny.warn, true);
-  eq('第六十一批·南阳 社保基数 3912~19560 不变', A.CITIES.ny.pension.min + '~' + A.CITIES.ny.pension.max, '3912~19560');
-  eq('第六十一批·三门峡 medFixEmp 18.33 不改（220元/年为合计口径）', A.CITIES.smx.medFixEmp, 18.33);
-  ok('第六十一批·三门峡 220÷12＝18.33（本表按全额计入）', Math.round(220/12*100)/100, 18.33);
-  ok('第六十一批·三门峡 note 记办法第七条负担比例由单位自行确定', A.CITIES.smx.note.indexOf('负担比例由单位') >= 0, true);
-  ok('第六十一批·开封 180÷12＝15 元/月与 medFixEmp 15 零偏差（汴医保办〔2026〕36号）', Math.round(180/12*100)/100, A.CITIES.kf.medFixEmp);
+ok('南阳大额按0.6%总额、单位个人各50%即得19.56元/月', Math.round(6520*0.006/2*100)/100, A.CITIES.ny.medFixEmp);
+  eq('南阳 medComp 8.5% 不变（宛政办〔2021〕17号第五条企业口径）', A.CITIES.ny.med.comp, 0.085);
+  ok('南阳 8.5+2=10.5 企业合计、8+2=10 机关事业合计（同件两组数字互证）', Math.round((0.085+0.02)*1000)/1000, 0.105);
+  ok('南阳 企业口径高于机关事业口径（排除口径误判）', 0.085 > 0.08, true);
+  ok('南阳 note 记「河南省平均工资」定义为上年度河南省全口径城镇单位就业人员平均工资', A.CITIES.ny.note.indexOf('上年度河南省全口径城镇单位就业人员平均工资') >= 0, true);
+  ok('南阳 note 记录第三十九条自2021年6月1日起施行', A.CITIES.ny.note.indexOf('自2021年6月1日起施行') >= 0, true);
+  ok('南阳 warn 因清理结果附件未解析而保留', A.CITIES.ny.warn, true);
+  eq('南阳 社保基数 3912~19560 不变', A.CITIES.ny.pension.min + '~' + A.CITIES.ny.pension.max, '3912~19560');
+  eq('三门峡 medFixEmp 18.33 不改（220元/年为合计口径）', A.CITIES.smx.medFixEmp, 18.33);
+  ok('三门峡 220÷12＝18.33（本表按全额计入）', Math.round(220/12*100)/100, 18.33);
+  ok('三门峡 note 记办法第七条负担比例由单位自行确定', A.CITIES.smx.note.indexOf('负担比例由单位') >= 0, true);
+  ok('开封 180÷12＝15 元/月与 medFixEmp 15 零偏差（汴医保办〔2026〕36号）', Math.round(180/12*100)/100, A.CITIES.kf.medFixEmp);
 // ---- 第六十三批（2026-10-15）：深圳公积金二轮穷举 + 宝鸡费率制度依据补证 ----
-eq('第六十三批·深圳 公积金 2520~48471 仍不改（二轮穷举零命中）', A.CITIES.sz.hf.min + '~' + A.CITIES.sz.hf.max, '2520~48471');
-eq('第六十三批·深圳 医保 6727~33633 不变', A.CITIES.sz.med.min + '~' + A.CITIES.sz.med.max, '6727~33633');
-ok('第六十三批·深圳 note 记深公积金规〔2022〕2号为最新制度件', A.CITIES.sz.note.indexOf('深公积金规〔2022〕2号') >= 0, true);
-ok('第六十三批·深圳 note 记广东统一搜索索引 12940 条已复核', A.CITIES.sz.note.indexOf('12940') >= 0, true);
-ok('第六十三批·深圳 note 记 2024~2026 三年度件仍缺', A.CITIES.sz.note.indexOf('2024、2025、2026 三个年度') >= 0, true);
-eq('第六十三批·深圳 warn 保留', A.CITIES.sz.warn, true);
-eq('第六十三批·宝鸡 medComp 6.6% 仍不改（费率出处未证实）', A.CITIES.baoj.med.comp, 0.066);
-eq('第六十三批·宝鸡 社保基数 4737~23685 不变', A.CITIES.baoj.pension.min + '~' + A.CITIES.baoj.pension.max, '4737~23685');
-ok('第六十三批·宝鸡 note 引用 2021 年度件 t20211014_326895', A.CITIES.baoj.note.indexOf('t20211014_326895') >= 0, true);
-ok('第六十三批·宝鸡 note 引用两险合并实施原文报道 t20200928_326554', A.CITIES.baoj.note.indexOf('t20200928_326554') >= 0, true);
-ok('第六十三批·宝鸡 2021 年度件历史基准自校验 69624÷12＝5802', Math.round(69624/12), 5802);
-ok('第六十三批·宝鸡 2021 年度件历史下限 60% 自校验 5802×0.6＝3481.2', Math.round(5802*0.6*10)/10, 3481.2);
-ok('第六十三批·宝鸡 2021 年度件历史上限 300% 自校验 5802×3＝17406', Math.round(5802*3), 17406);
-ok('第六十三批·宝鸡 2026 年度件三数自校验 100833÷12＝8402.75', Math.round(100833/12*100)/100, 8402.75);
-ok('第六十三批·宝鸡 note 载两险合并口径等于单位合计（含生育）', A.CITIES.baoj.note.indexOf('单位合计（含生育）') >= 0, true);
-ok('第六十三批·宝鸡 warn 保留', A.CITIES.baoj.warn, true);
+eq('深圳 公积金 2520~48471 仍不改（二轮穷举零命中）', A.CITIES.sz.hf.min + '~' + A.CITIES.sz.hf.max, '2520~48471');
+eq('深圳 医保 6727~33633 不变', A.CITIES.sz.med.min + '~' + A.CITIES.sz.med.max, '6727~33633');
+ok('深圳 note 记深公积金规〔2022〕2号为最新制度件', A.CITIES.sz.note.indexOf('深公积金规〔2022〕2号') >= 0, true);
+ok('深圳 note 记广东统一搜索索引 12940 条已复核', A.CITIES.sz.note.indexOf('12940') >= 0, true);
+ok('深圳 note 记 2024~2026 三年度件仍缺', A.CITIES.sz.note.indexOf('2024、2025、2026 三个年度') >= 0, true);
+eq('深圳 warn 保留', A.CITIES.sz.warn, true);
+eq('宝鸡 medComp 6.6% 仍不改（费率出处未证实）', A.CITIES.baoj.med.comp, 0.066);
+eq('宝鸡 社保基数 4737~23685 不变', A.CITIES.baoj.pension.min + '~' + A.CITIES.baoj.pension.max, '4737~23685');
+ok('宝鸡 note 引用 2021 年度件 t20211014_326895', A.CITIES.baoj.note.indexOf('t20211014_326895') >= 0, true);
+ok('宝鸡 note 引用两险合并实施原文报道 t20200928_326554', A.CITIES.baoj.note.indexOf('t20200928_326554') >= 0, true);
+ok('宝鸡 2021 年度件历史基准自校验 69624÷12＝5802', Math.round(69624/12), 5802);
+ok('宝鸡 2021 年度件历史下限 60% 自校验 5802×0.6＝3481.2', Math.round(5802*0.6*10)/10, 3481.2);
+ok('宝鸡 2021 年度件历史上限 300% 自校验 5802×3＝17406', Math.round(5802*3), 17406);
+ok('宝鸡 2026 年度件三数自校验 100833÷12＝8402.75', Math.round(100833/12*100)/100, 8402.75);
+ok('宝鸡 note 载两险合并口径等于单位合计（含生育）', A.CITIES.baoj.note.indexOf('单位合计（含生育）') >= 0, true);
+ok('宝鸡 warn 保留', A.CITIES.baoj.warn, true);
 
 /* 河北 / 山西 / 陕西 / 广西 / 云南 / 贵州 参数抽查（对照官方文件） */
 eq('河北·基数下限(冀人社字〔2026〕57号)', A.CITIES.sjz.pension.min, 4076);
@@ -1274,7 +1274,7 @@ eq('南宁·租金1500', A.CITIES.nn.rent, 1500);
 eq('柳州·医保单位8%', A.CITIES.liuz.med.comp, 0.08);
 eq('柳州·租金1100（税务局12366）', A.CITIES.liuz.rent, 1100);
 eq('梧州·租金800（税务局12366）', A.CITIES.wuz.rent, 800);
-eq('第四十六批·桂林·大额固定额字段已移除（第四十七条为0.2%比例型，默认0）', A.CITIES.gl.medFixEmp, 0);
+eq('桂林·大额固定额字段已移除（第四十七条为0.2%比例型，默认0）', A.CITIES.gl.medFixEmp, 0);
 eq('云南·基数下限(云人社发〔2026〕8号)', A.CITIES.km.pension.min, 4403);
 eq('云南·基数上限', A.CITIES.km.pension.max, 22017);
 eq('昆明·医保单位7.9%（含生育0.9%）', A.CITIES.km.med.comp, 0.079);
@@ -1460,11 +1460,11 @@ eq('潮州·公积金下限仍1750（年度件含自执行条款但无逐字2040
 eq('阳江·公积金下限仍1750（2026-07-01年度件，市中心无配套下限件）', A.CITIES.yj.hf.min, 1750);
 eq('清远·公积金下限仍1750（2026-08-20下限件被WAF拦截未取证）', A.CITIES.qy.hf.min, 1750);
 eq('肇庆·公积金下限1850（2026-06-30市中心件明载1850）', A.CITIES.zq.hf.min, 1850);
-eq('第三批·下限2040自校验 round(2040×5%)×2=204', Math.round(2040 * 0.05) * 2, 204);
-eq('第三批·江门note含2027-07-31过渡条款', /2027-07-31/.test(A.CITIES.jm.note), true);
-eq('第三批·佛山note含2027-07-31过渡条款（同一口径）', /2027-07-31/.test(A.CITIES.fs.note), true);
-eq('第三批·潮州note含自执行条款说明', /新的标准执行/.test(A.CITIES.cz.note), true);
-eq('第三批·清远note含WAF拦截取证失败说明', /WAF|412/.test(A.CITIES.qy.note), true);
+eq('下限2040自校验 round(2040×5%)×2=204', Math.round(2040 * 0.05) * 2, 204);
+eq('江门note含2027-07-31过渡条款', /2027-07-31/.test(A.CITIES.jm.note), true);
+eq('佛山note含2027-07-31过渡条款（同一口径）', /2027-07-31/.test(A.CITIES.fs.note), true);
+eq('潮州note含自执行条款说明', /新的标准执行/.test(A.CITIES.cz.note), true);
+eq('清远note含WAF拦截取证失败说明', /WAF|412/.test(A.CITIES.qy.note), true);
 /* ========== 第二十六批（2026-10-13）· 汕头 / 深圳 / 梅州 / 揭阳 ==========
    汕头 汕人社〔2026〕65号（汕人社局+财政局+税务局 2026-08-31 印发，自 2026-09-01 起执行，依 粤府函〔2026〕188号）：
      失业保险缴费工资下限调整为 2040 元；失业金标准 1836 元/月。件在附件 PDF（2 页扫描件），OCR 读出。
@@ -1556,7 +1556,7 @@ eq('辽宁·6市社保基数省级统一', _n35, 5);
 eq('辽宁·已单独设医保区间的城市数=3（阜新/锦州/朝阳）', ['jz','cy','fx'].filter(k=>A.CITIES[k].med!==undefined).length, 3);
 eq('辽宁·医保下限比例逐市不同：丹东=100%对阜新=60%', 3563/5939 < .61 && 5654/5654 === 1, true);
 eq('汕头·失业保险缴费基数下限2040', A.CITIES.st.unemp.min, 2040);
-eq('汕头·失业保险缴费基数上限27699（第七十八批按法定 ÷12 口径改值）', A.CITIES.st.unemp.max, 27699);
+eq('汕头·失业保险缴费基数上限27699（按法定 ÷12 口径改值）', A.CITIES.st.unemp.max, 27699);
 ok('汕头·失业费率 单位0.8%', A.CITIES.st.unemp.comp, .008);
 ok('汕头·失业费率 个人0.2%', A.CITIES.st.unemp.emp, .002);
 eq('汕头·warn 保留（公积金2026年度件未取得）', A.CITIES.st.warn, true);
@@ -1604,107 +1604,107 @@ eq('深圳·warn 新增（公积金无官方来源）', A.CITIES.sz.warn, true);
    全口径月均 7376.75 来自 黔人社发〔2026〕7号（养老/失业/工伤基数 4426.05~22130.25，
    4426.05÷0.6 = 22130.25÷3 = 7376.75，两数互洽）。上限三市同为 300% = 22130.25，故只动下限。
 */
-eq('第三十八批·自校验 7376.75×0.6=4426.05', 7376.75*0.6, 4426.05);
-eq('第三十八批·自校验 7376.75×3=22130.25', 7376.75*3, 22130.25);
-eq('第三十八批·自校验 22130.25÷3=7376.75', 22130.25/3, 7376.75);
-eq('第三十八批·铜仁·医保基数下限5901.4→5163.73（70%）', A.CITIES.trn.med.min, 5163.73);
-eq('第三十八批·铜仁·医保基数上限22130.25（300%，未动）', A.CITIES.trn.med.max, 22130.25);
-eq('第三十八批·铜仁·单位费率6.5%（含生育0.5%）未动', A.CITIES.trn.med.comp, .065);
-eq('第三十八批·铜仁·note 含铜医保发〔2025〕9号', A.CITIES.trn.note.indexOf('铜医保发〔2025〕9号') >= 0, true);
-eq('第三十八批·铜仁·note 含70％－300％逐字', A.CITIES.trn.note.indexOf('70％－300％') >= 0, true);
-eq('第三十八批·铜仁·note 说明未给绝对值', A.CITIES.trn.note.indexOf('未给绝对值') >= 0, true);
-eq('第三十八批·黔东南·医保基数下限5901.4→4426.05（60%）', A.CITIES.qdn.med.min, 4426.05);
-eq('第三十八批·黔东南·医保基数上限22130.25（300%，未动）', A.CITIES.qdn.med.max, 22130.25);
-eq('第三十八批·黔东南·单位费率7%未动', A.CITIES.qdn.med.comp, .07);
-eq('第三十八批·黔东南·note 含第十四条60%', A.CITIES.qdn.note.indexOf('第十四条') >= 0, true);
-eq('第三十八批·黔东南·note 含291件穷举', A.CITIES.qdn.note.indexOf('291件') >= 0, true);
-eq('第三十八批·黔东南·下限与其社保基数下限同值（均7376.75×60%）', A.CITIES.qdn.med.min === A.CITIES.qdn.pension.min, true);
-eq('第三十八批·贵阳·医保基数下限5901.40（80%）保持不变', A.CITIES.guiy.med.min, 5901.4);
-eq('第三十八批·黔南·医保基数下限5901.40（80%）保持不变', A.CITIES.qn.med.min, 5901.4);
-eq('第三十八批·遵义·医保基数下限5901.40 保持不变（无市级件）→第四十二批改4563.70（遵义市60%过渡值）', A.CITIES.zuny.med.min, 4563.70);
-eq('第三十八批·安顺·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.ansh.med.min, 5901.4);
-eq('第三十八批·毕节·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.bij.med.min, 5901.4);
-eq('第三十八批·六盘水·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.lps.med.min, 5901.4);
-eq('第三十八批·黔西南·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.qxn.med.min, 5901.4);
-eq('第三十八批·贵州9市州上限一律22130.25 →第四十二批遵义例外（市级锚22818.51）', ['guiy','lps','ansh','bij','trn','qxn','qdn','qn'].filter(function(k){return A.CITIES[k].med.max!==22130.25;}).length, 0);
-eq('第三十八批·铜仁下限严格小于贵阳下限', A.CITIES.trn.med.min < A.CITIES.guiy.med.min, true);
-eq('第三十八批·黔东南下限严格小于铜仁下限', A.CITIES.qdn.med.min < A.CITIES.trn.med.min, true);
-eq('第三十八批·铜仁warn 保留', A.CITIES.trn.warn, true);
-eq('第三十八批·黔东南warn 保留', A.CITIES.qdn.warn, true);
+eq('自校验 7376.75×0.6=4426.05', 7376.75*0.6, 4426.05);
+eq('自校验 7376.75×3=22130.25', 7376.75*3, 22130.25);
+eq('自校验 22130.25÷3=7376.75', 22130.25/3, 7376.75);
+eq('铜仁·医保基数下限5901.4→5163.73（70%）', A.CITIES.trn.med.min, 5163.73);
+eq('铜仁·医保基数上限22130.25（300%，未动）', A.CITIES.trn.med.max, 22130.25);
+eq('铜仁·单位费率6.5%（含生育0.5%）未动', A.CITIES.trn.med.comp, .065);
+eq('铜仁·note 含铜医保发〔2025〕9号', A.CITIES.trn.note.indexOf('铜医保发〔2025〕9号') >= 0, true);
+eq('铜仁·note 含70％－300％逐字', A.CITIES.trn.note.indexOf('70％－300％') >= 0, true);
+eq('铜仁·note 说明未给绝对值', A.CITIES.trn.note.indexOf('未给绝对值') >= 0, true);
+eq('黔东南·医保基数下限5901.4→4426.05（60%）', A.CITIES.qdn.med.min, 4426.05);
+eq('黔东南·医保基数上限22130.25（300%，未动）', A.CITIES.qdn.med.max, 22130.25);
+eq('黔东南·单位费率7%未动', A.CITIES.qdn.med.comp, .07);
+eq('黔东南·note 含第十四条60%', A.CITIES.qdn.note.indexOf('第十四条') >= 0, true);
+eq('黔东南·note 含291件穷举', A.CITIES.qdn.note.indexOf('291件') >= 0, true);
+eq('黔东南·下限与其社保基数下限同值（均7376.75×60%）', A.CITIES.qdn.med.min === A.CITIES.qdn.pension.min, true);
+eq('贵阳·医保基数下限5901.40（80%）保持不变', A.CITIES.guiy.med.min, 5901.4);
+eq('黔南·医保基数下限5901.40（80%）保持不变', A.CITIES.qn.med.min, 5901.4);
+eq('遵义·医保基数下限5901.40 保持不变（无市级件）→改4563.70（遵义市60%过渡值）', A.CITIES.zuny.med.min, 4563.70);
+eq('安顺·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.ansh.med.min, 5901.4);
+eq('毕节·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.bij.med.min, 5901.4);
+eq('六盘水·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.lps.med.min, 5901.4);
+eq('黔西南·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.qxn.med.min, 5901.4);
+eq('贵州9市州上限一律22130.25 →遵义例外（市级锚22818.51）', ['guiy','lps','ansh','bij','trn','qxn','qdn','qn'].filter(function(k){return A.CITIES[k].med.max!==22130.25;}).length, 0);
+eq('铜仁下限严格小于贵阳下限', A.CITIES.trn.med.min < A.CITIES.guiy.med.min, true);
+eq('黔东南下限严格小于铜仁下限', A.CITIES.qdn.med.min < A.CITIES.trn.med.min, true);
+eq('铜仁warn 保留', A.CITIES.trn.warn, true);
+eq('黔东南warn 保留', A.CITIES.qdn.warn, true);
 /* ===== 第四十二批（2026-10-14）· 贵州 5 市州医保基数下限比例与锚点逐市核实（改值 1 城）===== */
-eq('第四十二批·遵义·医保基数下限4563.70（市级锚60%，非全省80%）', A.CITIES.zuny.med.min, 4563.70);
-eq('第四十二批·遵义·医保基数上限22818.51（市级锚300%，唯一非22130.25的贵州城）', A.CITIES.zuny.med.max, 22818.51);
-eq('第四十二批·遵义·算式自校验 7606.17×60%=4563.70', Math.round(7606.17*0.6*100)/100, A.CITIES.zuny.med.min);
-eq('第四十二批·遵义·算式自校验 7606.17×300%=22818.51', Math.round(7606.17*3*100)/100, A.CITIES.zuny.med.max);
-eq('第四十二批·遵义·单位费率6.5%未动（基本6.0%+生育0.5%）', A.CITIES.zuny.med.comp, .065);
-eq('第四十二批·遵义·个人2%未动', A.CITIES.zuny.med.emp, .02);
-eq('第四十二批·遵义·大额个人10元/月未动', A.CITIES.zuny.medFixEmp, 10);
-eq('第四十二批·遵义·社保基数4426.05~22130.25未动（养老口径与医保口径不同源）', A.CITIES.zuny.med.min !== A.CITIES.zuny.pension.min, true);
-eq('第四十二批·遵义·warn 新增 true（过渡执行值、2026年度件未取到）', A.CITIES.zuny.warn, true);
-eq('第四十二批·遵义·note 明写过渡执行值', A.CITIES.zuny.note.indexOf('过渡执行值') >= 0, true);
-eq('第四十二批·遵义·note 含官方件标题《关于做好2025年度职工基本医疗（生育）保险参保缴费工作的通知》', A.CITIES.zuny.note.indexOf('参保缴费工作的通知') >= 0, true);
-eq('第四十二批·遵义·note 含「2024年社平工资发布后」这一过渡条款', A.CITIES.zuny.note.indexOf('2024年社平工资发布后') >= 0, true);
-eq('第四十二批·遵义·note 含单位1%划入大额（比例型、不可建模）', A.CITIES.zuny.note.indexOf('按基本医疗单位缴费总额的1%划入') >= 0, true);
-eq('第四十二批·遵义上限高于其余贵州8市州（市级锚 vs 省级锚）', A.CITIES.zuny.med.max > A.CITIES.guiy.med.max, true);
-eq('第四十二批·黔东南(60%省级) < 遵义(60%市级) < 铜仁(70%) < 贵阳黔南(80%)', [A.CITIES.qdn.med.min, A.CITIES.zuny.med.min, A.CITIES.trn.med.min, A.CITIES.guiy.med.min].join(','), '4426.05,4563.7,5163.73,5901.4');
-eq('第四十二批·安顺·值不改（安府办发〔2016〕31号口径过旧）', A.CITIES.ansh.med.min, 5901.4);
-eq('第四十二批·安顺·note 记入安府办发〔2016〕31号', A.CITIES.ansh.note.indexOf('安府办发〔2016〕31号') >= 0, true);
-eq('第四十二批·安顺·note 点明旧统计口径「在岗职工月平均工资」已停用', A.CITIES.ansh.note.indexOf('在岗职工月平均工资') >= 0, true);
-eq('第四十二批·安顺·note 点明7%为不含生育口径', A.CITIES.ansh.note.indexOf('不含生育') >= 0, true);
-eq('第四十二批·安顺·warn 保留', A.CITIES.ansh.warn, true);
-eq('第四十二批·毕节·值不改（基本医疗费率未取到）', A.CITIES.bij.med.min, 5901.4);
-eq('第四十二批·毕节·note 记入毕府发〔2023〕9号', A.CITIES.bij.note.indexOf('毕府发〔2023〕9号') >= 0, true);
-eq('第四十二批·毕节·note 点明生育0.8%单列后与基本医疗费率相加（建模例外）', A.CITIES.bij.note.indexOf('0.8％缴纳生育保险费') >= 0, true);
-eq('第四十二批·毕节·warn 保留', A.CITIES.bij.warn, true);
-eq('第四十二批·六盘水·值不改', A.CITIES.lps.med.min, 5901.4);
-eq('第四十二批·六盘水·note 记入穷举件数（医保局28+64、人社231、市政府10）', A.CITIES.lps.note.indexOf('231件') >= 0, true);
-eq('第四十二批·黔西南·值不改', A.CITIES.qxn.med.min, 5901.4);
-eq('第四十二批·黔西南·note 标注大额30.5元/月所引黔府办发〔2021〕4号未取到原文', A.CITIES.qxn.note.indexOf('黔府办发〔2021〕4号') >= 0, true);
-eq('第四十二批·黔西南·note 标注州医保局6个子栏穷举', A.CITIES.qxn.note.indexOf('6个子栏') >= 0, true);
-eq('第四十二批·黔西南·comp 是 0.065 而非 0.65（subagent 误读已否证）', A.CITIES.qxn.med.comp, .065);
-eq('第四十二批·贵州6市州无一 med.comp 超过 0.1（排除百分号笔误）', ['guiy','zuny','ansh','bij','lps','trn','qxn','qdn','qn'].filter(function(k){return A.CITIES[k].med.comp>0.1;}).length, 0);
+eq('遵义·医保基数下限4563.70（市级锚60%，非全省80%）', A.CITIES.zuny.med.min, 4563.70);
+eq('遵义·医保基数上限22818.51（市级锚300%，唯一非22130.25的贵州城）', A.CITIES.zuny.med.max, 22818.51);
+eq('遵义·算式自校验 7606.17×60%=4563.70', Math.round(7606.17*0.6*100)/100, A.CITIES.zuny.med.min);
+eq('遵义·算式自校验 7606.17×300%=22818.51', Math.round(7606.17*3*100)/100, A.CITIES.zuny.med.max);
+eq('遵义·单位费率6.5%未动（基本6.0%+生育0.5%）', A.CITIES.zuny.med.comp, .065);
+eq('遵义·个人2%未动', A.CITIES.zuny.med.emp, .02);
+eq('遵义·大额个人10元/月未动', A.CITIES.zuny.medFixEmp, 10);
+eq('遵义·社保基数4426.05~22130.25未动（养老口径与医保口径不同源）', A.CITIES.zuny.med.min !== A.CITIES.zuny.pension.min, true);
+eq('遵义·warn 新增 true（过渡执行值、2026年度件未取到）', A.CITIES.zuny.warn, true);
+eq('遵义·note 明写过渡执行值', A.CITIES.zuny.note.indexOf('过渡执行值') >= 0, true);
+eq('遵义·note 含官方件标题《关于做好2025年度职工基本医疗（生育）保险参保缴费工作的通知》', A.CITIES.zuny.note.indexOf('参保缴费工作的通知') >= 0, true);
+eq('遵义·note 含「2024年社平工资发布后」这一过渡条款', A.CITIES.zuny.note.indexOf('2024年社平工资发布后') >= 0, true);
+eq('遵义·note 含单位1%划入大额（比例型、不可建模）', A.CITIES.zuny.note.indexOf('按基本医疗单位缴费总额的1%划入') >= 0, true);
+eq('遵义上限高于其余贵州8市州（市级锚 vs 省级锚）', A.CITIES.zuny.med.max > A.CITIES.guiy.med.max, true);
+eq('黔东南(60%省级) < 遵义(60%市级) < 铜仁(70%) < 贵阳黔南(80%)', [A.CITIES.qdn.med.min, A.CITIES.zuny.med.min, A.CITIES.trn.med.min, A.CITIES.guiy.med.min].join(','), '4426.05,4563.7,5163.73,5901.4');
+eq('安顺·值不改（安府办发〔2016〕31号口径过旧）', A.CITIES.ansh.med.min, 5901.4);
+eq('安顺·note 记入安府办发〔2016〕31号', A.CITIES.ansh.note.indexOf('安府办发〔2016〕31号') >= 0, true);
+eq('安顺·note 点明旧统计口径「在岗职工月平均工资」已停用', A.CITIES.ansh.note.indexOf('在岗职工月平均工资') >= 0, true);
+eq('安顺·note 点明7%为不含生育口径', A.CITIES.ansh.note.indexOf('不含生育') >= 0, true);
+eq('安顺·warn 保留', A.CITIES.ansh.warn, true);
+eq('毕节·值不改（基本医疗费率未取到）', A.CITIES.bij.med.min, 5901.4);
+eq('毕节·note 记入毕府发〔2023〕9号', A.CITIES.bij.note.indexOf('毕府发〔2023〕9号') >= 0, true);
+eq('毕节·note 点明生育0.8%单列后与基本医疗费率相加（建模例外）', A.CITIES.bij.note.indexOf('0.8％缴纳生育保险费') >= 0, true);
+eq('毕节·warn 保留', A.CITIES.bij.warn, true);
+eq('六盘水·值不改', A.CITIES.lps.med.min, 5901.4);
+eq('六盘水·note 记入穷举件数（医保局28+64、人社231、市政府10）', A.CITIES.lps.note.indexOf('231件') >= 0, true);
+eq('黔西南·值不改', A.CITIES.qxn.med.min, 5901.4);
+eq('黔西南·note 标注大额30.5元/月所引黔府办发〔2021〕4号未取到原文', A.CITIES.qxn.note.indexOf('黔府办发〔2021〕4号') >= 0, true);
+eq('黔西南·note 标注州医保局6个子栏穷举', A.CITIES.qxn.note.indexOf('6个子栏') >= 0, true);
+eq('黔西南·comp 是 0.065 而非 0.65（subagent 误读已否证）', A.CITIES.qxn.med.comp, .065);
+eq('贵州6市州无一 med.comp 超过 0.1（排除百分号笔误）', ['guiy','zuny','ansh','bij','lps','trn','qxn','qdn','qn'].filter(function(k){return A.CITIES[k].med.comp>0.1;}).length, 0);
 
 /* ===== 第四十三批（2026-10-14）· 山西 11 市：公积金下限分档与下限时效性核实（零改值 + 晋城新增 warn）===== */
 var SX11=['ty','dt','yq','changz','jch','shuoz','jinz','yunc','xinz','linf','ll'];
-eq('第四十三批·山西11市·社保基数一律4244~21219（晋人社厅发〔2026〕27号）', SX11.filter(function(k){return A.CITIES[k].pension.min===4244&&A.CITIES[k].pension.max===21219;}).length, 11);
+eq('山西11市·社保基数一律4244~21219（晋人社厅发〔2026〕27号）', SX11.filter(function(k){return A.CITIES[k].pension.min===4244&&A.CITIES[k].pension.max===21219;}).length, 11);
 // 朔州：一手件逐字复核，数值零偏差（第十二批改动的独立复核）
-eq('第四十三批·朔州·公积金下限2150 未动', A.CITIES.shuoz.hf.min, 2150);
-eq('第四十三批·朔州·公积金上限25044 未动（上一年度职工月均×3）', A.CITIES.shuoz.hf.max, 25044);
-eq('第四十三批·朔州·note 记入一手件数值25044', A.CITIES.shuoz.note.indexOf('25044')>=0, true);
-eq('第四十三批·朔州·note 记入分档2050（怀仁/山阴/应县/右玉）', A.CITIES.shuoz.note.indexOf('2050')>=0, true);
-eq('第四十三批·朔州·warn 保留（2026-10-01 新最低工资待中心补充通知）', A.CITIES.shuoz.warn, true);
+eq('朔州·公积金下限2150 未动', A.CITIES.shuoz.hf.min, 2150);
+eq('朔州·公积金上限25044 未动（上一年度职工月均×3）', A.CITIES.shuoz.hf.max, 25044);
+eq('朔州·note 记入一手件数值25044', A.CITIES.shuoz.note.indexOf('25044')>=0, true);
+eq('朔州·note 记入分档2050（怀仁/山阴/应县/右玉）', A.CITIES.shuoz.note.indexOf('2050')>=0, true);
+eq('朔州·warn 保留（2026-10-01 新最低工资待中心补充通知）', A.CITIES.shuoz.warn, true);
 // 长治：文号补录 + 同件双数自校验
-eq('第四十三批·长治·下限2350 未动（晋政办发〔2026〕29号一类）', A.CITIES.changz.hf.min, 2350);
-eq('第四十三批·长治·上限25359 未动', A.CITIES.changz.hf.max, 25359);
-eq('第四十三批·长治·算式自校验 8453×3=25359', 8453*3, A.CITIES.changz.hf.max);
-eq('第四十三批·长治·note 补录上限文号 长房金发〔2026〕15号', A.CITIES.changz.note.indexOf('长房金发〔2026〕15号')>=0, true);
-eq('第四十三批·长治·note 补录下限文号 长房金发〔2026〕25号', A.CITIES.changz.note.indexOf('长房金发〔2026〕25号')>=0, true);
-eq('第四十三批·长治·山西唯一已落地29号新下限的城市（下限=2350 者唯一）', SX11.filter(function(k){return A.CITIES[k].hf.min===2350;}).length, 1);
-eq('第四十三批·长治·山西唯一下限高于其余10城的城市', SX11.filter(function(k){return A.CITIES[k].hf.min>2350;}).length, 0);
+eq('长治·下限2350 未动（晋政办发〔2026〕29号一类）', A.CITIES.changz.hf.min, 2350);
+eq('长治·上限25359 未动', A.CITIES.changz.hf.max, 25359);
+eq('长治·算式自校验 8453×3=25359', 8453*3, A.CITIES.changz.hf.max);
+eq('长治·note 补录上限文号 长房金发〔2026〕15号', A.CITIES.changz.note.indexOf('长房金发〔2026〕15号')>=0, true);
+eq('长治·note 补录下限文号 长房金发〔2026〕25号', A.CITIES.changz.note.indexOf('长房金发〔2026〕25号')>=0, true);
+eq('长治·山西唯一已落地29号新下限的城市（下限=2350 者唯一）', SX11.filter(function(k){return A.CITIES[k].hf.min===2350;}).length, 1);
+eq('长治·山西唯一下限高于其余10城的城市', SX11.filter(function(k){return A.CITIES[k].hf.min>2350;}).length, 0);
 // 晋城：新增 warn（原 warn=false 且无任何来源）
-eq('第四十三批·晋城·值不改 2150~24183', [A.CITIES.jch.hf.min,A.CITIES.jch.hf.max].join('~'), '2150~24183');
-eq('第四十三批·晋城·warn 新增 true（本轮无任何市级来源）', A.CITIES.jch.warn, true);
-eq('第四十三批·晋城·note 记明域名 6 个候选全 NXDOMAIN', A.CITIES.jch.note.indexOf('NXDOMAIN')>=0, true);
-eq('第四十三批·晋城·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.jch.note.indexOf('晋政办发〔2026〕29号')>=0, true);
+eq('晋城·值不改 2150~24183', [A.CITIES.jch.hf.min,A.CITIES.jch.hf.max].join('~'), '2150~24183');
+eq('晋城·warn 新增 true（本轮无任何市级来源）', A.CITIES.jch.warn, true);
+eq('晋城·note 记明域名 6 个候选全 NXDOMAIN', A.CITIES.jch.note.indexOf('NXDOMAIN')>=0, true);
+eq('晋城·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.jch.note.indexOf('晋政办发〔2026〕29号')>=0, true);
 // 忻州：官方件存在但正文未公开 —— 不采信无法验证的引文
-eq('第四十三批·忻州·值不改 2150~22975', [A.CITIES.xinz.hf.min,A.CITIES.xinz.hf.max].join('~'), '2150~22975');
-eq('第四十三批·忻州·note 明写「正文未公开」', A.CITIES.xinz.note.indexOf('正文未公开')>=0, true);
-eq('第四十三批·忻州·note 明写栏目 20 篇正文均为空', A.CITIES.xinz.note.indexOf('20 篇文章正文均为空')>=0, true);
-eq('第四十三批·忻州·note 未写入无法证实的文号', A.CITIES.xinz.note.indexOf('忻住金归')>=0, false);
-eq('第四十三批·忻州·warn 保留（数值来源仍未证实）', A.CITIES.xinz.warn, true);
+eq('忻州·值不改 2150~22975', [A.CITIES.xinz.hf.min,A.CITIES.xinz.hf.max].join('~'), '2150~22975');
+eq('忻州·note 明写「正文未公开」', A.CITIES.xinz.note.indexOf('正文未公开')>=0, true);
+eq('忻州·note 明写栏目 20 篇正文均为空', A.CITIES.xinz.note.indexOf('20 篇文章正文均为空')>=0, true);
+eq('忻州·note 未写入无法证实的文号', A.CITIES.xinz.note.indexOf('忻住金归')>=0, false);
+eq('忻州·warn 保留（数值来源仍未证实）', A.CITIES.xinz.warn, true);
 // 吕梁：标注 2025 年度 + 29 号提示
-eq('第四十三批·吕梁·值不改 2150~23793', [A.CITIES.ll.hf.min,A.CITIES.ll.hf.max].join('~'), '2150~23793');
-eq('第四十三批·吕梁·note 标注本轮未取到 2026 年度件', A.CITIES.ll.note.indexOf('本轮未取到 2026 年度件')>=0, true);
-eq('第四十三批·吕梁·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.ll.note.indexOf('晋政办发〔2026〕29号')>=0, true);
+eq('吕梁·值不改 2150~23793', [A.CITIES.ll.hf.min,A.CITIES.ll.hf.max].join('~'), '2150~23793');
+eq('吕梁·note 标注本轮未取到 2026 年度件', A.CITIES.ll.note.indexOf('本轮未取到 2026 年度件')>=0, true);
+eq('吕梁·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.ll.note.indexOf('晋政办发〔2026〕29号')>=0, true);
 // 太原：本轮补下限口径
-eq('第四十三批·太原·值不改 2150~29100', [A.CITIES.ty.hf.min,A.CITIES.ty.hf.max].join('~'), '2150~29100');
-eq('第四十三批·太原·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.ty.note.indexOf('晋政办发〔2026〕29号')>=0, true);
+eq('太原·值不改 2150~29100', [A.CITIES.ty.hf.min,A.CITIES.ty.hf.max].join('~'), '2150~29100');
+eq('太原·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.ty.note.indexOf('晋政办发〔2026〕29号')>=0, true);
 // 全省性：11 城 warn 分布与下限时效
-eq('第四十三批·山西11市·warn 城数为 8（第四十三批晋城新增后）', SX11.filter(function(k){return A.CITIES[k].warn===true;}).length, 8);
-eq('第四十三批·山西11市·除长治外均已写入 29 号时效提示或年度说明', SX11.filter(function(k){var n=A.CITIES[k].note; return k==='changz'||n.indexOf('晋政办发〔2026〕29号')>=0||n.indexOf('2025 年度')>=0||n.indexOf('2026 年度件')>=0;}).length, 11);
-eq('第四十三批·山西11市·除长治外下限均低于新一类2350（省级新标准尚未在市级落地）', SX11.filter(function(k){return A.CITIES[k].hf.min<2350;}).length, 10);
-eq('第四十三批·山西11市·医保单位费率未动（11市均无市级一手件）', SX11.filter(function(k){var c=A.CITIES[k].med; return c.comp>.0001&&/未找到|暂按7%估算|待核实/.test(A.CITIES[k].note);}).length>=0, true);
-eq('第四十三批·山西11市·无一市 note 含 Markdown 星号（H-4 防线）', SX11.filter(function(k){return A.CITIES[k].note.indexOf('**')>=0;}).length, 0);
+eq('山西11市·warn 城数为 8（晋城新增后）', SX11.filter(function(k){return A.CITIES[k].warn===true;}).length, 8);
+eq('山西11市·除长治外均已写入 29 号时效提示或年度说明', SX11.filter(function(k){var n=A.CITIES[k].note; return k==='changz'||n.indexOf('晋政办发〔2026〕29号')>=0||n.indexOf('2025 年度')>=0||n.indexOf('2026 年度件')>=0;}).length, 11);
+eq('山西11市·除长治外下限均低于新一类2350（省级新标准尚未在市级落地）', SX11.filter(function(k){return A.CITIES[k].hf.min<2350;}).length, 10);
+eq('山西11市·医保单位费率未动（11市均无市级一手件）', SX11.filter(function(k){var c=A.CITIES[k].med; return c.comp>.0001&&/未找到|暂按7%估算|待核实/.test(A.CITIES[k].note);}).length>=0, true);
+eq('山西11市·无一市 note 含 Markdown 星号（H-4 防线）', SX11.filter(function(k){return A.CITIES[k].note.indexOf('**')>=0;}).length, 0);
 ok('深圳·note 声明 48471 无官方来源', A.CITIES.sz.note.indexOf('48471') >= 0, true);
 /* ===== 第三十七批（2026-10-14）· 内蒙古 7 市盟医保费率 dead-end 重新穷举 + 云南省级枚举 ===== */
 // 内蒙古社保险基来自内人社办发〔2026〕85号（全区全口径月均 8430 元）
@@ -1795,7 +1795,7 @@ eq('湖北·13市州 dataYear 2025（2026 年度件未取到）', _HUB.dataYear,
    铜仁 《铜仁市职工基本医疗（生育）保险实施办法》（医保局+财政局+人社局+税务局四部门联发 2023-12-29 印发，
      第三十八条自 2024-01-01 施行）第十四条「参保单位按本单位上年度职工工资总额的6.5%（含生育保险缴费费率0.5%）缴纳，
      在职职工按本人上年度工资总额的2%缴纳」；第十五条 大额补助单位0.3%+个人48元/年。
-     → 仓库原 note「单位费率未找到，暂按6.5%估算」升级为官方坐实，数值零改动。
+     → 仓库原 note「单位费率未找到，暂按6.5%估算」升级为官方坐实，数值不变。
    三明 明住房〔2026〕2号（2026-06-25 发布，缴存年度 2026-07-01~2027-06-30）公积金 1895~26810，
      月缴存额上限 6434 = round(26810×12%)×2 = 3217×2，下限 190 = round(1895×5%)×2 = 95×2（件内自校验）。
    泉州 泉金管〔2026〕5号（2026-06-26 签发）公积金 2195~24795（安溪/永春/德化 2045），
@@ -1811,57 +1811,57 @@ eq('湖北·13市州 dataYear 2025（2026 年度件未取到）', _HUB.dataYear,
      本表口径约定 medComp 含生育（辽宁并入口径、玉林6%含生育、汕头令205号「7%（含生育保险费）」均为先例），
      故 .06 改为 .07；原 .06 只含基本医保、漏计合并征缴的生育 1%。
 */
-eq('第三十二批·黔东南·医保单位费率7%（黔东南州职工基本医疗保险实施办法第十五条）', A.CITIES.qdn.med.comp, .07);
-eq('第三十二批·黔东南·医保基数下限5901.40→4426.05（第三十八批按州件60%口径修正，见下）', A.CITIES.qdn.med.min, 4426.05);
-eq('第三十二批·黔东南·医保基数上限22130.25', A.CITIES.qdn.med.max, 22130.25);
-eq('第三十二批·黔东南·个人费率仍2%', A.CITIES.qdn.med.emp, .02);
-eq('第三十二批·黔东南·note 含第十五条', A.CITIES.qdn.note.indexOf('第十五条') >= 0, true);
-eq('第三十二批·黔东南·note 含自2024-01-01施行', A.CITIES.qdn.note.indexOf('自2024-01-01施行') >= 0, true);
-eq('第三十二批·黔东南·note 含大额160元（单位50）', A.CITIES.qdn.note.indexOf('160元') >= 0, true);
-eq('第三十二批·黔东南·warn 保留（医保单位费率之外的缺口见第三十八批）', A.CITIES.qdn.warn, true);
-eq('第三十二批·铜仁·医保单位费率6.5%官方坐实（含生育0.5%）', A.CITIES.trn.med.comp, .065);
-eq('第三十二批·铜仁·note 第十四条', A.CITIES.trn.note.indexOf('第十四条') >= 0, true);
-eq('第三十二批·铜仁·note 大额单位0.3%+个人48元', A.CITIES.trn.note.indexOf('个人48元/年') >= 0, true);
-eq('第三十二批·铜仁·公积金19544 未改', A.CITIES.trn.hf.max, 19544);
-eq('第三十二批·三明·公积金下限1895（明住房〔2026〕2号）', A.CITIES.sm.hf.min, 1895);
-eq('第三十二批·三明·公积金上限26810', A.CITIES.sm.hf.max, 26810);
-eq('第三十二批·三明·自校验 上限月缴存额 round(26810x12%)x2=6434', Math.round(26810 * 0.12) * 2, 6434);
-eq('第三十二批·三明·自校验 下限月缴存额 round(1895x5%)x2=190', Math.round(1895 * 0.05) * 2, 190);
-eq('第三十二批·三明·note 含明住房〔2026〕2号', A.CITIES.sm.note.indexOf('明住房〔2026〕2号') >= 0, true);
-eq('第三十二批·泉州·公积金下限2195（泉金管〔2026〕5号）', A.CITIES.quanz.hf.min, 2195);
-eq('第三十二批·泉州·公积金上限24795', A.CITIES.quanz.hf.max, 24795);
-eq('第三十二批·泉州·自校验 上限=99180/12x3', Math.round(99180 / 12 * 3), 24795);
-eq('第三十二批·泉州·自校验 上限月缴存额 两侧各自四舍五入 24795x12%=2975.4->2975x2=5950', Math.round(24795 * 0.12) * 2, 5950);
-eq('第三十二批·泉州·自校验 下限月缴存额 两侧各自四舍五入 2195x5%=109.75->110x2=220', Math.round(2195 * 0.05) * 2, 220);
-eq('第三十二批·泉州·自校验 三县月缴存额 两侧各自四舍五入 2045x5%=102.25->102x2=204', Math.round(2045 * 0.05) * 2, 204);
-eq('第三十二批·泉州·若先合并再取整会得205，故官方是两侧各自取整后相加', Math.round(2045 * 0.05 * 2), 205);
-eq('第三十二批·泉州·医保基数上限22893（闽医保函〔2026〕65号）', A.CITIES.quanz.med.max, 22893);
-eq('第三十二批·泉州·医保基数下限4579', A.CITIES.quanz.med.min, 4579);
-eq('第三十二批·泉州·三明医保基数同为4579~22893', A.CITIES.sm.med.max, 22893);
-eq('第三十二批·福建医保基数自校验不成立（22893≠4579x5）', 4579 * 5 === 22893, false);
-eq('第三十二批·汕头·医保基数下限3953（汕医保〔2025〕228号）', A.CITIES.st.med.min, 3953);
-eq('第三十二批·汕头·医保基数上限19764', A.CITIES.st.med.max, 19764);
-eq('第三十二批·汕头·自校验 19764=6588x300%', 6588 * 3, 19764);
-eq('第三十二批·汕头·自校验 3953=round(6588x60%)', Math.round(6588 * 0.6), 3953);
-eq('第三十二批·汕头·统账结合7%（含生育）', A.CITIES.st.med.comp, .07);
-eq('第三十二批·汕头·单建统筹6%（含生育）', A.CITIES.st.tiers[1].comp, .06);
-eq('第三十二批·汕头·费率自校验 6+1=7', 6 + 1, 7);
-eq('第三十二批·汕头·note 含汕医保〔2025〕228号', A.CITIES.st.note.indexOf('汕医保〔2025〕228号') >= 0, true);
-eq('第三十二批·汕头·note 含汕头市人民政府令第205号', A.CITIES.st.note.indexOf('汕头市人民政府令第205号') >= 0, true);
-eq('第三十二批·汕头·公积金27698 仍无本市2026年度件，未改', A.CITIES.st.hf.max, 27698);
-eq('第三十二批·揭阳·医保单位费率7%（基本医保6%+生育1%）', A.CITIES.jy.med.comp, .07);
-eq('第三十二批·揭阳·自校验 6+1=7', 6 + 1, 7);
-eq('第三十二批·揭阳·医保基数3727~18636 未改', A.CITIES.jy.med.min, 3727);
-eq('第三十二批·揭阳·note 含揭府规〔2026〕5号', A.CITIES.jy.note.indexOf('揭府规〔2026〕5号') >= 0, true);
-eq('第三十二批·揭阳·note 含有效期至2031-09-30', A.CITIES.jy.note.indexOf('2031-09-30') >= 0, true);
-eq('第三十二批·揭阳·warn 保留（公积金24618无2026缴存年度件）', A.CITIES.jy.warn, true);
-eq('第三十二批·深圳·公积金48471 仍无官方来源，未改', A.CITIES.sz.hf.max, 48471);
+eq('黔东南·医保单位费率7%（黔东南州职工基本医疗保险实施办法第十五条）', A.CITIES.qdn.med.comp, .07);
+eq('黔东南·医保基数下限5901.40→4426.05（按州件60%口径修正，见下）', A.CITIES.qdn.med.min, 4426.05);
+eq('黔东南·医保基数上限22130.25', A.CITIES.qdn.med.max, 22130.25);
+eq('黔东南·个人费率仍2%', A.CITIES.qdn.med.emp, .02);
+eq('黔东南·note 含第十五条', A.CITIES.qdn.note.indexOf('第十五条') >= 0, true);
+eq('黔东南·note 含自2024-01-01施行', A.CITIES.qdn.note.indexOf('自2024-01-01施行') >= 0, true);
+eq('黔东南·note 含大额160元（单位50）', A.CITIES.qdn.note.indexOf('160元') >= 0, true);
+eq('黔东南·warn 保留（医保单位费率之外的缺口见）', A.CITIES.qdn.warn, true);
+eq('铜仁·医保单位费率6.5%官方坐实（含生育0.5%）', A.CITIES.trn.med.comp, .065);
+eq('铜仁·note 第十四条', A.CITIES.trn.note.indexOf('第十四条') >= 0, true);
+eq('铜仁·note 大额单位0.3%+个人48元', A.CITIES.trn.note.indexOf('个人48元/年') >= 0, true);
+eq('铜仁·公积金19544 未改', A.CITIES.trn.hf.max, 19544);
+eq('三明·公积金下限1895（明住房〔2026〕2号）', A.CITIES.sm.hf.min, 1895);
+eq('三明·公积金上限26810', A.CITIES.sm.hf.max, 26810);
+eq('三明·自校验 上限月缴存额 round(26810x12%)x2=6434', Math.round(26810 * 0.12) * 2, 6434);
+eq('三明·自校验 下限月缴存额 round(1895x5%)x2=190', Math.round(1895 * 0.05) * 2, 190);
+eq('三明·note 含明住房〔2026〕2号', A.CITIES.sm.note.indexOf('明住房〔2026〕2号') >= 0, true);
+eq('泉州·公积金下限2195（泉金管〔2026〕5号）', A.CITIES.quanz.hf.min, 2195);
+eq('泉州·公积金上限24795', A.CITIES.quanz.hf.max, 24795);
+eq('泉州·自校验 上限=99180/12x3', Math.round(99180 / 12 * 3), 24795);
+eq('泉州·自校验 上限月缴存额 两侧各自四舍五入 24795x12%=2975.4->2975x2=5950', Math.round(24795 * 0.12) * 2, 5950);
+eq('泉州·自校验 下限月缴存额 两侧各自四舍五入 2195x5%=109.75->110x2=220', Math.round(2195 * 0.05) * 2, 220);
+eq('泉州·自校验 三县月缴存额 两侧各自四舍五入 2045x5%=102.25->102x2=204', Math.round(2045 * 0.05) * 2, 204);
+eq('泉州·若先合并再取整会得205，故官方是两侧各自取整后相加', Math.round(2045 * 0.05 * 2), 205);
+eq('泉州·医保基数上限22893（闽医保函〔2026〕65号）', A.CITIES.quanz.med.max, 22893);
+eq('泉州·医保基数下限4579', A.CITIES.quanz.med.min, 4579);
+eq('泉州·三明医保基数同为4579~22893', A.CITIES.sm.med.max, 22893);
+eq('福建医保基数自校验不成立（22893≠4579x5）', 4579 * 5 === 22893, false);
+eq('汕头·医保基数下限3953（汕医保〔2025〕228号）', A.CITIES.st.med.min, 3953);
+eq('汕头·医保基数上限19764', A.CITIES.st.med.max, 19764);
+eq('汕头·自校验 19764=6588x300%', 6588 * 3, 19764);
+eq('汕头·自校验 3953=round(6588x60%)', Math.round(6588 * 0.6), 3953);
+eq('汕头·统账结合7%（含生育）', A.CITIES.st.med.comp, .07);
+eq('汕头·单建统筹6%（含生育）', A.CITIES.st.tiers[1].comp, .06);
+eq('汕头·费率自校验 6+1=7', 6 + 1, 7);
+eq('汕头·note 含汕医保〔2025〕228号', A.CITIES.st.note.indexOf('汕医保〔2025〕228号') >= 0, true);
+eq('汕头·note 含汕头市人民政府令第205号', A.CITIES.st.note.indexOf('汕头市人民政府令第205号') >= 0, true);
+eq('汕头·公积金27698 仍无本市2026年度件，未改', A.CITIES.st.hf.max, 27698);
+eq('揭阳·医保单位费率7%（基本医保6%+生育1%）', A.CITIES.jy.med.comp, .07);
+eq('揭阳·自校验 6+1=7', 6 + 1, 7);
+eq('揭阳·医保基数3727~18636 未改', A.CITIES.jy.med.min, 3727);
+eq('揭阳·note 含揭府规〔2026〕5号', A.CITIES.jy.note.indexOf('揭府规〔2026〕5号') >= 0, true);
+eq('揭阳·note 含有效期至2031-09-30', A.CITIES.jy.note.indexOf('2031-09-30') >= 0, true);
+eq('揭阳·warn 保留（公积金24618无2026缴存年度件）', A.CITIES.jy.warn, true);
+eq('深圳·公积金48471 仍无官方来源，未改', A.CITIES.sz.hf.max, 48471);
 /* 广东 4 城社保险基数落在不同年度口径上，不得互相套用 */
 eq('广东4城养老下限同为省级5521（粤人社发〔2026〕24号统一下限，已不划分片区）', A.CITIES.st.pension.min, 5521);
 eq('广东4城医保基数各自独立：汕头3953', A.CITIES.st.med.min, 3953);
 ok('广东4城医保基数互不相同（3953/4313/3727/6727）', new Set([A.CITIES.st.med.min, A.CITIES.mz.med.min, A.CITIES.jy.med.min, A.CITIES.sz.med.min]).size, 4);
 
-// ===== 第二十七批（2026-10-13）· 四川：泸州 / 凉山 公积金一手件（数值零改动）=====
+// ===== 第二十七批（2026-10-13）· 四川：泸州 / 凉山 公积金一手件（数值不变）=====
 // 泸州 https://zfgjj.luzhou.cn/zwgk/lzyj/bmwj/zxwj/content_34434 （2026-08-19，中心自有 cn 域名=事业单位站点）
 //   上限 26601 依泸州市统计局 2025 年全市城镇非私营单位就业人员平均工资；下限 2200 为全市月最低工资
 //   月缴存额单位与个人各上限 3192、下限 110 → round(26601*12%)=3192、3192*2=6384；round(2200*5%)=110、110*2=220
@@ -2169,10 +2169,10 @@ eq('伊犁·最低比例 5%：单位/个人各 ceil(1750×5%)=88', Math.ceil(175
 eq('伊犁·月缴存额下限 88×2=176（官方按每侧取整后再相加）', Math.ceil(1750 * 0.05) * 2, 176);
 eq('伊犁·上限÷3=2025 年月均工资8728', 26184 / 3, 8728);
 /* 医保费率仍是死路：14 地州逐地州自定（6.5%~9.8%，含生育 0.5%~1%），自治区医保局无统件 */
-eq('新疆·第五十六批后 8 城 warn（阿勒泰取到在职口径已撤，新增乌鲁木齐/克拉玛依/昌吉/阿克苏/克孜勒苏/喀什）', XJ.filter(k => A.CITIES[k].warn).map(k => A.CITIES[k].name).join(','), '乌鲁木齐,克拉玛依,昌吉,阿克苏,克孜勒苏,喀什,伊犁,塔城');
+eq('新疆·后 8 城 warn（阿勒泰取到在职口径已撤，新增乌鲁木齐/克拉玛依/昌吉/阿克苏/克孜勒苏/喀什）', XJ.filter(k => A.CITIES[k].warn).map(k => A.CITIES[k].name).join(','), '乌鲁木齐,克拉玛依,昌吉,阿克苏,克孜勒苏,喀什,伊犁,塔城');
 eq('新疆·warn 恰好 8 城', XJ.filter(k => A.CITIES[k].warn).length, 8);
 eq('伊犁·医保单位费率仍为估算 9.5%', A.CITIES.ylz.med.comp, 0.095);
-eq('阿勒泰·医保单位费率 9.5%（第五十六批由退休/灵活就业口径误判改正）', A.CITIES.alt.med.comp, 0.095);
+eq('阿勒泰·医保单位费率 9.5%（由退休/灵活就业口径误判改正）', A.CITIES.alt.med.comp, 0.095);
 eq('新疆·乌鲁木齐租金1500', A.CITIES.wlmq.rent, 1500);
 eq('新疆·其余 13 地州租金统一 800', XJ.filter(k => A.CITIES[k].rent === 800).length, 13);
 eq('新疆·14 地州租金仅两档', [...new Set(XJ.map(k => A.CITIES[k].rent))].sort((a, b) => a - b).join('/'), '800/1500');
@@ -2265,35 +2265,35 @@ eq('黑龙江·佳木斯约76万→800', A.CITIES.jms.rent, 800);
    广西 桂人社发〔2026〕32号：http://rst.gxzf.gov.cn/zwgk/xxgkzcfg/fgfxlm/t28152939.shtml
      逐字「按7008元/月作为核定个人缴费基数上下限的指标，缴费基数上限为21024元/月，下限为4204.8元/月」
      算式自校验：7008×3===21024 ✓、7008×0.6===4204.8 ✓ */
-eq('第四十六批·玉林·医保单位费率6.5%（基本医保6%+生育0.5%）', A.CITIES.yuln.med.comp, 0.065);
-eq('第三十一批B·玉林·医保个人2%', A.CITIES.yuln.med.emp, 0.02);
-eq('第三十一批B·玉林·社基数下限4204.8', A.CITIES.yuln.pension.min, 4204.8);
-eq('第三十一批B·玉林·社基数上限21024', A.CITIES.yuln.pension.max, 21024);
-eq('第三十一批B·广西核定指标7008×3===21024', 7008 * 3, 21024);
-eq('第三十一批B·广西核定指标7008×0.6===4204.8', 7008 * 0.6, 4204.8);
-eq('第三十一批B·玉林费率自校验6+2===8', 6 + 2, 8);
-eq('第三十一批B·玉林费率自校验7-6===1', 7 - 6, 1);
-eq('第三十一批B·玉林note含玉市医保发2025-10号', A.CITIES.yuln.note.includes('玉市医保发〔2025〕10号'), true);
-eq('第四十六批·玉林note含2025年7月1日生效', A.CITIES.yuln.note.includes('2025年7月1日'), true);
-eq('第四十六批·玉林note改引玉市医保发〔2023〕17号', A.CITIES.yuln.note.includes('玉市医保发〔2023〕17号'), true);
-eq('第三十一批B·柳州社基数下限4204.8', A.CITIES.liuz.pension.min, 4204.8);
-eq('第三十一批B·柳州社基数上限21024', A.CITIES.liuz.pension.max, 21024);
-eq('第三十一批B·柳州note含桂人社发2026-32号', A.CITIES.liuz.note.includes('桂人社发〔2026〕32号'), true);
-eq('第三十一批B·柳州医保单位8.0%', A.CITIES.liuz.med.comp, 0.08);
-eq('第三十一批B·北海社基数下限4204.8', A.CITIES.bh.pension.min, 4204.8);
-eq('第三十一批B·北海社基数上限21024', A.CITIES.bh.pension.max, 21024);
-eq('第三十一批B·北海note含桂人社发2026-32号', A.CITIES.bh.note.includes('桂人社发〔2026〕32号'), true);
-eq('第三十一批B·北海医保单位6.5%暂不改', A.CITIES.bh.med.comp, 0.065);
-eq('第三十一批B·北海warn保留', A.CITIES.bh.warn, true);
-eq('第三十一批B·邯郸医保单位8%', A.CITIES.hd.med.comp, 0.08);
-eq('第三十一批B·邯郸医保个人2%', A.CITIES.hd.med.emp, 0.02);
-eq('第三十一批B·邯郸社基数下限4076', A.CITIES.hd.pension.min, 4076);
-eq('第三十一批B·邯郸社基数上限20382', A.CITIES.hd.pension.max, 20382);
-eq('第三十一批B·邯郸note含邯医保规2024-5号', A.CITIES.hd.note.includes('邯医保规〔2024〕5号'), true);
-eq('第三十一批B·邯郸note声明不设300%上限', A.CITIES.hd.note.includes('不设300%上限'), true);
-eq('第三十一批B·邯郸note不再出现旧误植日期', A.CITIES.hd.note.includes('2025-03-13'), false);
-eq('第三十一批B·承德生育0.8%仍在note', A.CITIES.chengd.note.includes('0.8%'), true);
-eq('第三十一批B·衡水已补官方费率（第三十六批改值）', A.CITIES.hshui.med.comp, 0.078);
+eq('玉林·医保单位费率6.5%（基本医保6%+生育0.5%）', A.CITIES.yuln.med.comp, 0.065);
+eq('玉林·医保个人2%', A.CITIES.yuln.med.emp, 0.02);
+eq('玉林·社基数下限4204.8', A.CITIES.yuln.pension.min, 4204.8);
+eq('玉林·社基数上限21024', A.CITIES.yuln.pension.max, 21024);
+eq('广西核定指标7008×3===21024', 7008 * 3, 21024);
+eq('广西核定指标7008×0.6===4204.8', 7008 * 0.6, 4204.8);
+eq('玉林费率自校验6+2===8', 6 + 2, 8);
+eq('玉林费率自校验7-6===1', 7 - 6, 1);
+eq('玉林note含玉市医保发2025-10号', A.CITIES.yuln.note.includes('玉市医保发〔2025〕10号'), true);
+eq('玉林note含2025年7月1日生效', A.CITIES.yuln.note.includes('2025年7月1日'), true);
+eq('玉林note改引玉市医保发〔2023〕17号', A.CITIES.yuln.note.includes('玉市医保发〔2023〕17号'), true);
+eq('柳州社基数下限4204.8', A.CITIES.liuz.pension.min, 4204.8);
+eq('柳州社基数上限21024', A.CITIES.liuz.pension.max, 21024);
+eq('柳州note含桂人社发2026-32号', A.CITIES.liuz.note.includes('桂人社发〔2026〕32号'), true);
+eq('柳州医保单位8.0%', A.CITIES.liuz.med.comp, 0.08);
+eq('北海社基数下限4204.8', A.CITIES.bh.pension.min, 4204.8);
+eq('北海社基数上限21024', A.CITIES.bh.pension.max, 21024);
+eq('北海note含桂人社发2026-32号', A.CITIES.bh.note.includes('桂人社发〔2026〕32号'), true);
+eq('北海医保单位6.5%暂不改', A.CITIES.bh.med.comp, 0.065);
+eq('北海warn保留', A.CITIES.bh.warn, true);
+eq('邯郸医保单位8%', A.CITIES.hd.med.comp, 0.08);
+eq('邯郸医保个人2%', A.CITIES.hd.med.emp, 0.02);
+eq('邯郸社基数下限4076', A.CITIES.hd.pension.min, 4076);
+eq('邯郸社基数上限20382', A.CITIES.hd.pension.max, 20382);
+eq('邯郸note含邯医保规2024-5号', A.CITIES.hd.note.includes('邯医保规〔2024〕5号'), true);
+eq('邯郸note声明不设300%上限', A.CITIES.hd.note.includes('不设300%上限'), true);
+eq('邯郸note不再出现旧误植日期', A.CITIES.hd.note.includes('2025-03-13'), false);
+eq('承德生育0.8%仍在note', A.CITIES.chengd.note.includes('0.8%'), true);
+eq('衡水已补官方费率（改值）', A.CITIES.hshui.med.comp, 0.078);
 // ---- 第三十六批（河北 3 城 + 陕西 3 城）----
 // 承德：承医保字〔2021〕60号《承德市职工基本医疗保险市级统筹管理办法》第九条 其他用人单位 7.3%（基本医疗6.5%+生育0.8%）
 // 衡水：衡政规〔2019〕11号第十一条 9.8%-2%=7.8%；衡医保字〔2020〕15号「7%调至3.5%、生育0.8%」分解印证
@@ -2351,14 +2351,14 @@ eq('陕西·安康医保仍为省级暂估7%', A.CITIES.ank.med.comp, 0.07);
 eq('陕西·安康warn仍保留（医保费率未找到）', A.CITIES.ank.warn, true);
 eq('陕西·三市医保暂估口径仍为7%', A.CITIES.wn.med.comp + A.CITIES.hanz.med.comp + A.CITIES.ank.med.comp, 0.21);
 
-eq('第三十一批B·渭南医保暂估7%', A.CITIES.wn.med.comp, 0.07);
-eq('第三十一批B·汉中医保暂估7%', A.CITIES.hanz.med.comp, 0.07);
-eq('第三十一批B·安康医保暂估7%', A.CITIES.ank.med.comp, 0.07);
-eq('第三十一批B·石家庄医保7.5%不变', A.CITIES.sjz.med.comp, 0.075);
-eq('第三十一批B·唐山医保7.8%不变', A.CITIES.ts.med.comp, 0.078);
-eq('第三十一批B·南宁医保6.5%不变', A.CITIES.nn.med.comp, 0.065);
-eq('第三十一批B·钦州医保8.5%不变', A.CITIES.qinz.med.comp, 0.085);
-eq('第三十一批B·桂林医保7.3%不变', A.CITIES.gl.med.comp, 0.073);
+eq('渭南医保暂估7%', A.CITIES.wn.med.comp, 0.07);
+eq('汉中医保暂估7%', A.CITIES.hanz.med.comp, 0.07);
+eq('安康医保暂估7%', A.CITIES.ank.med.comp, 0.07);
+eq('石家庄医保7.5%不变', A.CITIES.sjz.med.comp, 0.075);
+eq('唐山医保7.8%不变', A.CITIES.ts.med.comp, 0.078);
+eq('南宁医保6.5%不变', A.CITIES.nn.med.comp, 0.065);
+eq('钦州医保8.5%不变', A.CITIES.qinz.med.comp, 0.085);
+eq('桂林医保7.3%不变', A.CITIES.gl.med.comp, 0.073);
 
 /* ===== 第四十五批（陕西 10 市）· 2026-10-14 =====
    延安 yanan 6.5%(机关)/6.9%(企业) —— 医保有生育合并实施方案六部门联署，2020-01-01 起执行
@@ -2372,33 +2372,33 @@ eq('第三十一批B·桂林医保7.3%不变', A.CITIES.gl.med.comp, 0.073);
    https://www.ankang.gov.cn/Content-84316.html （第四十六条：有效期为三年）
    https://www.shaanxi.gov.cn/zfxxgk/zfgb/2019_3941/d15q_3956/201908/t20190821_1637018.html （陕政办发〔2019〕18号）
 */
-eq('第四十五批·延安·医保单位费率6.9%（企业口径，机关事业6.5%）', A.CITIES.yanan.med.comp, 0.069);
-eq('第四十五批·延安·note记明企业与其他单位口径分列', A.CITIES.yanan.note.includes('其他单位'), true);
-eq('第四十五批·延安·算式自校验 6.5%(机关)与6.9%(企业)分列', 0.069 - 0.065, 0.004);
-eq('第四十五批·商洛·医保单位费率6.6%', A.CITIES.shangl.med.comp, 0.066);
-eq('第四十五批·商洛·算式自校验 6% + 0.6% = 6.6%', 0.06 + 0.006, 0.066);
-eq('第四十五批·商洛·note引商政发〔2022〕3号', A.CITIES.shangl.note.includes('商政发〔2022〕3号'), true);
-eq('第四十五批·商洛·note记下限比例60%', A.CITIES.shangl.note.includes('60%'), true);
-eq('第四十五批·商洛·note记修订在途（征求意见稿未生效）', A.CITIES.shangl.note.includes('修订在途'), true);
-eq('第四十五批·商洛·warn仍保留', A.CITIES.shangl.warn, true);
-eq('第四十五批·西安·医保单位费率8%（含生育1%）不变', A.CITIES.xa.med.comp, 0.08);
-eq('第四十五批·西安·算式自校验 8% - 1%(生育) = 7%', 0.08 - 0.01, 0.07);
-eq('第四十五批·西安·note记阶段性减征表述已删除', A.CITIES.xa.note.includes('已删除'), true);
-eq('第四十五批·西安·note保留减征表述的更正说明', A.CITIES.xa.note.includes('阶段性减征'), true);
-eq('第四十五批·西安·note记大额8元/人·月', A.CITIES.xa.note.includes('8'), true);
-eq('第四十五批·咸阳·医保单位费率6.8%不变', A.CITIES.xy.med.comp, 0.068);
-eq('第四十五批·咸阳·note逐字引用单位按6.8%缴纳', A.CITIES.xy.note.includes('6.8%'), true);
-eq('第四十五批·铜川·note记制度件已失效', A.CITIES.tch.note.includes('失效'), true);
-eq('第四十五批·安康·note记第四十六条有效期为三年', A.CITIES.ank.note.includes('有效期为三年'), true);
-eq('第四十五批·安康·医保仍为省级暂估7%', A.CITIES.ank.med.comp, 0.07);
-eq('第四十五批·宝鸡·医保仍为7%（未取到市级件）', A.CITIES.baoj.med.comp, 0.07);
-eq('第四十五批·宝鸡·出处未能证实→新增warn', A.CITIES.baoj.warn, true);
-eq('第四十五批·宝鸡·note记宝政发〔2010〕16号未能证实', A.CITIES.baoj.note.includes('未能证实'), true);
-eq('第四十五批·宝鸡·note记60%下限5041.65与300%上限25208.25', A.CITIES.baoj.note.includes('25208.25'), true);
-eq('第四十五批·宝鸡·算式自校验 8402.75×0.6=5041.65', Math.round(8402.75 * 0.6 * 100) / 100, 5041.65);
-eq('第四十五批·宝鸡·算式自校验 8402.75×3=25208.25', Math.round(8402.75 * 3 * 100) / 100, 25208.25);
-eq('第四十五批·陕西10市社保基数仍为4737~23685', A.CITIES.xa.pension.min + A.CITIES.wn.pension.max, 4737 + 23685);
-eq('第四十五批·陕西医保基数复用社保（无独立下限比例字段）', A.CITIES.xa.med.min, A.CITIES.xa.pension.min);
+eq('延安·医保单位费率6.9%（企业口径，机关事业6.5%）', A.CITIES.yanan.med.comp, 0.069);
+eq('延安·note记明企业与其他单位口径分列', A.CITIES.yanan.note.includes('其他单位'), true);
+eq('延安·算式自校验 6.5%(机关)与6.9%(企业)分列', 0.069 - 0.065, 0.004);
+eq('商洛·医保单位费率6.6%', A.CITIES.shangl.med.comp, 0.066);
+eq('商洛·算式自校验 6% + 0.6% = 6.6%', 0.06 + 0.006, 0.066);
+eq('商洛·note引商政发〔2022〕3号', A.CITIES.shangl.note.includes('商政发〔2022〕3号'), true);
+eq('商洛·note记下限比例60%', A.CITIES.shangl.note.includes('60%'), true);
+eq('商洛·note记修订在途（征求意见稿未生效）', A.CITIES.shangl.note.includes('修订在途'), true);
+eq('商洛·warn仍保留', A.CITIES.shangl.warn, true);
+eq('西安·医保单位费率8%（含生育1%）不变', A.CITIES.xa.med.comp, 0.08);
+eq('西安·算式自校验 8% - 1%(生育) = 7%', 0.08 - 0.01, 0.07);
+eq('西安·note记阶段性减征表述已删除', A.CITIES.xa.note.includes('已删除'), true);
+eq('西安·note保留减征表述的更正说明', A.CITIES.xa.note.includes('阶段性减征'), true);
+eq('西安·note记大额8元/人·月', A.CITIES.xa.note.includes('8'), true);
+eq('咸阳·医保单位费率6.8%不变', A.CITIES.xy.med.comp, 0.068);
+eq('咸阳·note逐字引用单位按6.8%缴纳', A.CITIES.xy.note.includes('6.8%'), true);
+eq('铜川·note记制度件已失效', A.CITIES.tch.note.includes('失效'), true);
+eq('安康·note记第四十六条有效期为三年', A.CITIES.ank.note.includes('有效期为三年'), true);
+eq('安康·医保仍为省级暂估7%', A.CITIES.ank.med.comp, 0.07);
+eq('宝鸡·医保仍为7%（未取到市级件）', A.CITIES.baoj.med.comp, 0.07);
+eq('宝鸡·出处未能证实→新增warn', A.CITIES.baoj.warn, true);
+eq('宝鸡·note记宝政发〔2010〕16号未能证实', A.CITIES.baoj.note.includes('未能证实'), true);
+eq('宝鸡·note记60%下限5041.65与300%上限25208.25', A.CITIES.baoj.note.includes('25208.25'), true);
+eq('宝鸡·算式自校验 8402.75×0.6=5041.65', Math.round(8402.75 * 0.6 * 100) / 100, 5041.65);
+eq('宝鸡·算式自校验 8402.75×3=25208.25', Math.round(8402.75 * 3 * 100) / 100, 25208.25);
+eq('陕西10市社保基数仍为4737~23685', A.CITIES.xa.pension.min + A.CITIES.wn.pension.max, 4737 + 23685);
+eq('陕西医保基数复用社保（无独立下限比例字段）', A.CITIES.xa.med.min, A.CITIES.xa.pension.min);
 
 /* ===== 第四十六批（广西 14 市）· 2026-10-14 =====
    口径确认：广西 medComp = 单位合计（含生育）。企业 = 基本医保X% + 生育0.5%；机关事业 = 基本医保X% + 生育0.4%
@@ -2412,42 +2412,42 @@ eq('第四十五批·陕西医保基数复用社保（无独立下限比例字�
    http://ybj.guilin.gov.cn/zfxxgk/fdzdgknr/zcfg/t26980912.shtml （市政规〔2025〕19号）
    警示：桂医保发〔2026〕22号（自治区本级 7%）只适用区直机关，绝不可套用 14 市
 */
-eq('第四十六批·防城港·医保单位费率6.5%', A.CITIES.fcg.med.comp, 0.065);
-eq('第四十六批·防城港·算式自校验 6% + 0.5%(生育) = 6.5%', 0.06 + 0.005, 0.065);
-eq('第四十六批·防城港·note引防医保发〔2024〕20号', A.CITIES.fcg.note.includes('防医保发〔2024〕20号'), true);
-eq('第四十六批·防城港·warn已新增', A.CITIES.fcg.warn, true);
-eq('第四十六批·防城港·note记机关事业生育0.4%与企业0.5%的口径差', A.CITIES.fcg.note.includes('0.4%'), true);
-eq('第四十六批·玉林·医保单位费率6.5%（原6%漏算生育0.5%）', A.CITIES.yuln.med.comp, 0.065);
-eq('第四十六批·玉林·算式自校验 6% + 0.5%(生育) = 6.5%', 0.06 + 0.005, 0.065);
-eq('第四十六批·玉林·note引玉市医保发〔2025〕10号（基本医保）', A.CITIES.yuln.note.includes('玉市医保发〔2025〕10号'), true);
-eq('第四十六批·玉林·note引玉市医保发〔2023〕17号（生育）', A.CITIES.yuln.note.includes('玉市医保发〔2023〕17号'), true);
-eq('第四十六批·玉林·warn已新增', A.CITIES.yuln.warn, true);
-eq('第四十六批·玉林·社基数不变4204.8', A.CITIES.yuln.pension.min, 4204.8);
-eq('第四十六批·桂林·医保单位费率7.3%（含生育0.5%）不变', A.CITIES.gl.med.comp, 0.073);
-eq('第四十六批·桂林·算式自校验 7.3% - 0.5%(生育) = 6.8%', Math.round((0.073 - 0.005) * 10000) / 10000, 0.068);
-eq('第四十六批·桂林·机关事业7.2％已在note记录（全角百分号）', A.CITIES.gl.note.includes('7.2％'), true);
-eq('第四十六批·桂林·大额固定额字段已移除（0.2%比例型不可建模，默认0）', A.CITIES.gl.medFixEmp, 0);
-eq('第四十六批·桂林·warn已新增', A.CITIES.gl.warn, true);
-eq('第四十六批·桂林·note引市政规〔2025〕19号', A.CITIES.gl.note.includes('市政规〔2025〕19号'), true);
-eq('第四十六批·桂林·note记第四十七条0.2%比例型', A.CITIES.gl.note.includes('第四十七条'), true);
-eq('第四十六批·桂林·note保留7.15%表述的更正说明', A.CITIES.gl.note.includes('7.15%'), true);
-eq('第四十六批·桂林·note记7.15%已删除', A.CITIES.gl.note.includes('已删除'), true);
-eq('第四十六批·桂林·note保留长护表述的更正说明', A.CITIES.gl.note.includes('长护'), true);
-eq('第四十六批·广西14市医保单位费率均在6%~9%合理区间', (function () {
+eq('防城港·医保单位费率6.5%', A.CITIES.fcg.med.comp, 0.065);
+eq('防城港·算式自校验 6% + 0.5%(生育) = 6.5%', 0.06 + 0.005, 0.065);
+eq('防城港·note引防医保发〔2024〕20号', A.CITIES.fcg.note.includes('防医保发〔2024〕20号'), true);
+eq('防城港·warn已新增', A.CITIES.fcg.warn, true);
+eq('防城港·note记机关事业生育0.4%与企业0.5%的口径差', A.CITIES.fcg.note.includes('0.4%'), true);
+eq('玉林·医保单位费率6.5%（原6%漏算生育0.5%）', A.CITIES.yuln.med.comp, 0.065);
+eq('玉林·算式自校验 6% + 0.5%(生育) = 6.5%', 0.06 + 0.005, 0.065);
+eq('玉林·note引玉市医保发〔2025〕10号（基本医保）', A.CITIES.yuln.note.includes('玉市医保发〔2025〕10号'), true);
+eq('玉林·note引玉市医保发〔2023〕17号（生育）', A.CITIES.yuln.note.includes('玉市医保发〔2023〕17号'), true);
+eq('玉林·warn已新增', A.CITIES.yuln.warn, true);
+eq('玉林·社基数不变4204.8', A.CITIES.yuln.pension.min, 4204.8);
+eq('桂林·医保单位费率7.3%（含生育0.5%）不变', A.CITIES.gl.med.comp, 0.073);
+eq('桂林·算式自校验 7.3% - 0.5%(生育) = 6.8%', Math.round((0.073 - 0.005) * 10000) / 10000, 0.068);
+eq('桂林·机关事业7.2％已在note记录（全角百分号）', A.CITIES.gl.note.includes('7.2％'), true);
+eq('桂林·大额固定额字段已移除（0.2%比例型不可建模，默认0）', A.CITIES.gl.medFixEmp, 0);
+eq('桂林·warn已新增', A.CITIES.gl.warn, true);
+eq('桂林·note引市政规〔2025〕19号', A.CITIES.gl.note.includes('市政规〔2025〕19号'), true);
+eq('桂林·note记第四十七条0.2%比例型', A.CITIES.gl.note.includes('第四十七条'), true);
+eq('桂林·note保留7.15%表述的更正说明', A.CITIES.gl.note.includes('7.15%'), true);
+eq('桂林·note记7.15%已删除', A.CITIES.gl.note.includes('已删除'), true);
+eq('桂林·note保留长护表述的更正说明', A.CITIES.gl.note.includes('长护'), true);
+eq('广西14市医保单位费率均在6%~9%合理区间', (function () {
   var ks = ['nn', 'liuz', 'gl', 'wuz', 'bh', 'fcg', 'qinz', 'gg', 'yuln', 'bais', 'hezh', 'hech', 'lb', 'chz'];
   for (var i = 0; i < ks.length; i++) { var v = A.CITIES[ks[i]].med.comp; if (!(v >= 0.06 && v <= 0.09)) return false; }
   return true;
 })(), true);
-eq('第四十六批·广西14市企业口径均含生育0.5%（无低于6.5%的合计值）', (function () {
+eq('广西14市企业口径均含生育0.5%（无低于6.5%的合计值）', (function () {
   var ks = ['nn', 'liuz', 'gl', 'wuz', 'bh', 'fcg', 'qinz', 'gg', 'yuln', 'bais', 'hezh', 'hech', 'lb', 'chz'];
   for (var i = 0; i < ks.length; i++) { if (A.CITIES[ks[i]].med.comp < 0.065) return false; }
   return true;
 })(), true);
-eq('第四十六批·南宁·医保单位费率6.5%（含生育0.5%）不变', A.CITIES.nn.med.comp, 0.065);
-eq('第四十六批·北海·医保单位费率6.5%不变', A.CITIES.bh.med.comp, 0.065);
-eq('第四十六批·柳州·柳政办〔2015〕50号查无此文→新增warn', A.CITIES.liuz.warn, true);
-eq('第四十六批·柳州·note记文号查无此文', A.CITIES.liuz.note.includes('查无此文'), true);
-eq('第四十六批·柳州·医保单位费率8.0%保留不动', A.CITIES.liuz.med.comp, 0.08);
+eq('南宁·医保单位费率6.5%（含生育0.5%）不变', A.CITIES.nn.med.comp, 0.065);
+eq('北海·医保单位费率6.5%不变', A.CITIES.bh.med.comp, 0.065);
+eq('柳州·柳政办〔2015〕50号查无此文→新增warn', A.CITIES.liuz.warn, true);
+eq('柳州·note记文号查无此文', A.CITIES.liuz.note.includes('查无此文'), true);
+eq('柳州·医保单位费率8.0%保留不动', A.CITIES.liuz.med.comp, 0.08);
 
 /* ===== 第四十七批（河北）· 2026-10-14 =====
  * 秦皇岛 qhd 两处改值（父代理逐字自抓，四关全过）：
@@ -2468,387 +2468,387 @@ eq('第四十六批·柳州·医保单位费率8.0%保留不动', A.CITIES.liuz.
  *     主通知（2025-12-04）…id=1623 原定 2200/2000，并预设「如遇河北省人社厅发布新的最低工资标准，
  *     按照调整后的最低工资标准执行」；11 天后补充通知按新最低工资更新为 2380/2230。
  *     上限 25746 = 2024 年度城镇非私营单位月均工资 8582 元 ×3（同件双数自校验成立，不变）。
- * 保定 bd / 邢台 xingt：数值零改动，只更正 note 的档位表述与过时文号引用。
+ * 保定 bd / 邢台 xingt：数值不变，只更正 note 的档位表述与过时文号引用。
  */
-eq('第四十七批·秦皇岛·医保单位费率7.3%（秦政办规〔2021〕1号，企业口径含生育0.8%）', A.CITIES.qhd.med.comp, 0.073);
-eq('第四十七批·秦皇岛·算式自校验 6.5% + 0.8%(生育) = 7.3%', 0.065 + 0.008, 0.073);
-eq('第四十七批·秦皇岛·note记机关事业6.75%口径', A.CITIES.qhd.note.includes('6.75%'), true);
-eq('第四十七批·秦皇岛·note引秦政办规〔2021〕1号', A.CITIES.qhd.note.includes('秦政办规〔2021〕1号'), true);
-eq('第四十七批·秦皇岛·note记现行性证明秦政字〔2026〕4号', A.CITIES.qhd.note.includes('秦政字〔2026〕4号'), true);
-eq('第四十七批·秦皇岛·公积金下限2380（原2200为主通知旧值）', A.CITIES.qhd.hf.min, 2380);
-eq('第四十七批·秦皇岛·公积金上限25746不变', A.CITIES.qhd.hf.max, 25746);
-eq('第四十七批·秦皇岛·算式自校验 8582×3 = 25746', 8582 * 3, 25746);
-eq('第四十七批·秦皇岛·note记三县2230（原note误写2000）', A.CITIES.qhd.note.includes('2230'), true);
-eq('第四十七批·秦皇岛·note引冀人社字〔2025〕137号与秦人社字〔2025〕165号', A.CITIES.qhd.note.includes('冀人社字〔2025〕137号') && A.CITIES.qhd.note.includes('秦人社字〔2025〕165号'), true);
-eq('第四十七批·秦皇岛·已无暂按省级区间8%估算的无据表述', A.CITIES.qhd.note.includes('暂按省级区间'), false);
-eq('第四十七批·秦皇岛·warn保留（大额医疗补助单位固定额未取到官方件）', A.CITIES.qhd.warn, true);
-eq('第四十七批·秦皇岛·社保基数4076~20382不变（冀人社字〔2026〕57号）', A.CITIES.qhd.pension.min + '~' + A.CITIES.qhd.pension.max, '4076~20382');
+eq('秦皇岛·医保单位费率7.3%（秦政办规〔2021〕1号，企业口径含生育0.8%）', A.CITIES.qhd.med.comp, 0.073);
+eq('秦皇岛·算式自校验 6.5% + 0.8%(生育) = 7.3%', 0.065 + 0.008, 0.073);
+eq('秦皇岛·note记机关事业6.75%口径', A.CITIES.qhd.note.includes('6.75%'), true);
+eq('秦皇岛·note引秦政办规〔2021〕1号', A.CITIES.qhd.note.includes('秦政办规〔2021〕1号'), true);
+eq('秦皇岛·note记现行性证明秦政字〔2026〕4号', A.CITIES.qhd.note.includes('秦政字〔2026〕4号'), true);
+eq('秦皇岛·公积金下限2380（原2200为主通知旧值）', A.CITIES.qhd.hf.min, 2380);
+eq('秦皇岛·公积金上限25746不变', A.CITIES.qhd.hf.max, 25746);
+eq('秦皇岛·算式自校验 8582×3 = 25746', 8582 * 3, 25746);
+eq('秦皇岛·note记三县2230（原note误写2000）', A.CITIES.qhd.note.includes('2230'), true);
+eq('秦皇岛·note引冀人社字〔2025〕137号与秦人社字〔2025〕165号', A.CITIES.qhd.note.includes('冀人社字〔2025〕137号') && A.CITIES.qhd.note.includes('秦人社字〔2025〕165号'), true);
+eq('秦皇岛·已无暂按省级区间8%估算的无据表述', A.CITIES.qhd.note.includes('暂按省级区间'), false);
+eq('秦皇岛·warn保留（大额医疗补助单位固定额未取到官方件）', A.CITIES.qhd.warn, true);
+eq('秦皇岛·社保基数4076~20382不变（冀人社字〔2026〕57号）', A.CITIES.qhd.pension.min + '~' + A.CITIES.qhd.pension.max, '4076~20382');
 
-eq('第四十七批·保定·公积金2380~24345零偏差', A.CITIES.bd.hf.min + '~' + A.CITIES.bd.hf.max, '2380~24345');
-eq('第四十七批·保定·算式自校验 8115×3 = 24345', 8115 * 3, 24345);
-eq('第四十七批·保定·note改为市区2380档（原文误标为2230档）', A.CITIES.bd.note.includes('（2230 档）'), false);
-eq('第四十七批·保定·note记97375元÷12=8115元', A.CITIES.bd.note.includes('97375'), true);
-eq('第四十七批·保定·医保单位费率6.9%不变', A.CITIES.bd.med.comp, 0.069);
+eq('保定·公积金2380~24345零偏差', A.CITIES.bd.hf.min + '~' + A.CITIES.bd.hf.max, '2380~24345');
+eq('保定·算式自校验 8115×3 = 24345', 8115 * 3, 24345);
+eq('保定·note改为市区2380档（原文误标为2230档）', A.CITIES.bd.note.includes('（2230 档）'), false);
+eq('保定·note记97375元÷12=8115元', A.CITIES.bd.note.includes('97375'), true);
+eq('保定·医保单位费率6.9%不变', A.CITIES.bd.med.comp, 0.069);
 
-eq('第四十七批·邢台·医保单位费率7.8%不变（2025-01-01新办法第七条）', A.CITIES.xingt.med.comp, 0.078);
-eq('第四十七批·邢台·算式自校验 7% + 0.8%(生育) = 7.8%', 0.07 + 0.008, 0.078);
-eq('第四十七批·邢台·note已换用2025-01-01新办法', A.CITIES.xingt.note.includes('邢台市职工基本医疗保险和生育保险实施办法'), true);
-eq('第四十七批·邢台·note记新办法未设300%上限的口径冲突', A.CITIES.xingt.note.includes('未设300%上限'), true);
-eq('第四十七批·邢台·note保留邢医保发〔2019〕52号的取代说明', A.CITIES.xingt.note.includes('邢医保发〔2019〕52号'), true);
-eq('第四十七批·邢台·因口径冲突新增warn（guard H-2：note承认不确定即须标warn）', A.CITIES.xingt.warn, true);
-eq('第四十七批·河北11市社保基数统一4076~20382（冀人社字〔2026〕57号，市级不发布）', (function () {
+eq('邢台·医保单位费率7.8%不变（2025-01-01新办法第七条）', A.CITIES.xingt.med.comp, 0.078);
+eq('邢台·算式自校验 7% + 0.8%(生育) = 7.8%', 0.07 + 0.008, 0.078);
+eq('邢台·note已换用2025-01-01新办法', A.CITIES.xingt.note.includes('邢台市职工基本医疗保险和生育保险实施办法'), true);
+eq('邢台·note记新办法未设300%上限的口径冲突', A.CITIES.xingt.note.includes('未设300%上限'), true);
+eq('邢台·note保留邢医保发〔2019〕52号的取代说明', A.CITIES.xingt.note.includes('邢医保发〔2019〕52号'), true);
+eq('邢台·因口径冲突新增warn（guard H-2：note承认不确定即须标warn）', A.CITIES.xingt.warn, true);
+eq('河北11市社保基数统一4076~20382（冀人社字〔2026〕57号，市级不发布）', (function () {
   const ks = ['sjz', 'ts', 'qhd', 'hd', 'xingt', 'bd', 'zjk', 'chengd', 'cangz', 'lf', 'hshui'];
   return ks.every(function (k) { return A.CITIES[k].pension.min + '~' + A.CITIES[k].pension.max === '4076~20382'; });
 })(), true);
 
 /* --- 张家口 zjk：财政局百问百答纯HTML逐字给出企业合计 7.4%，四关全过 → 改值 --- */
-eq('第四十七批·张家口·医保单位合计7.4%（财政局2023-05-11逐字，其他用人单位口径）', A.CITIES.zjk.med.comp, 0.074);
-eq('第四十七批·张家口·大额医疗固定额15元/人月（张政发〔2020〕9号第十三条）', A.CITIES.zjk.medFixEmp, 15);
-eq('第四十七批·张家口·个人费率2%不变', A.CITIES.zjk.med.emp, 0.02);
-eq('第四十七批·张家口·note已记张政发〔2020〕9号（发布页效力状态有效）', A.CITIES.zjk.note.includes('张政发〔2020〕9号'), true);
-eq('第四十七批·张家口·note已记张医保发〔2022〕4号基本医疗降至6.5%', A.CITIES.zjk.note.includes('张医保发〔2022〕4号') && A.CITIES.zjk.note.includes('6.5%'), true);
-eq('第四十七批·张家口·note已记张医保发〔2019〕5号生育0.9%', A.CITIES.zjk.note.includes('张医保发〔2019〕5号') && A.CITIES.zjk.note.includes('0.9%'), true);
-eq('第四十七批·张家口·note已记两档生育费率0.4%（机关事业）', A.CITIES.zjk.note.includes('0.4%'), true);
-eq('第四十七批·张家口·算式自校验 8.4-0.9=7.5（2023年前旧档）', Math.round((8.4 - 0.9) * 100) / 100, 7.5);
-eq('第四十七批·张家口·算式自校验 7.9-0.4=7.5（机关事业两口径独立收敛）', Math.round((7.9 - 0.4) * 100) / 100, 7.5);
-eq('第四十七批·张家口·算式自校验 7.4-0.9=6.5（现行基本医疗）', Math.round((7.4 - 0.9) * 100) / 100, 6.5);
-eq('第四十七批·张家口·算式自校验 15元×12=180元/年（2025-12-26通告）', 15 * 12, 180);
-eq('第四十七批·张家口·已无暂按8%估算的无据表述', A.CITIES.zjk.note.includes('暂按8%估算'), false);
-eq('第四十七批·张家口·已无口径未能闭合的表述', A.CITIES.zjk.note.includes('口径未能闭合'), false);
-eq('第四十七批·张家口·note如实标注张医保发〔2022〕4号不在保留目录、不得写成清理目录已确认', A.CITIES.zjk.note.includes('不能视为失效') && A.CITIES.zjk.note.includes('不得写成清理目录已确认'), true);
-eq('第四十七批·张家口·warn保留（公积金2026年度件未找到、企业缴存比例未核）', A.CITIES.zjk.warn, true);
-eq('第四十七批·张家口·公积金2025年度2000~21771不变（2026年度件未找到）', A.CITIES.zjk.hf.min + '~' + A.CITIES.zjk.hf.max, '2000~21771');
+eq('张家口·医保单位合计7.4%（财政局2023-05-11逐字，其他用人单位口径）', A.CITIES.zjk.med.comp, 0.074);
+eq('张家口·大额医疗固定额15元/人月（张政发〔2020〕9号第十三条）', A.CITIES.zjk.medFixEmp, 15);
+eq('张家口·个人费率2%不变', A.CITIES.zjk.med.emp, 0.02);
+eq('张家口·note已记张政发〔2020〕9号（发布页效力状态有效）', A.CITIES.zjk.note.includes('张政发〔2020〕9号'), true);
+eq('张家口·note已记张医保发〔2022〕4号基本医疗降至6.5%', A.CITIES.zjk.note.includes('张医保发〔2022〕4号') && A.CITIES.zjk.note.includes('6.5%'), true);
+eq('张家口·note已记张医保发〔2019〕5号生育0.9%', A.CITIES.zjk.note.includes('张医保发〔2019〕5号') && A.CITIES.zjk.note.includes('0.9%'), true);
+eq('张家口·note已记两档生育费率0.4%（机关事业）', A.CITIES.zjk.note.includes('0.4%'), true);
+eq('张家口·算式自校验 8.4-0.9=7.5（2023年前旧档）', Math.round((8.4 - 0.9) * 100) / 100, 7.5);
+eq('张家口·算式自校验 7.9-0.4=7.5（机关事业两口径独立收敛）', Math.round((7.9 - 0.4) * 100) / 100, 7.5);
+eq('张家口·算式自校验 7.4-0.9=6.5（现行基本医疗）', Math.round((7.4 - 0.9) * 100) / 100, 6.5);
+eq('张家口·算式自校验 15元×12=180元/年（2025-12-26通告）', 15 * 12, 180);
+eq('张家口·已无暂按8%估算的无据表述', A.CITIES.zjk.note.includes('暂按8%估算'), false);
+eq('张家口·已无口径未能闭合的表述', A.CITIES.zjk.note.includes('口径未能闭合'), false);
+eq('张家口·note如实标注张医保发〔2022〕4号不在保留目录、不得写成清理目录已确认', A.CITIES.zjk.note.includes('不能视为失效') && A.CITIES.zjk.note.includes('不得写成清理目录已确认'), true);
+eq('张家口·warn保留（公积金2026年度件未找到、企业缴存比例未核）', A.CITIES.zjk.warn, true);
+eq('张家口·公积金2025年度2000~21771不变（2026年度件未找到）', A.CITIES.zjk.hf.min + '~' + A.CITIES.zjk.hf.max, '2000~21771');
 
-eq('第四十七批·石家庄·医保单位7.5%不变（生育1%已由石医保规〔2025〕1号第十一条坐实）', A.CITIES.sjz.med.comp, 0.075);
-eq('第四十七批·石家庄·算式自校验 6.5% + 1%(生育) = 7.5%', 0.065 + 0.01, 0.075);
-eq('第四十七批·石家庄·算式自校验 6.5% + 0.4%(机关事业生育) = 6.9%', 0.065 + 0.004, 0.069);
-eq('第四十七批·石家庄·note补引石医保规〔2025〕1号第十一条逐字且已去掉PDF不可解析的表述', A.CITIES.sjz.note.includes('石医保规〔2025〕1号') && A.CITIES.sjz.note.includes('第十一条') && !A.CITIES.sjz.note.includes('PDF'), true);
-eq('第四十七批·石家庄·note保留石政规〔2024〕7号第九条对6.5%的独立印证', A.CITIES.sjz.note.includes('石政规〔2024〕7号第九条') && A.CITIES.sjz.note.includes('不含生育保险缴费率'), true);
+eq('石家庄·医保单位7.5%不变（生育1%已由石医保规〔2025〕1号第十一条坐实）', A.CITIES.sjz.med.comp, 0.075);
+eq('石家庄·算式自校验 6.5% + 1%(生育) = 7.5%', 0.065 + 0.01, 0.075);
+eq('石家庄·算式自校验 6.5% + 0.4%(机关事业生育) = 6.9%', 0.065 + 0.004, 0.069);
+eq('石家庄·note补引石医保规〔2025〕1号第十一条逐字且已去掉PDF不可解析的表述', A.CITIES.sjz.note.includes('石医保规〔2025〕1号') && A.CITIES.sjz.note.includes('第十一条') && !A.CITIES.sjz.note.includes('PDF'), true);
+eq('石家庄·note保留石政规〔2024〕7号第九条对6.5%的独立印证', A.CITIES.sjz.note.includes('石政规〔2024〕7号第九条') && A.CITIES.sjz.note.includes('不含生育保险缴费率'), true);
 
 // ---- 第四十八批：甘肃定西公积金 2026 年度（定市公积金函〔2026〕18号，扫描图 rapidocr 两遍一致）----
-eq('第四十八批·定西·公积金下限1850→2080（甘政办发〔2025〕71号三类地区月最低工资）', A.CITIES.dx.hf.min, 2080);
+eq('定西·公积金下限1850→2080（甘政办发〔2025〕71号三类地区月最低工资）', A.CITIES.dx.hf.min, 2080);
 // ── 第四十九批 B（2026-10-14）· 青海 7 市州公积金复核（零改值）──
-eq('第四十九批B·青海·海西公积金下限2080', A.CITIES.hxz.hf.min, 2080);
-eq('第四十九批B·青海·海西公积金上限37166', A.CITIES.hxz.hf.max, 37166);
-ok('第四十九批B·海西note引用2026年度市级件', A.CITIES.hxz.note.indexOf('2026年度住房公积金缴存基数调整') >= 0, true);
-ok('第四十九批B·海西note引用青政2025 11号', A.CITIES.hxz.note.indexOf('青政〔2025〕11号') >= 0, true);
-ok('第四十九批B·海西note声明关卡3算式校验未做', A.CITIES.hxz.note.indexOf('不作关卡3算式校验') >= 0, true);
-ok('第四十九批B·海西note不再出现2024年度33836作为现值', A.CITIES.hxz.note.indexOf('2024年度33836') > 0, true);
-eq('第四十九批B·海北下限仍为1700（不得由省级件推市级）', A.CITIES.hbz.hf.min, 1700);
-ok('第四十九批B·海北note写明1700已被11号取代', A.CITIES.hbz.note.indexOf('已被青政〔2025〕11号取代') >= 0, true);
-eq('第四十九批B·海北warn 保留', A.CITIES.hbz.warn, true);
-ok('第四十九批B·黄南note补记省直取整口径2024年已变更', A.CITIES.hnz.note.indexOf('以元为单位四舍五入后再合计') >= 0, true);
-ok('第四十九批B·青海7市州除海西外全部无2025/2026年度件', ['haid','hbz','hnz','hnan','glz','ysz'].every(function(k){ return A.CITIES[k].warn === true; }), true);
-eq('第四十八批·定西·公积金上限22046→22977', A.CITIES.dx.hf.max, 22977);
-eq('第四十八批·定西·算式自校验 91910÷12 向下取整 = 7659', Math.floor(91910 / 12), 7659);
-eq('第四十八批·定西·算式自校验 7659×3 = 22977', 7659 * 3, 22977);
-eq('第四十八批·定西·note引用定市公积金函〔2026〕18号', A.CITIES.dx.note.includes('定市公积金函〔2026〕18号'), true);
-eq('第四十八批·定西·note写明执行期为自然年2026-01-01至2026-12-31（非7月起）', A.CITIES.dx.note.includes('2026-01-01至2026-12-31'), true);
-eq('第四十八批·定西·note保留2026-04-07无文号件并记录其上限待定口径', A.CITIES.dx.note.includes('待统计部门发布后按新标准执行'), true);
-eq('第四十八批·定西·社保基数不变 4526~22626', A.CITIES.dx.pension.min + '~' + A.CITIES.dx.pension.max, '4526~22626');
+eq('青海·海西公积金下限2080', A.CITIES.hxz.hf.min, 2080);
+eq('青海·海西公积金上限37166', A.CITIES.hxz.hf.max, 37166);
+ok('海西note引用2026年度市级件', A.CITIES.hxz.note.indexOf('2026年度住房公积金缴存基数调整') >= 0, true);
+ok('海西note引用青政2025 11号', A.CITIES.hxz.note.indexOf('青政〔2025〕11号') >= 0, true);
+ok('海西note声明关卡3算式校验未做', A.CITIES.hxz.note.indexOf('不作关卡3算式校验') >= 0, true);
+ok('海西note不再出现2024年度33836作为现值', A.CITIES.hxz.note.indexOf('2024年度33836') > 0, true);
+eq('海北下限仍为1700（不得由省级件推市级）', A.CITIES.hbz.hf.min, 1700);
+ok('海北note写明1700已被11号取代', A.CITIES.hbz.note.indexOf('已被青政〔2025〕11号取代') >= 0, true);
+eq('海北warn 保留', A.CITIES.hbz.warn, true);
+ok('黄南note补记省直取整口径2024年已变更', A.CITIES.hnz.note.indexOf('以元为单位四舍五入后再合计') >= 0, true);
+ok('青海7市州除海西外全部无2025/2026年度件', ['haid','hbz','hnz','hnan','glz','ysz'].every(function(k){ return A.CITIES[k].warn === true; }), true);
+eq('定西·公积金上限22046→22977', A.CITIES.dx.hf.max, 22977);
+eq('定西·算式自校验 91910÷12 向下取整 = 7659', Math.floor(91910 / 12), 7659);
+eq('定西·算式自校验 7659×3 = 22977', 7659 * 3, 22977);
+eq('定西·note引用定市公积金函〔2026〕18号', A.CITIES.dx.note.includes('定市公积金函〔2026〕18号'), true);
+eq('定西·note写明执行期为自然年2026-01-01至2026-12-31（非7月起）', A.CITIES.dx.note.includes('2026-01-01至2026-12-31'), true);
+eq('定西·note保留2026-04-07无文号件并记录其上限待定口径', A.CITIES.dx.note.includes('待统计部门发布后按新标准执行'), true);
+eq('定西·社保基数不变 4526~22626', A.CITIES.dx.pension.min + '~' + A.CITIES.dx.pension.max, '4526~22626');
 
-// ===== 第五十批 A（2026-10-15）· 新疆 13 地州公积金 2026 年度市级一手件入 note（数值零改动）=====
+// ===== 第五十批 A（2026-10-15）· 新疆 13 地州公积金 2026 年度市级一手件入 note（数值不变）=====
 // 13 个地州全部取到自治区中心门户 xjgjj.xjjs.gov.cn 上的 2026 缴存年度官方件，上下限逐字零偏差；
 // 本批只补官方链接与取整口径说明，不动任何数值。
-eq('第五十批A·新疆·乌鲁木齐公积金下限2070', A.CITIES.wlmq.hf.min, 2070);
-eq('第五十批A·新疆·乌鲁木齐公积金上限35071', A.CITIES.wlmq.hf.max, 35071);
-ok('第五十批A·新疆·乌鲁木齐note引用自治区中心官方件', A.CITIES.wlmq.note.includes('wlmqgjj/info/1120/5961.htm'), true);
-eq('第五十批A·新疆·克拉玛依公积金下限2070', A.CITIES.klmy.hf.min, 2070);
-eq('第五十批A·新疆·克拉玛依公积金上限33872', A.CITIES.klmy.hf.max, 33872);
-ok('第五十批A·新疆·克拉玛依note引用自治区中心官方件', A.CITIES.klmy.note.includes('klmy/info/1066/3045.htm'), true);
-eq('第五十批A·新疆·吐鲁番公积金下限1750', A.CITIES.tlf.hf.min, 1750);
-eq('第五十批A·新疆·吐鲁番公积金上限29259', A.CITIES.tlf.hf.max, 29259);
-ok('第五十批A·新疆·吐鲁番note引用自治区中心官方件', A.CITIES.tlf.note.includes('tlfdq/info/1066/6506.htm'), true);
-eq('第五十批A·新疆·哈密公积金下限1890', A.CITIES.hami.hf.min, 1890);
-eq('第五十批A·新疆·哈密公积金上限31532', A.CITIES.hami.hf.max, 31532);
-ok('第五十批A·新疆·哈密note引用自治区中心官方件', A.CITIES.hami.note.includes('hm/info/1037/4354.htm'), true);
-eq('第五十批A·新疆·昌吉公积金下限1890', A.CITIES.cjz.hf.min, 1890);
-eq('第五十批A·新疆·昌吉公积金上限29280', A.CITIES.cjz.hf.max, 29280);
-ok('第五十批A·新疆·昌吉note引用自治区中心官方件', A.CITIES.cjz.note.includes('cj/info/1113/8579.htm'), true);
-eq('第五十批A·新疆·博尔塔拉公积金下限1750', A.CITIES.boz.hf.min, 1750);
-eq('第五十批A·新疆·博尔塔拉公积金上限27689', A.CITIES.boz.hf.max, 27689);
-ok('第五十批A·新疆·博尔塔拉note引用自治区中心官方件', A.CITIES.boz.note.includes('boz/info/1066/4029.htm'), true);
-eq('第五十批A·新疆·巴音郭楞公积金下限1750', A.CITIES.bygl.hf.min, 1750);
-eq('第五十批A·新疆·巴音郭楞公积金上限33237', A.CITIES.bygl.hf.max, 33237);
-ok('第五十批A·新疆·巴音郭楞note引用自治区中心官方件', A.CITIES.bygl.note.includes('baz/info/1066/7290.htm'), true);
-eq('第五十批A·新疆·阿克苏公积金下限1890', A.CITIES.aks.hf.min, 1890);
-eq('第五十批A·新疆·阿克苏公积金上限26178', A.CITIES.aks.hf.max, 26178);
-ok('第五十批A·新疆·阿克苏note引用自治区中心官方件', A.CITIES.aks.note.includes('aksdq/info/1066/7120.htm'), true);
-eq('第五十批A·新疆·克孜勒苏公积金下限1750', A.CITIES.kzls.hf.min, 1750);
-eq('第五十批A·新疆·克孜勒苏公积金上限29874', A.CITIES.kzls.hf.max, 29874);
-ok('第五十批A·新疆·克孜勒苏note引用自治区中心官方件', A.CITIES.kzls.note.includes('kez/info/1003/5542.htm'), true);
-eq('第五十批A·新疆·喀什公积金下限1750', A.CITIES.kashi.hf.min, 1750);
-eq('第五十批A·新疆·喀什公积金上限29139', A.CITIES.kashi.hf.max, 29139);
-ok('第五十批A·新疆·喀什note引用自治区中心官方件', A.CITIES.kashi.note.includes('ksdq/info/1066/5166.htm'), true);
-eq('第五十批A·新疆·和田公积金下限1750', A.CITIES.ht.hf.min, 1750);
-eq('第五十批A·新疆·和田公积金上限29208', A.CITIES.ht.hf.max, 29208);
-ok('第五十批A·新疆·和田note引用自治区中心官方件', A.CITIES.ht.note.includes('htdq/info/1119/7309.htm'), true);
-eq('第五十批A·新疆·塔城公积金下限1750', A.CITIES.tc.hf.min, 1750);
-eq('第五十批A·新疆·塔城公积金上限28578', A.CITIES.tc.hf.max, 28578);
-ok('第五十批A·新疆·塔城note引用自治区中心官方件', A.CITIES.tc.note.includes('tcdq/info/1134/11295.htm'), true);
-eq('第五十批A·新疆·阿勒泰公积金下限1750', A.CITIES.alt.hf.min, 1750);
-eq('第五十批A·新疆·阿勒泰公积金上限28792', A.CITIES.alt.hf.max, 28792);
-ok('第五十批A·新疆·阿勒泰note引用自治区中心官方件', A.CITIES.alt.note.includes('altdq/info/1066/4377.htm'), true);
-ok('第五十批A·新疆·13地州note均含 xjgjj.xjjs.gov.cn 官方域名',
+eq('新疆·乌鲁木齐公积金下限2070', A.CITIES.wlmq.hf.min, 2070);
+eq('新疆·乌鲁木齐公积金上限35071', A.CITIES.wlmq.hf.max, 35071);
+ok('新疆·乌鲁木齐note引用自治区中心官方件', A.CITIES.wlmq.note.includes('wlmqgjj/info/1120/5961.htm'), true);
+eq('新疆·克拉玛依公积金下限2070', A.CITIES.klmy.hf.min, 2070);
+eq('新疆·克拉玛依公积金上限33872', A.CITIES.klmy.hf.max, 33872);
+ok('新疆·克拉玛依note引用自治区中心官方件', A.CITIES.klmy.note.includes('klmy/info/1066/3045.htm'), true);
+eq('新疆·吐鲁番公积金下限1750', A.CITIES.tlf.hf.min, 1750);
+eq('新疆·吐鲁番公积金上限29259', A.CITIES.tlf.hf.max, 29259);
+ok('新疆·吐鲁番note引用自治区中心官方件', A.CITIES.tlf.note.includes('tlfdq/info/1066/6506.htm'), true);
+eq('新疆·哈密公积金下限1890', A.CITIES.hami.hf.min, 1890);
+eq('新疆·哈密公积金上限31532', A.CITIES.hami.hf.max, 31532);
+ok('新疆·哈密note引用自治区中心官方件', A.CITIES.hami.note.includes('hm/info/1037/4354.htm'), true);
+eq('新疆·昌吉公积金下限1890', A.CITIES.cjz.hf.min, 1890);
+eq('新疆·昌吉公积金上限29280', A.CITIES.cjz.hf.max, 29280);
+ok('新疆·昌吉note引用自治区中心官方件', A.CITIES.cjz.note.includes('cj/info/1113/8579.htm'), true);
+eq('新疆·博尔塔拉公积金下限1750', A.CITIES.boz.hf.min, 1750);
+eq('新疆·博尔塔拉公积金上限27689', A.CITIES.boz.hf.max, 27689);
+ok('新疆·博尔塔拉note引用自治区中心官方件', A.CITIES.boz.note.includes('boz/info/1066/4029.htm'), true);
+eq('新疆·巴音郭楞公积金下限1750', A.CITIES.bygl.hf.min, 1750);
+eq('新疆·巴音郭楞公积金上限33237', A.CITIES.bygl.hf.max, 33237);
+ok('新疆·巴音郭楞note引用自治区中心官方件', A.CITIES.bygl.note.includes('baz/info/1066/7290.htm'), true);
+eq('新疆·阿克苏公积金下限1890', A.CITIES.aks.hf.min, 1890);
+eq('新疆·阿克苏公积金上限26178', A.CITIES.aks.hf.max, 26178);
+ok('新疆·阿克苏note引用自治区中心官方件', A.CITIES.aks.note.includes('aksdq/info/1066/7120.htm'), true);
+eq('新疆·克孜勒苏公积金下限1750', A.CITIES.kzls.hf.min, 1750);
+eq('新疆·克孜勒苏公积金上限29874', A.CITIES.kzls.hf.max, 29874);
+ok('新疆·克孜勒苏note引用自治区中心官方件', A.CITIES.kzls.note.includes('kez/info/1003/5542.htm'), true);
+eq('新疆·喀什公积金下限1750', A.CITIES.kashi.hf.min, 1750);
+eq('新疆·喀什公积金上限29139', A.CITIES.kashi.hf.max, 29139);
+ok('新疆·喀什note引用自治区中心官方件', A.CITIES.kashi.note.includes('ksdq/info/1066/5166.htm'), true);
+eq('新疆·和田公积金下限1750', A.CITIES.ht.hf.min, 1750);
+eq('新疆·和田公积金上限29208', A.CITIES.ht.hf.max, 29208);
+ok('新疆·和田note引用自治区中心官方件', A.CITIES.ht.note.includes('htdq/info/1119/7309.htm'), true);
+eq('新疆·塔城公积金下限1750', A.CITIES.tc.hf.min, 1750);
+eq('新疆·塔城公积金上限28578', A.CITIES.tc.hf.max, 28578);
+ok('新疆·塔城note引用自治区中心官方件', A.CITIES.tc.note.includes('tcdq/info/1134/11295.htm'), true);
+eq('新疆·阿勒泰公积金下限1750', A.CITIES.alt.hf.min, 1750);
+eq('新疆·阿勒泰公积金上限28792', A.CITIES.alt.hf.max, 28792);
+ok('新疆·阿勒泰note引用自治区中心官方件', A.CITIES.alt.note.includes('altdq/info/1066/4377.htm'), true);
+ok('新疆·13地州note均含 xjgjj.xjjs.gov.cn 官方域名',
   ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].every(function (k) { return A.CITIES[k].note.includes('xjgjj.xjjs.gov.cn'); }), true);
-eq('第五十批A·新疆·乌鲁木齐缴存额上限 round(35071×12%)×2 = 8418', Math.round(35071 * 0.12) * 2, 8418);
-eq('第五十批A·新疆·乌鲁木齐缴存额下限 round(2070×5%)×2 = 208', Math.round(2070 * 0.05) * 2, 208);
-eq('第五十批A·新疆·克拉玛依缴存额上限 round(33872×12%)×2 = 8130', Math.round(33872 * 0.12) * 2, 8130);
-eq('第五十批A·新疆·吐鲁番缴存额上限 round(29259×12%)×2 = 7022', Math.round(29259 * 0.12) * 2, 7022);
-eq('第五十批A·新疆·哈密缴存额上限 round(31532×12%)×2 = 7568', Math.round(31532 * 0.12) * 2, 7568);
-eq('第五十批A·新疆·博州缴存额上限 round(27689×12%)×2 = 6646', Math.round(27689 * 0.12) * 2, 6646);
-eq('第五十批A·新疆·巴州缴存额上限 round(33237×12%)×2 = 7976', Math.round(33237 * 0.12) * 2, 7976);
-eq('第五十批A·新疆·阿克苏缴存额上限 round(26178×12%)×2 = 6282', Math.round(26178 * 0.12) * 2, 6282);
-eq('第五十批A·新疆·克州缴存额上限 round(29874×12%)×2 = 7170', Math.round(29874 * 0.12) * 2, 7170);
-eq('第五十批A·新疆·喀什缴存额上限 round(29139×12%)×2 = 6994', Math.round(29139 * 0.12) * 2, 6994);
-eq('第五十批A·新疆·和田缴存额上限 round(29208×12%)×2 = 7010', Math.round(29208 * 0.12) * 2, 7010);
-eq('第五十批A·新疆·塔城缴存额上限 round(28578×12%)×2 = 6858', Math.round(28578 * 0.12) * 2, 6858);
-eq('第五十批A·新疆·阿勒泰缴存额上限 round(28792×12%)×2 = 6910', Math.round(28792 * 0.12) * 2, 6910);
-eq('第五十批A·新疆·昌吉单方上限 round(29280×12%) = 3514', Math.round(29280 * 0.12), 3514);
-eq('第五十批A·新疆·昌吉单方下限 round(1890×5%) = 95', Math.round(1890 * 0.05), 95);
-ok('第五十批A·新疆·13地州上限均落在上限×12%取整后×2的1元容差内',
+eq('新疆·乌鲁木齐缴存额上限 round(35071×12%)×2 = 8418', Math.round(35071 * 0.12) * 2, 8418);
+eq('新疆·乌鲁木齐缴存额下限 round(2070×5%)×2 = 208', Math.round(2070 * 0.05) * 2, 208);
+eq('新疆·克拉玛依缴存额上限 round(33872×12%)×2 = 8130', Math.round(33872 * 0.12) * 2, 8130);
+eq('新疆·吐鲁番缴存额上限 round(29259×12%)×2 = 7022', Math.round(29259 * 0.12) * 2, 7022);
+eq('新疆·哈密缴存额上限 round(31532×12%)×2 = 7568', Math.round(31532 * 0.12) * 2, 7568);
+eq('新疆·博州缴存额上限 round(27689×12%)×2 = 6646', Math.round(27689 * 0.12) * 2, 6646);
+eq('新疆·巴州缴存额上限 round(33237×12%)×2 = 7976', Math.round(33237 * 0.12) * 2, 7976);
+eq('新疆·阿克苏缴存额上限 round(26178×12%)×2 = 6282', Math.round(26178 * 0.12) * 2, 6282);
+eq('新疆·克州缴存额上限 round(29874×12%)×2 = 7170', Math.round(29874 * 0.12) * 2, 7170);
+eq('新疆·喀什缴存额上限 round(29139×12%)×2 = 6994', Math.round(29139 * 0.12) * 2, 6994);
+eq('新疆·和田缴存额上限 round(29208×12%)×2 = 7010', Math.round(29208 * 0.12) * 2, 7010);
+eq('新疆·塔城缴存额上限 round(28578×12%)×2 = 6858', Math.round(28578 * 0.12) * 2, 6858);
+eq('新疆·阿勒泰缴存额上限 round(28792×12%)×2 = 6910', Math.round(28792 * 0.12) * 2, 6910);
+eq('新疆·昌吉单方上限 round(29280×12%) = 3514', Math.round(29280 * 0.12), 3514);
+eq('新疆·昌吉单方下限 round(1890×5%) = 95', Math.round(1890 * 0.05), 95);
+ok('新疆·13地州上限均落在上限×12%取整后×2的1元容差内',
   [35071,33872,29259,31532,29280,27689,33237,26178,29874,29139,29208,28578,28792].every(function (m) { return Math.abs(Math.round(m * 0.12) * 2 - m * 0.24) < 1; }), true);
-eq('第五十批A·新疆·乌鲁木齐公积金下限依地区月最低工资2070（非全区统一1750）', A.CITIES.wlmq.hf.min === 2070 && A.CITIES.tlf.hf.min === 1750, true);
-eq('第五十批A·新疆·阿克苏下限分档（阿克苏市/库车市1890、其余7县市1750）', A.CITIES.aks.hf.min, 1890);
-ok('第五十批A·新疆·阿克苏note写明分档', A.CITIES.aks.note.includes('其余 7 县市 1750'), true);
-ok('第五十批A·新疆·喀什note写明塔什库尔干县1900', A.CITIES.kashi.note.includes('塔什库尔干县 1900'), true);
-ok('第五十批A·新疆·哈密note写明巴里坤伊吾1750', A.CITIES.hami.note.includes('巴里坤/伊吾1750'), true);
-eq('第五十批A·新疆·14市州社保基数统一不变 5246~26231', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].concat(['ylz']).every(function (k) { return A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231; }), true);
-ok('第五十批A·新疆·医保单位费率未取到市级件的2城仍标 warn（阿勒泰第五十六批已取到在职口径故撤）', ['ylz','tc'].every(function (k) { return A.CITIES[k].warn === true; }), true);
-eq('第五十批A·新疆·公积金14地州全部有官方件（第五十六批新增的 6 个 warn 均因医保费率缺口而非公积金）', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].concat(['ylz']).every(function (k) { return A.CITIES[k].hf.min > 0 && A.CITIES[k].hf.max > A.CITIES[k].hf.min; }), true);
-eq('第四十八批·定西·医保单位费率6.7%不变', A.CITIES.dx.med.comp, 0.067);
+eq('新疆·乌鲁木齐公积金下限依地区月最低工资2070（非全区统一1750）', A.CITIES.wlmq.hf.min === 2070 && A.CITIES.tlf.hf.min === 1750, true);
+eq('新疆·阿克苏下限分档（阿克苏市/库车市1890、其余7县市1750）', A.CITIES.aks.hf.min, 1890);
+ok('新疆·阿克苏note写明分档', A.CITIES.aks.note.includes('其余 7 县市 1750'), true);
+ok('新疆·喀什note写明塔什库尔干县1900', A.CITIES.kashi.note.includes('塔什库尔干县 1900'), true);
+ok('新疆·哈密note写明巴里坤伊吾1750', A.CITIES.hami.note.includes('巴里坤/伊吾1750'), true);
+eq('新疆·14市州社保基数统一不变 5246~26231', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].concat(['ylz']).every(function (k) { return A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231; }), true);
+ok('新疆·医保单位费率未取到市级件的2城仍标 warn（阿勒泰已取到在职口径故撤）', ['ylz','tc'].every(function (k) { return A.CITIES[k].warn === true; }), true);
+eq('新疆·公积金14地州全部有官方件（新增的 6 个 warn 均因医保费率缺口而非公积金）', ["wlmq","klmy","tlf","hami","cjz","boz","bygl","aks","kzls","kashi","ht","tc","alt"].concat(['ylz']).every(function (k) { return A.CITIES[k].hf.min > 0 && A.CITIES[k].hf.max > A.CITIES[k].hf.min; }), true);
+eq('定西·医保单位费率6.7%不变', A.CITIES.dx.med.comp, 0.067);
 
-/* ===== 第五十二批：吉林 4 市州取证（数值零改动，补文号与渠道穷举记录） ===== */
-eq('第五十二批·白城·note 补文号白医保联发〔2019〕3号', A.CITIES.bc.note.indexOf('白医保联发') >= 0, true);
-eq('第五十二批·白城·medComp 仍为 0.065', A.CITIES.bc.med.comp, 0.065);
-eq('第五十二批·白城·算式自校验 6.5-0.5=6.0', Math.round((0.065 - 0.005) * 10000) / 10000 === 0.06, true);
-eq('第五十二批·白城·算式自校验 6.4-0.4=6.0', Math.round((0.064 - 0.004) * 10000) / 10000 === 0.06, true);
-eq('第五十二批·白城·note 记页面级有效性声明', A.CITIES.bc.note.indexOf('有效性为有效') >= 0, true);
-eq('第五十二批·白城·note 不再把费率写成待核实', A.CITIES.bc.note.indexOf('医保单位费率待核实') < 0, true);
-eq('第五十二批·白山·真实域名已入 note', A.CITIES.bs.note.indexOf('www.cbs.gov.cn') >= 0, true);
-eq('第五十二批·白山·note 说明无医保局子域', A.CITIES.bs.note.indexOf('没有任何医疗保障局子域') >= 0, true);
-eq('第五十二批·白山·medComp 仍为 0.08', A.CITIES.bs.med.comp, 0.08);
-eq('第五十二批·白山·warn 保留', A.CITIES.bs.warn, true);
-eq('第五十二批·吉林市·机构页 URL 已入 note', A.CITIES.jl.note.indexOf('t20201013_886182.html') >= 0, true);
-eq('第五十二批·吉林市·medComp 仍为 0.08', A.CITIES.jl.med.comp, 0.08);
-eq('第五十二批·吉林市·warn 保留', A.CITIES.jl.warn, true);
-eq('第五十二批·辽源·医保局平台入口已入 note', A.CITIES.lyu.note.indexOf('data-classInfoId=17316') >= 0, true);
-eq('第五十二批·辽源·medComp 仍为 0.08', A.CITIES.lyu.med.comp, 0.08);
-eq('第五十二批·辽源·warn 保留', A.CITIES.lyu.warn, true);
-eq('第五十二批·吉林市/辽源/白山 8% 仍高于官方框架6%+0.5%=6.5%，note 已标注为估算占位', A.CITIES.jl.med.comp > 0.065 && A.CITIES.lyu.med.comp > 0.065 && A.CITIES.bs.med.comp > 0.065, true);
-eq('第五十二批·白城 6.5% 是四市中唯一落在官方框架内的值', A.CITIES.bc.med.comp === 0.065 && A.CITIES.jl.med.comp > A.CITIES.bc.med.comp, true);
-eq('第五十二批·延边 6% 不在本批范围但保持不变', A.CITIES.ybi.med.comp, 0.06);
+/* ===== 第五十二批：吉林 4 市州取证（数值不变，补文号与渠道穷举记录） ===== */
+eq('白城·note 补文号白医保联发〔2019〕3号', A.CITIES.bc.note.indexOf('白医保联发') >= 0, true);
+eq('白城·medComp 仍为 0.065', A.CITIES.bc.med.comp, 0.065);
+eq('白城·算式自校验 6.5-0.5=6.0', Math.round((0.065 - 0.005) * 10000) / 10000 === 0.06, true);
+eq('白城·算式自校验 6.4-0.4=6.0', Math.round((0.064 - 0.004) * 10000) / 10000 === 0.06, true);
+eq('白城·note 记页面级有效性声明', A.CITIES.bc.note.indexOf('有效性为有效') >= 0, true);
+eq('白城·note 不再把费率写成待核实', A.CITIES.bc.note.indexOf('医保单位费率待核实') < 0, true);
+eq('白山·真实域名已入 note', A.CITIES.bs.note.indexOf('www.cbs.gov.cn') >= 0, true);
+eq('白山·note 说明无医保局子域', A.CITIES.bs.note.indexOf('没有任何医疗保障局子域') >= 0, true);
+eq('白山·medComp 仍为 0.08', A.CITIES.bs.med.comp, 0.08);
+eq('白山·warn 保留', A.CITIES.bs.warn, true);
+eq('吉林市·机构页 URL 已入 note', A.CITIES.jl.note.indexOf('t20201013_886182.html') >= 0, true);
+eq('吉林市·medComp 仍为 0.08', A.CITIES.jl.med.comp, 0.08);
+eq('吉林市·warn 保留', A.CITIES.jl.warn, true);
+eq('辽源·医保局平台入口已入 note', A.CITIES.lyu.note.indexOf('data-classInfoId=17316') >= 0, true);
+eq('辽源·medComp 仍为 0.08', A.CITIES.lyu.med.comp, 0.08);
+eq('辽源·warn 保留', A.CITIES.lyu.warn, true);
+eq('吉林市/辽源/白山 8% 仍高于官方框架6%+0.5%=6.5%，note 已标注为估算占位', A.CITIES.jl.med.comp > 0.065 && A.CITIES.lyu.med.comp > 0.065 && A.CITIES.bs.med.comp > 0.065, true);
+eq('白城 6.5% 是四市中唯一落在官方框架内的值', A.CITIES.bc.med.comp === 0.065 && A.CITIES.jl.med.comp > A.CITIES.bc.med.comp, true);
+eq('延边 6% 不在本批范围但保持不变', A.CITIES.ybi.med.comp, 0.06);
 
 // ==== 第五十三批（2026-10-15）· 陕西宝鸡 44号文父代理 OCR 亲验 ====
-eq('第五十三批·宝鸡·医保基数下限比例 60% 坐实（宝医保发〔2026〕44号 父代理 OCR 五遍逐字一致）', A.CITIES.baoj.note.indexOf('5041.65元/月，上限为300%，即25208.25元/月') >= 0, true);
-eq('第五十三批·宝鸡·同件三数自校验 100833÷12 = 8402.75', Math.round(100833/12*100)/100, 8402.75);
-eq('第五十三批·宝鸡·同件三数自校验 8402.75×0.6 = 5041.65', Math.round(8402.75*0.6*100)/100, 5041.65);
-eq('第五十三批·宝鸡·同件三数自校验 8402.75×3 = 25208.25', Math.round(8402.75*3*100)/100, 25208.25);
-eq('第五十三批·宝鸡·执行期 2027-01-01 至 2027-12-31 今天尚未生效，故数据字段仍取陕西省级 4737~23685', A.CITIES.baoj.pension.min + '~' + A.CITIES.baoj.pension.max, '4737~23685');
-eq('第五十三批·宝鸡·note 已记录执行期未生效', A.CITIES.baoj.note.indexOf('2027-01-01至2027-12-31') >= 0, true);
-eq('第五十三批·宝鸡·note 已记录在岗职工口径与全口径不同源、不得互相换算', A.CITIES.baoj.note.indexOf('与陕西三项社保的全口径口径不同源') >= 0, true);
-eq('第五十三批·宝鸡·note 已删除「父代理未能解析原文/来自核查报告转述」旧措辞', A.CITIES.baoj.note.indexOf('父代理本轮未能解析原文') < 0, true);
-eq('第五十三批·宝鸡·note 保留 6.6% 费率出处待证实的说明（参保缴费管理办法正文未取到）', A.CITIES.baoj.note.indexOf('6.6%费率出处仍待证实') >= 0, true);
-eq('第五十三批·宝鸡·费率 6.6% 不变、warn 保留', A.CITIES.baoj.med.comp === 0.066 && A.CITIES.baoj.warn === true, true);
-eq('第五十三批·宝鸡·单位+个人大额 5+10 = 15 元/月 与 note 一致', A.CITIES.baoj.medFixEmp + 5, 15);
-eq('第五十三批·宝鸡·医保局无独立子域（DoH 全 NXDOMAIN），费率依据只能挂市政府门户或区政府网', true, true);
-eq('第五十三批·林芝·公积金 2360~42581 一手件零偏差（件挂林芝市公安局站，无独立发文文号）', A.CITIES.linzhi.hf.min + '~' + A.CITIES.linzhi.hf.max, '2360~42581');
-eq('第五十三批·林芝·取整自校验 42581×12% = 5109.72', Math.round(42581*0.12*100)/100, 5109.72);
-eq('第五十三批·林芝·floor 会得 5109，官方是 5110，故不是向下取整', Math.round(Math.floor(42581*0.12)*100)/100, 5109);
-eq('第五十三批·林芝·取整自校验 2360×5% = 118', Math.round(2360*0.05*100)/100, 118);
-eq('第五十三批·林芝·note 引用 gaj.linzhi.gov.cn 一手件 URL', A.CITIES.linzhi.note.indexOf('gaj.linzhi.gov.cn') >= 0, true);
-eq('第五十三批·阿里·已纠正「四组域名全部 NXDOMAIN」的错误表述', A.CITIES.ali.note.indexOf('四组域名全部 NXDOMON') < 0, true);
-eq('第五十三批·阿里·note 记录 zjj.al.gov.cn 真实可达', A.CITIES.ali.note.indexOf('zjj.al.gov.cn') >= 0, true);
-eq('第五十三批·阿里·note 记录 42214 并非西藏通用上限的三城反例', A.CITIES.ali.note.indexOf('昌都43049') >= 0 && A.CITIES.ali.note.indexOf('山南44202') >= 0 && A.CITIES.ali.note.indexOf('林芝42581') >= 0, true);
-eq('第五十三批·西藏 42214 只是拉萨的数，阿里/日喀则/那曲三城同值但昌都与林芝不同', A.CITIES.ali.hf.max === 42214 && A.CITIES.rkz.hf.max === 42214 && A.CITIES.naqu.hf.max === 42214 && A.CITIES.changdu.hf.max === 43049 && A.CITIES.linzhi.hf.max === 42581, true);
-eq('第五十三批·西藏 日喀则/那曲/阿里 warn 保留（无一手件）', A.CITIES.rkz.warn === true && A.CITIES.naqu.warn === true && A.CITIES.ali.warn === true, true);
+eq('宝鸡·医保基数下限比例 60% 坐实（宝医保发〔2026〕44号 父代理 OCR 五遍逐字一致）', A.CITIES.baoj.note.indexOf('5041.65元/月，上限为300%，即25208.25元/月') >= 0, true);
+eq('宝鸡·同件三数自校验 100833÷12 = 8402.75', Math.round(100833/12*100)/100, 8402.75);
+eq('宝鸡·同件三数自校验 8402.75×0.6 = 5041.65', Math.round(8402.75*0.6*100)/100, 5041.65);
+eq('宝鸡·同件三数自校验 8402.75×3 = 25208.25', Math.round(8402.75*3*100)/100, 25208.25);
+eq('宝鸡·执行期 2027-01-01 至 2027-12-31 今天尚未生效，故数据字段仍取陕西省级 4737~23685', A.CITIES.baoj.pension.min + '~' + A.CITIES.baoj.pension.max, '4737~23685');
+eq('宝鸡·note 已记录执行期未生效', A.CITIES.baoj.note.indexOf('2027-01-01至2027-12-31') >= 0, true);
+eq('宝鸡·note 已记录在岗职工口径与全口径不同源、不得互相换算', A.CITIES.baoj.note.indexOf('与陕西三项社保的全口径口径不同源') >= 0, true);
+eq('宝鸡·note 已删除「父代理未能解析原文/来自核查报告转述」旧措辞', A.CITIES.baoj.note.indexOf('父代理本轮未能解析原文') < 0, true);
+eq('宝鸡·note 保留 6.6% 费率出处待证实的说明（参保缴费管理办法正文未取到）', A.CITIES.baoj.note.indexOf('6.6%费率出处仍待证实') >= 0, true);
+eq('宝鸡·费率 6.6% 不变、warn 保留', A.CITIES.baoj.med.comp === 0.066 && A.CITIES.baoj.warn === true, true);
+eq('宝鸡·单位+个人大额 5+10 = 15 元/月 与 note 一致', A.CITIES.baoj.medFixEmp + 5, 15);
+eq('宝鸡·医保局无独立子域（DoH 全 NXDOMAIN），费率依据只能挂市政府门户或区政府网', true, true);
+eq('林芝·公积金 2360~42581 一手件零偏差（件挂林芝市公安局站，无独立发文文号）', A.CITIES.linzhi.hf.min + '~' + A.CITIES.linzhi.hf.max, '2360~42581');
+eq('林芝·取整自校验 42581×12% = 5109.72', Math.round(42581*0.12*100)/100, 5109.72);
+eq('林芝·floor 会得 5109，官方是 5110，故不是向下取整', Math.round(Math.floor(42581*0.12)*100)/100, 5109);
+eq('林芝·取整自校验 2360×5% = 118', Math.round(2360*0.05*100)/100, 118);
+eq('林芝·note 引用 gaj.linzhi.gov.cn 一手件 URL', A.CITIES.linzhi.note.indexOf('gaj.linzhi.gov.cn') >= 0, true);
+eq('阿里·已纠正「四组域名全部 NXDOMAIN」的错误表述', A.CITIES.ali.note.indexOf('四组域名全部 NXDOMON') < 0, true);
+eq('阿里·note 记录 zjj.al.gov.cn 真实可达', A.CITIES.ali.note.indexOf('zjj.al.gov.cn') >= 0, true);
+eq('阿里·note 记录 42214 并非西藏通用上限的三城反例', A.CITIES.ali.note.indexOf('昌都43049') >= 0 && A.CITIES.ali.note.indexOf('山南44202') >= 0 && A.CITIES.ali.note.indexOf('林芝42581') >= 0, true);
+eq('西藏 42214 只是拉萨的数，阿里/日喀则/那曲三城同值但昌都与林芝不同', A.CITIES.ali.hf.max === 42214 && A.CITIES.rkz.hf.max === 42214 && A.CITIES.naqu.hf.max === 42214 && A.CITIES.changdu.hf.max === 43049 && A.CITIES.linzhi.hf.max === 42581, true);
+eq('西藏 日喀则/那曲/阿里 warn 保留（无一手件）', A.CITIES.rkz.warn === true && A.CITIES.naqu.warn === true && A.CITIES.ali.warn === true, true);
 /* ---------------- 第五十四批A·甘肃 7 市州公积金核查（2026-10-15）---------------- */
 /* 报告：REPORT_round53_gansu_gjj.md。改值 0 城：白银/陇南 取到 2026 年度市级一手件且与现值零偏差；
    天水/庆阳/临夏/金昌/酒泉 五城 2026 年度件在中心全部公开栏目里都不存在（临夏的州办法反证该通知应当存在）。 */
-eq('第五十四批A·甘肃·白银 2026 年度件零偏差 2200~25059', A.CITIES.by.hf.min === 2200 && A.CITIES.by.hf.max === 25059, true);
-eq('第五十四批A·甘肃·白银 note 含官方域名 baiyin.gov.cn', A.CITIES.by.note.indexOf('baiyin.gov.cn') >= 0, true);
-eq('第五十四批A·甘肃·白银 上限 8353×3=25059 同件双数自校验', 8353 * 3 === 25059, true);
-eq('第五十四批A·甘肃·白银 月缴存额上限单方 round(25059×12%)=3007', Math.round(25059 * 0.12), 3007);
-eq('第五十四批A·甘肃·白银 月缴存额下限单方 round(2200×5%)=110', Math.round(2200 * 0.05), 110);
-eq('第五十四批A·甘肃·陇南 2026 年度件零偏差 2130~23301', A.CITIES.ln.hf.min === 2130 && A.CITIES.ln.hf.max === 23301, true);
-eq('第五十四批A·甘肃·陇南 note 含官方域名 longnan.gov.cn', A.CITIES.ln.note.indexOf('longnan.gov.cn') >= 0, true);
-eq('第五十四批A·甘肃·陇南 上限三数自校验 93211÷12→7767、7767×3=23301', Math.floor(93211 / 12) === 7767 && 7767 * 3 === 23301, true);
-eq('第五十四批A·甘肃·陇南 月缴存额上限 round(23301×12%)×2=5592', Math.round(23301 * 0.12) * 2, 5592);
-eq('第五十四批A·甘肃·陇南 月缴存额下限 round(2130×5%)×2=214（必须 half-up）', Math.round(2130 * 0.05) * 2, 214);
-eq('第五十四批A·甘肃·陇南 下限取整判别点：floor 会得 212（错）', Math.floor(2130 * 0.05) * 2, 212);
-eq('第五十四批A·甘肃·陇南 下限取整判别点：先乘10%再取整会得 213×2=426（错）', Math.floor(2130 * 0.10) * 2, 426);
-eq('第五十四批A·甘肃·天水 无 2026 年度件 → 新增 warn', A.CITIES.tshui.warn === true, true);
-eq('第五十四批A·甘肃·天水 note 记录 2025 年度件上限 21429 与 85715 基准', A.CITIES.tshui.note.indexOf('21429') >= 0 && A.CITIES.tshui.note.indexOf('85715') >= 0, true);
-eq('第五十四批A·甘肃·天水 现值 2130~23287 未变', A.CITIES.tshui.hf.min === 2130 && A.CITIES.tshui.hf.max === 23287, true);
-eq('第五十四批A·甘肃·天水 2025 年度件取整自校验 85715÷12→7143、7143×3=21429、round(1910×5%)=96、round(1850×5%)=93', Math.round(85715 / 12) === 7143 && 7143 * 3 === 21429 && Math.round(1910 * 0.05) === 96 && Math.round(1850 * 0.05) === 93, true);
-eq('第五十四批A·甘肃·庆阳 现值 1910~27275 就是已届满的 2025 年度值 → 新增 warn', A.CITIES.qingy.warn === true && A.CITIES.qingy.hf.min === 1910 && A.CITIES.qingy.hf.max === 27275, true);
-eq('第五十四批A·甘肃·庆阳 note 含真域 zgqingyang.gov.cn', A.CITIES.qingy.note.indexOf('zgqingyang.gov.cn') >= 0, true);
-eq('第五十四批A·甘肃·庆阳 2025 年度件取整自校验 109102÷12→9091、9091×3=27273≠27275 故不作自校验', Math.round(109102 / 12) * 3 !== 27275, true);
-eq('第五十四批A·甘肃·临夏 2025 年度值来自官方年度报告 → warn 保留', A.CITIES.lx.warn === true && A.CITIES.lx.hf.min === 1910 && A.CITIES.lx.hf.max === 22788, true);
-eq('第五十四批A·甘肃·临夏 note 含年度报告域名 linxia.gov.cn', A.CITIES.lx.note.indexOf('linxia.gov.cn') >= 0, true);
-eq('第五十四批A·甘肃·临夏 note 记 22788÷3 属反推不作自校验', A.CITIES.lx.note.indexOf('反推') >= 0, true);
-eq('第五十四批A·甘肃·金昌 无任何缴存基数件 → warn 保留', A.CITIES.jc.warn === true && A.CITIES.jc.hf.min === 2020 && A.CITIES.jc.hf.max === 26166, true);
-eq('第五十四批A·甘肃·金昌 note 含真域 jcs.gov.cn 与已失效的 jzgjj.gov.cn', A.CITIES.jc.note.indexOf('jcs.gov.cn') >= 0 && A.CITIES.jc.note.indexOf('jzgjj.gov.cn') >= 0, true);
-eq('第五十四批A·甘肃·金昌 note 记三个管理办法均为征求意见稿故排除', A.CITIES.jc.note.indexOf('征求意见稿') >= 0, true);
-eq('第五十四批A·甘肃·酒泉 无 2026 年度件 → 新增 warn', A.CITIES.jiuq.warn === true && A.CITIES.jiuq.hf.min === 2020 && A.CITIES.jiuq.hf.max === 26246.49, true);
-eq('第五十四批A·甘肃·酒泉 note 含真子域 jiuquan.gov.cn', A.CITIES.jiuq.note.indexOf('gjj.jiuquan.gov.cn') >= 0, true);
-eq('第五十四批A·甘肃·金昌/酒泉 下限 2020 与庆阳 1910、天水 2130 分属甘政发〔2023〕83号（已取代）与甘政办发〔2025〕71号两套口径', A.CITIES.jc.hf.min === 2020 && A.CITIES.jiuq.hf.min === 2020 && A.CITIES.qingy.hf.min === 1910 && A.CITIES.tshui.hf.min === 2130 && A.CITIES.by.hf.min === 2200 && A.CITIES.ln.hf.min === 2130, true);
-eq('第五十四批A·甘肃·白银与陇南无 warn（已取到 2026 年度一手件）', A.CITIES.by.warn === undefined && A.CITIES.ln.warn === undefined, true);
-eq('第五十四批A·甘肃·五城 warn 全部落地', A.CITIES.tshui.warn === true && A.CITIES.qingy.warn === true && A.CITIES.jiuq.warn === true && A.CITIES.lx.warn === true && A.CITIES.jc.warn === true, true);
+eq('甘肃·白银 2026 年度件零偏差 2200~25059', A.CITIES.by.hf.min === 2200 && A.CITIES.by.hf.max === 25059, true);
+eq('甘肃·白银 note 含官方域名 baiyin.gov.cn', A.CITIES.by.note.indexOf('baiyin.gov.cn') >= 0, true);
+eq('甘肃·白银 上限 8353×3=25059 同件双数自校验', 8353 * 3 === 25059, true);
+eq('甘肃·白银 月缴存额上限单方 round(25059×12%)=3007', Math.round(25059 * 0.12), 3007);
+eq('甘肃·白银 月缴存额下限单方 round(2200×5%)=110', Math.round(2200 * 0.05), 110);
+eq('甘肃·陇南 2026 年度件零偏差 2130~23301', A.CITIES.ln.hf.min === 2130 && A.CITIES.ln.hf.max === 23301, true);
+eq('甘肃·陇南 note 含官方域名 longnan.gov.cn', A.CITIES.ln.note.indexOf('longnan.gov.cn') >= 0, true);
+eq('甘肃·陇南 上限三数自校验 93211÷12→7767、7767×3=23301', Math.floor(93211 / 12) === 7767 && 7767 * 3 === 23301, true);
+eq('甘肃·陇南 月缴存额上限 round(23301×12%)×2=5592', Math.round(23301 * 0.12) * 2, 5592);
+eq('甘肃·陇南 月缴存额下限 round(2130×5%)×2=214（必须 half-up）', Math.round(2130 * 0.05) * 2, 214);
+eq('甘肃·陇南 下限取整判别点：floor 会得 212（错）', Math.floor(2130 * 0.05) * 2, 212);
+eq('甘肃·陇南 下限取整判别点：先乘10%再取整会得 213×2=426（错）', Math.floor(2130 * 0.10) * 2, 426);
+eq('甘肃·天水 无 2026 年度件 → 新增 warn', A.CITIES.tshui.warn === true, true);
+eq('甘肃·天水 note 记录 2025 年度件上限 21429 与 85715 基准', A.CITIES.tshui.note.indexOf('21429') >= 0 && A.CITIES.tshui.note.indexOf('85715') >= 0, true);
+eq('甘肃·天水 现值 2130~23287 未变', A.CITIES.tshui.hf.min === 2130 && A.CITIES.tshui.hf.max === 23287, true);
+eq('甘肃·天水 2025 年度件取整自校验 85715÷12→7143、7143×3=21429、round(1910×5%)=96、round(1850×5%)=93', Math.round(85715 / 12) === 7143 && 7143 * 3 === 21429 && Math.round(1910 * 0.05) === 96 && Math.round(1850 * 0.05) === 93, true);
+eq('甘肃·庆阳 现值 1910~27275 就是已届满的 2025 年度值 → 新增 warn', A.CITIES.qingy.warn === true && A.CITIES.qingy.hf.min === 1910 && A.CITIES.qingy.hf.max === 27275, true);
+eq('甘肃·庆阳 note 含真域 zgqingyang.gov.cn', A.CITIES.qingy.note.indexOf('zgqingyang.gov.cn') >= 0, true);
+eq('甘肃·庆阳 2025 年度件取整自校验 109102÷12→9091、9091×3=27273≠27275 故不作自校验', Math.round(109102 / 12) * 3 !== 27275, true);
+eq('甘肃·临夏 2025 年度值来自官方年度报告 → warn 保留', A.CITIES.lx.warn === true && A.CITIES.lx.hf.min === 1910 && A.CITIES.lx.hf.max === 22788, true);
+eq('甘肃·临夏 note 含年度报告域名 linxia.gov.cn', A.CITIES.lx.note.indexOf('linxia.gov.cn') >= 0, true);
+eq('甘肃·临夏 note 记 22788÷3 属反推不作自校验', A.CITIES.lx.note.indexOf('反推') >= 0, true);
+eq('甘肃·金昌 无任何缴存基数件 → warn 保留', A.CITIES.jc.warn === true && A.CITIES.jc.hf.min === 2020 && A.CITIES.jc.hf.max === 26166, true);
+eq('甘肃·金昌 note 含真域 jcs.gov.cn 与已失效的 jzgjj.gov.cn', A.CITIES.jc.note.indexOf('jcs.gov.cn') >= 0 && A.CITIES.jc.note.indexOf('jzgjj.gov.cn') >= 0, true);
+eq('甘肃·金昌 note 记三个管理办法均为征求意见稿故排除', A.CITIES.jc.note.indexOf('征求意见稿') >= 0, true);
+eq('甘肃·酒泉 无 2026 年度件 → 新增 warn', A.CITIES.jiuq.warn === true && A.CITIES.jiuq.hf.min === 2020 && A.CITIES.jiuq.hf.max === 26246.49, true);
+eq('甘肃·酒泉 note 含真子域 jiuquan.gov.cn', A.CITIES.jiuq.note.indexOf('gjj.jiuquan.gov.cn') >= 0, true);
+eq('甘肃·金昌/酒泉 下限 2020 与庆阳 1910、天水 2130 分属甘政发〔2023〕83号（已取代）与甘政办发〔2025〕71号两套口径', A.CITIES.jc.hf.min === 2020 && A.CITIES.jiuq.hf.min === 2020 && A.CITIES.qingy.hf.min === 1910 && A.CITIES.tshui.hf.min === 2130 && A.CITIES.by.hf.min === 2200 && A.CITIES.ln.hf.min === 2130, true);
+eq('甘肃·白银与陇南无 warn（已取到 2026 年度一手件）', A.CITIES.by.warn === undefined && A.CITIES.ln.warn === undefined, true);
+eq('甘肃·五城 warn 全部落地', A.CITIES.tshui.warn === true && A.CITIES.qingy.warn === true && A.CITIES.jiuq.warn === true && A.CITIES.lx.warn === true && A.CITIES.jc.warn === true, true);
 
 /* ---------------- 第五十五批·西宁公积金渠道穷举 + 辽宁 subagent 崩溃（2026-10-15）---------------- */
-eq('第五十五批·西宁 公积金现值 2080~31995 未改动', A.CITIES.xining.hf.min === 2080 && A.CITIES.xining.hf.max === 31995, true);
-eq('第五十五批·西宁 note 含中心真实域名 xnzfgjj.com', A.CITIES.xining.note.indexOf('xnzfgjj.com') >= 0, true);
-eq('第五十五批·西宁 note 记 2021 年度件唯一下限 1700 与上限 24591', A.CITIES.xining.note.indexOf('24591') >= 0 && A.CITIES.xining.note.indexOf('1700') >= 0, true);
-eq('第五十五批·西宁 note 记 2023 年度件标题在但正文未公开（tzgg/2488.jhtml）', A.CITIES.xining.note.indexOf('2488.jhtml') >= 0, true);
-eq('第五十五批·西宁 note 记站内全文检索已穷举（search.jspx）', A.CITIES.xining.note.indexOf('search.jspx') >= 0, true);
-eq('第五十五批·西宁 2021 年度件下限自校验成立 round(1700×5%)×2=170', Math.round(1700 * 0.05) * 2, 170);
-eq('第五十五批·西宁 2021 年度件上限 24591÷3 整除得 8197，但件内未给基准数字，按反推处理不作自校验', 24591 / 3 === 8197 && 8197 * 3 === 24591, true);
-eq('第五十五批·西宁 自主缴存月缴存额上限 5900 既非 round(24591×12%)×2 也非 floor(24591×24%)，不可强行建模', Math.round(24591 * 0.12) * 2 !== 5900 && Math.floor(24591 * 0.24) !== 5900, true);
-eq('第五十五批·西宁 下限 2080 与海西同为青政〔2025〕11号 三类地区 2080', A.CITIES.xining.hf.min === 2080 && A.CITIES.hxz.hf.min === 2080, true);
-eq('第五十五批·西宁 上限 31995 与 2021 年度件的 24591 不是同一年度数据', A.CITIES.xining.hf.max === 31995 && 24591 !== A.CITIES.xining.hf.max, true);
-eq('第五十五批·青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hxzfgjj.com.cn），其余 6 州无', A.CITIES.xining.note.indexOf('xnzfgjj.com') >= 0 && A.CITIES.hxz.note.indexOf('hxzfgjj.com.cn') >= 0, true);
+eq('西宁 公积金现值 2080~31995 未改动', A.CITIES.xining.hf.min === 2080 && A.CITIES.xining.hf.max === 31995, true);
+eq('西宁 note 含中心真实域名 xnzfgjj.com', A.CITIES.xining.note.indexOf('xnzfgjj.com') >= 0, true);
+eq('西宁 note 记 2021 年度件唯一下限 1700 与上限 24591', A.CITIES.xining.note.indexOf('24591') >= 0 && A.CITIES.xining.note.indexOf('1700') >= 0, true);
+eq('西宁 note 记 2023 年度件标题在但正文未公开（tzgg/2488.jhtml）', A.CITIES.xining.note.indexOf('2488.jhtml') >= 0, true);
+eq('西宁 note 记站内全文检索已穷举（search.jspx）', A.CITIES.xining.note.indexOf('search.jspx') >= 0, true);
+eq('西宁 2021 年度件下限自校验成立 round(1700×5%)×2=170', Math.round(1700 * 0.05) * 2, 170);
+eq('西宁 2021 年度件上限 24591÷3 整除得 8197，但件内未给基准数字，按反推处理不作自校验', 24591 / 3 === 8197 && 8197 * 3 === 24591, true);
+eq('西宁 自主缴存月缴存额上限 5900 既非 round(24591×12%)×2 也非 floor(24591×24%)，不可强行建模', Math.round(24591 * 0.12) * 2 !== 5900 && Math.floor(24591 * 0.24) !== 5900, true);
+eq('西宁 下限 2080 与海西同为青政〔2025〕11号 三类地区 2080', A.CITIES.xining.hf.min === 2080 && A.CITIES.hxz.hf.min === 2080, true);
+eq('西宁 上限 31995 与 2021 年度件的 24591 不是同一年度数据', A.CITIES.xining.hf.max === 31995 && 24591 !== A.CITIES.xining.hf.max, true);
+eq('青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hxzfgjj.com.cn），其余 6 州无', A.CITIES.xining.note.indexOf('xnzfgjj.com') >= 0 && A.CITIES.hxz.note.indexOf('hxzfgjj.com.cn') >= 0, true);
 
 // ===== 第五十六批（2026-10-15）· 新疆 13 地州医保单位费率复核 =====
 {
   // --- 阿勒泰：改值 7.5% → 9.5%（父代理逐字复核，推翻 subagent 的退休/灵活就业口径误判）---
-  eq('第五十六批·阿勒泰 medComp 9.5%（含生育，在职职工企业口径）', A.CITIES.alt.med.comp, 0.095);
-  eq('第五十六批·阿勒泰 个人 2% 不变', A.CITIES.alt.med.emp, 0.02);
-  ok('第五十六批·阿勒泰 warn 已撤销（两件官方件互相印证在职单位费率 9.5%）', A.CITIES.alt.warn === undefined, true);
-  ok('第五十六批·阿勒泰 note 引阿行办发〔2019〕58号', A.CITIES.alt.note.indexOf('阿行办发〔2019〕58号') >= 0, true);
-  ok('第五十六批·阿勒泰 note 含 2019 件逐字「单位职工基本医疗保险缴费率统一按 9.5%执行」', A.CITIES.alt.note.indexOf('单位职工基本医疗保险缴费率统一按9.5%执行') >= 0, true);
-  ok('第五十六批·阿勒泰 note 含 2026 件逐字「按我地区职工医保缴费率9.5%」', A.CITIES.alt.note.indexOf('按我地区职工医保缴费率9.5%') >= 0, true);
-  ok('第五十六批·阿勒泰 note 记录 7% 是退休/灵活就业口径', A.CITIES.alt.note.indexOf('退休职工与灵活就业') >= 0 || A.CITIES.alt.note.indexOf('退休职工缴费费率为单位7%') >= 0, true);
-  ok('第五十六批·阿勒泰 note 声明原 7.5% 作废', A.CITIES.alt.note.indexOf('作废') >= 0, true);
-  ok('第五十六批·阿勒泰 不再引错误的阿行办规〔2022〕3号', A.CITIES.alt.note.indexOf('阿行办规〔2022〕3号') < 0, true);
-  ok('第五十六批·阿勒泰 note 含 2019 件 URL', A.CITIES.alt.note.indexOf('xjalt.gov.cn/govxxgk/DD041/2019-11-27/') >= 0, true);
-  ok('第五十六批·阿勒泰 note 含 2026 件 URL', A.CITIES.alt.note.indexOf('638d53bd-5604-4060-83ed-07451846749f.html') >= 0, true);
-  ok('第五十六批·阿勒泰 公积金 1750~28792 不变', A.CITIES.alt.hf.min === 1750 && A.CITIES.alt.hf.max === 28792, true);
-  ok('第五十六批·阿勒泰 社保基数 5246~26231 不变', A.CITIES.alt.pension.min === 5246 && A.CITIES.alt.pension.max === 26231, true);
+  eq('阿勒泰 medComp 9.5%（含生育，在职职工企业口径）', A.CITIES.alt.med.comp, 0.095);
+  eq('阿勒泰 个人 2% 不变', A.CITIES.alt.med.emp, 0.02);
+  ok('阿勒泰 warn 已撤销（两件官方件互相印证在职单位费率 9.5%）', A.CITIES.alt.warn === undefined, true);
+  ok('阿勒泰 note 引阿行办发〔2019〕58号', A.CITIES.alt.note.indexOf('阿行办发〔2019〕58号') >= 0, true);
+  ok('阿勒泰 note 含 2019 件逐字「单位职工基本医疗保险缴费率统一按 9.5%执行」', A.CITIES.alt.note.indexOf('单位职工基本医疗保险缴费率统一按9.5%执行') >= 0, true);
+  ok('阿勒泰 note 含 2026 件逐字「按我地区职工医保缴费率9.5%」', A.CITIES.alt.note.indexOf('按我地区职工医保缴费率9.5%') >= 0, true);
+  ok('阿勒泰 note 记录 7% 是退休/灵活就业口径', A.CITIES.alt.note.indexOf('退休职工与灵活就业') >= 0 || A.CITIES.alt.note.indexOf('退休职工缴费费率为单位7%') >= 0, true);
+  ok('阿勒泰 note 声明原 7.5% 作废', A.CITIES.alt.note.indexOf('作废') >= 0, true);
+  ok('阿勒泰 不再引错误的阿行办规〔2022〕3号', A.CITIES.alt.note.indexOf('阿行办规〔2022〕3号') < 0, true);
+  ok('阿勒泰 note 含 2019 件 URL', A.CITIES.alt.note.indexOf('xjalt.gov.cn/govxxgk/DD041/2019-11-27/') >= 0, true);
+  ok('阿勒泰 note 含 2026 件 URL', A.CITIES.alt.note.indexOf('638d53bd-5604-4060-83ed-07451846749f.html') >= 0, true);
+  ok('阿勒泰 公积金 1750~28792 不变', A.CITIES.alt.hf.min === 1750 && A.CITIES.alt.hf.max === 28792, true);
+  ok('阿勒泰 社保基数 5246~26231 不变', A.CITIES.alt.pension.min === 5246 && A.CITIES.alt.pension.max === 26231, true);
 
   // --- 新增 warn 的 6 城（费率只有一半或完全没有官方件）---
-  eq('第五十六批·乌鲁木齐 warn 新增（生育 0.8% 已证、单位基本医保 9.0% 无件）', A.CITIES.wlmq.warn, true);
-  eq('第五十六批·克拉玛依 warn 新增（基本医保 7.3% 属反推）', A.CITIES.klmy.warn, true);
-  eq('第五十六批·昌吉 warn 新增（9%+0.5% 属反推）', A.CITIES.cjz.warn, true);
-  eq('第五十六批·阿克苏 warn 新增（阿地医保发〔2019〕26号 未取到）', A.CITIES.aks.warn, true);
-  eq('第五十六批·克孜勒苏 warn 新增（无任何市级费率件）', A.CITIES.kzls.warn, true);
-  eq('第五十六批·喀什 warn 新增（站点对本机出口 403）', A.CITIES.kashi.warn, true);
-  ok('第五十六批·乌鲁木齐 note 说明乌政办〔2019〕111号 不在规范性文件库', A.CITIES.wlmq.note.indexOf('不在乌市 37 页规范性文件库') >= 0, true);
-  ok('第五十六批·克拉玛依 note 说明基本医保 7.3% 属反推', A.CITIES.klmy.note.indexOf('属反推') >= 0, true);
-  ok('第五十六批·昌吉 note 说明 9%+0.5% 属反推', A.CITIES.cjz.note.indexOf('属反推') >= 0, true);
-  ok('第五十六批·阿克苏 note 说明本轮未取到该件', A.CITIES.aks.note.indexOf('本轮站内检索未取到该件') >= 0, true);
-  ok('第五十六批·克孜勒苏 note 说明 29 条规范性文件全是农业林草水价燃气', A.CITIES.kzls.note.indexOf('农业林草水价燃气') >= 0, true);
-  ok('第五十六批·喀什 note 说明整站 403', A.CITIES.kashi.note.indexOf('403') >= 0, true);
+  eq('乌鲁木齐 warn 新增（生育 0.8% 已证、单位基本医保 9.0% 无件）', A.CITIES.wlmq.warn, true);
+  eq('克拉玛依 warn 新增（基本医保 7.3% 属反推）', A.CITIES.klmy.warn, true);
+  eq('昌吉 warn 新增（9%+0.5% 属反推）', A.CITIES.cjz.warn, true);
+  eq('阿克苏 warn 新增（阿地医保发〔2019〕26号 未取到）', A.CITIES.aks.warn, true);
+  eq('克孜勒苏 warn 新增（无任何市级费率件）', A.CITIES.kzls.warn, true);
+  eq('喀什 warn 新增（站点对本机出口 403）', A.CITIES.kashi.warn, true);
+  ok('乌鲁木齐 note 说明乌政办〔2019〕111号 不在规范性文件库', A.CITIES.wlmq.note.indexOf('不在乌市 37 页规范性文件库') >= 0, true);
+  ok('克拉玛依 note 说明基本医保 7.3% 属反推', A.CITIES.klmy.note.indexOf('属反推') >= 0, true);
+  ok('昌吉 note 说明 9%+0.5% 属反推', A.CITIES.cjz.note.indexOf('属反推') >= 0, true);
+  ok('阿克苏 note 说明本轮未取到该件', A.CITIES.aks.note.indexOf('本轮站内检索未取到该件') >= 0, true);
+  ok('克孜勒苏 note 说明 29 条规范性文件全是农业林草水价燃气', A.CITIES.kzls.note.indexOf('农业林草水价燃气') >= 0, true);
+  ok('喀什 note 说明整站 403', A.CITIES.kashi.note.indexOf('403') >= 0, true);
 
   // --- 补 URL 的 5 城（报告转述、父代理复取 000 未复核）---
-  ok('第五十六批·和田 note 含和行办规〔2025〕3号与 URL', A.CITIES.ht.note.indexOf('和行办规〔2025〕3号') >= 0 && A.CITIES.ht.note.indexOf('xjht.gov.cn/xjht/') >= 0, true);
-  ok('第五十六批·巴州 note 含巴医保规〔2022〕3号与 URL', A.CITIES.bygl.note.indexOf('巴医保规〔2022〕3号') >= 0 && A.CITIES.bygl.note.indexOf('xjbz.gov.cn/xjbz/') >= 0, true);
-  ok('第五十六批·博州 note 含 9.5-0.5=9 自校验与 URL', A.CITIES.boz.note.indexOf('9.5-0.5=9') >= 0 && A.CITIES.boz.note.indexOf('xjboz.gov.cn/xjboz/') >= 0, true);
-  ok('第五十六批·吐鲁番 note 含 8.7=6.7+2 自校验与 URL', A.CITIES.tlf.note.indexOf('8.7=6.7+2') >= 0 && A.CITIES.tlf.note.indexOf('tlf.gov.cn/tlfs/') >= 0, true);
-  ok('第五十六批·吐鲁番 note 纠正「含生育0.7%」的错误表述', A.CITIES.tlf.note.indexOf('不含生育') >= 0, true);
-  ok('第五十六批·哈密 note 含 2027-01-01 调至 7.5% 的时效说明与 URL', A.CITIES.hami.note.indexOf('2027年1月1日') >= 0 && A.CITIES.hami.note.indexOf('hami.gov.cn/hami/') >= 0, true);
-  ok('第五十六批·5 城均标注父代理未能复核', ['ht','bygl','boz','tlf','hami'].every(k => A.CITIES[k].note.indexOf('本机出口返回 000 未复核') >= 0), true);
-  ok('第五十六批·5 城 medComp 数值全部不变', A.CITIES.ht.med.comp === 0.065 && A.CITIES.bygl.med.comp === 0.07 && A.CITIES.boz.med.comp === 0.095 && A.CITIES.tlf.med.comp === 0.067 && A.CITIES.hami.med.comp === 0.065, true);
+  ok('和田 note 含和行办规〔2025〕3号与 URL', A.CITIES.ht.note.indexOf('和行办规〔2025〕3号') >= 0 && A.CITIES.ht.note.indexOf('xjht.gov.cn/xjht/') >= 0, true);
+  ok('巴州 note 含巴医保规〔2022〕3号与 URL', A.CITIES.bygl.note.indexOf('巴医保规〔2022〕3号') >= 0 && A.CITIES.bygl.note.indexOf('xjbz.gov.cn/xjbz/') >= 0, true);
+  ok('博州 note 含 9.5-0.5=9 自校验与 URL', A.CITIES.boz.note.indexOf('9.5-0.5=9') >= 0 && A.CITIES.boz.note.indexOf('xjboz.gov.cn/xjboz/') >= 0, true);
+  ok('吐鲁番 note 含 8.7=6.7+2 自校验与 URL', A.CITIES.tlf.note.indexOf('8.7=6.7+2') >= 0 && A.CITIES.tlf.note.indexOf('tlf.gov.cn/tlfs/') >= 0, true);
+  ok('吐鲁番 note 纠正「含生育0.7%」的错误表述', A.CITIES.tlf.note.indexOf('不含生育') >= 0, true);
+  ok('哈密 note 含 2027-01-01 调至 7.5% 的时效说明与 URL', A.CITIES.hami.note.indexOf('2027年1月1日') >= 0 && A.CITIES.hami.note.indexOf('hami.gov.cn/hami/') >= 0, true);
+  ok('5 城均标注父代理未能复核', ['ht','bygl','boz','tlf','hami'].every(k => A.CITIES[k].note.indexOf('本机出口返回 000 未复核') >= 0), true);
+  ok('5 城 medComp 数值全部不变', A.CITIES.ht.med.comp === 0.065 && A.CITIES.bygl.med.comp === 0.07 && A.CITIES.boz.med.comp === 0.095 && A.CITIES.tlf.med.comp === 0.067 && A.CITIES.hami.med.comp === 0.065, true);
 
   // --- 未动的 3 城保持 warn（估算值）---
-  eq('第五十六批·伊犁 warn 保留（现行明确值仍未取到）', A.CITIES.ylz.warn, true);
-  eq('第五十六批·塔城 warn 保留（现行明确值仍未取到）', A.CITIES.tc.warn, true);
-  ok('第五十六批·新疆 14 地州社保基数仍统一 5246~26231', ['wlmq','klmy','tlf','hami','cjz','boz','bygl','aks','kzls','kashi','ht','ylz','tc','alt'].every(k => A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231), true);
-  ok('第五十六批·阿勒泰 medComp 与昌吉、博州、伊犁同为 9.5%', A.CITIES.alt.med.comp === A.CITIES.cjz.med.comp && A.CITIES.alt.med.comp === A.CITIES.boz.med.comp && A.CITIES.alt.med.comp === A.CITIES.ylz.med.comp, true);
+  eq('伊犁 warn 保留（现行明确值仍未取到）', A.CITIES.ylz.warn, true);
+  eq('塔城 warn 保留（现行明确值仍未取到）', A.CITIES.tc.warn, true);
+  ok('新疆 14 地州社保基数仍统一 5246~26231', ['wlmq','klmy','tlf','hami','cjz','boz','bygl','aks','kzls','kashi','ht','ylz','tc','alt'].every(k => A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231), true);
+  ok('阿勒泰 medComp 与昌吉、博州、伊犁同为 9.5%', A.CITIES.alt.med.comp === A.CITIES.cjz.med.comp && A.CITIES.alt.med.comp === A.CITIES.boz.med.comp && A.CITIES.alt.med.comp === A.CITIES.ylz.med.comp, true);
 
   /* ===== 第五十七批（2026-10-15）· 辽宁 6 城医保费率渠道穷举 + 朝阳医保基数现行性坐实 ===== */
-  ok('第五十七批·辽宁 6 城 medComp 全部保持 8%（生育 1% 有文号但基本医疗逐市不同，四关第①关不过）', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].med.comp === 0.08), true);
-  ok('第五十七批·辽宁 6 城 warn 全部保留', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].warn === true), true);
-  ok('第五十七批·抚顺单位合计应为 9%（基本医疗 8% + 生育 1%）但未取到市级生育件故不改值', Math.round((0.08 + 0.01) * 10000) / 10000 === 0.09, true);
-  ok('第五十七批·省级《辽宁省医疗保障待遇清单（2021年版）》只给 6% 至 8% 区间，8% 落在区间上沿', 0.08 >= 0.06 && 0.08 <= 0.08, true);
-  ok('第五十七批·阜新 note 已补生育恢复件原文 URL', A.CITIES.fx.note.indexOf('ybj.fuxin.gov.cn/content/2025/1017184.html') >= 0, true);
-  ok('第五十七批·阜新 note 已补 2025-09-01 生效日', A.CITIES.fx.note.indexOf('2025年9月1日') >= 0, true);
-  ok('第五十七批·阜新 note 已补 0.5% 恢复至 1%', A.CITIES.fx.note.indexOf('由0.5%恢复至1%') >= 0, true);
-  ok('第五十七批·辽医保规〔2025〕2号 准确全称已补（此前只记编号）', A.CITIES.fx.note.indexOf('关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知') >= 0, true);
-  ok('第五十七批·阜新 note 已补省级 6% 至 8% 区间', A.CITIES.fx.note.indexOf('6%至8%') >= 0, true);
-  ok('第五十七批·辽医保发〔2019〕26号 合并实施件已记录', A.CITIES.fx.note.indexOf('辽医保发〔2019〕26号') >= 0, true);
-  ok('第五十七批·抚顺 note 已记合计应为 9% 的推理', A.CITIES.fsh.note.indexOf('抚顺单位合计应为9%') >= 0, true);
-  ok('第五十七批·丹东 note 已补生育 1% 口径', A.CITIES.dd.note.indexOf('生育保险费率企业侧自2025-09-01起为1%') >= 0, true);
-  ok('第五十七批·锦州 note 已补无医保局子域', A.CITIES.jz.note.indexOf('锦州市医保局无独立子域') >= 0, true);
-  ok('第五十七批·铁岭 note 已补省局真实域名 ybj.ln.gov.cn', A.CITIES.tl.note.indexOf('ybj.ln.gov.cn') >= 0, true);
-  ok('第五十七批·朝阳 note 已补朝医保发〔2026〕14号 清理结果', A.CITIES.cy.note.indexOf('朝医保发〔2026〕14号') >= 0, true);
-  ok('第五十七批·朝阳清理结果继续有效 98 件 / 已废止 57 件 / 已失效 104 件', A.CITIES.cy.note.indexOf('继续有效98件') >= 0 && A.CITIES.cy.note.indexOf('已废止57件') >= 0 && A.CITIES.cy.note.indexOf('已失效104件') >= 0, true);
-  ok('第五十七批·朝阳 36 号文为清理目录第 33 序号（现行性最硬形态）', A.CITIES.cy.note.indexOf('第33序号即本件') >= 0, true);
-  ok('第五十七批·朝阳合并实施件 朝医保发〔2020〕67号 为第 11 序号', A.CITIES.cy.note.indexOf('朝医保发〔2020〕67号') >= 0 && A.CITIES.cy.note.indexOf('第11序号') >= 0, true);
-  ok('第五十七批·朝阳 note 已声明父代理两遍 OCR 亲验', A.CITIES.cy.note.indexOf('两遍逐字OCR核对') >= 0, true);
-  eq('第五十七批·朝阳医保基数下限仍为 3374', A.CITIES.cy.med.min, 3374);
-  eq('第五十七批·朝阳医保基数上限仍为 16872', A.CITIES.cy.med.max, 16872);
-  ok('第五十七批·朝阳 5624×3=16872', 5624 * 3 === 16872, true);
-  ok('第五十七批·朝阳 round(5624×60%)=3374', Math.round(5624 * 0.6) === 3374, true);
-  ok('第五十七批·朝阳灵活就业 5624×4.6%×12=3104', Math.abs(5624 * 0.046 * 12 - 3104) < 1, true);
-  ok('第五十七批·辽宁块头已记生育 1% 口径行', /生育保险费率企业侧自2025-09-01起为1%（阜新正式件/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
-  /* ===== 第五十八批（2026-10-15）· 福建泉州生育费率坐实并改值 + 南平口径坐实（数值零改动） ===== */
-  eq('第五十八批·泉州 medComp 7.5% 改 8.0%（基本医疗7.5%＋生育企业0.5%）', A.CITIES.quanz.med.comp, 0.08);
-  eq('第五十八批·泉州 med.comp 子对象同步为 0.08', A.CITIES.quanz.med.comp, 0.08);
-  ok('第五十八批·泉州 7.5+0.5=8.0 同源相加自校验', Math.round((0.075 + 0.005) * 10000) / 10000 === 0.08, true);
-  ok('第五十八批·泉州 warn 保留（养老 2026 年度基数仍缺）', A.CITIES.quanz.warn === true, true);
-  ok('第五十八批·泉州 note 写明合计口径与两个分项', A.CITIES.quanz.note.indexOf('单位合计8.0%') >= 0 && A.CITIES.quanz.note.indexOf('基本医疗7.5%') >= 0 && A.CITIES.quanz.note.indexOf('生育0.5%') >= 0, true);
-  ok('第五十八批·泉州 note 记生育机关事业口径 0.35%（防止与机关口径混用）', A.CITIES.quanz.note.indexOf('机关事业0.35%') >= 0, true);
-  ok('第五十八批·泉州 note 保留大额个人不另缴的旧结论', A.CITIES.quanz.note.indexOf('大病由医保统筹基金支付') >= 0, true);
-  eq('第五十八批·泉州医保基数下限仍为 4579', A.CITIES.quanz.med.min, 4579);
-  eq('第五十八批·泉州医保基数上限仍为 22893', A.CITIES.quanz.med.max, 22893);
-  eq('第五十八批·泉州个人费率仍为 2%', A.CITIES.quanz.med.emp, 0.02);
-  eq('第五十八批·南平 medComp 保持 8.5%（8%+0.5%，已由官方政策指南坐实，数值零改动）', A.CITIES.np.med.comp, 0.085);
-  ok('第五十八批·南平 8+0.5=8.5 同源相加自校验', Math.round((0.08 + 0.005) * 10000) / 10000 === 0.085, true);
-  ok('第五十八批·南平 note 已补官方政策指南 URL', A.CITIES.np.note.indexOf('www.np.gov.cn/cms/html/npszf/2024-01-18/1608300398.html') >= 0, true);
-  ok('第五十八批·南平 note 逐字写入基本医疗 8% 与个人 2%', A.CITIES.np.note.indexOf('基本医疗保险用人单位按工资总额的8%') >= 0 && A.CITIES.np.note.indexOf('职工个人按2%') >= 0, true);
-  ok('第五十八批·南平 note 逐字写入生育企业 0.5% 与机关事业 0.35%', A.CITIES.np.note.indexOf('企业按在职职工工资总额的0.5%') >= 0 && A.CITIES.np.note.indexOf('机关事业单位0.35%') >= 0, true);
-  ok('第五十八批·南平 note 已记同基数同增同减条款', A.CITIES.np.note.indexOf('职工、生育保险同基数') >= 0, true);
-  ok('第五十八批·南平 note 已声明指南为 2024 年 1—6 月版、更新版未取到', A.CITIES.np.note.indexOf('2024年1—6月版') >= 0, true);
-  ok('第五十八批·南平 note 已声明大额为比例型、固定额字段无法表达', A.CITIES.np.note.indexOf('比例型、固定额字段无法表达') >= 0, true);
-  ok('第五十八批·南平 medFixEmp 仍为 0（大额是比例型，未设固定额）', A.CITIES.np.medFixEmp === 0, true);
-  ok('第五十八批·福建块头已写明 medComp 口径＝基本医疗＋生育且只有泉州南平已坐实', /medComp 口径＝基本医疗单位费率＋生育单位费率（企业口径）/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')) && /其余7城费率是单险还是合计尚未取证/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
-  ok('第五十八批·福建其余 7 城 medComp 暂不变（福州.08 厦门.075 莆田.08 三明.085 漳州.075 龙岩.087 宁德.08）', [['fz',0.08],['xm',0.075],['pt',0.08],['sm',0.085],['zhangz',0.075],['longy',0.087],['nd',0.08]].every(([k,v]) => A.CITIES[k].med.comp === v), true);
-  eq('第五十八批·龙岩 medComp 暂仍为 0.087', A.CITIES.longy.med.comp, 0.087);
-  eq('第五十八批·三明 medComp 暂仍为 0.085', A.CITIES.sm.med.comp, 0.085);
-  eq('第五十八批·厦门 medComp 暂仍为 0.075', A.CITIES.xm.med.comp, 0.075);
-  eq('第五十八批·厦门 medFixEmp 仍为 7 元/月', A.CITIES.xm.medFixEmp, 7);
-  ok('第五十八批·福建 9 市 warn 全部保留', ['fz','xm','pt','sm','quanz','zhangz','np','longy','nd'].every(k => A.CITIES[k].warn === true), true);
-  /* ===== 第六十批（2026-10-15）· 三门峡大额为合计口径 + 南阳 note 纠错（数值零改动） ===== */
-  eq('第六十批·三门峡 medFixEmp 仍为 18.33 元/月（220÷12，暂不改）', A.CITIES.smx.medFixEmp, 18.33);
-  eq('第六十批·三门峡 220÷12 = 18.33', Math.round(220 / 12 * 100) / 100, 18.33);
-  eq('第六十批·三门峡若按单位个人各半则个人应为 9.17', Math.round(220 / 2 / 12 * 100) / 100, 9.17);
-  eq('第六十批·三门峡 因无个人额故新增 warn', A.CITIES.smx.warn, true);
-  eq('第六十批·三门峡 note 记 220 元为合计口径', A.CITIES.smx.note.indexOf('合计') >= 0, true);
-  eq('第六十批·三门峡 note 记办法由单位自行确定比例', A.CITIES.smx.note.indexOf('自行确定') >= 0, true);
-  eq('第六十批·三门峡 note 引 ylbzj.smx.gov.cn 官方件', A.CITIES.smx.note.indexOf('ylbzj.smx.gov.cn') >= 0, true);
-  eq('第六十批·三门峡 note 已删除无据旧文号 三政办〔2021〕3号', A.CITIES.smx.note.indexOf('三政办〔2021〕3号'), -1);
-  eq('第六十批·河南解除 warn 的城市数由 13 降为 12', ['luoy','pds','ay','hbi','xx','jzuo','py','xc','sqiu','xiny','zk','zmd'].length, 12);
-  ok('第六十二批·南阳旧值19.16＝6385×0.3%＝3831×0.5%（2025年度两路同值）', Math.round(6385*0.003*100)/100, Math.round(3831*0.005*100)/100);
-  eq('第六十批·南阳 个人部分 = 0.3% × 旧口径全口径月均 6385', Math.round(6385 * 0.003 * 1000) / 1000, 19.155);
-  eq('第六十批·南阳 0.3%×6385 与 0.5%×3831 两条路径同值', Math.round(6385 * 0.003 * 1000) / 100, Math.round(3831 * 0.005 * 1000) / 100);
-  eq('第六十批·南阳 按 2026 新口径 6520 应为 19.56（待核）', Math.round(6520 * 0.003 * 100) / 100, 19.56);
-  eq('第六十批·南阳 note 已删除「对不上」错误论断', A.CITIES.ny.note.indexOf('对不上'), -1);
-  ok('第六十二批·南阳 note 已按宛政办〔2021〕17号原文重写（0.6%总额、各50%）', A.CITIES.ny.note.indexOf('分别按50%的比例承担') >= 0, true);
-  eq('第六十批·南阳 仍保留 warn', A.CITIES.ny.warn, true);
-  eq('第六十批·河南 4 城 warn 名单不变', ['zzheng','kf','lh','ny'].every(k => A.CITIES[k].warn === true), true);
+  ok('辽宁 6 城 medComp 全部保持 8%（生育 1% 有文号但基本医疗逐市不同，四关第①关不过）', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].med.comp === 0.08), true);
+  ok('辽宁 6 城 warn 全部保留', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].warn === true), true);
+  ok('抚顺单位合计应为 9%（基本医疗 8% + 生育 1%）但未取到市级生育件故不改值', Math.round((0.08 + 0.01) * 10000) / 10000 === 0.09, true);
+  ok('省级《辽宁省医疗保障待遇清单（2021年版）》只给 6% 至 8% 区间，8% 落在区间上沿', 0.08 >= 0.06 && 0.08 <= 0.08, true);
+  ok('阜新 note 已补生育恢复件原文 URL', A.CITIES.fx.note.indexOf('ybj.fuxin.gov.cn/content/2025/1017184.html') >= 0, true);
+  ok('阜新 note 已补 2025-09-01 生效日', A.CITIES.fx.note.indexOf('2025年9月1日') >= 0, true);
+  ok('阜新 note 已补 0.5% 恢复至 1%', A.CITIES.fx.note.indexOf('由0.5%恢复至1%') >= 0, true);
+  ok('辽医保规〔2025〕2号 准确全称已补（此前只记编号）', A.CITIES.fx.note.indexOf('关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知') >= 0, true);
+  ok('阜新 note 已补省级 6% 至 8% 区间', A.CITIES.fx.note.indexOf('6%至8%') >= 0, true);
+  ok('辽医保发〔2019〕26号 合并实施件已记录', A.CITIES.fx.note.indexOf('辽医保发〔2019〕26号') >= 0, true);
+  ok('抚顺 note 已记合计应为 9% 的推理', A.CITIES.fsh.note.indexOf('抚顺单位合计应为9%') >= 0, true);
+  ok('丹东 note 已补生育 1% 口径', A.CITIES.dd.note.indexOf('生育保险费率企业侧自2025-09-01起为1%') >= 0, true);
+  ok('锦州 note 已补无医保局子域', A.CITIES.jz.note.indexOf('锦州市医保局无独立子域') >= 0, true);
+  ok('铁岭 note 已补省局真实域名 ybj.ln.gov.cn', A.CITIES.tl.note.indexOf('ybj.ln.gov.cn') >= 0, true);
+  ok('朝阳 note 已补朝医保发〔2026〕14号 清理结果', A.CITIES.cy.note.indexOf('朝医保发〔2026〕14号') >= 0, true);
+  ok('朝阳清理结果继续有效 98 件 / 已废止 57 件 / 已失效 104 件', A.CITIES.cy.note.indexOf('继续有效98件') >= 0 && A.CITIES.cy.note.indexOf('已废止57件') >= 0 && A.CITIES.cy.note.indexOf('已失效104件') >= 0, true);
+  ok('朝阳 36 号文为清理目录第 33 序号（现行性最硬形态）', A.CITIES.cy.note.indexOf('第33序号即本件') >= 0, true);
+  ok('朝阳合并实施件 朝医保发〔2020〕67号 为第 11 序号', A.CITIES.cy.note.indexOf('朝医保发〔2020〕67号') >= 0 && A.CITIES.cy.note.indexOf('第11序号') >= 0, true);
+  ok('朝阳 note 已声明父代理两遍 OCR 亲验', A.CITIES.cy.note.indexOf('两遍逐字OCR核对') >= 0, true);
+  eq('朝阳医保基数下限仍为 3374', A.CITIES.cy.med.min, 3374);
+  eq('朝阳医保基数上限仍为 16872', A.CITIES.cy.med.max, 16872);
+  ok('朝阳 5624×3=16872', 5624 * 3 === 16872, true);
+  ok('朝阳 round(5624×60%)=3374', Math.round(5624 * 0.6) === 3374, true);
+  ok('朝阳灵活就业 5624×4.6%×12=3104', Math.abs(5624 * 0.046 * 12 - 3104) < 1, true);
+  ok('辽宁块头已记生育 1% 口径行', /生育保险费率企业侧自2025-09-01起为1%（阜新正式件/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
+  /* ===== 第五十八批（2026-10-15）· 福建泉州生育费率坐实并改值 + 南平口径坐实（数值不变） ===== */
+  eq('泉州 medComp 7.5% 改 8.0%（基本医疗7.5%＋生育企业0.5%）', A.CITIES.quanz.med.comp, 0.08);
+  eq('泉州 med.comp 子对象同步为 0.08', A.CITIES.quanz.med.comp, 0.08);
+  ok('泉州 7.5+0.5=8.0 同源相加自校验', Math.round((0.075 + 0.005) * 10000) / 10000 === 0.08, true);
+  ok('泉州 warn 保留（养老 2026 年度基数仍缺）', A.CITIES.quanz.warn === true, true);
+  ok('泉州 note 写明合计口径与两个分项', A.CITIES.quanz.note.indexOf('单位合计8.0%') >= 0 && A.CITIES.quanz.note.indexOf('基本医疗7.5%') >= 0 && A.CITIES.quanz.note.indexOf('生育0.5%') >= 0, true);
+  ok('泉州 note 记生育机关事业口径 0.35%（防止与机关口径混用）', A.CITIES.quanz.note.indexOf('机关事业0.35%') >= 0, true);
+  ok('泉州 note 保留大额个人不另缴的旧结论', A.CITIES.quanz.note.indexOf('大病由医保统筹基金支付') >= 0, true);
+  eq('泉州医保基数下限仍为 4579', A.CITIES.quanz.med.min, 4579);
+  eq('泉州医保基数上限仍为 22893', A.CITIES.quanz.med.max, 22893);
+  eq('泉州个人费率仍为 2%', A.CITIES.quanz.med.emp, 0.02);
+  eq('南平 medComp 保持 8.5%（8%+0.5%，已由官方政策指南坐实，数值不变）', A.CITIES.np.med.comp, 0.085);
+  ok('南平 8+0.5=8.5 同源相加自校验', Math.round((0.08 + 0.005) * 10000) / 10000 === 0.085, true);
+  ok('南平 note 已补官方政策指南 URL', A.CITIES.np.note.indexOf('www.np.gov.cn/cms/html/npszf/2024-01-18/1608300398.html') >= 0, true);
+  ok('南平 note 逐字写入基本医疗 8% 与个人 2%', A.CITIES.np.note.indexOf('基本医疗保险用人单位按工资总额的8%') >= 0 && A.CITIES.np.note.indexOf('职工个人按2%') >= 0, true);
+  ok('南平 note 逐字写入生育企业 0.5% 与机关事业 0.35%', A.CITIES.np.note.indexOf('企业按在职职工工资总额的0.5%') >= 0 && A.CITIES.np.note.indexOf('机关事业单位0.35%') >= 0, true);
+  ok('南平 note 已记同基数同增同减条款', A.CITIES.np.note.indexOf('职工、生育保险同基数') >= 0, true);
+  ok('南平 note 已声明指南为 2024 年 1—6 月版、更新版未取到', A.CITIES.np.note.indexOf('2024年1—6月版') >= 0, true);
+  ok('南平 note 已声明大额为比例型、固定额字段无法表达', A.CITIES.np.note.indexOf('比例型、固定额字段无法表达') >= 0, true);
+  ok('南平 medFixEmp 仍为 0（大额是比例型，未设固定额）', A.CITIES.np.medFixEmp === 0, true);
+  ok('福建块头已写明 medComp 口径＝基本医疗＋生育且只有泉州南平已坐实', /medComp 口径＝基本医疗单位费率＋生育单位费率（企业口径）/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')) && /其余7城费率是单险还是合计尚未取证/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
+  ok('福建其余 7 城 medComp 暂不变（福州.08 厦门.075 莆田.08 三明.085 漳州.075 龙岩.087 宁德.08）', [['fz',0.08],['xm',0.075],['pt',0.08],['sm',0.085],['zhangz',0.075],['longy',0.087],['nd',0.08]].every(([k,v]) => A.CITIES[k].med.comp === v), true);
+  eq('龙岩 medComp 暂仍为 0.087', A.CITIES.longy.med.comp, 0.087);
+  eq('三明 medComp 暂仍为 0.085', A.CITIES.sm.med.comp, 0.085);
+  eq('厦门 medComp 暂仍为 0.075', A.CITIES.xm.med.comp, 0.075);
+  eq('厦门 medFixEmp 仍为 7 元/月', A.CITIES.xm.medFixEmp, 7);
+  ok('福建 9 市 warn 全部保留', ['fz','xm','pt','sm','quanz','zhangz','np','longy','nd'].every(k => A.CITIES[k].warn === true), true);
+  /* ===== 第六十批（2026-10-15）· 三门峡大额为合计口径 + 南阳 note 纠错（数值不变） ===== */
+  eq('三门峡 medFixEmp 仍为 18.33 元/月（220÷12，暂不改）', A.CITIES.smx.medFixEmp, 18.33);
+  eq('三门峡 220÷12 = 18.33', Math.round(220 / 12 * 100) / 100, 18.33);
+  eq('三门峡若按单位个人各半则个人应为 9.17', Math.round(220 / 2 / 12 * 100) / 100, 9.17);
+  eq('三门峡 因无个人额故新增 warn', A.CITIES.smx.warn, true);
+  eq('三门峡 note 记 220 元为合计口径', A.CITIES.smx.note.indexOf('合计') >= 0, true);
+  eq('三门峡 note 记办法由单位自行确定比例', A.CITIES.smx.note.indexOf('自行确定') >= 0, true);
+  eq('三门峡 note 引 ylbzj.smx.gov.cn 官方件', A.CITIES.smx.note.indexOf('ylbzj.smx.gov.cn') >= 0, true);
+  eq('三门峡 note 已删除无据旧文号 三政办〔2021〕3号', A.CITIES.smx.note.indexOf('三政办〔2021〕3号'), -1);
+  eq('河南解除 warn 的城市数由 13 降为 12', ['luoy','pds','ay','hbi','xx','jzuo','py','xc','sqiu','xiny','zk','zmd'].length, 12);
+  ok('南阳旧值19.16＝6385×0.3%＝3831×0.5%（2025年度两路同值）', Math.round(6385*0.003*100)/100, Math.round(3831*0.005*100)/100);
+  eq('南阳 个人部分 = 0.3% × 旧口径全口径月均 6385', Math.round(6385 * 0.003 * 1000) / 1000, 19.155);
+  eq('南阳 0.3%×6385 与 0.5%×3831 两条路径同值', Math.round(6385 * 0.003 * 1000) / 100, Math.round(3831 * 0.005 * 1000) / 100);
+  eq('南阳 按 2026 新口径 6520 应为 19.56（待核）', Math.round(6520 * 0.003 * 100) / 100, 19.56);
+  eq('南阳 note 已删除「对不上」错误论断', A.CITIES.ny.note.indexOf('对不上'), -1);
+  ok('南阳 note 已按宛政办〔2021〕17号原文重写（0.6%总额、各50%）', A.CITIES.ny.note.indexOf('分别按50%的比例承担') >= 0, true);
+  eq('南阳 仍保留 warn', A.CITIES.ny.warn, true);
+  eq('河南 4 城 warn 名单不变', ['zzheng','kf','lh','ny'].every(k => A.CITIES[k].warn === true), true);
 }
 
 
 
-eq('第四十八批·定西·warn 保留', A.CITIES.dx.warn, true);
+eq('定西·warn 保留', A.CITIES.dx.warn, true);
 
-eq('第四十七批·沧州·公积金2380~25581零偏差', A.CITIES.cangz.hf.min + '~' + A.CITIES.cangz.hf.max, '2380~25581');
-eq('第四十七批·沧州·算式自校验 8527×3 = 25581', 8527 * 3, 25581);
-eq('第四十七批·沧州·note补引沧金管字〔2026〕24号', A.CITIES.cangz.note.includes('沧金管字〔2026〕24号'), true);
-eq('第四十九批·沧州·第四十八批记的「父代理未复核」已于 2026-10-14 解除（扫描 PNG 802×3348 经 PyMuPDF+rapidocr 两遍复核）', A.CITIES.cangz.note.includes('父代理未复核') === false && A.CITIES.cangz.note.includes('rapidocr'), true);
-eq('第四十九批·沧州·算式自校验 8527×3 = 25581（复核确认）', 8527 * 3, 25581);
-eq('第四十九批·沧州·灵活就业月缴存额上限 25581×24% 向下取整 = 6139', Math.floor(25581 * 0.24), 6139);
-eq('第四十九批·临汾·公积金1950~24789零偏差（父代理已复核 2 页扫描 PDF）', A.CITIES.linf.hf.min + '~' + A.CITIES.linf.hf.max, '1950~24789');
-eq('第四十九批·临汾·算式自校验 8263×3 = 24789', 8263 * 3, 24789);
-eq('第四十九批·临汾·算式自校验 24789×24% 精确到分 = 5949.36', Math.round(24789 * 0.24 * 100) / 100, 5949.36);
-eq('第四十九批·临汾·双方月缴存额各 2974.68（合计 5949.36 的一半，未先取整）', 5949.36 / 2, 2974.68);
-eq('第四十九批·临汾·灵活就业月缴存额上限 4180×24% = 1003.2', Math.round(4180 * 0.24 * 100) / 100, 1003.2);
-eq('第四十九批·临汾·note写入父代理 rapidocr 复核声明', A.CITIES.linf.note.includes('rapidocr') && A.CITIES.linf.note.includes('2026-07-01 至 2027-06-30'), true);
-eq('第四十九批·临汾·warn 仍保留（晋政办发〔2026〕29号自2026-10-01起一类2350，中心待另发下限通知）', A.CITIES.linf.warn, true);
+eq('沧州·公积金2380~25581零偏差', A.CITIES.cangz.hf.min + '~' + A.CITIES.cangz.hf.max, '2380~25581');
+eq('沧州·算式自校验 8527×3 = 25581', 8527 * 3, 25581);
+eq('沧州·note补引沧金管字〔2026〕24号', A.CITIES.cangz.note.includes('沧金管字〔2026〕24号'), true);
+eq('沧州·记的「父代理未复核」已于 2026-10-14 解除（扫描 PNG 802×3348 经 PyMuPDF+rapidocr 两遍复核）', A.CITIES.cangz.note.includes('父代理未复核') === false && A.CITIES.cangz.note.includes('rapidocr'), true);
+eq('沧州·算式自校验 8527×3 = 25581（复核确认）', 8527 * 3, 25581);
+eq('沧州·灵活就业月缴存额上限 25581×24% 向下取整 = 6139', Math.floor(25581 * 0.24), 6139);
+eq('临汾·公积金1950~24789零偏差（父代理已复核 2 页扫描 PDF）', A.CITIES.linf.hf.min + '~' + A.CITIES.linf.hf.max, '1950~24789');
+eq('临汾·算式自校验 8263×3 = 24789', 8263 * 3, 24789);
+eq('临汾·算式自校验 24789×24% 精确到分 = 5949.36', Math.round(24789 * 0.24 * 100) / 100, 5949.36);
+eq('临汾·双方月缴存额各 2974.68（合计 5949.36 的一半，未先取整）', 5949.36 / 2, 2974.68);
+eq('临汾·灵活就业月缴存额上限 4180×24% = 1003.2', Math.round(4180 * 0.24 * 100) / 100, 1003.2);
+eq('临汾·note写入父代理 rapidocr 复核声明', A.CITIES.linf.note.includes('rapidocr') && A.CITIES.linf.note.includes('2026-07-01 至 2027-06-30'), true);
+eq('临汾·warn 仍保留（晋政办发〔2026〕29号自2026-10-01起一类2350，中心待另发下限通知）', A.CITIES.linf.warn, true);
 
 
-// ===== 第三十一批 A（2026-10-13）· 黑龙江佳木斯公积金上限溯源（数值零改动，只修note 无据表述）=====
+// ===== 第三十一批 A（2026-10-13）· 黑龙江佳木斯公积金上限溯源（数值不变，只修note 无据表述）=====
 // 下限官方件：佳木斯市住房公积金管理中心《关于调整住房公积金缴存基数下限的通知》（无文号，页面日期 2025-12-01）
 //   https://www.jmsgjj.org.cn/bzbwz/zxdt/1425267.jhtml
 //   「根据《黑龙江省人民政府关于调整全省最低工资标准的通知》(黑政规[2025]1号)…自2025年12月1日起执行
@@ -3243,7 +3243,7 @@ section('14. 年终奖计税方式对比');
    → 下限＝本市现行最低工资（自动跟随），上限＝本市上年度在岗职工月均×3；省级根本不存在统一 44265 上限。
    粤府函〔2026〕188号（自 2026-09-01 起）最低工资：一类 2680（广州）/2700（深圳）、二类 2300（珠海/佛山/东莞/中山）、
    三类 2040（其余 15 市）。工厂默认改为 unemp.min=2040；unemp.max 已由 21 市在 opt 中逐市显式给出（第七十七批）。 */
-section('7. 广东失业保险法定市级口径（第七十五批）');
+section('7. 广东失业保险法定市级口径');
 (function gdUnemp() {
   const GD = [['深圳','sz'],['广州','gz'],['东莞','dg'],['佛山','fs'],['珠海','zh'],['惠州','hz'],['江门','jm'],['中山','zs'],
     ['汕头','st'],['韶关','sg'],['湛江','zj'],['肇庆','zq'],['茂名','mm'],['梅州','mz'],['汕尾','sw'],['河源','hy'],
@@ -3259,7 +3259,7 @@ section('7. 广东失业保险法定市级口径（第七十五批）');
   eq('阳江 失业28355（阳人社发〔2026〕89号，官方原件自身差 1 元）', A.CITIES.yj.unemp.max, 28355);
   eq('揭阳 失业24618（统计局 98472÷12=8206，×3=24618 自校验闭合）', A.CITIES.jy.unemp.max, 24618);
   eq('揭阳 自校验 98472/12*3 = 24618', Math.round(98472 / 12 * 3), 24618);
-  eq('第七十九批后 六市上限一览 广州42933/深圳48471/东莞27702/佛山31395/中山29430/惠州28710',
+  eq('后 六市上限一览 广州42933/深圳48471/东莞27702/佛山31395/中山29430/惠州28710',
     ['gz','sz','dg','fs','zs','hz'].map(k => A.CITIES[k].unemp.max).join('/'), '42933/48471/27702/31395/29430/28710');
   eq('广东 21 市失业上限无 44265', GD.every(x => A.CITIES[x[1]].unemp.max !== 44265), true);
   eq('广东 21 市失业下限无 2520', GD.every(x => A.CITIES[x[1]].unemp.min !== 2520), true);
@@ -3292,7 +3292,7 @@ section('7. 广东失业保险法定市级口径（第七十五批）');
    口径（阳江原件自身算术差 1 元），保留原值；汕头/梅州/清远原按 ×0.25 推导，与 15/21 的 ÷12
     口径不符，本批改为 27699/26316/27594；广州原值 41697 两条口径均不符（就业人员 vs 在岗职工口径错配），
     第七十九批已按条例口径③改为 42933（÷12 闭合城市随之由 18 增至 19），warn 维持。 */
-section('8. 失业上限按法定口径 ÷12 四舍五入入元 ×3 换算（第七十八批）');
+section('8. 失业上限按法定口径 ÷12 四舍五入入元 ×3 换算');
 (function gdUnempRound() {
   const GD = ['sz','gz','dg','fs','zh','hz','jm','zs','st','sg','zj','zq','mm','mz','sw','hy','yj','qy','cz','jy','yf'];
   eq('广东 21 市到齐', GD.length, 21);
@@ -3306,7 +3306,7 @@ section('8. 失业上限按法定口径 ÷12 四舍五入入元 ×3 换算（第
   const diff = GD.filter(k => A.CITIES[k].unemp.max !== A.CITIES[k].hf.max);
   eq('与本市公积金上限不同的 8 市＝广州/东莞/惠州/江门/汕头/梅州/阳江/清远', diff.join('/'), 'gz/dg/hz/jm/st/mz/yj/qy');
   const same = GD.filter(k => A.CITIES[k].unemp.max === A.CITIES[k].hf.max);
-  eq('其余 13 市与本市公积金上限同值（同源巧合，不构成规则；广州第七十九批分家后少一市）', same.length, 13);
+  eq('其余 13 市与本市公积金上限同值（同源巧合，不构成规则；广州分家后少一市）', same.length, 13);
   eq('同值 13 市中不含广州/东莞/惠州/江门/阳江/汕头/梅州/清远', same.some(k => ['gz','dg','hz','jm','yj','st','mz','qy'].includes(k)), false);
   const YW = [
     ['江门', 'jm', 110508, 27627], ['茂名', 'mm', 109872, 27468],
@@ -3322,7 +3322,7 @@ section('8. 失业上限按法定口径 ÷12 四舍五入入元 ×3 换算（第
     eq(`${cn} ${yw}÷12=${(yw / 12).toFixed(2)}→${mo}元/月×3=${mo * 3} ✓合法口径`,
       mo * 3 === mx && A.CITIES[k].unemp.max === mx, true);
   });
-  eq('÷12 口径覆盖 19 市（第七十九批广州修正后并入；第八十三批珠海按官方逐字 145121÷12=12093.42→12093 元/月×3=36279 归位；肇庆阳江两市用 ×0.25 口径，不纳入）', YW.length, 19);
+  eq('÷12 口径覆盖 19 市（广州修正后并入；珠海按官方逐字 145121÷12=12093.42→12093 元/月×3=36279 归位；肇庆阳江两市用 ×0.25 口径，不纳入）', YW.length, 19);
   eq('19 市 unemp.max 与 ÷12 换算表逐字一致', YW.every(([, k, , mx]) => A.CITIES[k].unemp.max === mx), true);
   eq('19 市按 ÷12 换算偏差全部为 0 元', YW.every(([, , yw, mx]) => Math.round(yw / 12) * 3 - mx === 0), true);
   eq('肇庆阳江按 ×0.25 口径：112881×0.25=28220.25→28220 / 113420×0.25=28355→28355',
@@ -3330,7 +3330,7 @@ section('8. 失业上限按法定口径 ÷12 四舍五入入元 ×3 换算（第
   eq('惠州若按 ÷12 口径为 28710（市级件即采此值），若按 ×0.25 为 28709', Math.round(114837 / 12) * 3, 28710);
   eq('揭阳 98472÷12=8206 整除无取整歧义，×3=24618 与仓库值一致',
     98472 / 12 + '/' + (98472 / 12) * 3 + '/' + A.CITIES.jy.unemp.max, '8206/24618/24618');
-  eq('广州第七十九批修正：÷12 得 42933（已采用）、×0.25 得 42932.75（四舍五入同为 42933）、原值 41697 系就业人员口径',
+  eq('广州修正：÷12 得 42933（已采用）、×0.25 得 42932.75（四舍五入同为 42933）、原值 41697 系就业人员口径',
     [Math.round(171731 / 12) * 3, 41697].join('/'), '42933/41697');
   eq('惠州note载明人社局件与证伪结论', /28710/.test(A.CITIES.hz.note) && /34290/.test(A.CITIES.hz.note), true);
   eq('东莞note载明人社局通告与27702', /27702/.test(A.CITIES.dg.note), true);
@@ -3353,7 +3353,7 @@ section('8. 失业上限按法定口径 ÷12 四舍五入入元 ×3 换算（第
    171731÷12=14310.92→14311 元/月 ×3 = 42933（÷12 口径，21 市中 18 份市级件逐字闭合）。
    同批补入条例第十九条（失业金＝最低工资×90%，与市级件 2040→1836 吻合）与第二十一条
    （丧葬补助金＝上年度在岗职工月平均工资×3、抚恤金＝×6，条例内部口径自洽为「在岗职工」）。 */
-section('9. 广州失业上限口径修正与条例内部口径一致（第七十九批）');
+section('9. 广州失业上限口径修正与条例内部口径一致');
 (function gdUnempGZ79() {
   const GD = ['sz','gz','dg','fs','zh','hz','jm','zs','st','sg','zj','zq','mm','mz','sw','hy','yj','qy','cz','jy','yf'];
   eq('广州 unemp.max 已按条例口径③由 41697 改为 42933', A.CITIES.gz.unemp.max, 42933);
@@ -3365,7 +3365,7 @@ section('9. 广州失业上限口径修正与条例内部口径一致（第七�
   eq('广州 ×0.25 口径 42932.75，四舍五入同为 42933', Math.round(171731 * 0.25), 42933);
   eq('21 市中已无任何一市把公积金值 41697 用作失业上限',
     GD.every(k => A.CITIES[k].unemp.max !== 41697), true);
-  eq('第七十九批当时 ÷12 闭合城市由 18 增至 19（广州并入；第八十三批珠海改用逐字月均×3 口径移出后现为 18 城）', 19, 19);
+  eq('当时 ÷12 闭合城市由 18 增至 19（广州并入；珠海改用逐字月均×3 口径移出后现为 18 城）', 19, 19);
   eq('广州note载明在岗职工 171731 与新上限 42933',
     /171731/.test(A.CITIES.gz.note) && /42933/.test(A.CITIES.gz.note), true);
   eq('广州note已标注 41697 属「就业人员」口径且出自公积金件',
@@ -3437,7 +3437,7 @@ section('9. 广州失业上限口径修正与条例内部口径一致（第七�
    → 上下限只针对【特定人员单项工伤保险】（八类特定人员），普通职工工伤不设上下限。
    落码方式：inj = {min:0,max:0}；cl0() 遇 max<=0 不夹取；inj.min=0 时输入框默认回落养老下限。
    ==================================================================== */
-section('10. 工伤保险法定无缴费基数上下限（第八十一批）');
+section('10. 工伤保险法定无缴费基数上下限');
 (function gdInj81() {
   const GD81 = ['sz','gz','dg','fs','zh','hz','jm','zs','st','sg','zj','zq','mm','mz','sw','hy','yj','qy','cz','jy','yf'];
   eq('广东 21 市工伤缴费基数上下限均为 0（法定无上下限）',
@@ -3491,7 +3491,7 @@ section('10. 工伤保险法定无缴费基数上下限（第八十一批）');
      (function(){ A.selectCity('gz'); return Number(A._doc.getElementById('ijBase').value); })(), 5521);
   eq('东莞医保上下限未变（4775~27549；24号文只调养老、不含医保）',
      A.CITIES.dg.med.min + '~' + A.CITIES.dg.med.max, '4775~27549');
-   eq('东莞note已载「24号文只调养老、不含医保」口径说明（第八十二批升级为市级件坐实）',
+   eq('东莞note已载「24号文只调养老、不含医保」口径说明（升级为市级件坐实）',
       /不含医保/.test(A.CITIES.dg.note) && /4775/.test(A.CITIES.dg.note), true);
   emit('  广东 21 市工伤改 0/0（法定无上下限）+ 珠海医保 4775~27549 口径坐实 + 东莞医保证据口径说明 ✓');
 })();
@@ -3510,7 +3510,7 @@ section('10. 工伤保险法定无缴费基数上下限（第八十一批）');
    关键否证：2025年度东莞医保为 27501/4767，与 2026年度的 27549/4775 不同
    → 证明本值出自医保自身年度件，而非照抄已废止的旧省级养老片区值。
    ==================================================================== */
-section('11. 东莞职工医保基数 official-confirmed（第八十二批）');
+section('11. 东莞职工医保基数 official-confirmed');
 (function gdMedDG82() {
   var dg = A.CITIES.dg;
   eq('东莞职工医保下限 4775（东医保〔2025〕34号）', dg.med.min, 4775);
@@ -3566,7 +3566,7 @@ section('11. 东莞职工医保基数 official-confirmed（第八十二批）');
       与失业件逐字月均 12093 完全闭合 → 珠海仍在「÷12 年工资闭合」19 城名单内。
    ③ 珠海医保 4775~27549 的数值归属：珠医保〔2025〕62号（2025-12-10）正文只定规则不载数值；数值出自配套政策问答费率表
       逐字「职工缴费工资上限为27549元，下限为4775元」，执行期「2026年1月1日至12月31日」（自然年度）。 */
-section('12. 24号文时点 + 珠海失业月均口径 + 珠海医保数值归属（第八十三批）');
+section('12. 24号文时点 + 珠海失业月均口径 + 珠海医保数值归属');
 (function gd83() {
    const GD = ['sz','gz','dg','fs','zh','hz','jm','zs','st','sg','zj','zq','mm','mz','sw','hy','yj','qy','cz','jy','yf'];
    const zh = A.CITIES.zh, dg = A.CITIES.dg;
@@ -3577,7 +3577,7 @@ section('12. 24号文时点 + 珠海失业月均口径 + 珠海医保数值归�
       Math.round(145121 / 12) * 3 + '/' + zh.unemp.max, '36279/36279');
    eq('145116 是 12093×12 的反推值、不是官方逐字（官方逐字 145121，残差 5 元属年化取整）', 12093 * 12 + '/' + (145121 - 12093 * 12), '145116/5');
    eq('珠海失业下限 2300（珠府函〔2026〕135号二类标准）', zh.unemp.min, 2300);
-   eq('珠海医保基数 4775~27549 仍为现值（第八十三批只修归属、不改数值）',
+   eq('珠海医保基数 4775~27549 仍为现值（只修归属、不改数值）',
       zh.med.min + '~' + zh.med.max, '4775~27549');
    eq('珠海note载珠医保〔2025〕62号', /珠医保〔2025〕62号/.test(zh.note), true);
    eq('珠海note载明62号文正文只定规则、数值出自政策问答费率表',
@@ -3608,7 +3608,7 @@ section('12. 24号文时点 + 珠海失业月均口径 + 珠海医保数值归�
    emit('  24号文时点修正 + 珠海逐字月均×3 口径 + 珠海医保数值归属修正 ✓');
 })();
 
-section('13. 工伤口径补强与特定人员 injSpecial（第八十四批）');
+section('13. 工伤口径补强与特定人员 injSpecial');
 (function gdInj84(){
   const GD84 = ['sz','gz','dg','fs','zh','hz','jm','zs','st','sg','zj','zq','mm','mz','sw','hy','yj','qy','cz','jy','yf'];
   const sp = A.CITIES.gz.injSpecial;
@@ -3655,13 +3655,13 @@ section('13. 工伤口径补强与特定人员 injSpecial（第八十四批）')
      · 云浮  2026 年度值按惯例待 2027 年信息披露通告
    落码：calculator.html 10 城 note 追加收官复核段；docs/sources/F1.json 新建；
         E1.json 10 城 confirms 补逐字旁证、gz 旧文（41697）订正为 42933 口径。 */
-section('14. 广东 11 市失业上限收官复核（第八十五批）');
+section('14. 广东 11 市失业上限收官复核');
 (function gdUnemp85() {
   const TEN = ['sz','gz','st','zj','mz','sw','hy','qy','cz','yf'];
-  eq('第八十五批·10 城 note 均已追加收官复核段', TEN.every(k => /第八十五批/.test(A.CITIES[k].note)), true);
-  eq('第八十五批·10 城失业上限一律不改',
+  eq('10 城 note 均已追加收官复核段', TEN.every(k => /第八十五批/.test(A.CITIES[k].note)), true);
+  eq('10 城失业上限一律不改',
     TEN.map(k => A.CITIES[k].unemp.max).join('/'), '48471/42933/27699/29640/26316/27849/25470/27594/26043/27642');
-  eq('第八十五批·10 城下限不变（深圳 2700/广州 2680 一类市，其余三类 2040）',
+  eq('10 城下限不变（深圳 2700/广州 2680 一类市，其余三类 2040）',
     TEN.map(k => A.CITIES[k].unemp.min).join('/'), '2700/2680/2040/2040/2040/2040/2040/2040/2040/2040');
   const YW85 = [
     ['深圳', 'sz', 193881, 48471], ['广州', 'gz', 171731, 42933],
@@ -3671,76 +3671,76 @@ section('14. 广东 11 市失业上限收官复核（第八十五批）');
     ['潮州', 'cz', 104173, 26043], ['云浮', 'yf', 110567, 27642]];
   YW85.forEach(([cn, k, yw, mx]) => {
     const mo = Math.round(yw / 12);
-    eq(`第八十五批·${cn} ${yw}÷12=${(yw / 12).toFixed(2)}→${mo}元/月×3=${mo * 3} 与现值一致`,
+    eq(`${cn} ${yw}÷12=${(yw / 12).toFixed(2)}→${mo}元/月×3=${mo * 3} 与现值一致`,
       mo * 3 === mx && A.CITIES[k].unemp.max === mx, true);
   });
-  eq('第八十五批·10 城按 ÷12 换算偏差全部为 0 元',
+  eq('10 城按 ÷12 换算偏差全部为 0 元',
     YW85.every(([, , yw, mx]) => Math.round(yw / 12) * 3 - mx === 0), true);
-  eq('第八十五批·×0.25 派在湛江/河源/清远各差 1 元 → 三市必为 ÷12 派',
+  eq('×0.25 派在湛江/河源/清远各差 1 元 → 三市必为 ÷12 派',
     [Math.round(118562 * 0.25), Math.round(101875 * 0.25), Math.round(110372 * 0.25)].join('/'),
     '29641/25469/27593');
-  eq('第八十五批·汕头 2022 年度件 2021 年在岗 86951÷12=7246×3=21738 逐字闭合',
+  eq('汕头 2022 年度件 2021 年在岗 86951÷12=7246×3=21738 逐字闭合',
     Math.round(86951 / 12) * 3, 21738);
-  eq('第八十五批·汕头 2023 年度件 2022 年在岗 92765÷12=7730×3=23190 逐字闭合',
+  eq('汕头 2023 年度件 2022 年在岗 92765÷12=7730×3=23190 逐字闭合',
     Math.round(92765 / 12) * 3, 23190);
-  eq('第八十五批·汕头 2024 年度件 2023 年在岗 97346÷12=8112×3=24336 逐字闭合',
+  eq('汕头 2024 年度件 2023 年在岗 97346÷12=8112×3=24336 逐字闭合',
     Math.round(97346 / 12) * 3, 24336);
-  eq('第八十五批·汕头三年链逐年递进且官方写法均为「月平均工资N元的300%，即M元」',
+  eq('汕头三年链逐年递进且官方写法均为「月平均工资N元的300%，即M元」',
     [21738 < 23190, 23190 < 24336, Math.round(86951 / 12) === 7246, Math.round(97346 / 12) === 8112].join('/'),
     'true/true/true/true');
-  eq('第八十五批·梅州 1 元差真因：含劳务派遣年工资 105260÷12×3=26315 为精确整数',
+  eq('梅州 1 元差真因：含劳务派遣年工资 105260÷12×3=26315 为精确整数',
     Math.round(105260 / 12 * 3), 26315);
-  eq('第八十五批·梅州统计局口径 105259÷12=8772×3=26316（仓库取此值）',
+  eq('梅州统计局口径 105259÷12=8772×3=26316（仓库取此值）',
     Math.round(105259 / 12) * 3, 26316);
-  eq('第八十五批·云浮公积金件精确值 110567×0.25=27641.75（官方不取整）', 110567 * 0.25, 27641.75);
-  eq('第八十五批·云浮仓库值 27642 与官方精确值差 0.25 元（取整层级差，非口径差）',
+  eq('云浮公积金件精确值 110567×0.25=27641.75（官方不取整）', 110567 * 0.25, 27641.75);
+  eq('云浮仓库值 27642 与官方精确值差 0.25 元（取整层级差，非口径差）',
     A.CITIES.yf.unemp.max - 110567 * 0.25, 0.25);
-  eq('第八十五批·潮州失业上限与本市公积金上限同值 26043（缴存年度完全重合）',
+  eq('潮州失业上限与本市公积金上限同值 26043（缴存年度完全重合）',
     A.CITIES.cz.unemp.max + '/' + A.CITIES.cz.hf.max, '26043/26043');
-  eq('第八十五批·汕尾 2023 社保年度件表格值 24369＝8123×3（97474÷12=8122.83→8123）',
+  eq('汕尾 2023 社保年度件表格值 24369＝8123×3（97474÷12=8122.83→8123）',
     Math.round(97474 / 12) * 3, 24369);
-  eq('第八十五批·广州失业 42933 − 公积金 41697 = 1236（第三次证伪「照抄公积金上限」）',
+  eq('广州失业 42933 − 公积金 41697 = 1236（第三次证伪「照抄公积金上限」）',
     A.CITIES.gz.unemp.max - A.CITIES.gz.hf.max, 1236);
-  eq('第八十五批·深圳 note 载体例停发史（2019 年度改名后停发）',
+  eq('深圳 note 载体例停发史（2019 年度改名后停发）',
     /2019年度社会保险征缴及待遇计发基数/.test(A.CITIES.sz.note), true);
-  eq('第八十五批·广州 note 载 171731 与 41697 反证',
+  eq('广州 note 载 171731 与 41697 反证',
     /171731/.test(A.CITIES.gz.note) && /41697/.test(A.CITIES.gz.note), true);
-  eq('第八十五批·汕头 note 载三年逐字闭合链 21738/23190/24336',
+  eq('汕头 note 载三年逐字闭合链 21738/23190/24336',
     /21738/.test(A.CITIES.st.note) && /23190/.test(A.CITIES.st.note) && /24336/.test(A.CITIES.st.note), true);
-  eq('第八十五批·湛江 note 载公积金 29640 与工伤「按工资总额」逐字',
+  eq('湛江 note 载公积金 29640 与工伤「按工资总额」逐字',
     /29,640/.test(A.CITIES.zj.note) && /工资总额/.test(A.CITIES.zj.note), true);
-  eq('第八十五批·梅州 note 载含劳务派遣口径与 105260 真因',
+  eq('梅州 note 载含劳务派遣口径与 105260 真因',
     /劳务派遣/.test(A.CITIES.mz.note) && /105260/.test(A.CITIES.mz.note), true);
-  eq('第八十五批·汕尾 note 载税务局表格 24369 与征管系统自动套用',
+  eq('汕尾 note 载税务局表格 24369 与征管系统自动套用',
     /24369/.test(A.CITIES.sw.note) && /征管系统/.test(A.CITIES.sw.note), true);
-  eq('第八十五批·河源 note 载公积金逐字「即25470元」',
+  eq('河源 note 载公积金逐字「即25470元」',
     /即25470元/.test(A.CITIES.hy.note), true);
-  eq('第八十五批·清远 note 载 110372 与 WAF 口径说明',
+  eq('清远 note 载 110372 与 WAF 口径说明',
     /110372/.test(A.CITIES.qy.note) && /WAF|挑战页/.test(A.CITIES.qy.note), true);
-  eq('第八十五批·潮州 note 载 170dpi/400dpi 双档 OCR 与 26043 同值',
+  eq('潮州 note 载 170dpi/400dpi 双档 OCR 与 26043 同值',
     /170dpi/.test(A.CITIES.cz.note) && /400dpi/.test(A.CITIES.cz.note) && /26043/.test(A.CITIES.cz.note), true);
-  eq('第八十五批·云浮 note 载 27641.75 精确值与 26385 属 2025 社保年度',
+  eq('云浮 note 载 27641.75 精确值与 26385 属 2025 社保年度',
     /27641\.75/.test(A.CITIES.yf.note) && /2025社保年度/.test(A.CITIES.yf.note), true);
-  eq('第八十五批·docs/sources/F1.json 为 10 城收官复核档',
+  eq('docs/sources/F1.json 为 10 城收官复核档',
     (function () {
       const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F1.json'), 'utf8'));
       return j.provinces[0].cities.length;
     })(), 10);
-  eq('第八十五批·F1.json 10 城 unempMax 与仓库现值逐一一致',
+  eq('F1.json 10 城 unempMax 与仓库现值逐一一致',
     (function () {
       const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F1.json'), 'utf8'));
       const m = {};
       j.provinces[0].cities.forEach(c => { m[c.key] = c.unempMax; });
       return TEN.every(k => m[k] === A.CITIES[k].unemp.max);
     })(), true);
-  eq('第八十五批·E1.json 10 城 confirms 均已补入第八十五批收官复核段',
+  eq('E1.json 10 城 confirms 均已补入收官复核段',
     (function () {
       const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'E1.json'), 'utf8'));
       const cs = {};
       j.provinces[0].cities.forEach(c => { cs[c.key] = c.confirms || ''; });
       return TEN.every(k => /第八十五批收官复核/.test(cs[k]));
     })(), true);
-  eq('第八十五批·F1.json 经 source-records 正向判定为已核查（10 城全部 isFilled）',
+  eq('F1.json 经 source-records 正向判定为已核查（10 城全部 isFilled）',
     (function () {
       const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F1.json'), 'utf8'));
       return j.provinces[0].cities.every(isFilled);
@@ -3763,125 +3763,125 @@ section('14. 广东 11 市失业上限收官复核（第八十五批）');
    9201×3=27603、9201×0.6=5521。⇒ 候选上限 27603 高置信，下限 5521（东莞另有 4785 分支）。
    落码：calculator.html 珠海/东莞 note 追加第八十六批段（订正第八十三批兜底机制表述）；
         docs/sources/F2.json 新建。数值一律不改——2026 年度值在 2026-12-31 前继续有效。 */
-section('15. 珠海/东莞 2027 年度职工医保件回访（第八十六批）');
+section('15. 珠海/东莞 2027 年度职工医保件回访');
 (function gdMed86() {
   const F2P = path.join(__dirname, '..', 'docs', 'sources', 'F2.json');
   const F2 = JSON.parse(fs.readFileSync(F2P, 'utf8'));
   const cOf = k => F2.provinces[0].cities.filter(c => c.key === k)[0];
   const R = n => Math.round(n);
 
-  eq('第八十六批·珠海 note 已追加 2027 年度件回访段', /第八十六批/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·东莞 note 已追加 2027 年度件回访段', /第八十六批/.test(A.CITIES.dg.note), true);
+  eq('珠海 note 已追加 2027 年度件回访段', /第八十六批/.test(A.CITIES.zh.note), true);
+  eq('东莞 note 已追加 2027 年度件回访段', /第八十六批/.test(A.CITIES.dg.note), true);
 
   // ---- 一、现值不变：两城 2026 年度基数与执行期 ----
-  eq('第八十六批·珠海 2026 年度医保基数仍为 4775~27549（本批不改）',
+  eq('珠海 2026 年度医保基数仍为 4775~27549（本批不改）',
     A.CITIES.zh.med.min + '~' + A.CITIES.zh.med.max, '4775~27549');
-  eq('第八十六批·东莞 2026 年度医保基数仍为 4775~27549（本批不改）',
+  eq('东莞 2026 年度医保基数仍为 4775~27549（本批不改）',
     A.CITIES.dg.med.min + '~' + A.CITIES.dg.med.max, '4775~27549');
-  eq('第八十六批·两城 2026 年度基数完全同值（省养老 4775~27549 整体照搬）',
+  eq('两城 2026 年度基数完全同值（省养老 4775~27549 整体照搬）',
     [A.CITIES.zh.med.min === A.CITIES.dg.med.min,
      A.CITIES.zh.med.max === A.CITIES.dg.med.max].join('/'), 'true/true');
 
   // ---- 二、路径A：珠海「医保上下限＝省职工养老基数上下限」（政策问答逐字） ----
-  eq('第八十六批·珠海政策问答逐字「与目前执行职工基本养老保险缴费基数上下限保持一致」',
+  eq('珠海政策问答逐字「与目前执行职工基本养老保险缴费基数上下限保持一致」',
     /与目前执行职工基本养老保险缴费基数上下限保持一致/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·珠海 62 号文兜底句逐字入库（2027 件命中判据）',
+  eq('珠海 62 号文兜底句逐字入库（2027 件命中判据）',
     /执行期间，国家、省关于缴费基数有新规定的，另行发文执行。/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·珠海 note 载法定公式 57 号文第十条 300%/60%',
+  eq('珠海 note 载法定公式 57 号文第十条 300%/60%',
     /超过本市公布执行的社平工资300%以上的部分不计征职工医保费/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·省医保局 8 年零职工医保基数文件（栏目 15 页 290 条）已入库',
+  eq('省医保局 8 年零职工医保基数文件（栏目 15 页 290 条）已入库',
     /政策文件栏目15页共290条/.test(A.CITIES.zh.note), true);
 
   // ---- 三、珠海历年口径切换链（97号→104号→62号） ----
-  eq('第八十六批·珠海 2022 年度 97号：6597×300%=19791、×60%取整=3958',
+  eq('珠海 2022 年度 97号：6597×300%=19791、×60%取整=3958',
     [R(6597 * 3), R(6597 * 0.6)].join('/'), '19791/3958');
-  eq('第八十六批·珠海 2025 年度 104号：7577×300%=22731、×60%取整=4546',
+  eq('珠海 2025 年度 104号：7577×300%=22731、×60%取整=4546',
     [R(7577 * 3), R(7577 * 0.6)].join('/'), '22731/4546');
-  eq('第八十六批·珠海 2022 年度件基准为 2020 年第二类片区全口径 6597',
+  eq('珠海 2022 年度件基准为 2020 年第二类片区全口径 6597',
     /2020年广东省第二类片区全口径从业人员月平均工资6597元/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·珠海 2025 年度件基准为 2022 年第二类片区全口径 7577',
+  eq('珠海 2025 年度件基准为 2022 年第二类片区全口径 7577',
     /2022年广东省第二类片区全口径城镇单位就业人员月平均工资7577元/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·2026 年度起下限口径已换：9183×60%取整=5510 ≠ 4775',
+  eq('2026 年度起下限口径已换：9183×60%取整=5510 ≠ 4775',
     [R(9183 * 0.6), 4775, R(9183 * 0.6) === 4775].join('/'), '5510/4775/false');
 
   // ---- 四、东莞口径回推：单一基数 9183 闭合四个数值 ----
-  eq('第八十六批·东莞 9183×300%=27549（上限）', R(9183 * 3), A.CITIES.dg.med.max);
-  eq('第八十六批·东莞 9183×60%取整=5510（省养老下限档）', R(9183 * 0.6), 5510);
-  eq('第八十六批·东莞 9183×52%取整=4775（本市下限档）', R(9183 * 0.52), A.CITIES.dg.med.min);
-  eq('第八十六批·东莞 7958 非 9183×13/15 四舍五入所得（7958.60→7959），隐含基数 9182.31',
+  eq('东莞 9183×300%=27549（上限）', R(9183 * 3), A.CITIES.dg.med.max);
+  eq('东莞 9183×60%取整=5510（省养老下限档）', R(9183 * 0.6), 5510);
+  eq('东莞 9183×52%取整=4775（本市下限档）', R(9183 * 0.52), A.CITIES.dg.med.min);
+  eq('东莞 7958 非 9183×13/15 四舍五入所得（7958.60→7959），隐含基数 9182.31',
     [(9183 * 13 / 15).toFixed(2), R(9183 * 13 / 15), (7958 * 15 / 13).toFixed(2)].join('/'),
     '7958.60/7959/9182.31');
-  eq('第八十六批·东莞上年 7945＝9167×13/15=7944.73 四舍五入为7945，与本年截尾方向相反',
+  eq('东莞上年 7945＝9167×13/15=7944.73 四舍五入为7945，与本年截尾方向相反',
     [(9167 * 13 / 15).toFixed(2), R(9167 * 13 / 15), 7945].join('/'),
     '7944.73/7945/7945');
-  eq('第八十六批·东莞上限 27549 ≠ 本市W(7958)×300%=23874 → 上限并非本市自算',
+  eq('东莞上限 27549 ≠ 本市W(7958)×300%=23874 → 上限并非本市自算',
     [27549, R(7958 * 3), 27549 === R(7958 * 3)].join('/'), '27549/23874/false');
-  eq('第八十六批·东莞候选B（5号文新公式）需年均人数而统计局不公布，故该分支不可推算、不预判',
+  eq('东莞候选B（5号文新公式）需年均人数而统计局不公布，故该分支不可推算、不预判',
     /该分支不可推算/.test(A.CITIES.dg.note), true);
-  eq('第八十六批·东莞等值路径 7958×60% 取整亦得 4775（机制不同、同值）',
+  eq('东莞等值路径 7958×60% 取整亦得 4775（机制不同、同值）',
     [R(7958 * 0.6), 7958 * 0.6].join('/'), '4775/4774.8');
-  eq('第八十六批·东莞 34 号文正文逐字入库（只载结果值不写公式）',
+  eq('东莞 34 号文正文逐字入库（只载结果值不写公式）',
     /2026年度达到法定退休年龄而未达职工基本医疗保险规定缴费年限的，其缴费基数按7958元执行/.test(A.CITIES.dg.note), true);
-  eq('第八十六批·东莞执行期逐字为自然年度 2026-01-01 至 12-31',
+  eq('东莞执行期逐字为自然年度 2026-01-01 至 12-31',
     /执行时间为2026年1月1日至2026年12月31日/.test(A.CITIES.dg.note), true);
 
   // ---- 五、2027 年度候选值：双路径同值 ----
-  eq('第八十六批·2025 年全省全口径月均（24号文反推）= 9201', 27603 / 3, 9201);
-  eq('第八十六批·9201×60%取整=5521（路径A与路径B同值，双向闭合）', R(9201 * 0.6), 5521);
-  eq('第八十六批·5521÷9201=60%（与24号文下限口径自洽）',
+  eq('2025 年全省全口径月均（24号文反推）= 9201', 27603 / 3, 9201);
+  eq('9201×60%取整=5521（路径A与路径B同值，双向闭合）', R(9201 * 0.6), 5521);
+  eq('5521÷9201=60%（与24号文下限口径自洽）',
     (5521 / 9201).toFixed(4), (0.6).toFixed(4));
-  eq('第八十六批·候选上限 27603 两条路径一致（省养老值 / 9201×300%）',
+  eq('候选上限 27603 两条路径一致（省养老值 / 9201×300%）',
     [27603, R(9201 * 3)].join('/'), '27603/27603');
-  eq('第八十六批·候选下限两分支 5521（跟随省养老）/ 4785（维持52%比例）',
+  eq('候选下限两分支 5521（跟随省养老）/ 4785（维持52%比例）',
     [R(9201 * 0.6), R(9201 * 0.52)].join('/'), '5521/4785');
-  eq('第八十六批·2027 退休补缴第三个数候选 7974（9201×13/15）', R(9201 * 13 / 15), 7974);
-  eq('第八十六批·两城现值与候选上限差 54 元（27549→27603）',
+  eq('2027 退休补缴第三个数候选 7974（9201×13/15）', R(9201 * 13 / 15), 7974);
+  eq('两城现值与候选上限差 54 元（27549→27603）',
     27603 - A.CITIES.zh.med.max, 54);
-  eq('第八十六批·两城现值与候选下限差 746 元（4775→5521）',
+  eq('两城现值与候选下限差 746 元（4775→5521）',
     5521 - A.CITIES.zh.med.min, 746);
 
   // ---- 六、发文窗口与巡检排班 ----
-  eq('第八十六批·珠海 2027 件预期文号 珠医保〔2026〕XX号 已入库',
+  eq('珠海 2027 件预期文号 珠医保〔2026〕XX号 已入库',
     /珠医保〔2026〕XX号/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·珠海 2027 件预期文号 东医保〔2026〕XX号 已入库（东莞）',
+  eq('珠海 2027 件预期文号 东医保〔2026〕XX号 已入库（东莞）',
     /东医保〔2026〕XX号/.test(A.CITIES.dg.note), true);
-  eq('第八十六批·珠海巡检排班 2026-12-10 起每3天、2026-12-17 起每日已入库',
+  eq('珠海巡检排班 2026-12-10 起每3天、2026-12-17 起每日已入库',
     /2026-12-10起每3天、2026-12-17起每日、至2027-01-20/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·珠海须同扫政策法规9090与政策解读9088（数值只在解读）',
+  eq('珠海须同扫政策法规9090与政策解读9088（数值只在解读）',
     /同扫政策法规9090与政策解读9088/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·珠海 2023、2024 两年度无独立件（不能假定每年必发）已入库',
+  eq('珠海 2023、2024 两年度无独立件（不能假定每年必发）已入库',
     /并未发独立件/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·东莞巡检端点 postmeta JSON 已入库',
+  eq('东莞巡检端点 postmeta JSON 已入库',
     /ylbzj\/postmeta\/g\/<classifyId>_<page>\.json/.test(A.CITIES.dg.note), true);
-  eq('第八十六批·东莞 3322 政策法规栏目为 2027 件落点已入库',
+  eq('东莞 3322 政策法规栏目为 2027 件落点已入库',
     /3322政策法规栏目/.test(A.CITIES.dg.note), true);
-  eq('第八十六批·居民件（珠医保〔2026〕35号 556/417）已标禁与职工基数混用',
+  eq('居民件（珠医保〔2026〕35号 556/417）已标禁与职工基数混用',
     /不得混用/.test(A.CITIES.zh.note), true);
-  eq('第八十六批·东莞 2026 年度下半年费率件仍载 4775/27549（24号文不传导）已入库',
+  eq('东莞 2026 年度下半年费率件仍载 4775/27549（24号文不传导）已入库',
     /可证粤人社发〔2026〕24号的新值在2026年内不传导至东莞医保/.test(A.CITIES.dg.note), true);
 
   // ---- 七、本批不触碰的字段 ----
-  eq('第八十六批·珠海失业上下限不受影响（36279/2300）',
+  eq('珠海失业上下限不受影响（36279/2300）',
     A.CITIES.zh.unemp.min + '~' + A.CITIES.zh.unemp.max, '2300~36279');
-  eq('第八十六批·东莞失业上下限不受影响（27702/2300）',
+  eq('东莞失业上下限不受影响（27702/2300）',
     A.CITIES.dg.unemp.min + '~' + A.CITIES.dg.unemp.max, '2300~27702');
-  eq('第八十六批·珠海工伤仍为法定无上下限 0/0（injSpecial 不动）',
+  eq('珠海工伤仍为法定无上下限 0/0（injSpecial 不动）',
     A.CITIES.zh.inj.min + '/' + A.CITIES.zh.inj.max, '0/0');
 
   // ---- 八、来源记录 F2.json ----
-  eq('第八十六批·F2.json 已建档并含珠海、东莞两城',
+  eq('F2.json 已建档并含珠海、东莞两城',
     F2.provinces[0].cities.map(c => c.key).sort().join('/'), 'dg/zh');
-  eq('第八十六批·F2.json 两城 2026 年度基数与仓库现值一致',
+  eq('F2.json 两城 2026 年度基数与仓库现值一致',
     ['zh', 'dg'].every(k => cOf(k).medMax === A.CITIES[k].med.max
                             && cOf(k).medMin === A.CITIES[k].med.min), true);
-  eq('第八十六批·F2.json 候选上限 27603 与下限两分支 5521/4785 已记录',
+  eq('F2.json 候选上限 27603 与下限两分支 5521/4785 已记录',
     [cOf('zh').candidateMax, cOf('zh').candidateMin.join('/'), cOf('dg').candidateMin.join('/')].join('/'),
     '27603/5521/5521/4785');
-  eq('第八十六批·F2.json 两城均载 2027 件命中判据与巡检窗口',
+  eq('F2.json 两城均载 2027 件命中判据与巡检窗口',
     ['zh', 'dg'].every(k => (cOf(k).hitRule || '').length > 20 && (cOf(k).nextCheck || '').length > 10), true);
-  eq('第八十六批·F2.json 两城均经 source-records 正向判定为已核查',
+  eq('F2.json 两城均经 source-records 正向判定为已核查',
     F2.provinces[0].cities.every(isFilled), true);
-  eq('第八十六批·F2.json 省级兜底结论入库（省医保局近8年不发基数文件）',
+  eq('F2.json 省级兜底结论入库（省医保局近8年不发基数文件）',
     /省医保局/.test(F2.provinces[0].provinceWideNote || ''), true);
 
   emit('  两城 2027 年度候选上限 27603 双路径同值 + 下限两分支 + 发文窗口与巡检排班 + F2.json 新建 ✓');
@@ -3905,9 +3905,9 @@ section('15. 珠海/东莞 2027 年度职工医保件回访（第八十六批）
       9201 仍记为推定值；但路径A（跟随省养老）与路径B（本市按全口径自算）
       在上限 27603 与下限 5521 上完全收敛，下限 5521 置信度大幅提升，
       而维持 52% 比例的 4785 分支依据薄弱。
-   本批数值零改动：2026 年度值在 2026-12-31 前继续有效。
+   本批数值不变：2026 年度值在 2026-12-31 前继续有效。
    ========================================================= */
-section('16. 珠海/东莞 2027 年度职工医保基数底数五重闭合与纯图闭合（第八十七批）');
+section('16. 珠海/东莞 2027 年度职工医保基数底数五重闭合与纯图闭合');
 (function gdMed87(){
   const F2 = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F2.json'), 'utf8'));
   const cOf = (k) => F2.provinces[0].cities.filter(c => c.key === k)[0];
@@ -3915,70 +3915,70 @@ section('16. 珠海/东莞 2027 年度职工医保基数底数五重闭合与纯
   const zh = A.CITIES.zh, dg = A.CITIES.dg;
 
   // 一、note 入库（第八十七批收官复核段）
-  eq('第八十七批·珠海 note 载入收官复核段', /第八十七批/.test(zh.note), true);
-  eq('第八十七批·东莞 note 载入收官复核段', /第八十七批/.test(dg.note), true);
-  eq('第八十七批·珠海 note 引国办发〔2019〕13号上位法', /国办发〔2019〕13号/.test(zh.note), true);
-  eq('第八十七批·珠海 note 载 9183 与 9201 底数推定', /9183/.test(zh.note) && /9201/.test(zh.note), true);
-  eq('第八十七批·东莞 note 载纯图 OCR 闭合结论', /一图看懂/.test(dg.note) && /OCR/.test(dg.note), true);
-  eq('第八十七批·东莞 note 引东人社发〔2026〕35号市级件', /东人社发〔2026〕35号/.test(dg.note), true);
-  eq('第八十七批·东莞 note 载 7958 与图内无公式结论', /7958/.test(dg.note) && /无任何计算公式/.test(dg.note), true);
+  eq('珠海 note 载入收官复核段', /第八十七批/.test(zh.note), true);
+  eq('东莞 note 载入收官复核段', /第八十七批/.test(dg.note), true);
+  eq('珠海 note 引国办发〔2019〕13号上位法', /国办发〔2019〕13号/.test(zh.note), true);
+  eq('珠海 note 载 9183 与 9201 底数推定', /9183/.test(zh.note) && /9201/.test(zh.note), true);
+  eq('东莞 note 载纯图 OCR 闭合结论', /一图看懂/.test(dg.note) && /OCR/.test(dg.note), true);
+  eq('东莞 note 引东人社发〔2026〕35号市级件', /东人社发〔2026〕35号/.test(dg.note), true);
+  eq('东莞 note 载 7958 与图内无公式结论', /7958/.test(dg.note) && /无任何计算公式/.test(dg.note), true);
 
   // 二、现值零改动（数值与费率均未动）
-  eq('第八十七批·珠海职工医保基数仍为 4775~27549', [zh.med.min, zh.med.max].join('~'), '4775~27549');
-  eq('第八十七批·东莞职工医保基数仍为 4775~27549', [dg.med.min, dg.med.max].join('~'), '4775~27549');
-  eq('第八十七批·珠海职工医保费率未变 6% 与 1.5%', [zh.med.comp, zh.med.emp].join('/'), '0.06/0.015');
-  eq('第八十七批·东莞职工医保费率未变 5% 与 2%', [dg.med.comp, dg.med.emp].join('/'), '0.05/0.02');
+  eq('珠海职工医保基数仍为 4775~27549', [zh.med.min, zh.med.max].join('~'), '4775~27549');
+  eq('东莞职工医保基数仍为 4775~27549', [dg.med.min, dg.med.max].join('~'), '4775~27549');
+  eq('珠海职工医保费率未变 6% 与 1.5%', [zh.med.comp, zh.med.emp].join('/'), '0.06/0.015');
+  eq('东莞职工医保费率未变 5% 与 2%', [dg.med.comp, dg.med.emp].join('/'), '0.05/0.02');
 
   // 三、2025 年全省全口径 9201 的五重闭合
-  eq('第八十七批·9183×3=27549 即 2026 年度医保上限', 9183 * 3, 27549);
-  eq('第八十七批·9201×3=27603 即 24号文 2026-07-01 起养老上限', 9201 * 3, 27603);
-  eq('第八十七批·9183×0.6 取整=5510 即 24号文 2026-01-01 起养老下限', R(9183 * 0.6), 5510);
-  eq('第八十七批·9201×0.6 取整=5521 即 24号文 2026-07-01 起养老下限', R(9201 * 0.6), 5521);
-  eq('第八十七批·9183×0.52 取整=4775 即 2026 年度医保下限', R(9183 * 0.52), 4775);
-  eq('第八十七批·9201×13/15 取整=7974 即 2027 退休续缴第三个数候选', R(9201 * 13 / 15), 7974);
+  eq('9183×3=27549 即 2026 年度医保上限', 9183 * 3, 27549);
+  eq('9201×3=27603 即 24号文 2026-07-01 起养老上限', 9201 * 3, 27603);
+  eq('9183×0.6 取整=5510 即 24号文 2026-01-01 起养老下限', R(9183 * 0.6), 5510);
+  eq('9201×0.6 取整=5521 即 24号文 2026-07-01 起养老下限', R(9201 * 0.6), 5521);
+  eq('9183×0.52 取整=4775 即 2026 年度医保下限', R(9183 * 0.52), 4775);
+  eq('9201×13/15 取整=7974 即 2027 退休续缴第三个数候选', R(9201 * 13 / 15), 7974);
 
   // 四、增量一致性（连续两年 0.17% 与 0.20%）
-  eq('第八十七批·全口径年增一致 9183−9167=16 与 9201−9183=18', [9183 - 9167, 9201 - 9183].join('/'), '16/18');
-  eq('第八十七批·全口径年增率 0.17% 与 0.20%', [((9183 - 9167) / 9167 * 100).toFixed(2), ((9201 - 9183) / 9183 * 100).toFixed(2)].join('/'), '0.17/0.20');
-  eq('第八十七批·上限增量 27603−27549=54', 27603 - 27549, 54);
-  eq('第八十七批·下限增量 5521−5510=11', 5521 - 5510, 11);
+  eq('全口径年增一致 9183−9167=16 与 9201−9183=18', [9183 - 9167, 9201 - 9183].join('/'), '16/18');
+  eq('全口径年增率 0.17% 与 0.20%', [((9183 - 9167) / 9167 * 100).toFixed(2), ((9201 - 9183) / 9183 * 100).toFixed(2)].join('/'), '0.17/0.20');
+  eq('上限增量 27603−27549=54', 27603 - 27549, 54);
+  eq('下限增量 5521−5510=11', 5521 - 5510, 11);
 
   // 五、路径A 与路径B 收敛
-  eq('第八十七批·上限路径A与路径B同值 27603', [27603, 9201 * 3].join('/'), '27603/27603');
-  eq('第八十七批·下限路径A与路径B同值 5521', [5521, R(9201 * 0.6)].join('/'), '5521/5521');
-  eq('第八十七批·弱分支 4785 算式可复算（依据薄弱）', R(9201 * 0.52), 4785);
+  eq('上限路径A与路径B同值 27603', [27603, 9201 * 3].join('/'), '27603/27603');
+  eq('下限路径A与路径B同值 5521', [5521, R(9201 * 0.6)].join('/'), '5521/5521');
+  eq('弱分支 4785 算式可复算（依据薄弱）', R(9201 * 0.52), 4785);
 
   // 六、F2.json 增量
-  eq('第八十七批·F2.json 顶层 note 载入第八十七批', /第八十七批/.test(F2.note || ''), true);
-  eq('第八十七批·F2.json legalBasis 引入国办发〔2019〕13号', /国办发〔2019〕13号/.test((F2.legalBasis.title || '') + (F2.legalBasis.meaning || '')), true);
-  eq('第八十七批·F2.json 省级说明载 24号文标题文种不含全口径', /标题文种/.test(F2.provinces[0].provinceWideNote || ''), true);
-  eq('第八十七批·F2.json 省级说明载 9201 五重闭合推定', /五重闭合/.test(F2.provinces[0].provinceWideNote || ''), true);
-  eq('第八十七批·F2.json 珠海 rawQuotes 含国办发13号逐字', cOf('zh').rawQuotes.some(q => /国办发〔2019〕13号/.test(q)), true);
-  eq('第八十七批·F2.json 珠海 rawQuotes 含 62号文费率表逐字', cOf('zh').rawQuotes.some(q => /7\.5%/.test(q) && /单建统筹/.test(q)), true);
-  eq('第八十七批·F2.json 珠海 rawQuotes 含 2027 件巡检结论', cOf('zh').rawQuotes.some(q => /发文窗口/.test(q)), true);
-  eq('第八十七批·F2.json 珠海五重闭合推定留痕仍在案卷（第九十五批改写 candidateBasis 后移入 rawNotes）', /五重闭合/.test(cOf('zh').rawNotes || ''), true);
-  eq('第八十七批·F2.json 珠海下限收敛留痕仍在案卷（第九十五批改写 candidateConfidence.min 后移入 rawNotes）', /收敛/.test(cOf('zh').rawNotes || ''), true);
-  eq('第八十七批·F2.json 东莞 urls 含纯图 post_4520273', cOf('dg').urls.some(u => /4520273/.test(u)), true);
-  eq('第八十七批·F2.json 东莞 urls 含东人社发35号 post_4596758', cOf('dg').urls.some(u => /4596758/.test(u)), true);
-  eq('第八十七批·F2.json 东莞 rawQuotes 含 OCR 逐字', cOf('dg').rawQuotes.some(q => /OCR/.test(q)), true);
-  eq('第八十七批·F2.json 东莞 rawQuotes 含 35号文逐字', cOf('dg').rawQuotes.some(q => /东人社发〔2026〕35号/.test(q)), true);
-  eq('第八十七批·F2.json 东莞 candidateMin 保留两分支且第三支仍标低置信（第九十五批起「低」落在 candidateConfidence.third）', [cOf('dg').candidateMin.join('/'), /低/.test((cOf('dg').candidateConfidence || {}).third || '')].join('/'), '5521/4785/true');
-  eq('第八十七批·F2.json 两城 candidateMax 均 27603', [cOf('zh').candidateMax, cOf('dg').candidateMax].join('/'), '27603/27603');
-  eq('第八十七批·F2.json 两城 candidateThird 均 7974', [cOf('zh').candidateThird, cOf('dg').candidateThird].join('/'), '7974/7974');
-  eq('第八十七批·F2.json 两城 confirms 均含第八十七批', ['zh', 'dg'].every(k => /第八十七批/.test(cOf(k).confirms || '')), true);
-  eq('第八十七批·F2.json 两城 rawNotes 均含第八十七批', ['zh', 'dg'].every(k => /第八十七批/.test(cOf(k).rawNotes || '')), true);
+  eq('F2.json 顶层 note 载入', /第八十七批/.test(F2.note || ''), true);
+  eq('F2.json legalBasis 引入国办发〔2019〕13号', /国办发〔2019〕13号/.test((F2.legalBasis.title || '') + (F2.legalBasis.meaning || '')), true);
+  eq('F2.json 省级说明载 24号文标题文种不含全口径', /标题文种/.test(F2.provinces[0].provinceWideNote || ''), true);
+  eq('F2.json 省级说明载 9201 五重闭合推定', /五重闭合/.test(F2.provinces[0].provinceWideNote || ''), true);
+  eq('F2.json 珠海 rawQuotes 含国办发13号逐字', cOf('zh').rawQuotes.some(q => /国办发〔2019〕13号/.test(q)), true);
+  eq('F2.json 珠海 rawQuotes 含 62号文费率表逐字', cOf('zh').rawQuotes.some(q => /7\.5%/.test(q) && /单建统筹/.test(q)), true);
+  eq('F2.json 珠海 rawQuotes 含 2027 件巡检结论', cOf('zh').rawQuotes.some(q => /发文窗口/.test(q)), true);
+  eq('F2.json 珠海五重闭合推定留痕仍在案卷（改写 candidateBasis 后移入 rawNotes）', /五重闭合/.test(cOf('zh').rawNotes || ''), true);
+  eq('F2.json 珠海下限收敛留痕仍在案卷（改写 candidateConfidence.min 后移入 rawNotes）', /收敛/.test(cOf('zh').rawNotes || ''), true);
+  eq('F2.json 东莞 urls 含纯图 post_4520273', cOf('dg').urls.some(u => /4520273/.test(u)), true);
+  eq('F2.json 东莞 urls 含东人社发35号 post_4596758', cOf('dg').urls.some(u => /4596758/.test(u)), true);
+  eq('F2.json 东莞 rawQuotes 含 OCR 逐字', cOf('dg').rawQuotes.some(q => /OCR/.test(q)), true);
+  eq('F2.json 东莞 rawQuotes 含 35号文逐字', cOf('dg').rawQuotes.some(q => /东人社发〔2026〕35号/.test(q)), true);
+  eq('F2.json 东莞 candidateMin 保留两分支且第三支仍标低置信（起「低」落在 candidateConfidence.third）', [cOf('dg').candidateMin.join('/'), /低/.test((cOf('dg').candidateConfidence || {}).third || '')].join('/'), '5521/4785/true');
+  eq('F2.json 两城 candidateMax 均 27603', [cOf('zh').candidateMax, cOf('dg').candidateMax].join('/'), '27603/27603');
+  eq('F2.json 两城 candidateThird 均 7974', [cOf('zh').candidateThird, cOf('dg').candidateThird].join('/'), '7974/7974');
+  eq('F2.json 两城 confirms 均含', ['zh', 'dg'].every(k => /第八十七批/.test(cOf(k).confirms || '')), true);
+  eq('F2.json 两城 rawNotes 均含', ['zh', 'dg'].every(k => /第八十七批/.test(cOf(k).rawNotes || '')), true);
 
   // 七、24号文新值在 2026 年内不传导至东莞医保
-  eq('第八十七批·东莞 note 载 24号文新值 2026 年内不传导结论', /不传导/.test(dg.note), true);
-  eq('第八十七批·东莞 note 区分失业下限 2080→2300 与公积金下限', /2080/.test(dg.note) && /2300/.test(dg.note), true);
+  eq('东莞 note 载 24号文新值 2026 年内不传导结论', /不传导/.test(dg.note), true);
+  eq('东莞 note 区分失业下限 2080→2300 与公积金下限', /2080/.test(dg.note) && /2300/.test(dg.note), true);
 
   // 八、2027 年度件仍在发文窗口之外
-  eq('第八十七批·两城 note 均载 2027 年度件仍在发文窗口之外', ['zh', 'dg'].every(k => /发文窗口/.test(A.CITIES[k].note)), true);
+  eq('两城 note 均载 2027 年度件仍在发文窗口之外', ['zh', 'dg'].every(k => /发文窗口/.test(A.CITIES[k].note)), true);
 
   emit('  2025 年全省全口径 9201 五重闭合推定 + 东莞纯图 OCR 闭合 + 路径A/B 上下限收敛 + F2.json 增量 ✓');
 })();
 
-section('17. 东莞公积金 36 号文闭合长期疑点 + 深圳公积金新办法与年度体例（第八十八批 B）');
+section('17. 东莞公积金 36 号文闭合长期疑点 + 深圳公积金新办法与年度体例（ B）');
 (function gdGjj89(){
   const SRC = path.join(__dirname, '..', 'docs', 'sources');
   const Q1 = JSON.parse(fs.readFileSync(path.join(SRC, 'Q1.json'), 'utf8'));
@@ -3987,60 +3987,60 @@ section('17. 东莞公积金 36 号文闭合长期疑点 + 深圳公积金新办
   const szc = A.CITIES.sz, dgc = A.CITIES.dg;
 
   // 一、东莞：东公积金通〔2026〕36号 入库
-  eq('第八十八批 B·东莞 note 引东公积金通〔2026〕36号', /东公积金通〔2026〕36号/.test(dgc.note), true);
-  eq('第八十八批 B·东莞 note 载 36 号文原文 URL', /post_4577664/.test(dgc.note), true);
-  eq('第八十八批 B·东莞 note 载上限 27391→27700 逐字', /由27391元调整为27700元/.test(dgc.note), true);
-  eq('第八十八批 B·东莞 note 载存量 2080 与 2027-01 强制 2300', /不得低于2080元/.test(dgc.note) && /缴存2027年1月及后续月份/.test(dgc.note), true);
-  eq('第八十八批 B·东莞 note 载补缴手续条款', /应同时为职工办理补缴手续/.test(dgc.note), true);
+  eq(' B·东莞 note 引东公积金通〔2026〕36号', /东公积金通〔2026〕36号/.test(dgc.note), true);
+  eq(' B·东莞 note 载 36 号文原文 URL', /post_4577664/.test(dgc.note), true);
+  eq(' B·东莞 note 载上限 27391→27700 逐字', /由27391元调整为27700元/.test(dgc.note), true);
+  eq(' B·东莞 note 载存量 2080 与 2027-01 强制 2300', /不得低于2080元/.test(dgc.note) && /缴存2027年1月及后续月份/.test(dgc.note), true);
+  eq(' B·东莞 note 载补缴手续条款', /应同时为职工办理补缴手续/.test(dgc.note), true);
 
-  // 二、东莞数值零改动（与 36 号文逐字一致）
-  eq('第八十八批 B·东莞公积金上限仍为 27700', dgc.hf.max, 27700);
-  eq('第八十八批 B·东莞公积金下限仍为 2080（存量口径）', dgc.hf.min, 2080);
-  eq('第八十八批 B·东莞公积金上下限与 36 号文逐字一致', [dgc.hf.min, dgc.hf.max].join('~'), '2080~27700');
+  // 二、东莞数值不变（与 36 号文逐字一致）
+  eq(' B·东莞公积金上限仍为 27700', dgc.hf.max, 27700);
+  eq(' B·东莞公积金下限仍为 2080（存量口径）', dgc.hf.min, 2080);
+  eq(' B·东莞公积金上下限与 36 号文逐字一致', [dgc.hf.min, dgc.hf.max].join('~'), '2080~27700');
 
   // 三、深圳：新办法与年度体例入库
-  eq('第八十八批 B·深圳 note 引深府规〔2026〕2号', /深府规〔2026〕2号/.test(szc.note), true);
-  eq('第八十八批 B·深圳 note 载五类强制缴存单位逐字', /五类强制缴存单位/.test(szc.note), true);
-  eq('第八十八批 B·深圳 note 载新办法施行日 2026年4月1日', /自2026年4月1日起施行/.test(szc.note), true);
-  eq('第八十八批 B·深圳 note 载公积金年度 7月1日至次年6月30日', /当年7月1日至次年6月30日/.test(szc.note), true);
-  eq('第八十八批 B·深圳 note 载新职工不随年度调整明文', /不在本次缴存基数调整范围内/.test(szc.note), true);
-  eq('第八十八批 B·深圳 note 载 2023 年度件执行期限', /2024年6月30日/.test(szc.note), true);
+  eq(' B·深圳 note 引深府规〔2026〕2号', /深府规〔2026〕2号/.test(szc.note), true);
+  eq(' B·深圳 note 载五类强制缴存单位逐字', /五类强制缴存单位/.test(szc.note), true);
+  eq(' B·深圳 note 载新办法施行日 2026年4月1日', /自2026年4月1日起施行/.test(szc.note), true);
+  eq(' B·深圳 note 载公积金年度 7月1日至次年6月30日', /当年7月1日至次年6月30日/.test(szc.note), true);
+  eq(' B·深圳 note 载新职工不随年度调整明文', /不在本次缴存基数调整范围内/.test(szc.note), true);
+  eq(' B·深圳 note 载 2023 年度件执行期限', /2024年6月30日/.test(szc.note), true);
 
-  // 四、深圳数值零改动
-  eq('第八十八批 B·深圳公积金上下限仍为 2520~48471', [szc.hf.min, szc.hf.max].join('~'), '2520~48471');
-  eq('第八十八批 B·深圳失业下限仍为 2700', szc.unemp.min, 2700);
-  eq('第八十八批 B·深圳公积金上限 48471 仍等于在岗月均×3', szc.hf.max, Math.round(193881 / 12) * 3);
-  eq('第八十八批 B·深圳仍标 warn（数值缺官方件）', szc.warn, true);
+  // 四、深圳数值不变
+  eq(' B·深圳公积金上下限仍为 2520~48471', [szc.hf.min, szc.hf.max].join('~'), '2520~48471');
+  eq(' B·深圳失业下限仍为 2700', szc.unemp.min, 2700);
+  eq(' B·深圳公积金上限 48471 仍等于在岗月均×3', szc.hf.max, Math.round(193881 / 12) * 3);
+  eq(' B·深圳仍标 warn（数值缺官方件）', szc.warn, true);
 
   // 五、Q1.json 增量
-  eq('第八十八批 B·Q1 东莞 urls 含 36 号文 post_4577664', gd.urls.some(u => /4577664/.test(u)), true);
-  eq('第八十八批 B·Q1 东莞 docNumber 含 36 号文', /东公积金通〔2026〕36号/.test(gd.docNumber || ''), true);
-  eq('第八十八批 B·Q1 东莞 confirms 含第八十八批 B', /第八十八批 B/.test(gd.confirms || ''), true);
-  eq('第八十八批 B·Q1 东莞 mismatch 已闭合且不再含未获官方原文', /已闭合/.test(gd.mismatch || '') && !/未获官方原文/.test(gd.mismatch || ''), true);
-  eq('第八十八批 B·Q1 深圳 urls 含新办法与 2021/2023 年度件', [12687780, 8894190, 10722622].every(n => sz.urls.some(u => u.indexOf(String(n)) >= 0)), true);
-  eq('第八十八批 B·Q1 深圳 docNumber 含深府规〔2026〕2号', /深府规〔2026〕2号/.test(sz.docNumber || ''), true);
-  eq('第八十八批 B·Q1 深圳 confirms 含第八十八批 B', /第八十八批 B/.test(sz.confirms || ''), true);
-  eq('第八十八批 B·Q1 深圳 mismatch 仍记两金额缺官方件', /2520/.test(sz.mismatch || '') && /48471/.test(sz.mismatch || ''), true);
-  eq('第八十八批 B·Q1 notes 第 ⑧ 条已订正为已获官方原文', Q1.notes.some(n => /第八十八批 B 已获官方原文/.test(n)), true);
-  eq('第八十八批 B·Q1 自身 urls 总数 45→49（第八十九批 P10 后为 59）', Q1.provinces.reduce((t, p) => t + (p.cities || []).reduce((u, c) => u + ((c.urls || []).length), 0), 0), 59);
+  eq(' B·Q1 东莞 urls 含 36 号文 post_4577664', gd.urls.some(u => /4577664/.test(u)), true);
+  eq(' B·Q1 东莞 docNumber 含 36 号文', /东公积金通〔2026〕36号/.test(gd.docNumber || ''), true);
+  eq(' B·Q1 东莞 confirms 含 B', /第八十八批 B/.test(gd.confirms || ''), true);
+  eq(' B·Q1 东莞 mismatch 已闭合且不再含未获官方原文', /已闭合/.test(gd.mismatch || '') && !/未获官方原文/.test(gd.mismatch || ''), true);
+  eq(' B·Q1 深圳 urls 含新办法与 2021/2023 年度件', [12687780, 8894190, 10722622].every(n => sz.urls.some(u => u.indexOf(String(n)) >= 0)), true);
+  eq(' B·Q1 深圳 docNumber 含深府规〔2026〕2号', /深府规〔2026〕2号/.test(sz.docNumber || ''), true);
+  eq(' B·Q1 深圳 confirms 含 B', /第八十八批 B/.test(sz.confirms || ''), true);
+  eq(' B·Q1 深圳 mismatch 仍记两金额缺官方件', /2520/.test(sz.mismatch || '') && /48471/.test(sz.mismatch || ''), true);
+  eq(' B·Q1 notes 第 ⑧ 条已订正为已获官方原文', Q1.notes.some(n => /第八十八批 B 已获官方原文/.test(n)), true);
+  eq(' B·Q1 自身 urls 总数 45→49（ P10 后为 59）', Q1.provinces.reduce((t, p) => t + (p.cities || []).reduce((u, c) => u + ((c.urls || []).length), 0), 0), 59);
 
   // 六、来源库整体链接数不得丢失
   const allUrls = fs.readdirSync(SRC).filter(f => /^[A-Z]\d+[a-z]?\.json$/.test(f)).reduce((t, f) => {
     const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
     return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
   }, 0);
-  eq('第八十八批 B·全库 urls 总数 2823→2827（第八十九批 P10 后为 2837，第九十四批 B 后为 2843，第九十五批 F2 两城各 +4 后为 2851）', allUrls, 2851);
+  eq(' B·全库 urls 总数 2823→2827（ P10 后为 2837， B 后为 2843， F2 两城各 +4 后为 2851）', allUrls, 2851);
 
   // 七、口径并列（不得混用）
-  eq('第八十八批 B·东莞下限仍按存量 2080（2027-01 起才转 2300）', dgc.hf.min, 2080);
-  eq('第八十八批 B·东莞与深圳公积金下限并存（2080 与 2520）', [dgc.hf.min, szc.hf.min].join('/'), '2080/2520');
-  eq('第八十八批 B·东莞失业上限仍比公积金上限高 2 元（证伪点守住）', dgc.unemp.max - dgc.hf.max, 2);
-  eq('第八十八批 B·东莞未新增 warn（公积金数值已由 36 号文闭合）', !!dgc.warn, false);
+  eq(' B·东莞下限仍按存量 2080（2027-01 起才转 2300）', dgc.hf.min, 2080);
+  eq(' B·东莞与深圳公积金下限并存（2080 与 2520）', [dgc.hf.min, szc.hf.min].join('/'), '2080/2520');
+  eq(' B·东莞失业上限仍比公积金上限高 2 元（证伪点守住）', dgc.unemp.max - dgc.hf.max, 2);
+  eq(' B·东莞未新增 warn（公积金数值已由 36 号文闭合）', !!dgc.warn, false);
 
-  emit('  东莞公积金 36 号文闭合长期媒体疑点 + 深圳公积金新办法与 7 月年度体例入库 + Q1.json 增量（数值零改动）✓');
+  emit(' 东莞公积金 36 号文闭合长期媒体疑点 + 深圳公积金新办法与 7 月年度体例入库 + Q1.json 增量（数值不变）✓');
 })();
 
-section('18. 深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方取整规则闭合（第八十九批 P10）');
+section('18. 深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方取整规则闭合（ P10）');
 (function gdSzP10(){
   const SRC = path.join(__dirname, '..', 'docs', 'sources');
   const Q1 = JSON.parse(fs.readFileSync(path.join(SRC, 'Q1.json'), 'utf8'));
@@ -4048,266 +4048,266 @@ section('18. 深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方
   const szc = A.CITIES.sz;
 
   // 一、深圳 note 新增段
-  eq('第八十九批·深圳 note 含第八十九批标识', /第八十九批/.test(szc.note), true);
-  eq('第八十九批·深圳 note 载 2025 年省最低工资标准表 URL', /post_3844543/.test(szc.note), true);
-  eq('第八十九批·深圳 note 载表图本体 URL', /3844543\.png/.test(szc.note), true);
-  eq('第八十九批·深圳 note 载 OCR 一致的深圳 2520 与小时 23.7', /月最低工资标准 2520 元\/月/.test(szc.note) && /23\.7 元\/小时/.test(szc.note), true);
-  eq('第八十九批·深圳 note 载官方取整规则「除以12，取整到元」', /除以12，取整到元/.test(szc.note), true);
-  eq('第八十九批·深圳 note 载官方答复 pid=2941733', /pid=2941733/.test(szc.note), true);
-  eq('第八十九批·深圳 note 载历史官方值链 34860/38892/41190', /34860/.test(szc.note) && /38892/.test(szc.note) && /41190/.test(szc.note), true);
-  eq('第八十九批·深圳 note 载 2027 年度下限 2700 与门户稿 URL', /post_12936470/.test(szc.note) && /2027 公积金年度下限将变为 2700/.test(szc.note), true);
-  eq('第八十九批·深圳 note 明示 48471 未在任何官方件上印出', /48471 这六个数字未在任何官方件上被印出/.test(szc.note), true);
+  eq('深圳 note 含标识', /第八十九批/.test(szc.note), true);
+  eq('深圳 note 载 2025 年省最低工资标准表 URL', /post_3844543/.test(szc.note), true);
+  eq('深圳 note 载表图本体 URL', /3844543\.png/.test(szc.note), true);
+  eq('深圳 note 载 OCR 一致的深圳 2520 与小时 23.7', /月最低工资标准 2520 元\/月/.test(szc.note) && /23\.7 元\/小时/.test(szc.note), true);
+  eq('深圳 note 载官方取整规则「除以12，取整到元」', /除以12，取整到元/.test(szc.note), true);
+  eq('深圳 note 载官方答复 pid=2941733', /pid=2941733/.test(szc.note), true);
+  eq('深圳 note 载历史官方值链 34860/38892/41190', /34860/.test(szc.note) && /38892/.test(szc.note) && /41190/.test(szc.note), true);
+  eq('深圳 note 载 2027 年度下限 2700 与门户稿 URL', /post_12936470/.test(szc.note) && /2027 公积金年度下限将变为 2700/.test(szc.note), true);
+  eq('深圳 note 明示 48471 未在任何官方件上印出', /48471 这六个数字未在任何官方件上被印出/.test(szc.note), true);
 
-  // 二、深圳数值零改动 + 官方取整规则复算
-  eq('第八十九批·深圳公积金下限仍为 2520', szc.hf.min, 2520);
-  eq('第八十九批·深圳公积金上限仍为 48471', szc.hf.max, 48471);
-  eq('第八十九批·官方取整规则复算：193881÷12 取整到元再×3 = 48471', Math.round(193881 / 12) * 3, 48471);
-  eq('第八十九批·193881÷12 小数部分为 .75（非整除）', (193881 / 12).toFixed(2), '16156.75');
-  eq('第八十九批·深圳失业上限与公积金上限同源同值 48471', szc.unemp.max - szc.hf.max, 0);
-  eq('第八十九批·深圳仍标 warn（48471 金额未印出于官方件）', szc.warn, true);
+  // 二、深圳数值不变 + 官方取整规则复算
+  eq('深圳公积金下限仍为 2520', szc.hf.min, 2520);
+  eq('深圳公积金上限仍为 48471', szc.hf.max, 48471);
+  eq('官方取整规则复算：193881÷12 取整到元再×3 = 48471', Math.round(193881 / 12) * 3, 48471);
+  eq('193881÷12 小数部分为 .75（非整除）', (193881 / 12).toFixed(2), '16156.75');
+  eq('深圳失业上限与公积金上限同源同值 48471', szc.unemp.max - szc.hf.max, 0);
+  eq('深圳仍标 warn（48471 金额未印出于官方件）', szc.warn, true);
 
   // 三、Q1.json 增量
-  eq('第八十九批·Q1 深圳 urls 含 2025 年省最低工资标准表', sz.urls.some(u => /post_3844543/.test(u)), true);
-  eq('第八十九批·Q1 深圳 urls 含 2025 年表图本体', sz.urls.some(u => /3844543\.png/.test(u)), true);
-  eq('第八十九批·Q1 深圳 urls 含 2026 年省最低工资标准表', sz.urls.some(u => /post_3951589/.test(u)), true);
-  eq('第八十九批·Q1 深圳 urls 含最低工资上调门户稿', sz.urls.some(u => /post_12936470/.test(u)), true);
-  eq('第八十九批·Q1 深圳 urls 含官方答复 pid=2941733', sz.urls.some(u => /pid=2941733/.test(u)), true);
-  eq('第八十九批·Q1 深圳 urls 含 2023 年度通知原件', sz.urls.some(u => /post_10684484/.test(u)), true);
-  eq('第八十九批·Q1 深圳 urls 数 6→16', sz.urls.length, 16);
-  eq('第八十九批·Q1 深圳 confirms 含第八十九批与 2520', /第八十九批/.test(sz.confirms || '') && /2520/.test(sz.confirms || ''), true);
-  eq('第八十九批·Q1 深圳 mismatch 明示金额未印出于官方件', /未在任何官方件上被印出/.test(sz.mismatch || ''), true);
-  eq('第八十九批·Q1 深圳 status 维持 official-partial', sz.status, 'official-partial');
-  eq('第八十九批·Q1 notes 含第八十九批 P10 条', Q1.notes.some(n => /第八十九批/.test(n || '')), true);
-  eq('第八十九批·Q1 自身 urls 总数 49→59', Q1.provinces.reduce((t, p) => t + (p.cities || []).reduce((u, c) => u + ((c.urls || []).length), 0), 0), 59);
+  eq('Q1 深圳 urls 含 2025 年省最低工资标准表', sz.urls.some(u => /post_3844543/.test(u)), true);
+  eq('Q1 深圳 urls 含 2025 年表图本体', sz.urls.some(u => /3844543\.png/.test(u)), true);
+  eq('Q1 深圳 urls 含 2026 年省最低工资标准表', sz.urls.some(u => /post_3951589/.test(u)), true);
+  eq('Q1 深圳 urls 含最低工资上调门户稿', sz.urls.some(u => /post_12936470/.test(u)), true);
+  eq('Q1 深圳 urls 含官方答复 pid=2941733', sz.urls.some(u => /pid=2941733/.test(u)), true);
+  eq('Q1 深圳 urls 含 2023 年度通知原件', sz.urls.some(u => /post_10684484/.test(u)), true);
+  eq('Q1 深圳 urls 数 6→16', sz.urls.length, 16);
+  eq('Q1 深圳 confirms 含与 2520', /第八十九批/.test(sz.confirms || '') && /2520/.test(sz.confirms || ''), true);
+  eq('Q1 深圳 mismatch 明示金额未印出于官方件', /未在任何官方件上被印出/.test(sz.mismatch || ''), true);
+  eq('Q1 深圳 status 维持 official-partial', sz.status, 'official-partial');
+  eq('Q1 notes 含 P10 条', Q1.notes.some(n => /第八十九批/.test(n || '')), true);
+  eq('Q1 自身 urls 总数 49→59', Q1.provinces.reduce((t, p) => t + (p.cities || []).reduce((u, c) => u + ((c.urls || []).length), 0), 0), 59);
 
   // 四、来源库整体链接数不得丢失
   const allUrls = fs.readdirSync(SRC).filter(f => /^[A-Z]\d+[a-z]?\.json$/.test(f)).reduce((t, f) => {
     const j = JSON.parse(fs.readFileSync(path.join(SRC, f), 'utf8'));
     return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
   }, 0);
-  eq('第八十九批·全库 urls 总数 2827→2837（第九十四批 B 后为 2843，第九十五批 F2 两城各 +4 后为 2851）', allUrls, 2851);
+  eq('全库 urls 总数 2827→2837（ B 后为 2843， F2 两城各 +4 后为 2851）', allUrls, 2851);
 
   // 五、最低工资档位（2025 年表 / 2026 年表 OCR 两档一致）
-  eq('第八十九批·2025 年省表 一类 深圳 2520 / 广州 2500', [2520, 2500].join('/'), '2520/2500');
-  eq('第八十九批·2025 年省表 二类 2080 / 三类 1850 / 四类 1750', [2080, 1850, 1750].join('/'), '2080/1850/1750');
-  eq('第八十九批·2026 年省表 一类 深圳 2700 / 广州 2680', [2700, 2680].join('/'), '2700/2680');
-  eq('第八十九批·2026 年省表 二类 2300 / 三类 2040', [2300, 2040].join('/'), '2300/2040');
-  eq('第八十九批·深圳最低工资 2520→2700 差 180 元', 2700 - 2520, 180);
-  eq('第八十九批·2027 公积金年度下限预期 2700（本次不预先改值）', 2700, 2700);
+  eq('2025 年省表 一类 深圳 2520 / 广州 2500', [2520, 2500].join('/'), '2520/2500');
+  eq('2025 年省表 二类 2080 / 三类 1850 / 四类 1750', [2080, 1850, 1750].join('/'), '2080/1850/1750');
+  eq('2026 年省表 一类 深圳 2700 / 广州 2680', [2700, 2680].join('/'), '2700/2680');
+  eq('2026 年省表 二类 2300 / 三类 2040', [2300, 2040].join('/'), '2300/2040');
+  eq('深圳最低工资 2520→2700 差 180 元', 2700 - 2520, 180);
+  eq('2027 公积金年度下限预期 2700（本次不预先改值）', 2700, 2700);
 
   // 六、口径分离：2024 年度上限预期 44265 与 48471 不得混用
-  eq('第八十九批·2024 年度深圳在岗年平均工资 177057 元（医保件载）', 177057, 177057);
-  eq('第八十九批·2024 年度公积金上限预期 44265（官方答复只给公式，未采用）', Math.round(177057 / 12) * 3, 44265);
-  eq('第八十九批·2024 年度预期值与现值 48471 不同（不得混用年度）', 44265 === 48471, false);
-  eq('第八十九批·仓库仍用 2026 年度 48471', szc.hf.max, 48471);
+  eq('2024 年度深圳在岗年平均工资 177057 元（医保件载）', 177057, 177057);
+  eq('2024 年度公积金上限预期 44265（官方答复只给公式，未采用）', Math.round(177057 / 12) * 3, 44265);
+  eq('2024 年度预期值与现值 48471 不同（不得混用年度）', 44265 === 48471, false);
+  eq('仓库仍用 2026 年度 48471', szc.hf.max, 48471);
 
-  emit('  深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方取整规则闭合（数值零改动，Q1.json 增量）✓');
+  emit(' 深圳公积金下限 2520 官方出处坐实 + 上限 48471 官方取整规则闭合（数值不变，Q1.json 增量）✓');
 })();
 
 /* =========================================================
    19. 界面重构：按 UI demo 重排 calculator.html（第九十批）
    ========================================================= */
-section('19. 界面重构契约：sticky 顶栏 + 步骤化面板 + 新设计令牌（第九十批）');
+section('19. 界面重构契约：sticky 顶栏 + 步骤化面板 + 新设计令牌');
 (function gdUi90(){
   var UI90_MARKUP = html.slice(0, html.indexOf('<script>'));
   var UI90_STYLE = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
 
   // 一、结构骨架：粘性顶栏 / 主导航 / 页头 / 两栏工作区
-  ok('第九十批·粘性顶栏 site-header 存在', /<header class="site-header">/.test(UI90_MARKUP), true);
-  ok('第九十批·主导航 main-nav 内含两个 tab', /<nav class="main-nav" aria-label="主导航">/.test(UI90_MARKUP), true);
-  ok('第九十批·tab0 基准 class 为 tab a（switchTab 依赖）', /class="tab a" id="tab0"/.test(UI90_MARKUP), true);
-  ok('第九十批·tab1 基准 class 为 tab', /class="tab" id="tab1"/.test(UI90_MARKUP), true);
-  ok('第九十批·品牌标记与名称在顶栏内', /class="brand-mark"/.test(UI90_MARKUP) && /class="brand-name">城薪</.test(UI90_MARKUP), true);
-  ok('第九十批·「数据与口径」纯 CSS 弹层存在', /class="policy-menu"/.test(UI90_MARKUP) && /class="policy-pop"/.test(UI90_MARKUP), true);
-  ok('第九十批·页头含标题 / 政策徽章 / 城市选择器', /class="page-head"/.test(UI90_MARKUP) && /class="policy-badge"/.test(UI90_MARKUP) && /class="city-picker"/.test(UI90_MARKUP), true);
-  ok('第九十批·工作区为两栏：panel-stack + results', /class="workspace"/.test(UI90_MARKUP) && /class="panel-stack"/.test(UI90_MARKUP) && /class="results"/.test(UI90_MARKUP), true);
-  ok('第九十批·年度明细页为单列 history-view', /class="history-view"/.test(UI90_MARKUP), true);
+  ok('粘性顶栏 site-header 存在', /<header class="site-header">/.test(UI90_MARKUP), true);
+  ok('主导航 main-nav 内含两个 tab', /<nav class="main-nav" aria-label="主导航">/.test(UI90_MARKUP), true);
+  ok('tab0 基准 class 为 tab a（switchTab 依赖）', /class="tab a" id="tab0"/.test(UI90_MARKUP), true);
+  ok('tab1 基准 class 为 tab', /class="tab" id="tab1"/.test(UI90_MARKUP), true);
+  ok('品牌标记与名称在顶栏内', /class="brand-mark"/.test(UI90_MARKUP) && /class="brand-name">城薪</.test(UI90_MARKUP), true);
+  ok('「数据与口径」纯 CSS 弹层存在', /class="policy-menu"/.test(UI90_MARKUP) && /class="policy-pop"/.test(UI90_MARKUP), true);
+  ok('页头含标题 / 政策徽章 / 城市选择器', /class="page-head"/.test(UI90_MARKUP) && /class="policy-badge"/.test(UI90_MARKUP) && /class="city-picker"/.test(UI90_MARKUP), true);
+  ok('工作区为两栏：panel-stack + results', /class="workspace"/.test(UI90_MARKUP) && /class="panel-stack"/.test(UI90_MARKUP) && /class="results"/.test(UI90_MARKUP), true);
+  ok('年度明细页为单列 history-view', /class="history-view"/.test(UI90_MARKUP), true);
 
   // 二、图标库：16 个 SVG symbol 全部在位
   var UI90_ICONS = ['i-logo','i-pin','i-chevron','i-info','i-arrow','i-reset','i-wallet','i-shield','i-tax','i-home','i-calendar','i-gift','i-search','i-close','i-download'];
   var UI90_ICON_MISS = UI90_ICONS.filter(function(x){ return UI90_MARKUP.indexOf('id="' + x + '"') < 0; });
-  eq('第九十批·SVG symbol 图标库 15 个全部存在', UI90_ICON_MISS.length, 0);
-  eq('第九十批·图标库数量', UI90_ICONS.length, 15);
+  eq('SVG symbol 图标库 15 个全部存在', UI90_ICON_MISS.length, 0);
+  eq('图标库数量', UI90_ICONS.length, 15);
 
   // 三、既有 id 契约：82 个历史 id 一个都不能丢（重构的最大回归风险）
   var UI90_IDS = ['cityTag','tab0','tab1','cityOverlay','provTabs','cityGrid','page0','salary','month','startMonth','startWarn','hkRow','hk0','hk1','medRow','medNote','medBtns','rngP','pBase','rngM','mBase','rngU','uBase','mtRow','rngMT','mtBase','rngIJ','ijBase','rngHF','hfBase','hfRateHint','hfRate','hfRateV','hfRateCompHint','hfRateComp','hfRateCompV','ltcWrap','ltcOn','ltcRate','baseNote','dedChild','childOn','childLabel','cg0','cg1','childAmt','dedEdu','eduOn','eduAmt','dedHouse','houseOn','houseLabel','houseHint','hg0','hg1','houseAmt','dedElderly','elderlyOn','elderlyAmt','dedMedical','medicalOn','medicalAmt','spTot','healthIns','persPen','annuity','incLabor','incRoyal','incLic','reliefPct','bonus','bonusResult','res','page1','histCity','rangeLabel','histTable','histSum','legendBox','chart','chartTip','footNote'];
   var UI90_ID_MISS = UI90_IDS.filter(function(x){ return UI90_MARKUP.indexOf('id="' + x + '"') < 0; });
-  eq('第九十批·82 个历史 id 全部保留', UI90_ID_MISS.length, 0);
-  eq('第九十批·历史 id 清单长度', UI90_IDS.length, 82);
+  eq('82 个历史 id 全部保留', UI90_ID_MISS.length, 0);
+  eq('历史 id 清单长度', UI90_IDS.length, 82);
 
   // 四、步骤化面板与交互控件
-  ok('第九十批·步骤编号方块 step 存在', /class="step"/.test(UI90_MARKUP), true);
-  eq('第九十批·步骤面板数量（1 独立 section + 3 个 details）', (UI90_MARKUP.match(/<section class="panel">/g) || []).length + (UI90_MARKUP.match(/<details class="panel"/g) || []).length, 4);
-  ok('第九十批·社保与公积金 / 专项附加扣除 默认展开', /<details class="panel" open>/.test(UI90_MARKUP), true);
-  ok('第九十六批·快捷月薪 chip 行已移除', (UI90_MARKUP.match(/class="chip salary-chip/g) || []).length === 0 && !/data-salary=/.test(UI90_MARKUP), true);
-  ok('第九十六批·手动输入的默认月薪为 10000', /id="salary" value="10000"/.test(UI90_MARKUP), true);
-  ok('第九十六批·恢复默认把月薪写回 10000', /function resetAll\(\)\{[\s\S]{0,200}setSalary\(10000\)/.test(html), true);
-  ok('第九十批·恢复默认按钮绑定 resetAll', /class="reset-btn" onclick="resetAll\(\)"/.test(UI90_MARKUP), true);
-  ok('第九十批·城市搜索框绑定 filterCity', /id="citySearch"[^>]*oninput="filterCity\(this\.value\)"/.test(UI90_MARKUP), true);
-  ok('第九十批·城市选择按钮绑定 showOverlay', /class="city-picker" onclick="showOverlay\(\)"/.test(UI90_MARKUP), true);
+  ok('步骤编号方块 step 存在', /class="step"/.test(UI90_MARKUP), true);
+  eq('步骤面板数量（1 独立 section + 3 个 details）', (UI90_MARKUP.match(/<section class="panel">/g) || []).length + (UI90_MARKUP.match(/<details class="panel"/g) || []).length, 4);
+  ok('社保与公积金 / 专项附加扣除 默认展开', /<details class="panel" open>/.test(UI90_MARKUP), true);
+  ok('快捷月薪 chip 行已移除', (UI90_MARKUP.match(/class="chip salary-chip/g) || []).length === 0 && !/data-salary=/.test(UI90_MARKUP), true);
+  ok('手动输入的默认月薪为 10000', /id="salary" value="10000"/.test(UI90_MARKUP), true);
+  ok('恢复默认把月薪写回 10000', /function resetAll\(\)\{[\s\S]{0,200}setSalary\(10000\)/.test(html), true);
+  ok('恢复默认按钮绑定 resetAll', /class="reset-btn" onclick="resetAll\(\)"/.test(UI90_MARKUP), true);
+  ok('城市搜索框绑定 filterCity', /id="citySearch"[^>]*oninput="filterCity\(this\.value\)"/.test(UI90_MARKUP), true);
+  ok('城市选择按钮绑定 showOverlay', /class="city-picker" onclick="showOverlay\(\)"/.test(UI90_MARKUP), true);
 
   // 五、设计令牌与响应式（demo 的设计语言已落库）
-  ok('第九十批·主色令牌 --primary:#176b5b', /--primary:\s*#176b5b/.test(UI90_STYLE), true);
-  ok('第九十批·强调色令牌 --lime:#d9f99d', /--lime:\s*#d9f99d/.test(UI90_STYLE), true);
-  ok('第九十批·底色令牌 --bg:#f4f6f3', /--bg:\s*#f4f6f3/.test(UI90_STYLE), true);
-  ok('第九十批·两栏栅格 350~400px 左列', /grid-template-columns:\s*minmax\(350px,\s*400px\)/.test(UI90_STYLE), true);
-  ok('第九十批·顶栏 sticky 定位', /\.site-header\{[^}]*position:\s*sticky/.test(UI90_STYLE), true);
-  ok('第九十批·响应式断点齐全（780 / 520）', /@media\s*\(max-width:\s*780px\)/.test(UI90_STYLE) && /@media\s*\(max-width:\s*520px\)/.test(UI90_STYLE), true);
-  ok('第九十批·尊重 prefers-reduced-motion', /prefers-reduced-motion/.test(UI90_STYLE), true);
-  ok('第九十批·打印样式存在', /@media print/.test(UI90_STYLE), true);
+  ok('主色令牌 --primary:#176b5b', /--primary:\s*#176b5b/.test(UI90_STYLE), true);
+  ok('强调色令牌 --lime:#d9f99d', /--lime:\s*#d9f99d/.test(UI90_STYLE), true);
+  ok('底色令牌 --bg:#f4f6f3', /--bg:\s*#f4f6f3/.test(UI90_STYLE), true);
+  ok('两栏栅格 350~400px 左列', /grid-template-columns:\s*minmax\(350px,\s*400px\)/.test(UI90_STYLE), true);
+  ok('顶栏 sticky 定位', /\.site-header\{[^}]*position:\s*sticky/.test(UI90_STYLE), true);
+  ok('响应式断点齐全（780 / 520）', /@media\s*\(max-width:\s*780px\)/.test(UI90_STYLE) && /@media\s*\(max-width:\s*520px\)/.test(UI90_STYLE), true);
+  ok('尊重 prefers-reduced-motion', /prefers-reduced-motion/.test(UI90_STYLE), true);
+  ok('打印样式存在', /@media print/.test(UI90_STYLE), true);
 
   // 六、新增 UI 辅助函数（在 </script> 之前，桩环境下不抛异常）
-  ok('第九十批·setSalary 辅助函数已定义', /function setSalary\(v\)\{/.test(html), true);
-  ok('第九十批·filterCity 辅助函数已定义', /function filterCity\(q\)\{/.test(html), true);
-  ok('第九十批·resetAll 辅助函数已定义', /function resetAll\(\)\{/.test(html), true);
+  ok('setSalary 辅助函数已定义', /function setSalary\(v\)\{/.test(html), true);
+  ok('filterCity 辅助函数已定义', /function filterCity\(q\)\{/.test(html), true);
+  ok('resetAll 辅助函数已定义', /function resetAll\(\)\{/.test(html), true);
 
   // 七、渲染契约未被破坏：结果区与年终奖区仍是独立容器
-  ok('第九十批·#res 仍为独立容器', /<div id="res"><\/div>/.test(UI90_MARKUP), true);
-  ok('第九十批·#bonusResult 仍在 .c 卡片内（未被并入 #res）', /<div class="c">[\s\S]{0,200}<div id="bonusResult">/.test(UI90_MARKUP), true);
+  ok('#res 仍为独立容器', /<div id="res"><\/div>/.test(UI90_MARKUP), true);
+  ok('#bonusResult 仍在 .c 卡片内（未被并入 #res）', /<div class="c">[\s\S]{0,200}<div id="bonusResult">/.test(UI90_MARKUP), true);
 
-  emit('  界面重构：sticky 顶栏 + 步骤化面板 + 16 图标库 + 82 id 契约全保留（数值零改动）✓');
+  emit(' 界面重构：sticky 顶栏 + 步骤化面板 + 16 图标库 + 82 id 契约全保留（数值不变）✓');
 })();
 /* =========================================================
    20. 省市县三级树 + 省按笔画排序 + 数据依据折叠（第九十一批）
    ========================================================= */
-section('20. 省市县三级导航与数据依据折叠（第九十一批）');
+section('20. 省市县三级导航与数据依据折叠');
 (function gdTree91(){
   var T91_MARKUP = html.slice(0, html.indexOf('<script>'));
   var T91_STYLE = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
 
   // 一、导航数据来源与生成契约
-  ok('第九十一批·PROV_TREE 数据已注入脚本', /var PROV_TREE=\[/.test(html), true);
-  ok('第九十一批·来源注明民政部行政区划 pca-code.json', /pca-code\.json/.test(html), true);
-  ok('第九十一批·来源注明 Unihan kTotalStrokes 笔画', /kTotalStrokes/.test(html), true);
+  ok('PROV_TREE 数据已注入脚本', /var PROV_TREE=\[/.test(html), true);
+  ok('来源注明民政部行政区划 pca-code.json', /pca-code\.json/.test(html), true);
+  ok('来源注明 Unihan kTotalStrokes 笔画', /kTotalStrokes/.test(html), true);
   var t91s = html.indexOf('var PROV_TREE=[');
   var t91e = html.indexOf('];', t91s);
   var T91 = eval('(' + html.slice(t91s + 'var PROV_TREE='.length, t91e + 1) + ')');
-  ok('第九十一批·PROV_TREE 可解析为数组', Array.isArray(T91), true);
-  eq('第九十一批·省级节点数（31 个省级行政区，含 4 直辖市）', T91.length, 31);
+  ok('PROV_TREE 可解析为数组', Array.isArray(T91), true);
+  eq('省级节点数（31 个省级行政区，含 4 直辖市）', T91.length, 31);
 
   // 二、省级：按汉字笔画升序
   var t91names = T91.map(function(p){ return p.n; });
-  eq('第九十一批·省名无重复', new Set(t91names).size, t91names.length);
-  eq('第九十一批·每省笔画数均为正整数', T91.filter(function(p){ return !(p.s > 0 && Math.floor(p.s) === p.s); }).length, 0);
+  eq('省名无重复', new Set(t91names).size, t91names.length);
+  eq('每省笔画数均为正整数', T91.filter(function(p){ return !(p.s > 0 && Math.floor(p.s) === p.s); }).length, 0);
   var t91mono = T91.every(function(p, i){ return i === 0 || p.s >= T91[i - 1].s; });
-  ok('第九十一批·笔画数非递减（升序排列）', t91mono, true);
-  eq('第九十一批·首位省份为广东', T91[0].n, '广东');
-  eq('第九十一批·广东笔画数 8（广 3 + 东 5）', T91[0].s, 8);
+  ok('笔画数非递减（升序排列）', t91mono, true);
+  eq('首位省份为广东', T91[0].n, '广东');
+  eq('广东笔画数 8（广 3 + 东 5）', T91[0].s, 8);
   var t91first = T91[0].s, t91last = T91[T91.length - 1].s;
-  ok('第九十一批·首末笔画跨度合理（8 ~ 32）', t91first === 8 && t91last === 32, true);
+  ok('首末笔画跨度合理（8 ~ 32）', t91first === 8 && t91last === 32, true);
   var t91same = T91.filter(function(p){ return p.s === t91first; }).length;
-  ok('第九十一批·存在同笔画并列的省（广东/山东/四川 同 8 画）', t91same >= 3, true);
+  ok('存在同笔画并列的省（广东/山东/四川 同 8 画）', t91same >= 3, true);
 
   // 三、市级：337 城全覆盖且 key 与 CITIES 严格一致
   var t91cities = [];
   T91.forEach(function(p){ p.c.forEach(function(c){ t91cities.push(c); }); });
-  eq('第九十一批·市级节点数 337（与 CITIES 城市总数一致）', t91cities.length, 337);
-  eq('第九十一批·CITIES 城市总数未变', Object.keys(A.CITIES).length, 337);
+  eq('市级节点数 337（与 CITIES 城市总数一致）', t91cities.length, 337);
+  eq('CITIES 城市总数未变', Object.keys(A.CITIES).length, 337);
   var t91keys = t91cities.map(function(c){ return c.k; });
-  eq('第九十一批·城市 key 无重复', new Set(t91keys).size, t91keys.length);
+  eq('城市 key 无重复', new Set(t91keys).size, t91keys.length);
   var t91bad = t91keys.filter(function(k){ return !A.CITIES[k]; });
-  eq('第九十一批·全部城市 key 均存在于 CITIES', t91bad.length, 0);
+  eq('全部城市 key 均存在于 CITIES', t91bad.length, 0);
   var t91names2 = t91cities.map(function(c){ return c.d; });
   var t91bad2 = t91names2.filter(function(d){ return !Object.keys(A.CITIES).some(function(k){ return A.CITIES[k].name === d; }); });
-  eq('第九十一批·全部城市显示名均存在于 CITIES', t91bad2.length, 0);
+  eq('全部城市显示名均存在于 CITIES', t91bad2.length, 0);
   var t91gd = T91.filter(function(p){ return p.n === '广东'; })[0];
-  eq('第九十一批·广东 21 城齐全', t91gd.c.length, 21);
+  eq('广东 21 城齐全', t91gd.c.length, 21);
   var t91bj = T91.filter(function(p){ return p.n === '北京'; })[0];
-  ok('第九十一批·直辖市区县已合并（北京 ≥ 10 个区）', t91bj.c[0].a.split(',').length >= 10, true);
+  ok('直辖市区县已合并（北京 ≥ 10 个区）', t91bj.c[0].a.split(',').length >= 10, true);
 
   // 四、区县级：仅作导航，社保按市级统筹
   var t91areas = 0, t91empty = 0;
   t91cities.forEach(function(c){ var n = c.a ? c.a.split(',').filter(function(x){ return x; }).length : 0; if (!n) t91empty++; t91areas += n; });
-  eq('第九十一批·区县节点总数 3012', t91areas, 3012);
-  eq('第九十一批·每个城市都有区县列表', t91empty, 0);
+  eq('区县节点总数 3012', t91areas, 3012);
+  eq('每个城市都有区县列表', t91empty, 0);
   var t91sz = t91cities.filter(function(c){ return c.k === 'sz'; })[0];
-  eq('第九十一批·深圳区县数 9', t91sz.a.split(',').length, 9);
+  eq('深圳区县数 9', t91sz.a.split(',').length, 9);
 
   // 五、折叠结构：数据依据折叠条在 footNote 外层
-  ok('第九十一批·数据依据折叠容器存在', /<details class="ft-note" id="ftNoteBox">/.test(T91_MARKUP), true);
-  ok('第九十一批·折叠标题含城市名占位 id ftNoteSum', /id="ftNoteSum"/.test(T91_MARKUP), true);
-  ok('第九十一批·footNote 容器仍在（内容 div 未被搬走）', /<div class="ft" id="footNote">/.test(T91_MARKUP), true);
+  ok('数据依据折叠容器存在', /<details class="ft-note" id="ftNoteBox">/.test(T91_MARKUP), true);
+  ok('折叠标题含城市名占位 id ftNoteSum', /id="ftNoteSum"/.test(T91_MARKUP), true);
+  ok('footNote 容器仍在（内容 div 未被搬走）', /<div class="ft" id="footNote">/.test(T91_MARKUP), true);
   var t91d = T91_MARKUP.indexOf('id="ftNoteBox"'), t91f = T91_MARKUP.indexOf('id="footNote"');
-  ok('第九十一批·footNote 位于折叠容器内部', t91d > 0 && t91f > t91d, true);
-  ok('第九十一批·折叠容器默认不展开（无 open 属性）', /<details class="ft-note" id="ftNoteBox">/.test(T91_MARKUP), true);
+  ok('footNote 位于折叠容器内部', t91d > 0 && t91f > t91d, true);
+  ok('折叠容器默认不展开（无 open 属性）', /<details class="ft-note" id="ftNoteBox">/.test(T91_MARKUP), true);
 
   // 六、树形 DOM 与搜索契约
-  ok('第九十一批·省级折叠节点 tree-prov', /class="tree-prov"/.test(html), true);
-  ok('第九十一批·市级折叠节点 tree-city', /class="tree-city"/.test(html), true);
-  ok('第九十一批·区县按钮 area-chip', /class="area-chip"/.test(html), true);
-  ok('第九十一批·城市入口按钮 area-pick', /class="area-pick"/.test(html), true);
-  ok('第九十一批·省级带 data-prov 供搜索定位', /data-prov=/.test(html), true);
-  ok('第九十一批·市级带 data-city 供搜索定位', /data-city=/.test(html), true);
-  ok('第九十一批·curCityKey 记录当前城市', /var curCityKey=null;/.test(html), true);
-  ok('第九十一批·provOfCity 反查所属省', /function provOfCity\(k\)/.test(html), true);
-  ok('第九十一批·filterCity 改为跨三级检索', /querySelectorAll\("\.tree-prov"\)/.test(html), true);
-  ok('第九十一批·市县按中文拼音序排序', /localeCompare\([^)]*"zh-Hans-CN"\)/.test(html), true);
-  ok('第九十一批·折叠标题随城市同步', /ftNoteSum"\)\)\$?\("ftNoteSum"\)\.textContent=city\.name/.test(html), true);
+  ok('省级折叠节点 tree-prov', /class="tree-prov"/.test(html), true);
+  ok('市级折叠节点 tree-city', /class="tree-city"/.test(html), true);
+  ok('区县按钮 area-chip', /class="area-chip"/.test(html), true);
+  ok('城市入口按钮 area-pick', /class="area-pick"/.test(html), true);
+  ok('省级带 data-prov 供搜索定位', /data-prov=/.test(html), true);
+  ok('市级带 data-city 供搜索定位', /data-city=/.test(html), true);
+  ok('curCityKey 记录当前城市', /var curCityKey=null;/.test(html), true);
+  ok('provOfCity 反查所属省', /function provOfCity\(k\)/.test(html), true);
+  ok('filterCity 改为跨三级检索', /querySelectorAll\("\.tree-prov"\)/.test(html), true);
+  ok('市县按中文拼音序排序', /localeCompare\([^)]*"zh-Hans-CN"\)/.test(html), true);
+  ok('折叠标题随城市同步', /ftNoteSum"\)\)\$?\("ftNoteSum"\)\.textContent=city\.name/.test(html), true);
 
   // 七、样式契约
-  ok('第九十一批·树形样式 tree-prov 已定义', /\.tree-prov\{/.test(T91_STYLE), true);
-  ok('第九十一批·区县按钮样式 area-chip 已定义', /\.area-chip[.,{]/.test(T91_STYLE), true);
-  ok('第九十一批·折叠条样式 ft-note 已定义', /\.ft-note\{/.test(T91_STYLE), true);
-  ok('第九十一批·折叠箭头使用 ::after', /\.ft-note-sum[^{]*::after/.test(T91_STYLE), true);
-  ok('第九十一批·省级笔画徽标样式 pv 已定义', /\.pv\{/.test(T91_STYLE), true);
+  ok('树形样式 tree-prov 已定义', /\.tree-prov\{/.test(T91_STYLE), true);
+  ok('区县按钮样式 area-chip 已定义', /\.area-chip[.,{]/.test(T91_STYLE), true);
+  ok('折叠条样式 ft-note 已定义', /\.ft-note\{/.test(T91_STYLE), true);
+  ok('折叠箭头使用 ::after', /\.ft-note-sum[^{]*::after/.test(T91_STYLE), true);
+  ok('省级笔画徽标样式 pv 已定义', /\.pv\{/.test(T91_STYLE), true);
 
-  // 八、既有契约与数值零改动
-  eq('第九十一批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第九十一批·深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
-  eq('第九十一批·东莞公积金上限仍 27700', A.CITIES.dg.hf.max, 27700);
-  eq('第九十一批·省级分组数仍 28', (function(){ var r = {}; Object.keys(A.CITIES).forEach(function(k){ r[A.CITIES[k].region] = 1; }); return Object.keys(r).length; })(), 28);
-  ok('第九十一批·footNote 内容仍由 JS 赋值且以「数据依据：」开头', /\$\("footNote"\)\.innerHTML='数据依据：'/.test(html), true);
+  // 八、既有契约与数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
+  eq('东莞公积金上限仍 27700', A.CITIES.dg.hf.max, 27700);
+  eq('省级分组数仍 28', (function(){ var r = {}; Object.keys(A.CITIES).forEach(function(k){ r[A.CITIES[k].region] = 1; }); return Object.keys(r).length; })(), 28);
+  ok('footNote 内容仍由 JS 赋值且以「数据依据：」开头', /\$\("footNote"\)\.innerHTML='数据依据：'/.test(html), true);
 
-  emit('  省市县三级树（31 省 / 337 市 / 3012 区县）+ 省按笔画升序 + 数据依据折叠（数值零改动）✓');
+  emit(' 省市县三级树（31 省 / 337 市 / 3012 区县）+ 省按笔画升序 + 数据依据折叠（数值不变）✓');
 })();
 
-section('21. 特定人员单项工伤保险的界面呈现（第九十二批）');
+section('21. 特定人员单项工伤保险的界面呈现');
 (function gdInj92(){
   var M92 = html.slice(0, html.indexOf('<script>'));
   var S92 = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
 
   // 一、界面契约
-  ok('第九十二批·界面存在 injSpecial 提示容器', /id="ijSpecialHint"/.test(M92), true);
-  ok('第九十二批·提示容器样式已定义', /\.rng-hint\{/.test(S92), true);
-  ok('第九十二批·赋值逻辑读取 city.injSpecial', /city\.injSpecial/.test(html), true);
-  ok('第九十二批·rngIJ 文案未被改动（仍按 inj.max 决定）', /IJ\.max\?IJ\.min\+"~"\+IJ\.max:"无上下限"/.test(html), true);
+  ok('界面存在 injSpecial 提示容器', /id="ijSpecialHint"/.test(M92), true);
+  ok('提示容器样式已定义', /\.rng-hint\{/.test(S92), true);
+  ok('赋值逻辑读取 city.injSpecial', /city\.injSpecial/.test(html), true);
+  ok('rngIJ 文案未被改动（仍按 inj.max 决定）', /IJ\.max\?IJ\.min\+"~"\+IJ\.max:"无上下限"/.test(html), true);
 
   // 二、广东城市：提示有内容
   A.selectCity('gz');
   var t92 = A._text('ijSpecialHint');
-  ok('第九十二批·广东城市显示特定人员上下限 5521~27603', /5521~27603/.test(t92), true);
-  ok('第九十二批·提示含出处文号', /韶人社函〔2026〕44号/.test(t92), true);
-  ok('第九十二批·提示含适用期 2026-07-01 至 2027-06-30', /2026-07-01/.test(t92) && /2027-06-30/.test(t92), true);
-  ok('第九十二批·提示写明普通单位职工工伤不设上下限', /不设上下限/.test(t92), true);
-  eq('第九十二批·广东城市提示容器可见', A._style('ijSpecialHint'), '');
+  ok('广东城市显示特定人员上下限 5521~27603', /5521~27603/.test(t92), true);
+  ok('提示含出处文号', /韶人社函〔2026〕44号/.test(t92), true);
+  ok('提示含适用期 2026-07-01 至 2027-06-30', /2026-07-01/.test(t92) && /2027-06-30/.test(t92), true);
+  ok('提示写明普通单位职工工伤不设上下限', /不设上下限/.test(t92), true);
+  eq('广东城市提示容器可见', A._style('ijSpecialHint'), '');
 
   // 三、不回归：工伤区间文案
-  eq('第九十二批·工伤区间仍显示「无上下限」', A._text('rngIJ'), '无上下限');
+  eq('工伤区间仍显示「无上下限」', A._text('rngIJ'), '无上下限');
 
   // 四、非广东城市不显示
   A.selectCity('bj');
-  eq('第九十二批·非广东城市提示为空', A._text('ijSpecialHint'), '');
-  eq('第九十二批·非广东城市提示容器隐藏', A._style('ijSpecialHint'), 'none');
+  eq('非广东城市提示为空', A._text('ijSpecialHint'), '');
+  eq('非广东城市提示容器隐藏', A._style('ijSpecialHint'), 'none');
 
   // 五、广东 21 市逐城
   var GD92 = ['sz','gz','dg','fs','zh','hz','jm','zs','st','sg','zj','zq','mm','mz','sw','hy','yj','qy','cz','jy','yf'];
   var all92 = GD92.every(function(k){ A.selectCity(k); return /5521~27603/.test(A._text('ijSpecialHint')); });
-  ok('第九十二批·广东 21 市逐城均显示 5521~27603', all92, true);
+  ok('广东 21 市逐城均显示 5521~27603', all92, true);
 
-  // 六、数值零改动
+  // 六、数值不变
   A.selectCity('gz');
-  eq('第九十二批·injSpecial 数值仍为 5521~27603', A.CITIES.gz.injSpecial.min + '~' + A.CITIES.gz.injSpecial.max, '5521~27603');
-  ok('第九十二批·普通职工工伤仍为 0/0（不夹取）', A.CITIES.gz.inj.min === 0 && A.CITIES.gz.inj.max === 0, true);
-  ok('第九十二批·injSpecial 不携带费率、不参与计算', A.CITIES.gz.inj.comp === .002 && A.CITIES.gz.injSpecial.comp === undefined, true);
+  eq('injSpecial 数值仍为 5521~27603', A.CITIES.gz.injSpecial.min + '~' + A.CITIES.gz.injSpecial.max, '5521~27603');
+  ok('普通职工工伤仍为 0/0（不夹取）', A.CITIES.gz.inj.min === 0 && A.CITIES.gz.inj.max === 0, true);
+  ok('injSpecial 不携带费率、不参与计算', A.CITIES.gz.inj.comp === .002 && A.CITIES.gz.injSpecial.comp === undefined, true);
 
-  emit('  特定人员单项工伤保险 injSpecial 5521~27603 已在界面呈现，普通职工工伤仍「无上下限」（数值零改动）✓');
+  emit(' 特定人员单项工伤保险 injSpecial 5521~27603 已在界面呈现，普通职工工伤仍「无上下限」（数值不变）✓');
 })();
 
 /* =========================================================
    第九十三批：P8 巡检基线（珠海/东莞 2027 年度职工医保件尚未进入发文窗口）
    —— 数值一律不改；并入库《广东省工程建设项目参加工伤保险办法》所代表的第三套工伤口径
    ========================================================= */
-section('22. P8 巡检基线与广东工伤第三套口径（第九十三批）');
+section('22. P8 巡检基线与广东工伤第三套口径');
 (function gdP8Check93() {
   const F2 = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F2.json'), 'utf8'));
   const E2 = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'E2.json'), 'utf8'));
@@ -4315,36 +4315,36 @@ section('22. P8 巡检基线与广东工伤第三套口径（第九十三批）'
   const E2P = E2.provinces[0];
 
   // 一、巡检基线
-  eq('第九十三批·F2 珠海 lastCheck 已推进到 2026-10 之后', /^2026-(10|11|12)-/.test(cOf('zh').lastCheck || ''), true);
-  eq('第九十三批·F2 东莞 lastCheck 已推进到 2026-10 之后', /^2026-(10|11|12)-/.test(cOf('dg').lastCheck || ''), true);
-  eq('第九十三批·F2 珠海巡检结论含发文窗口', /发文窗口/.test(cOf('zh').checkResult || ''), true);
-  eq('第九十三批·F2 东莞巡检结论含发文窗口', /发文窗口/.test(cOf('dg').checkResult || ''), true);
-  eq('第九十三批·F2 两城巡检渠道均已记录', (cOf('zh').checkChannels || []).length >= 6 && (cOf('dg').checkChannels || []).length >= 6, true);
+  eq('F2 珠海 lastCheck 已推进到 2026-10 之后', /^2026-(10|11|12)-/.test(cOf('zh').lastCheck || ''), true);
+  eq('F2 东莞 lastCheck 已推进到 2026-10 之后', /^2026-(10|11|12)-/.test(cOf('dg').lastCheck || ''), true);
+  eq('F2 珠海巡检结论含发文窗口', /发文窗口/.test(cOf('zh').checkResult || ''), true);
+  eq('F2 东莞巡检结论含发文窗口', /发文窗口/.test(cOf('dg').checkResult || ''), true);
+  eq('F2 两城巡检渠道均已记录', (cOf('zh').checkChannels || []).length >= 6 && (cOf('dg').checkChannels || []).length >= 6, true);
 
   // 二、规则与候选值不变
-  eq('第九十三批·F2 珠海候选上限仍 27603', cOf('zh').candidateMax, 27603);
-  eq('第九十三批·F2 东莞候选上限仍 27603', cOf('dg').candidateMax, 27603);
-  eq('第九十三批·F2 珠海候选下限仍含 5521', (cOf('zh').candidateMin || []).indexOf('5521') >= 0, true);
-  eq('第九十三批·F2 东莞候选下限仍含 5521', (cOf('dg').candidateMin || []).indexOf('5521') >= 0, true);
-  eq('第九十三批·F2 两城第三个数仍 7974', cOf('zh').candidateThird === 7974 && cOf('dg').candidateThird === 7974, true);
+  eq('F2 珠海候选上限仍 27603', cOf('zh').candidateMax, 27603);
+  eq('F2 东莞候选上限仍 27603', cOf('dg').candidateMax, 27603);
+  eq('F2 珠海候选下限仍含 5521', (cOf('zh').candidateMin || []).indexOf('5521') >= 0, true);
+  eq('F2 东莞候选下限仍含 5521', (cOf('dg').candidateMin || []).indexOf('5521') >= 0, true);
+  eq('F2 两城第三个数仍 7974', cOf('zh').candidateThird === 7974 && cOf('dg').candidateThird === 7974, true);
 
   // 三、界面与来源档
-  eq('第九十三批·珠海 note 载第九十三批巡检', A.CITIES.zh.note.indexOf('第九十三批') >= 0, true);
-  eq('第九十三批·东莞 note 载第九十三批巡检', A.CITIES.dg.note.indexOf('第九十三批') >= 0, true);
-  eq('第九十三批·F2 省级说明载省医保局仍无职工医保基数文件', /无职工医保缴费基数文件/.test(F2.provinces[0].provinceWideNote || ''), true);
-  eq('第九十三批·F2 省级说明载底数 9201 维持五重闭合推定', /9201/.test(F2.provinces[0].provinceWideNote || '') && /五重闭合/.test(F2.provinces[0].provinceWideNote || ''), true);
+  eq('珠海 note 载巡检', A.CITIES.zh.note.indexOf('第九十三批') >= 0, true);
+  eq('东莞 note 载巡检', A.CITIES.dg.note.indexOf('第九十三批') >= 0, true);
+  eq('F2 省级说明载省医保局仍无职工医保基数文件', /无职工医保缴费基数文件/.test(F2.provinces[0].provinceWideNote || ''), true);
+  eq('F2 省级说明载底数 9201 维持五重闭合推定', /9201/.test(F2.provinces[0].provinceWideNote || '') && /五重闭合/.test(F2.provinces[0].provinceWideNote || ''), true);
 
   // 四、广东工伤三套口径
-  eq('第九十三批·E2 省级说明载粤人社规〔2026〕21号', /粤人社规〔2026〕21号/.test(E2P.provinceWideNote || ''), true);
-  eq('第九十三批·E2 省级说明载工程建设项目第三套口径', /工程建设项目/.test(E2P.provinceWideNote || ''), true);
-  eq('第九十三批·E2 省级链接含工程建设项目办法出处', (E2P.provinceWideUrls || []).some(u => u.indexOf('post_2955973') >= 0), true);
-  eq('第九十三批·E2 21 城 rawNotes 均载第三套口径说明', E2P.cities.every(c => /工程建设项目/.test(c.rawNotes || '')), true);
+  eq('E2 省级说明载粤人社规〔2026〕21号', /粤人社规〔2026〕21号/.test(E2P.provinceWideNote || ''), true);
+  eq('E2 省级说明载工程建设项目第三套口径', /工程建设项目/.test(E2P.provinceWideNote || ''), true);
+  eq('E2 省级链接含工程建设项目办法出处', (E2P.provinceWideUrls || []).some(u => u.indexOf('post_2955973') >= 0), true);
+  eq('E2 21 城 rawNotes 均载第三套口径说明', E2P.cities.every(c => /工程建设项目/.test(c.rawNotes || '')), true);
 
-  // 五、数值零改动
-  eq('第九十三批·工伤普通职工仍 0/0', A.CITIES.gz.inj.min === 0 && A.CITIES.gz.inj.max === 0, true);
-  eq('第九十三批·特定人员 injSpecial 仍 5521~27603', A.CITIES.gz.injSpecial.min === 5521 && A.CITIES.gz.injSpecial.max === 27603, true);
-  eq('第九十三批·珠海职工医保基数仍 4775~27549', A.CITIES.zh.med.min === 4775 && A.CITIES.zh.med.max === 27549, true);
-  eq('第九十三批·东莞职工医保基数仍 4775~27549', A.CITIES.dg.med.min === 4775 && A.CITIES.dg.med.max === 27549, true);
+  // 五、数值不变
+  eq('工伤普通职工仍 0/0', A.CITIES.gz.inj.min === 0 && A.CITIES.gz.inj.max === 0, true);
+  eq('特定人员 injSpecial 仍 5521~27603', A.CITIES.gz.injSpecial.min === 5521 && A.CITIES.gz.injSpecial.max === 27603, true);
+  eq('珠海职工医保基数仍 4775~27549', A.CITIES.zh.med.min === 4775 && A.CITIES.zh.med.max === 27549, true);
+  eq('东莞职工医保基数仍 4775~27549', A.CITIES.dg.med.min === 4775 && A.CITIES.dg.med.max === 27549, true);
 
   emit('  P8 巡检基线（两城 2027 年度件尚未进入发文窗口，规则与候选值不变）＋ 广东工伤第三套口径入库 ✓');
 })();
@@ -4353,7 +4353,7 @@ section('22. P8 巡检基线与广东工伤第三套口径（第九十三批）'
 /* =========================================================
    23. 337 城数值自洽性审计 + P8 巡检工具契约（第九十四批）
    ========================================================= */
-section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十四批）');
+section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 (function gdAudit94(){
   const F2x = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F2.json'), 'utf8'));
   const cOf94 = k => F2x.provinces[0].cities.filter(function(c){ return c.key === k; })[0];
@@ -4361,7 +4361,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十�
   const rng = c => c && typeof c.min === 'number' && typeof c.max === 'number';
   const same = (a, b) => rng(a) && rng(b) && a.min === b.min && a.max === b.max;
 
-  eq('第九十四批·CITIES 共 337 城', K.length, 337);
+  eq('CITIES 共 337 城', K.length, 337);
 
   // 一、区间结构：不倒挂、不含非法值
   let inverted = [], nonPos = [];
@@ -4374,8 +4374,8 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十�
       if (f !== 'inj' && (r.min <= 0 || r.max <= 0)) nonPos.push(k + '.' + f);
     });
   });
-  eq('第九十四批·337 城五类区间均不倒挂', inverted.length, 0);
-  eq('第九十四批·med/unemp/hf/injSpecial 区间均不含 0 或负值（inj 的 0/0 为广东法定口径）', nonPos.length, 0);
+  eq('337 城五类区间均不倒挂', inverted.length, 0);
+  eq('med/unemp/hf/injSpecial 区间均不含 0 或负值（inj 的 0/0 为广东法定口径）', nonPos.length, 0);
 
   // 二、inj 区间归属：inj≠0/0 的城，inj 区间必等于该城 med 或 unemp 区间
   let injNZ = 0, injMed = 0, injUnemp = 0;
@@ -4388,17 +4388,17 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十�
     else if (same(c.inj, c.unemp)) injUnemp++;
     else injOther.push(k);
   });
-  eq('第九十四批·inj 非 0/0 的城共 316 个（广东 21 市走工资总额制，其余走统一基数制）', injNZ, 316);
-  eq('第九十四批·inj 区间与 med 相同的城 279 个', injMed, 279);
-  eq('第九十四批·inj 区间与 unemp 相同的城 37 个', injUnemp, 37);
-  eq('第九十四批·inj 区间与 med/unemp 均不同的城 0 个', injOther.length, 0);
+  eq('inj 非 0/0 的城共 316 个（广东 21 市走工资总额制，其余走统一基数制）', injNZ, 316);
+  eq('inj 区间与 med 相同的城 279 个', injMed, 279);
+  eq('inj 区间与 unemp 相同的城 37 个', injUnemp, 37);
+  eq('inj 区间与 med/unemp 均不同的城 0 个', injOther.length, 0);
 
   // 三、injSpecial 只覆盖广东 21 市且取值唯一
   const sp = K.filter(k => A.CITIES[k].injSpecial);
-  eq('第九十四批·injSpecial 覆盖 21 城', sp.length, 21);
-  eq('第九十四批·injSpecial 全部落在广东 21 市', sp.every(k => A.CITIES[k].region === '广东'), true);
-  eq('第九十四批·injSpecial 取值全为 5521~27603', sp.every(k => A.CITIES[k].injSpecial.min === 5521 && A.CITIES[k].injSpecial.max === 27603), true);
-  eq('第九十四批·injSpecial.max 不等于 med.max（两套口径不混淆）', sp.filter(k => A.CITIES[k].injSpecial.max === A.CITIES[k].med.max).length, 0);
+  eq('injSpecial 覆盖 21 城', sp.length, 21);
+  eq('injSpecial 全部落在广东 21 市', sp.every(k => A.CITIES[k].region === '广东'), true);
+  eq('injSpecial 取值全为 5521~27603', sp.every(k => A.CITIES[k].injSpecial.min === 5521 && A.CITIES[k].injSpecial.max === 27603), true);
+  eq('injSpecial.max 不等于 med.max（两套口径不混淆）', sp.filter(k => A.CITIES[k].injSpecial.max === A.CITIES[k].med.max).length, 0);
 
   // 四、费率与比值
   const BUILTIN_OK = true;
@@ -4411,7 +4411,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十�
       if (r.comp !== 0 && !(r.comp > 0 && r.comp <= 1)) badRate.push(k + '.' + f + '=' + r.comp);
     });
   });
-  eq('第九十四批·各险种费率均落在 (0,1]（0 表示该险种不单列）', badRate.length, 0);
+  eq('各险种费率均落在 (0,1]（0 表示该险种不单列）', badRate.length, 0);
   let badRatio = [];
   K.forEach(k => {
     const c = A.CITIES[k];
@@ -4419,44 +4419,44 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十�
     const r = c.med.max / c.med.min;
     if (r < 2 || r > 8) badRatio.push(k + '=' + r.toFixed(2));
   });
-  eq('第九十四批·337 城 med 上下限比值均落在 [2,8]', badRatio.length, 0);
+  eq('337 城 med 上下限比值均落在 [2,8]', badRatio.length, 0);
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('第九十四批·warn 城 202 个', warnC.length, 202);
+  eq('warn 城 202 个', warnC.length, 202);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
-  eq('第九十四批·dataYear 分布 2025-2026:39 / 2026:274 / 2025:24',
+  eq('dataYear 分布 2025-2026:39 / 2026:274 / 2025:24',
      dy['2025-2026'] === 39 && dy['2026'] === 274 && dy['2025'] === 24, true);
 
   // 六、广东 21 市 med 取值分布
   const gdK = K.filter(k => A.CITIES[k].region === '广东');
-  eq('第九十四批·广东 21 市齐备', gdK.length, 21);
+  eq('广东 21 市齐备', gdK.length, 21);
   const gm = {};
   gdK.forEach(k => { const r = A.CITIES[k].med.min + '~' + A.CITIES[k].med.max; gm[r] = (gm[r] || 0) + 1; });
   const gv = Object.keys(gm).map(k => gm[k]);
-  eq('第九十四批·广东 21 市 med 取值 20 种（19 个独用 + 东莞/珠海 4775~27549）',
+  eq('广东 21 市 med 取值 20 种（19 个独用 + 东莞/珠海 4775~27549）',
      Object.keys(gm).length === 20 && gv.filter(x => x === 1).length === 19 && gm['4775~27549'] === 2, true);
-  eq('第九十四批·广东 21 市失业上限与公积金上限的差异仍登记在案（321 城存在差异）',
+  eq('广东 21 市失业上限与公积金上限的差异仍登记在案（321 城存在差异）',
      K.filter(k => A.CITIES[k].hf && A.CITIES[k].unemp && A.CITIES[k].hf.max !== A.CITIES[k].unemp.max).length, 321);
 
   // 七、P8 巡检工具契约
   const toolPath = path.join(__dirname, '..', 'tools', 'p8-check.js');
-  eq('第九十四批·P8 巡检工具已入库 tools/p8-check.js', fs.existsSync(toolPath), true);
+  eq('P8 巡检工具已入库 tools/p8-check.js', fs.existsSync(toolPath), true);
   const tSrc = fs.readFileSync(toolPath, 'utf8');
   const mods = (tSrc.match(/require\(['"]([^'"]+)['"]\)/g) || [])
     .map(m => m.replace(/require\(['"]/, '').replace(/['"]\)/, ''));
-  eq('第九十四批·巡检工具零第三方依赖（只用 Node 内置模块）',
+  eq('巡检工具零第三方依赖（只用 Node 内置模块）',
      mods.length > 0 && mods.every(m => ['https','http','fs','zlib','path','url','crypto','os'].indexOf(m) >= 0), true);
-  eq('第九十四批·巡检工具覆盖 13 个栏目号（珠海医保 3 + 珠海人社 3 + 东莞医保 4 + 东莞人社 3）',
+  eq('巡检工具覆盖 13 个栏目号（珠海医保 3 + 珠海人社 3 + 东莞医保 4 + 东莞人社 3）',
      ['9090','9088','9082','6555','6556','6583','3321','3322','3334','3335','453','432','446']
        .every(c => tSrc.indexOf(c) >= 0), true);
-  eq('第九十四批·巡检工具含居民件排除判据（居民医保个人筹资 ≠ 职工基数）', /RE_RESIDENT/.test(tSrc), true);
-  eq('第九十四批·巡检工具含退出码语义（0 未命中 / 2 命中 / 1 取网失败）',
+  eq('巡检工具含居民件排除判据（居民医保个人筹资 ≠ 职工基数）', /RE_RESIDENT/.test(tSrc), true);
+  eq('巡检工具含退出码语义（0 未命中 / 2 命中 / 1 取网失败）',
      /hits\.length \? 2 : \(errs \? 1 : 0\)/.test(tSrc), true);
-  eq('第九十四批·巡检工具含省医保局 15 页栏目巡检', tSrc.indexOf('hsa.gd.gov.cn/zwgk/zcfg') >= 0 && tSrc.indexOf('i <= 15') >= 0, true);
-  eq('第九十四批·F2 两城 lastCheck 已推进至 2026-10-31 之后（第九十五批复核后为 2026-11-01）', /^2026-(10|11|12)-/.test(cOf94('zh').lastCheck || '') && /^2026-(10|11|12)-/.test(cOf94('dg').lastCheck || ''), true);
-  eq('第九十四批·两城 note 载第九十四批巡检复核', A.CITIES.zh.note.indexOf('第九十四批') >= 0 && A.CITIES.dg.note.indexOf('第九十四批') >= 0, true);
+  eq('巡检工具含省医保局 15 页栏目巡检', tSrc.indexOf('hsa.gd.gov.cn/zwgk/zcfg') >= 0 && tSrc.indexOf('i <= 15') >= 0, true);
+  eq('F2 两城 lastCheck 已推进至 2026-10-31 之后（复核后为 2026-11-01）', /^2026-(10|11|12)-/.test(cOf94('zh').lastCheck || '') && /^2026-(10|11|12)-/.test(cOf94('dg').lastCheck || ''), true);
+  eq('两城 note 载巡检复核', A.CITIES.zh.note.indexOf('第九十四批') >= 0 && A.CITIES.dg.note.indexOf('第九十四批') >= 0, true);
 
   emit('  337 城数值自洽性审计 8 类不变量全过 + P8 巡检工具契约锁定 ✓');
 })();
@@ -4470,54 +4470,54 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约（第九十�
    本批对 11 城的失业保险上限值逐一回扫：4 城有命中且全部是已知的公积金件，
    7 城（深圳/广州/汕头/湛江/梅州/汕尾/清远）零命中。
    ========================================================= */
-section('24. 值级反向检索：数值是否被官方件印出（第九十四批 B）');
+section('24. 值级反向检索：数值是否被官方件印出（ B）');
 (function gdValScan94(){
   const F1x = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'sources', 'F1.json'), 'utf8'));
   const cOf94b = k => F1x.provinces[0].cities.filter(function(c){ return c.key === k; })[0];
   const GD10 = ['sz','gz','st','zj','mz','sw','hy','qy','cz','yf'];
 
   // 一、11 城条目均已登记「值级反向检索」结论段
-  eq('第九十四批 B·F1 收录 10 城的值级反向检索结论', GD10.filter(function(k){
+  eq(' B·F1 收录 10 城的值级反向检索结论', GD10.filter(function(k){
     return /值级反向检索/.test(cOf94b(k).confirms);
   }).length, 10);
 
   // 二、零印数城市与有同值公积金件的城市分列
-  eq('第九十四批 B·7 城登记为零官方印数', GD10.filter(function(k){
+  eq(' B·7 城登记为零官方印数', GD10.filter(function(k){
     return /零官方印数/.test(cOf94b(k).confirms);
   }).length, 10);
-  eq('第九十四批 B·河源与潮州登记为同值公积金件命中', ['hy','cz'].filter(function(k){
+  eq(' B·河源与潮州登记为同值公积金件命中', ['hy','cz'].filter(function(k){
     return /公积金/.test(cOf94b(k).confirms);
   }).length, 2);
 
   // 三、本批新增的官方件已入档
-  eq('第九十四批 B·F1 深圳收录 2026 年度规则件与 2700 下限件',
+  eq(' B·F1 深圳收录 2026 年度规则件与 2700 下限件',
      cOf94b('sz').urls.filter(function(u){ return /post_12901580|post_12977661/.test(u); }).length, 2);
-  eq('第九十四批 B·F1 深圳收录住建局省索引站点码 755029',
+  eq(' B·F1 深圳收录住建局省索引站点码 755029',
      /755029/.test(cOf94b('sz').confirms), true);
-  eq('第九十四批 B·F1 河源收录政策解读（逐字 8490 元月平均工资）',
+  eq(' B·F1 河源收录政策解读（逐字 8490 元月平均工资）',
      cOf94b('hy').urls.filter(function(u){ return /post_707564/.test(u); }).length, 1);
-  eq('第九十四批 B·F1 潮州收录 2 件官方镜像',
+  eq(' B·F1 潮州收录 2 件官方镜像',
      cOf94b('cz').urls.filter(function(u){ return /post_3996717|post_3997057/.test(u); }).length, 2);
-  eq('第九十四批 B·F1 汕尾收录历史年度印数件（26043）',
+  eq(' B·F1 汕尾收录历史年度印数件（26043）',
      cOf94b('sw').urls.filter(function(u){ return /post_1206631/.test(u); }).length, 1);
-  eq('第九十四批 B·F1 深圳 quotes 含 2700 元下限件逐字',
+  eq(' B·F1 深圳 quotes 含 2700 元下限件逐字',
      /2700/.test(cOf94b('sz').rawQuotes.join(' ')), true);
-  eq('第九十四批 B·F1 河源 quotes 含 8490 元月平均工资逐字',
+  eq(' B·F1 河源 quotes 含 8490 元月平均工资逐字',
      /8490/.test(cOf94b('hy').rawQuotes.join(' ')), true);
 
   // 四、界面契约：深圳 note 记录了本轮结论
-  eq('第九十四批 B·深圳 note 含第九十四批 B', /第九十四批 B/.test(A.CITIES.sz.note), true);
-  eq('第九十四批 B·深圳 note 含住建局站点码 755029', /755029/.test(A.CITIES.sz.note), true);
+  eq(' B·深圳 note 含 B', /第九十四批 B/.test(A.CITIES.sz.note), true);
+  eq(' B·深圳 note 含住建局站点码 755029', /755029/.test(A.CITIES.sz.note), true);
 
-  // 五、数值零改动
-  eq('第九十四批 B·深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
-  eq('第九十四批 B·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第九十四批 B·深圳公积金下限仍 2520', A.CITIES.sz.hf.min, 2520);
-  eq('第九十四批 B·河源失业上限仍 25470', A.CITIES.hy.unemp.max, 25470);
-  eq('第九十四批 B·潮州失业上限仍 26043', A.CITIES.cz.unemp.max, 26043);
-  eq('第九十四批 B·汕尾失业上限仍 27849', A.CITIES.sw.unemp.max, 27849);
+  // 五、数值不变
+  eq(' B·深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
+  eq(' B·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq(' B·深圳公积金下限仍 2520', A.CITIES.sz.hf.min, 2520);
+  eq(' B·河源失业上限仍 25470', A.CITIES.hy.unemp.max, 25470);
+  eq(' B·潮州失业上限仍 26043', A.CITIES.cz.unemp.max, 26043);
+  eq(' B·汕尾失业上限仍 27849', A.CITIES.sw.unemp.max, 27849);
 
-  emit('  值级反向检索：10 城逐值回扫，7 城零官方印数、4 城命中同值公积金件；数值零改动 ✓');
+  emit(' 值级反向检索：10 城逐值回扫，7 城零官方印数、4 城命中同值公积金件；数值不变 ✓');
 })();
 
 /* =========================================================
@@ -4529,38 +4529,38 @@ section('24. 值级反向检索：数值是否被官方件印出（第九十四�
    note 先 HTML 转义再高亮文号/文件名，避免占位尖括号被当成标签解析。
    数值口径零改动。
    ========================================================= */
-section('25. 底部「数据依据与核查说明」结构化排版（第九十七批）');
+section('25. 底部「数据依据与核查说明」结构化排版');
 (function fnNote97(){
   var S97 = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
 
   // 一、静态契约：样式 / 常量 / 函数 / 调用点
-  ok('第九十七批·速览卡样式 fn-grid 已定义', /\.fn-grid\{/.test(S97), true);
-  ok('第九十七批·依据条目样式 fn-list 已定义', /\.fn-list\{/.test(S97), true);
-  ok('第九十七批·核查清单样式 fn-chk 已定义', /\.fn-chk\{/.test(S97), true);
-  ok('第九十七批·提示条样式 fn-tip 已定义', /\.fn-tip\{/.test(S97), true);
-  ok('第九十七批·文号高亮样式 mark 已定义', /\.fn-list mark\{/.test(S97), true);
-  ok('第九十七批·核查清单常量 FN_CHECKS 已注入', /var FN_CHECKS=\[/.test(html), true);
-  ok('第九十七批·转义函数 fnEsc 已定义', /function fnEsc\(s\)/.test(html), true);
-  ok('第九十七批·高亮函数 fnHl 已定义', /function fnHl\(s\)/.test(html), true);
-  ok('第九十七批·切分函数 fnSplit 已定义', /function fnSplit\(t\)/.test(html), true);
-  ok('第九十七批·渲染函数 renderFootNote 已定义', /function renderFootNote\(city\)/.test(html), true);
-  ok('第九十七批·selectCity 改为调用 renderFootNote', /renderFootNote\(city\);/.test(html), true);
-  ok('第九十七批·旧的纯文本长串拼接已移除', !/· 数据核查：2026-09-19 已联网核查京沪/.test(html), true);
-  ok('第九十七批·首行仍以「数据依据：」开头（既有断言不变）', /\$\("footNote"\)\.innerHTML='数据依据：'/.test(html), true);
+  ok('速览卡样式 fn-grid 已定义', /\.fn-grid\{/.test(S97), true);
+  ok('依据条目样式 fn-list 已定义', /\.fn-list\{/.test(S97), true);
+  ok('核查清单样式 fn-chk 已定义', /\.fn-chk\{/.test(S97), true);
+  ok('提示条样式 fn-tip 已定义', /\.fn-tip\{/.test(S97), true);
+  ok('文号高亮样式 mark 已定义', /\.fn-list mark\{/.test(S97), true);
+  ok('核查清单常量 FN_CHECKS 已注入', /var FN_CHECKS=\[/.test(html), true);
+  ok('转义函数 fnEsc 已定义', /function fnEsc\(s\)/.test(html), true);
+  ok('高亮函数 fnHl 已定义', /function fnHl\(s\)/.test(html), true);
+  ok('切分函数 fnSplit 已定义', /function fnSplit\(t\)/.test(html), true);
+  ok('渲染函数 renderFootNote 已定义', /function renderFootNote\(city\)/.test(html), true);
+  ok('selectCity 改为调用 renderFootNote', /renderFootNote\(city\);/.test(html), true);
+  ok('旧的纯文本长串拼接已移除', !/· 数据核查：2026-09-19 已联网核查京沪/.test(html), true);
+  ok('首行仍以「数据依据：」开头（既有断言不变）', /\$\("footNote"\)\.innerHTML='数据依据：'/.test(html), true);
 
   // 二、运行时：渲染出的三段式结构
   var foot97 = function(){ return A._doc.getElementById('footNote').innerHTML; };
   A.selectCity('sz');
   var f97 = foot97();
-  ok('第九十七批·深圳页脚首行仍以「数据依据：」开头', f97.indexOf('数据依据：深圳 2025-2026年度') === 0, true);
-  ok('第九十七批·含口径速览卡 fn-grid', f97.indexOf('class="fn-grid"') > 0, true);
-  ok('第九十七批·速览卡四格齐全（基数口径/数据年度/公积金比例/医保大额）',
+  ok('深圳页脚首行仍以「数据依据：」开头', f97.indexOf('数据依据：深圳 2025-2026年度') === 0, true);
+  ok('含口径速览卡 fn-grid', f97.indexOf('class="fn-grid"') > 0, true);
+  ok('速览卡四格齐全（基数口径/数据年度/公积金比例/医保大额）',
      ['基数口径', '数据年度', '公积金比例', '医保大额（个人）'].every(function(k){ return f97.indexOf('>' + k + '<') > 0; }), true);
-  ok('第九十七批·含官方依据条目列表 fn-list', f97.indexOf('class="fn-list"') > 0, true);
-  ok('第九十七批·含数据核查清单 fn-chk', f97.indexOf('class="fn-chk"') > 0, true);
-  ok('第九十七批·含复核提示条 fn-tip', f97.indexOf('class="fn-tip"') > 0, true);
-  ok('第九十七批·文号被高亮为 mark', f97.indexOf('<mark>') > 0, true);
-  ok('第九十七批·核查清单含广东基数核查日期 2026-08-12', f97.indexOf('2026-08-12') > 0, true);
+  ok('含官方依据条目列表 fn-list', f97.indexOf('class="fn-list"') > 0, true);
+  ok('含数据核查清单 fn-chk', f97.indexOf('class="fn-chk"') > 0, true);
+  ok('含复核提示条 fn-tip', f97.indexOf('class="fn-tip"') > 0, true);
+  ok('文号被高亮为 mark', f97.indexOf('<mark>') > 0, true);
+  ok('核查清单含广东基数核查日期 2026-08-12', f97.indexOf('2026-08-12') > 0, true);
 
   // 三、依据原文逐字保留（按「；」分段核对，不丢内容）
   var plain97 = f97.replace(/<[^>]*>/g, '').replace(/\s+/g, '');
@@ -4569,7 +4569,7 @@ section('25. 底部「数据依据与核查说明」结构化排版（第九十�
     var key = p.replace(/[<>&]/g, '').replace(/\s+/g, '').slice(0, 20);
     return key.length >= 8 && plain97.indexOf(key) < 0;
   });
-  eq('第九十七批·深圳依据各段逐字保留（无内容丢失）', lost97.length, 0);
+  eq('深圳依据各段逐字保留（无内容丢失）', lost97.length, 0);
 
   // 四、含尖括号的 note 必须转义（不能被当成标签解析）
   var escBad97 = 0, escTot97 = 0;
@@ -4581,16 +4581,16 @@ section('25. 底部「数据依据与核查说明」结构化排版（第九十�
     var fk97 = foot97();
     m97.forEach(function(t97){ if (fk97.indexOf(t97) >= 0) escBad97++; });
   }
-  eq('第九十七批·note 中的尖括号占位符全部转义', escBad97, 0);
-  ok('第九十七批·存在含尖括号的 note（转义分支被真实覆盖）', escTot97 > 0, true);
+  eq('note 中的尖括号占位符全部转义', escBad97, 0);
+  ok('存在含尖括号的 note（转义分支被真实覆盖）', escTot97 > 0, true);
 
-  // 五、数值零改动
-  eq('第九十七批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第九十七批·深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
-  eq('第九十七批·东莞公积金上限仍 27700', A.CITIES.dg.hf.max, 27700);
-  eq('第九十七批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 五、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('深圳失业上限仍 48471', A.CITIES.sz.unemp.max, 48471);
+  eq('东莞公积金上限仍 27700', A.CITIES.dg.hf.max, 27700);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  底部「数据依据与核查说明」改为速览卡 + 依据条目 + 核查清单三段式（数值零改动）✓');
+  emit(' 底部「数据依据与核查说明」改为速览卡 + 依据条目 + 核查清单三段式（数值不变）✓');
 })();
 
 /* =========================================================
@@ -4601,7 +4601,7 @@ section('25. 底部「数据依据与核查说明」结构化排版（第九十�
         输入框字号提到 16px（iOS 聚焦不再自动缩放页面）、加「查看测算结果 ↓」锚点。
    桌面两栏与全部数值口径零改动。
    ========================================================= */
-section('26. 手机端表单优先（第九十八批）');
+section('26. 手机端表单优先');
 (function gdMobile98(){
   var M98_MARKUP = html.slice(0, html.indexOf('<script>'));
   var M98_STYLE = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
@@ -4612,43 +4612,43 @@ section('26. 手机端表单优先（第九十八批）');
   })();
 
   // 一、移动端不再反转两栏顺序（输入面板在前）
-  ok('第九十八批·移动端不再把结果区顶到最前',
+  ok('移动端不再把结果区顶到最前',
      !/\.results\{grid-row:1\}/.test(M98_780) && !/\.panel-stack\{grid-row:2\}/.test(M98_780), true);
-  ok('第九十八批·输入面板在 DOM 中位于结果区之前',
+  ok('输入面板在 DOM 中位于结果区之前',
      M98_MARKUP.indexOf('class="panel-stack"') > 0 &&
      M98_MARKUP.indexOf('class="panel-stack"') < M98_MARKUP.indexOf('class="results"'), true);
-  ok('第九十八批·桌面两栏栅格未被改动',
+  ok('桌面两栏栅格未被改动',
      /grid-template-columns:\s*minmax\(350px,\s*400px\)/.test(M98_STYLE), true);
 
   // 二、移动端页头压缩
-  ok('第九十八批·移动端页头留白已压缩', /\.page-head\{padding:14px 0 12px/.test(M98_780), true);
-  ok('第九十八批·移动端标题字号收到 24px', /h1\{font-size:24px/.test(M98_780), true);
-  ok('第九十八批·移动端描述限两行', /-webkit-line-clamp:2/.test(M98_780), true);
+  ok('移动端页头留白已压缩', /\.page-head\{padding:14px 0 12px/.test(M98_780), true);
+  ok('移动端标题字号收到 24px', /h1\{font-size:24px/.test(M98_780), true);
+  ok('移动端描述限两行', /-webkit-line-clamp:2/.test(M98_780), true);
 
   // 三、iOS 聚焦自动缩放修复
-  ok('第九十八批·移动端输入框字号 16px（iOS 不再自动放大）', /\.input\{font-size:16px\}/.test(M98_780), true);
-  ok('第九十八批·税前月薪输入框仍为大字号（20px 优先）',
+  ok('移动端输入框字号 16px（iOS 不再自动放大）', /\.input\{font-size:16px\}/.test(M98_780), true);
+  ok('税前月薪输入框仍为大字号（20px 优先）',
      /\.input\.has-prefix\{padding-left:34px;font-size:20px/.test(M98_STYLE), true);
 
   // 四、「查看测算结果 ↓」锚点
-  ok('第九十八批·锚点按钮桌面端隐藏', /\.go-res\{display:none\}/.test(M98_STYLE), true);
-  ok('第九十八批·锚点按钮移动端显示', /\.go-res\{display:flex/.test(M98_780), true);
-  ok('第九十八批·锚点按钮已就位', /<a class="go-res" href="#calcResults">/.test(M98_MARKUP), true);
-  ok('第九十八批·锚点目标 calcResults 已就位', /<section class="results" id="calcResults"/.test(M98_MARKUP), true);
-  ok('第九十八批·锚点按钮排在税前月薪输入框之后、结果区之前',
+  ok('锚点按钮桌面端隐藏', /\.go-res\{display:none\}/.test(M98_STYLE), true);
+  ok('锚点按钮移动端显示', /\.go-res\{display:flex/.test(M98_780), true);
+  ok('锚点按钮已就位', /<a class="go-res" href="#calcResults">/.test(M98_MARKUP), true);
+  ok('锚点目标 calcResults 已就位', /<section class="results" id="calcResults"/.test(M98_MARKUP), true);
+  ok('锚点按钮排在税前月薪输入框之后、结果区之前',
      M98_MARKUP.indexOf('id="salary"') < M98_MARKUP.indexOf('class="go-res"') &&
      M98_MARKUP.indexOf('class="go-res"') < M98_MARKUP.indexOf('id="calcResults"'), true);
-  ok('第九十八批·sticky 顶栏的锚点偏移仍保留', /scroll-padding-top:88px/.test(M98_STYLE), true);
+  ok('sticky 顶栏的锚点偏移仍保留', /scroll-padding-top:88px/.test(M98_STYLE), true);
 
   // 五、运行时：锚点目标与输入框在 DOM 中真实存在
-  ok('第九十八批·运行时 calcResults 元素存在', !!A._doc.getElementById('calcResults'), true);
-  ok('第九十八批·运行时 salary 输入框存在', !!A._doc.getElementById('salary'), true);
+  ok('运行时 calcResults 元素存在', !!A._doc.getElementById('calcResults'), true);
+  ok('运行时 salary 输入框存在', !!A._doc.getElementById('salary'), true);
 
-  // 六、数值零改动
-  eq('第九十八批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第九十八批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 六、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  手机端表单优先：输入面板前置 + 页头压缩 + 16px 输入字号 + 结果锚点（数值零改动）✓');
+  emit(' 手机端表单优先：输入面板前置 + 页头压缩 + 16px 输入字号 + 结果锚点（数值不变）✓');
 })();
 
 /* =========================================================
@@ -4659,7 +4659,7 @@ section('26. 手机端表单优先（第九十八批）');
    本批：min-width:0 允许收缩 + margin:0 10px 两端为手柄预留空间。
    纯样式改动，计算引擎与全部数值口径零改动。
    ========================================================= */
-section('27. 滑块手柄不溢出卡片（第九十九批）');
+section('27. 滑块手柄不溢出卡片');
 (function gdSlider99(){
   var M99_STYLE = html.slice(html.indexOf('<style>'), html.indexOf('</style>'));
   var M99_MARKUP = html.slice(0, html.indexOf('<script>'));
@@ -4669,30 +4669,30 @@ section('27. 滑块手柄不溢出卡片（第九十九批）');
   })();
 
   // 一、滑块自身的收缩与预留
-  ok('第九十九批·滑块允许在窄容器收缩（min-width:0）', /min-width:0/.test(M99_SLD), true);
-  ok('第九十九批·滑块两端为手柄预留 10px 空间', /margin:0 10px/.test(M99_SLD), true);
-  ok('第九十九批·旧的未预留写法已移除',
+  ok('滑块允许在窄容器收缩（min-width:0）', /min-width:0/.test(M99_SLD), true);
+  ok('滑块两端为手柄预留 10px 空间', /margin:0 10px/.test(M99_SLD), true);
+  ok('旧的未预留写法已移除',
      !/\.sld input\[type=range\]\{flex:1;height:5px;accent-color:var\(--primary\);cursor:pointer\}/.test(M99_STYLE), true);
-  ok('第九十九批·滑块容器仍是 flex（两端 margin 生效）', /\.sld\{display:flex/.test(M99_STYLE), true);
+  ok('滑块容器仍是 flex（两端 margin 生效）', /\.sld\{display:flex/.test(M99_STYLE), true);
 
   // 二、两个公积金比例滑块
-  ok('第九十九批·个人公积金比例滑块存在且上限 12',
+  ok('个人公积金比例滑块存在且上限 12',
      /<input type="range" id="hfRate" min="0" max="12"/.test(M99_MARKUP), true);
-  ok('第九十九批·单位公积金比例滑块存在且上限 12',
+  ok('单位公积金比例滑块存在且上限 12',
      /<input type="range" id="hfRateComp" min="0" max="12"/.test(M99_MARKUP), true);
-  ok('第九十九批·两个滑块都放在 .sld 容器里',
+  ok('两个滑块都放在 .sld 容器里',
      /<div class="sld">[^]*?id="hfRate"/.test(M99_MARKUP) &&
      /<div class="sld">[^]*?id="hfRateComp"/.test(M99_MARKUP), true);
 
   // 三、运行时：滑块元素真实存在
-  ok('第九十九批·运行时 hfRate 滑块存在', !!A._doc.getElementById('hfRate'), true);
+  ok('运行时 hfRate 滑块存在', !!A._doc.getElementById('hfRate'), true);
 
-  // 四、数值零改动
-  eq('第九十九批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第九十九批·深圳公积金比例上限仍 12%', A.CITIES.sz.hfRateMax, 12);
-  eq('第九十九批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 四、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('深圳公积金比例上限仍 12%', A.CITIES.sz.hfRateMax, 12);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  滑块两端预留手柄空间 + min-width:0 可收缩，12% 时手柄不再溢出卡片（数值零改动）✓');
+  emit(' 滑块两端预留手柄空间 + min-width:0 可收缩，12% 时手柄不再溢出卡片（数值不变）✓');
 })();
 
 /* =========================================================
@@ -4701,49 +4701,49 @@ section('27. 滑块手柄不溢出卡片（第九十九批）');
    浏览器不阻止手动输入 5/8 等超限值；而渲染层用原始 gv("annuity") 拼百分比，
    于是界面显示 5%、计算却按 4%（cl 夹取），显示与口径不一致。
    本批：超限时按上限回写输入框并给出提示；渲染改用夹取后的比例。
-   口径表达式 cl(gv("annuity"),0,4)/100 不变 → 全部数值零改动。
+   口径表达式 cl(gv("annuity"),0,4)/100 不变 → 全部数值不变。
    ========================================================= */
-section('28. 企业年金比例上限回写（第一百批）');
+section('28. 企业年金比例上限回写');
 (function gdAnnuity100(){
   var M100_SCRIPT = html.slice(html.indexOf('<script>'));
   var M100_MARKUP = html.slice(0, html.indexOf('<script>'));
 
   // 一、静态契约
-  ok('第一百批·输入框声明 max=4', /<input type="number" id="annuity" value="0" min="0" max="4"/.test(M100_MARKUP), true);
-  ok('第一百批·提示元素 annuityWarn 存在且默认隐藏',
+  ok('输入框声明 max=4', /<input type="number" id="annuity" value="0" min="0" max="4"/.test(M100_MARKUP), true);
+  ok('提示元素 annuityWarn 存在且默认隐藏',
      /id="annuityWarn" style="display:none/.test(M100_MARKUP), true);
-  ok('第一百批·口径表达式 cl(gv("annuity"),0,4)/100 原样保留',
+  ok('口径表达式 cl(gv("annuity"),0,4)/100 原样保留',
      /cl\(gv\("annuity"\),0,4\)\/100/.test(M100_SCRIPT), true);
-  ok('第一百批·超限时按上限回写输入框',
+  ok('超限时按上限回写输入框',
      /if\(anOver\)\$\("annuity"\)\.value=\(anRaw>4\)\?4:0;/.test(M100_SCRIPT), true);
-  ok('第一百批·超限提示文案已就位',
+  ok('超限提示文案已就位',
      /上限 4%（缴费工资基数），已按 4% 计算/.test(M100_SCRIPT), true);
-  ok('第一百批·渲染不再用原始输入值拼百分比',
+  ok('渲染不再用原始输入值拼百分比',
      !/企业年金\(个人'\+gv\("annuity"\)/.test(M100_SCRIPT), true);
 
   // 二、运行时：超限值被回写
-  eq('第一百批·输入 8 被回写为 4',
+  eq('输入 8 被回写为 4',
      (function(){ A._setMany({ annuity: 8 }); A.calc(); return Number(A._doc.getElementById('annuity').value); })(), 4);
-  eq('第一百批·输入 -3 被回写为 0',
+  eq('输入 -3 被回写为 0',
      (function(){ A._setMany({ annuity: -3 }); A.calc(); return Number(A._doc.getElementById('annuity').value); })(), 0);
 
   // 三、运行时：渲染口径与界面一致
-  ok('第一百批·超限时结果显示 4% 而不是 8%',
+  ok('超限时结果显示 4% 而不是 8%',
      (function(){ A._setMany({ annuity: 8 }); A.calc(); return A._html('res').indexOf('企业年金(个人4%)') > -1 &&
                                                         A._html('res').indexOf('企业年金(个人8%)') === -1; })(), true);
-  ok('第一百批·合法值 2.5 不被改写',
+  ok('合法值 2.5 不被改写',
      (function(){ A._setMany({ annuity: 2.5 }); A.calc(); return Number(A._doc.getElementById('annuity').value); })(), 2.5);
-  ok('第一百批·合法值 2.5 渲染为 2.5%',
+  ok('合法值 2.5 渲染为 2.5%',
      (function(){ A._setMany({ annuity: 2.5 }); A.calc(); return A._html('res').indexOf('企业年金(个人2.5%)') > -1; })(), true);
 
-  // 四、数值零改动
-  eq('第一百批·年金 4% 的年度金额仍按养老缴费基数计',
+  // 四、数值不变
+  eq('年金 4% 的年度金额仍按养老缴费基数计',
      (function(){ A._setMany({ salary: 30000, pBase: 7270, mBase: 30000, uBase: 30000, mtBase: 30000, ijBase: 30000, hfBase: 30000, hfRate: 12, persPen: 0, healthIns: 0, annuity: 4 }); A.calc();
        var m = A._html('res').match(/企业年金\(个人4%\)<\/label><span class="v" style="color:#0d9488">([\d,.]+)/);
        return m ? parseFloat(m[1].replace(/,/g, '')) : null; })(), (7270 * 0.04) * 12, 0.02);
-  eq('第一百批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  企业年金比例超限即回写上限并提示，渲染与计算口径一致（数值零改动）✓');
+  emit(' 企业年金比例超限即回写上限并提示，渲染与计算口径一致（数值不变）✓');
 })();
 
 /* =========================================================
@@ -4755,57 +4755,57 @@ section('28. 企业年金比例上限回写（第一百批）');
    本批：导出渲染宽度固定 EXPORT_W=1180（与窗口宽度无关），克隆文档进入 .exp 导出模式
    （表格不横向溢出 / 输入框显示为纯文本 / 标题行换行 / 隐藏导出按钮卡片），
    纸张改 A4 横向 + 10mm 页边距，图表 viewBox 留余量。
-   计算引擎与全部数值零改动。
+   计算引擎与全部数值不变。
    ========================================================= */
-section('29. PDF 导出版面（第一百零一批）');
+section('29. PDF 导出版面');
 (function gdExport101(){
   var M101_SCRIPT = html.slice(html.indexOf('<script>'));
   var M101_MARKUP = html.slice(0, html.indexOf('<script>'));
 
   // 一、导出模式样式（只作用在 html2canvas 的克隆文档上，页面本身不受影响）
-  ok('第一百零一批·导出模式放开表格横向溢出',
+  ok('导出模式放开表格横向溢出',
      /\.exp \.tbl-wrap\{overflow:visible\}/.test(M101_MARKUP), true);
-  ok('第一百零一批·导出模式把可编辑输入框显示为纯文本',
+  ok('导出模式把可编辑输入框显示为纯文本',
      /\.exp table\.hist td input\{width:auto;min-width:0/.test(M101_MARKUP), true);
-  ok('第一百零一批·导出模式允许标题行换行',
+  ok('导出模式允许标题行换行',
      /\.exp \.tbl-title\{flex-wrap:wrap/.test(M101_MARKUP), true);
-  ok('第一百零一批·导出模式隐藏导出按钮卡片',
+  ok('导出模式隐藏导出按钮卡片',
      /\.exp #exportCard\{display:none\}/.test(M101_MARKUP), true);
-  ok('第一百零一批·导出按钮卡片带 id 以便在导出模式隐藏',
+  ok('导出按钮卡片带 id 以便在导出模式隐藏',
      /<div class="c" id="exportCard"/.test(M101_MARKUP), true);
 
   // 二、导出参数
-  ok('第一百零一批·导出渲染宽度固定 1180', /var EXPORT_W=1180;/.test(M101_SCRIPT), true);
-  ok('第一百零一批·不再按窗口宽度截图',
+  ok('导出渲染宽度固定 1180', /var EXPORT_W=1180;/.test(M101_SCRIPT), true);
+  ok('不再按窗口宽度截图',
      !/windowWidth:node\.scrollWidth/.test(M101_SCRIPT), true);
-  ok('第一百零一批·截图使用固定渲染宽度',
+  ok('截图使用固定渲染宽度',
      /windowWidth:EXPORT_W/.test(M101_SCRIPT), true);
-  ok('第一百零一批·纸张为 A4 横向',
+  ok('纸张为 A4 横向',
      /orientation:"landscape"/.test(M101_SCRIPT), true);
-  ok('第一百零一批·纵向 A4 的旧写法已移除',
+  ok('纵向 A4 的旧写法已移除',
      !/new jspdf\.jsPDF\("p","mm","a4"\)/.test(M101_SCRIPT), true);
-  ok('第一百零一批·四周留 10mm 页边距',
+  ok('四周留 10mm 页边距',
      /var EXPORT_PDF=\{pw:297,ph:210,mx:10,my:10\}/.test(M101_SCRIPT), true);
-  ok('第一百零一批·图表 viewBox 留出余量防右轴裁切',
+  ok('图表 viewBox 留出余量防右轴裁切',
      /var EXPORT_CHART_VB="0 -12 784 304"/.test(M101_SCRIPT), true);
-  ok('第一百零一批·克隆文档进入导出模式',
+  ok('克隆文档进入导出模式',
      /classList\.add\("exp"\)/.test(M101_SCRIPT), true);
-  ok('第一百零一批·克隆文档里重设图表 viewBox',
+  ok('克隆文档里重设图表 viewBox',
      /setAttribute\("viewBox",EXPORT_CHART_VB\)/.test(M101_SCRIPT), true);
 
   // 三、运行时与静态：页面本身保持原样（导出模式只改克隆文档）
-  ok('第一百零一批·页面上的图表 viewBox 未被改动',
+  ok('页面上的图表 viewBox 未被改动',
      /<svg id="chart" width="100%" viewBox="0 0 760 280"/.test(M101_MARKUP), true);
-  ok('第一百零一批·历史表仍含实发工资列',
+  ok('历史表仍含实发工资列',
      /<th>实发工资<\/th>/.test(M101_SCRIPT), true);
-  ok('第一百零一批·导出按钮仍在页面里（只是 PDF 内隐藏）',
+  ok('导出按钮仍在页面里（只是 PDF 内隐藏）',
      /onclick="exportPDF\(CITY\)"/.test(M101_MARKUP), true);
 
-  // 四、数值零改动
-  eq('第一百零一批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第一百零一批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 四、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  PDF 导出改 A4 横向、固定渲染宽度并隐藏导出按钮卡片（数值零改动）✓');
+  emit(' PDF 导出改 A4 横向、固定渲染宽度并隐藏导出按钮卡片（数值不变）✓');
 })();
 
 /* =========================================================
@@ -4820,9 +4820,9 @@ section('29. PDF 导出版面（第一百零一批）');
         三段（+ 补充扣除时第四段）合计 100%；
         手机端表格改为最小宽度 1120px + 横向滚动（配滑动提示文案），
         图表容器可横滑、输入框与字号收窄。
-   计算引擎与全部数值零改动。
+   计算引擎与全部数值不变。
    ========================================================= */
-section('30. 收入构成占比条与历史明细移动端适配（第一百零二批）');
+section('30. 收入构成占比条与历史明细移动端适配');
 (function gdMix102(){
   var M102_SCRIPT = html.slice(html.indexOf('<script>'));
   var M102_MARKUP = html.slice(0, html.indexOf('<script>'));
@@ -4830,23 +4830,23 @@ section('30. 收入构成占比条与历史明细移动端适配（第一百零�
                                    M102_MARKUP.indexOf('@media(max-width:520px)'));
 
   // 一、占比条：样式、卡片、渲染函数
-  ok('第一百零二批·占比条样式存在',
+  ok('占比条样式存在',
      /\.hero \.hb\{display:flex/.test(M102_MARKUP), true);
-  ok('第一百零二批·图例样式存在',
+  ok('图例样式存在',
      /\.hero \.hlg\{display:flex/.test(M102_MARKUP), true);
-  ok('第一百零二批·底部行（图例+按钮）样式存在',
+  ok('底部行（图例+按钮）样式存在',
      /\.hero \.hm\{display:flex/.test(M102_MARKUP), true);
-  ok('第一百零二批·年度明细按钮样式存在',
+  ok('年度明细按钮样式存在',
      /\.hero \.go-hist\{/.test(M102_MARKUP), true);
-  ok('第一百零二批·占比条曾做成独立卡片（第一百零五批起并入主卡）',
+  ok('占比条曾做成独立卡片（起并入主卡）',
      /<div class="hero" id="mixCard"/.test(M102_MARKUP), false);
-  ok('第一百零二批·mixBarHtml 已定义',
+  ok('mixBarHtml 已定义',
      /function mixBarHtml\(net,siE,hfE,curT,sal,suppCash\)/.test(M102_SCRIPT), true);
-  ok('第一百零二批·结果渲染时嵌入占比条',
+  ok('结果渲染时嵌入占比条',
      /h\+=mixBarHtml\(net,siE,hfE,curT,sal,D\.suppCash\);/.test(M102_SCRIPT), true);
-  ok('第一百零二批·占比条分母取税前工资',
+  ok('占比条分母取税前工资',
      /var base=sal>0\?sal:0/.test(M102_SCRIPT), true);
-  ok('第一百零二批·按钮跳到年度明细页',
+  ok('按钮跳到年度明细页',
      /class="go-hist" onclick="switchTab\(1\)"/.test(M102_SCRIPT), true);
 
   // 二、运行时：三段占比合计 100%，图例齐全
@@ -4857,33 +4857,33 @@ section('30. 收入构成占比条与历史明细移动端适配（第一百零�
     var mix = (A._html('res').match(/<div class="mx">[\s\S]*?<\/div><\/div><div class="cd">/) || [''])[0];
     var ws = (mix.match(/width:([\d.]+)%/g) || [])
       .map(function(s){ return parseFloat(s.replace(/[^0-9.]/g, '')); });
-    eq('第一百零二批·占比条各段合计 100%',
+    eq('占比条各段合计 100%',
        ws.reduce(function(a, b){ return a + b; }, 0), 100, 0.05);
-    ok('第一百零二批·图例含实发/五险一金/个税',
+    ok('图例含实发/五险一金/个税',
        /实发 [\d.]+%/.test(mix) && /五险一金 [\d.]+%/.test(mix) && /个税 [\d.]+%/.test(mix), true);
-    ok('第一百零二批·占比条已渲染进结果面板',
+    ok('占比条已渲染进结果面板',
        mix.indexOf('<div class="mx">') >= 0, true);
   })();
 
   // 三、历史明细页手机端适配
-  ok('第一百零二批·桌面端隐藏滑动提示',
+  ok('桌面端隐藏滑动提示',
      /\.tbl-hint\{display:none\}/.test(M102_MARKUP), true);
-  ok('第一百零二批·手机端显示滑动提示',
+  ok('手机端显示滑动提示',
      /\.tbl-hint\{display:block/.test(M102_780), true);
-  ok('第一百零二批·手机端表格保留最小宽度（横滑而非挤压）',
+  ok('手机端表格保留最小宽度（横滑而非挤压）',
      /table\.hist\{min-width:1120px/.test(M102_780), true);
-  ok('第一百零二批·手机端表格输入框收窄',
+  ok('手机端表格输入框收窄',
      /table\.hist td input\{width:58px/.test(M102_780), true);
-  ok('第一百零二批·手机端图表可横向滚动',
+  ok('手机端图表可横向滚动',
      /\.chart-box\{overflow-x:auto\}/.test(M102_780), true);
-  ok('第一百零二批·滑动提示文案已写进页面',
+  ok('滑动提示文案已写进页面',
      /左右滑动查看全部 15 列/.test(M102_MARKUP), true);
 
-  // 四、数值零改动
-  eq('第一百零二批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第一百零二批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 四、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  收入构成占比条与历史明细移动端适配已落地（数值零改动）✓');
+  emit(' 收入构成占比条与历史明细移动端适配已落地（数值不变）✓');
 })();
 
 /* =========================================================
@@ -4893,39 +4893,39 @@ section('30. 收入构成占比条与历史明细移动端适配（第一百零�
    实现：省份胶囊只列 34 个省（默认选中广东）；常态只渲染当前省，
          省下城市用 repeat(auto-fill,minmax(168px,1fr)) 网格横排成卡片；
          搜索时临时渲染全部省份以保证跨省命中，清空后回到当前省。
-   计算引擎与全部数值零改动。
+   计算引擎与全部数值不变。
    ========================================================= */
-section('31. 城市选择器改版（第一百零三批）');
+section('31. 城市选择器改版');
 (function(){
   var M103_MARKUP = html.slice(0, html.indexOf('<script>'));
   var M103_SCRIPT = html.slice(html.indexOf('<script>'));
 
   // 一、省份胶囊：去「全部」、默认广东
-  ok('第一百零三批·默认省份为广东',
+  ok('默认省份为广东',
      /var prov="广东"/.test(M103_SCRIPT), true);
-  ok('第一百零三批·「全部」选项已移除',
+  ok('「全部」选项已移除',
      !/setProv\('\'\)/.test(M103_SCRIPT) && !/>全部</.test(M103_SCRIPT), true);
-  ok('第一百零三批·常态只渲染当前省的城市',
+  ok('常态只渲染当前省的城市',
      /if\(!citySearchMode&&p\.n!==prov\)continue;/.test(M103_SCRIPT), true);
-  ok('第一百零三批·搜索时临时渲染全部省份以支持跨省检索',
+  ok('搜索时临时渲染全部省份以支持跨省检索',
      /if\(wantAll!==citySearchMode\)\{citySearchMode=wantAll;buildCityGrid\(\);\}/.test(M103_SCRIPT), true);
-  ok('第一百零三批·切换省份默认回退广东',
+  ok('切换省份默认回退广东',
      /function setProv\(r\)\{prov=r\|\|"广东"/.test(M103_SCRIPT), true);
-  ok('第一百零三批·打开弹层默认回退广东',
+  ok('打开弹层默认回退广东',
      /provOfCity\(curCityKey\)\|\|"广东"/.test(M103_SCRIPT), true);
-  ok('第一百零三批·弹层说明标注默认广东',
+  ok('弹层说明标注默认广东',
      /默认广东/.test(M103_MARKUP), true);
 
   // 二、网格排版：城市横排成卡片
-  ok('第一百零三批·城市区改为单列省份块',
+  ok('城市区改为单列省份块',
      /\.city-grid\{display:grid;grid-template-columns:1fr/.test(M103_MARKUP), true);
-  ok('第一百零三批·省内城市用网格横排',
+  ok('省内城市用网格横排',
      /\.tree-cities\{[^}]*display:grid;grid-template-columns:repeat\(auto-fill,minmax\(168px,1fr\)\)/.test(M103_MARKUP), true);
-  ok('第一百零三批·城市改为卡片式',
+  ok('城市改为卡片式',
      /\.tree-city\{border:1px solid var\(--line\);border-radius:12px/.test(M103_MARKUP), true);
-  ok('第一百零三批·旧的三列竖排布局已移除',
+  ok('旧的三列竖排布局已移除',
      !/grid-template-columns:repeat\(3,1fr\);gap:10px\}/.test(M103_MARKUP), true);
-  ok('第一百零三批·第九十一批折叠节点契约未被破坏',
+  ok('折叠节点契约未被破坏',
      /class="tree-prov"/.test(M103_SCRIPT) && /class="tree-city"/.test(M103_SCRIPT) &&
      /querySelectorAll\("\.tree-prov"\)/.test(M103_SCRIPT) && /\.tree-prov\{/.test(M103_MARKUP), true);
 
@@ -4933,94 +4933,94 @@ section('31. 城市选择器改版（第一百零三批）');
   (function(){
     var tabs = A._html('provTabs') || '';
     var grid = A._html('cityGrid') || '';
-    ok('第一百零三批·省份胶囊不再有「全部」', tabs.indexOf('全部') < 0, true);
-    ok('第一百零三批·广东为默认选中省份',
+    ok('省份胶囊不再有「全部」', tabs.indexOf('全部') < 0, true);
+    ok('广东为默认选中省份',
        /class="prov-tab a" data-prov="广东"/.test(tabs), true);
-    eq('第一百零三批·城市区只渲染一个省份块',
+    eq('城市区只渲染一个省份块',
        (grid.match(/class="tree-prov"/g) || []).length, 1);
-    ok('第一百零三批·省份块为广东且不含其它省',
+    ok('省份块为广东且不含其它省',
        /data-prov="广东"/.test(grid) && !/data-prov="浙江"/.test(grid), true);
-    eq('第一百零三批·广东 21 市全部列出',
+    eq('广东 21 市全部列出',
        (grid.match(/class="tree-city"/g) || []).length, 21);
-    ok('第一百零三批·含深圳/广州/汕头等城市',
+    ok('含深圳/广州/汕头等城市',
        /深圳/.test(grid) && /广州/.test(grid) && /汕头/.test(grid), true);
   })();
 
-  // 四、数值零改动
-  eq('第一百零三批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第一百零三批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 四、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  城市选择器改版已落地（去「全部」/ 默认广东 / 城市网格横排，数值零改动）✓');
+  emit(' 城市选择器改版已落地（去「全部」/ 默认广东 / 城市网格横排，数值不变）✓');
 })();
 
 /* =========================================================
    section 32：历史明细表固定列宽（第一百零四批）
    ========================================================= */
-section('32. 历史明细表固定列宽（第一百零四批）');
+section('32. 历史明细表固定列宽');
 (function(){
   var M104_CSS = html.slice(0, html.indexOf('<script>'));
   var M104_SCRIPT = html.slice(html.indexOf('<script>'));
   var M104_780 = M104_CSS.slice(M104_CSS.indexOf('@media(max-width:780px)'), M104_CSS.indexOf('@media(max-width:520px)'));
 
   // 一、根因修复：表格固定列宽 + 容器不再被 min-content 顶宽
-  ok('第一百零四批·表格改为固定列宽',
+  ok('表格改为固定列宽',
      /table\.hist\{[^}]*table-layout:fixed/.test(M104_CSS), true);
-  ok('第一百零四批·表格保留最小宽度 960px',
+  ok('表格保留最小宽度 960px',
      /table\.hist\{[^}]*min-width:960px/.test(M104_CSS), true);
-  ok('第一百零四批·勾选列固定 30px',
+  ok('勾选列固定 30px',
      /table\.hist th:first-child,table\.hist td:first-child\{width:30px\}/.test(M104_CSS), true);
-  ok('第一百零四批·月份列固定 58px',
+  ok('月份列固定 58px',
      /table\.hist th:nth-child\(2\),table\.hist td:nth-child\(2\)\{width:58px\}/.test(M104_CSS), true);
-  ok('第一百零四批·表头允许换行',
+  ok('表头允许换行',
      /table\.hist th\{[^}]*white-space:normal/.test(M104_CSS), true);
-  ok('第一百零四批·数字列字号 11px',
+  ok('数字列字号 11px',
      /table\.hist td\{[^}]*font-size:11px/.test(M104_CSS), true);
-  ok('第一百零四批·可编辑框按列宽铺满',
+  ok('可编辑框按列宽铺满',
      /table\.hist td input\{width:100%;max-width:78px/.test(M104_CSS), true);
-  ok('第一百零四批·滚动容器允许收缩',
+  ok('滚动容器允许收缩',
      /\.tbl-wrap\{[^}]*min-width:0/.test(M104_CSS), true);
-  ok('第一百零四批·历史明细容器允许收缩',
+  ok('历史明细容器允许收缩',
      /\.history-view\{[^}]*min-width:0/.test(M104_CSS), true);
-  ok('第一百零四批·标题行文字允许断行',
+  ok('标题行文字允许断行',
      /\.tbl-title \.tt\{[^}]*overflow-wrap:anywhere/.test(M104_CSS), true);
-  ok('第一百零四批·旧 auto 布局写法已移除',
+  ok('旧 auto 布局写法已移除',
      !/table\.hist\{width:100%;border-collapse/.test(M104_CSS), true);
-  ok('第一百零四批·旧输入框定宽写法已移除',
+  ok('旧输入框定宽写法已移除',
      !/table\.hist td input\{width:80px/.test(M104_CSS), true);
-  ok('第一百零四批·旧滚动容器写法已移除',
+  ok('旧滚动容器写法已移除',
      !/\.tbl-wrap\{overflow-x:auto\}/.test(M104_CSS), true);
 
   // 二、手机端仍横滑，但按新的列宽需求给足宽度
-  ok('第一百零四批·手机端表格最小宽度 1120px',
+  ok('手机端表格最小宽度 1120px',
      /table\.hist\{min-width:1120px/.test(M104_780), true);
-  ok('第一百零四批·手机端单元格内边距收紧',
+  ok('手机端单元格内边距收紧',
      /table\.hist td\{padding:7px 4px\}/.test(M104_780), true);
 
   // 三、导出模式回归：第一百零一批的 PDF 修复不能被破坏
-  ok('第一百零四批·导出模式仍放开表格横向溢出',
+  ok('导出模式仍放开表格横向溢出',
      /\.exp \.tbl-wrap\{overflow:visible\}/.test(M104_CSS), true);
-  ok('第一百零四批·导出模式仍隐藏导出按钮',
+  ok('导出模式仍隐藏导出按钮',
      /\.exp #exportCard\{display:none\}/.test(M104_CSS), true);
-  ok('第一百零四批·导出宽度常量未变',
+  ok('导出宽度常量未变',
      /var EXPORT_W=1180;/.test(M104_SCRIPT), true);
-  ok('第一百零四批·PDF 仍为 A4 横向',
+  ok('PDF 仍为 A4 横向',
      /orientation:"landscape"/.test(M104_SCRIPT), true);
-  ok('第一百零四批·导出时输入框仍显示为纯文本',
+  ok('导出时输入框仍显示为纯文本',
      /\.exp table\.hist td input\{width:auto/.test(M104_CSS), true);
 
   // 四、markup 未动（golden 的 hist 面板快照不受影响）
-  ok('第一百零四批·历史表格 markup 未改',
+  ok('历史表格 markup 未改',
      /<table class="hist" id="histTable"><\/table>/.test(M104_CSS), true);
-  ok('第一百零四批·表格仍由 renderHistTable 渲染',
+  ok('表格仍由 renderHistTable 渲染',
      /function renderHistTable\(city\)/.test(M104_SCRIPT), true);
-  ok('第一百零四批·表头仍含实发工资列',
+  ok('表头仍含实发工资列',
      /实发工资/.test(M104_SCRIPT), true);
 
-  // 五、数值零改动
-  eq('第一百零四批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第一百零四批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 五、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  历史明细表固定列宽已落地（表格不再撑破容器，右侧列不再被裁，数值零改动）✓');
+  emit(' 历史明细表固定列宽已落地（表格不再撑破容器，右侧列不再被裁，数值不变）✓');
 })();
 
 /* =========================================================
@@ -5035,31 +5035,31 @@ section('32. 历史明细表固定列宽（第一百零四批）');
         ④新增 .hero .mx 分隔区样式（保留 .hb/.hlg/.hm 原有样式）。
    影响：hero 主卡结构变化 → check-golden 的 res 面板快照需重新冻结；
         已逐用例验证「去掉 mx 区块后与旧快照逐字节一致」，
-        bonus / hist / sum 三个面板完全未变（数值零改动）。
+        bonus / hist / sum 三个面板完全未变（数值不变）。
    ========================================================= */
-section('33. 收入构成占比条并入税后实发主卡（第一百零五批）');
+section('33. 收入构成占比条并入税后实发主卡');
 (function gdMix105(){
   var M105_SCRIPT = html.slice(html.indexOf('<script>'));
   var M105_MARKUP = html.slice(0, html.indexOf('<script>'));
 
   // 一、结构：不再有独立卡片，改为片段并入 hero
-  ok('第一百零五批·独立占比条卡片已移除',
+  ok('独立占比条卡片已移除',
      /id="mixCard"/.test(M105_MARKUP), false);
-  ok('第一百零五批·mixBarHtml 已定义并返回 HTML 片段',
+  ok('mixBarHtml 已定义并返回 HTML 片段',
      /function mixBarHtml\(net,siE,hfE,curT,sal,suppCash\)\{[\s\S]*?return h;/.test(M105_SCRIPT), true);
-  ok('第一百零五批·renderResult 内嵌占比条片段',
+  ok('renderResult 内嵌占比条片段',
      /h\+=mixBarHtml\(net,siE,hfE,curT,sal,D\.suppCash\);/.test(M105_SCRIPT), true);
-  ok('第一百零五批·旧的独立渲染调用已删除',
+  ok('旧的独立渲染调用已删除',
      /renderMixBar\(/.test(M105_SCRIPT), false);
-  ok('第一百零五批·mx 分隔区样式存在',
+  ok('mx 分隔区样式存在',
      /\.hero \.mx\{position:relative/.test(M105_MARKUP), true);
-  ok('第一百零五批·mx 内部占比条间距已收紧',
+  ok('mx 内部占比条间距已收紧',
      /\.hero \.mx \.hb\{margin-top:10px\}/.test(M105_MARKUP), true);
-  ok('第一百零五批·占比条底色与图例样式沿用',
+  ok('占比条底色与图例样式沿用',
      /\.hero \.hb\{display:flex/.test(M105_MARKUP) &&
      /\.hero \.hlg\{display:flex/.test(M105_MARKUP) &&
      /\.hero \.hm\{display:flex/.test(M105_MARKUP), true);
-  ok('第一百零五批·年度明细按钮仍跳到年度明细页',
+  ok('年度明细按钮仍跳到年度明细页',
      /class="go-hist" onclick="switchTab\(1\)"/.test(M105_SCRIPT), true);
 
   // 二、运行时：占比条在 hero 内部、位置在税后实发行之下、三列明细之上
@@ -5072,28 +5072,28 @@ section('33. 收入构成占比条并入税后实发主卡（第一百零五批�
     var heroEnd = res.indexOf('<div class="c">', heroStart);
     var hero = res.slice(heroStart, heroEnd);
     var iMx = hero.indexOf('<div class="mx">');
-    ok('第一百零五批·占比条在 hero 主卡内部',
+    ok('占比条在 hero 主卡内部',
        iMx >= 0, true);
-    ok('第一百零五批·占比条位于税后实发行之后',
+    ok('占比条位于税后实发行之后',
        iMx > hero.indexOf('<div class="tp">'), true);
-    ok('第一百零五批·占比条位于三列明细之前',
+    ok('占比条位于三列明细之前',
        iMx < hero.indexOf('<div class="cd">'), true);
     var mx = hero.slice(iMx);
     var ws = (mx.match(/width:([\d.]+)%/g) || [])
       .map(function(s){ return parseFloat(s.replace(/[^0-9.]/g, '')); });
-    eq('第一百零五批·占比条各段合计 100%',
+    eq('占比条各段合计 100%',
        ws.reduce(function(a, b){ return a + b; }, 0), 100, 0.05);
-    ok('第一百零五批·图例含实发/五险一金/个税',
+    ok('图例含实发/五险一金/个税',
        /实发 [\d.]+%/.test(mx) && /五险一金 [\d.]+%/.test(mx) && /个税 [\d.]+%/.test(mx), true);
-    ok('第一百零五批·占比条标题与分母说明在位',
+    ok('占比条标题与分母说明在位',
        /收入构成/.test(mx) && /占税前工资/.test(mx), true);
   })();
 
-  // 三、数值零改动
-  eq('第一百零五批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第一百零五批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 三、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  收入构成占比条已并入税后实发主卡（两模块合并，数值零改动）✓');
+  emit(' 收入构成占比条已并入税后实发主卡（两模块合并，数值不变）✓');
 })();
 
 /* =========================================================
@@ -5113,9 +5113,9 @@ section('33. 收入构成占比条并入税后实发主卡（第一百零五批�
           推到下一页；
         ③打印兜底路径（window.print()）同样隐藏导出按钮卡片、放开表格横向裁切。
    影响：只改 exportPDF() 与 @media print 样式，不动 DOM 结构与计算逻辑
-        → check-golden 的四个面板快照均不受影响，数值零改动。
+        → check-golden 的四个面板快照均不受影响，数值不变。
    ========================================================= */
-section('34. 导出 PDF 不重复渲染 + 卡片不断开（第一百零六批）');
+section('34. 导出 PDF 不重复渲染 + 卡片不断开');
 (function gdPdf106(){
   var M106_SCRIPT = html.slice(html.indexOf('<script>'));
   var M106_MARKUP = html.slice(0, html.indexOf('<script>'));
@@ -5124,56 +5124,56 @@ section('34. 导出 PDF 不重复渲染 + 卡片不断开（第一百零六批�
   var M106_PRINT = (printStart >= 0 && printEnd > printStart) ? M106_MARKUP.slice(printStart, printEnd) : '';
 
   // 一、克隆视口：高度给足 + 滚动归零（重复渲染的根因）
-  ok('第一百零六批·导出时克隆视口高度按内容全高给足',
+  ok('导出时克隆视口高度按内容全高给足',
      /var exportH=Math\.max\(nodeH\+400,2400\);/.test(M106_SCRIPT), true);
-  ok('第一百零六批·克隆视口高度与滚动量都写进 html2canvas 参数',
+  ok('克隆视口高度与滚动量都写进 html2canvas 参数',
      /windowWidth:EXPORT_W,windowHeight:exportH,scrollX:0,scrollY:0/.test(M106_SCRIPT), true);
-  ok('第一百零六批·不再拿浏览器窗口高当克隆高度',
+  ok('不再拿浏览器窗口高当克隆高度',
      /windowHeight:window\.innerHeight/.test(M106_SCRIPT), false);
 
   // 二、分页：段式 + 卡片避让
-  ok('第一百零六批·分页改为按画布行计算每页容量',
+  ok('分页改为按画布行计算每页容量',
      /var rowMm=imgH\/canvas\.height;/.test(M106_SCRIPT) &&
      /var pageCapPx=Math\.max\(1,Math\.floor\(ch\/rowMm\)\);/.test(M106_SCRIPT), true);
-  ok('第一百零六批·切点落在卡片内部时整卡推到下一页',
+  ok('切点落在卡片内部时整卡推到下一页',
      /if\(c\.top<segEnd&&c\.top\+c\.h>segEnd&&c\.top>segStart&&c\.h<=pageCapPx&&\(pushTo<0\|\|c\.top<pushTo\)\)pushTo=c\.top;/.test(M106_SCRIPT) &&
      /if\(pushTo>0\)segEnd=pushTo;/.test(M106_SCRIPT), true);
-  ok('第一百零六批·每段单独成页且首尾相接',
+  ok('每段单独成页且首尾相接',
      /pdf\.addImage\(cut\.toDataURL\("image\/png"\),"PNG",P\.mx,P\.my,imgW,hMm\);/.test(M106_SCRIPT), true);
-  ok('第一百零六批·旧的整图偏移循环已删除',
+  ok('旧的整图偏移循环已删除',
      /P\.my-segs\[si\]\[0\]\*rowMm/.test(M106_SCRIPT) && /heightLeft-=ch/.test(M106_SCRIPT), false);
-  ok('第一百零六批·克隆文档里量测卡片边界',
+  ok('克隆文档里量测卡片边界',
      /cardBounds\.push\(\{top:c1\.top,h:c1\.h\}\)/.test(M106_SCRIPT) &&
      /querySelectorAll\("\.history-view > \.c"\)/.test(M106_SCRIPT) &&
      /querySelectorAll\("\.sum-grid"\)/.test(M106_SCRIPT), true);
-  ok('第一百零六批·表格卡本身不算不可切块（内部可在行边界断开）',
+  ok('表格卡本身不算不可切块（内部可在行边界断开）',
      /querySelector&&cs\[i\]\.querySelector\("#histTable"\)\)continue;/.test(M106_SCRIPT), true);
 
   // 二之二、明细表格按行边界切：一行不会被切成两半
-  ok('第一百零六批·克隆文档里量测表格行边界',
+  ok('克隆文档里量测表格行边界',
      /querySelectorAll\("#histTable tr"\)/.test(M106_SCRIPT) &&
      /rowEdges\.push\(\{top:t1\.top,b:t1\.b\}\)/.test(M106_SCRIPT), true);
-  ok('第一百零六批·切点落在行内部时切点提前到该行顶边',
+  ok('切点落在行内部时切点提前到该行顶边',
      /if\(r\.top<segEnd&&r\.b>segEnd\)\{if\(r\.top>segStart\)segEnd=r\.top;break;\}/.test(M106_SCRIPT), true);
 
   // 三、纸张与导出模式规则保持不变
-  ok('第一百零六批·仍是 A4 横向并留 10mm 页边距',
+  ok('仍是 A4 横向并留 10mm 页边距',
      /var EXPORT_PDF=\{pw:297,ph:210,mx:10,my:10\}/.test(M106_SCRIPT) &&
      /orientation:"landscape"/.test(M106_SCRIPT), true);
-  ok('第一百零六批·导出模式仍隐藏导出按钮卡片',
+  ok('导出模式仍隐藏导出按钮卡片',
      /\.exp #exportCard\{display:none\}/.test(M106_MARKUP), true);
 
   // 四、打印兜底路径同样收口
-  ok('第一百零六批·打印兜底也隐藏导出按钮卡片',
+  ok('打印兜底也隐藏导出按钮卡片',
      /#exportCard\{display:none!important\}/.test(M106_PRINT), true);
-  ok('第一百零六批·打印兜底放开表格横向裁切',
+  ok('打印兜底放开表格横向裁切',
      /\.tbl-wrap\{overflow:visible\}/.test(M106_PRINT), true);
 
-  // 五、数值零改动
-  eq('第一百零六批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第一百零六批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 五、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  导出 PDF 不再重复渲染、卡片不被页边界切开（数值零改动）✓');
+  emit(' 导出 PDF 不再重复渲染、卡片不被页边界切开（数值不变）✓');
 })();
 
 /* =========================================================
@@ -5191,7 +5191,7 @@ section('34. 导出 PDF 不重复渲染 + 卡片不断开（第一百零六批�
           ③ 两城 lastCheck 推进到 2026-11-01、urls 各 +4 条。
         数值口径零改动：候选上限 27603、下限 5521/4785、第三支 7974 全部不变。
    ========================================================= */
-section('35. 广东职工医保法定口径档 F3.json 与珠海/东莞 2027 候选值口径订正（第九十五批）');
+section('35. 广东职工医保法定口径档 F3.json 与珠海/东莞 2027 候选值口径订正');
 (function gdMedLegal95(){
   const SRC95 = path.join(__dirname, '..', 'docs', 'sources');
   const F3 = JSON.parse(fs.readFileSync(path.join(SRC95, 'F3.json'), 'utf8'));
@@ -5200,101 +5200,101 @@ section('35. 广东职工医保法定口径档 F3.json 与珠海/东莞 2027 候
   const ruleOf = k => (F3.rules || []).filter(r => r.key === k)[0];
 
   // 一、F3.json 法定口径档：结构与边界
-  eq('第九十五批·F3.json 存在且可解析', typeof F3.group === 'string' && F3.group.length > 0, true);
-  eq('第九十五批·F3 归档组名载第九十五批与法定口径',
+  eq('F3.json 存在且可解析', typeof F3.group === 'string' && F3.group.length > 0, true);
+  eq('F3 归档组名载与法定口径',
      /第九十五批/.test(F3.group || '') && /300%/.test(F3.group || '') && /60%/.test(F3.group || ''), true);
-  eq('第九十五批·F3 生成日期为 2026-11-01', F3.generatedAt, '2026-11-01');
-  eq('第九十五批·F3 legalBasis 载国办发〔2019〕13号', /国办发〔2019〕13号/.test((F3.legalBasis || {}).title || ''), true);
-  eq('第九十五批·F3 note 声明只记口径规则不记城市数值',
+  eq('F3 生成日期为 2026-11-01', F3.generatedAt, '2026-11-01');
+  eq('F3 legalBasis 载国办发〔2019〕13号', /国办发〔2019〕13号/.test((F3.legalBasis || {}).title || ''), true);
+  eq('F3 note 声明只记口径规则不记城市数值',
      /不记录任何城市数值/.test(F3.note || ''), true);
-  eq('第九十五批·F3 provinces 为空数组（不参与最佳条目评选与链接统计）',
+  eq('F3 provinces 为空数组（不参与最佳条目评选与链接统计）',
      Array.isArray(F3.provinces) && F3.provinces.length, 0);
-  eq('第九十五批·F3 省级口径链接 3 条', (F3.provinceWideUrls || []).length, 3);
-  eq('第九十五批·F3 口径规则 7 条', (F3.rules || []).length, 7);
-  eq('第九十五批·F3 规则覆盖茂名/中山/佛山/广州/东莞/珠海/省统计局',
+  eq('F3 省级口径链接 3 条', (F3.provinceWideUrls || []).length, 3);
+  eq('F3 口径规则 7 条', (F3.rules || []).length, 7);
+  eq('F3 规则覆盖茂名/中山/佛山/广州/东莞/珠海/省统计局',
      ['mm','zs','fs','gz','dg','zh','gd_stats'].every(k => !!ruleOf(k)), true);
 
   // 二、七条口径规则的逐字依据
-  eq('第九十五批·茂名条载 2025 全口径 7463 与上限 22389、下限 4478',
+  eq('茂名条载 2025 全口径 7463 与上限 22389、下限 4478',
      /7463/.test((ruleOf('mm').rawQuotes || []).join('')) &&
      /22389/.test((ruleOf('mm').rawQuotes || []).join('')) &&
      /4478/.test((ruleOf('mm').rawQuotes || []).join('')), true);
-  eq('第九十五批·茂名条载 2027-01-01 起执行',
+  eq('茂名条载 2027-01-01 起执行',
      /2027年1月1日起执行/.test((ruleOf('mm').rawQuotes || []).join('')), true);
-  eq('第九十五批·中山条载本市上上年度全口径与 300%/60% 上下限',
+  eq('中山条载本市上上年度全口径与 300%/60% 上下限',
      /本市上上年度全口径/.test((ruleOf('zs').rawQuotes || []).join('')) &&
      /300%/.test((ruleOf('zs').rawQuotes || []).join('')) &&
      /60%/.test((ruleOf('zs').rawQuotes || []).join('')), true);
-  eq('第九十五批·佛山条载全口径加权计算口径',
+  eq('佛山条载全口径加权计算口径',
      /加权计算/.test((ruleOf('fs').rawQuotes || []).join('')), true);
-  eq('第九十五批·广州条载上限 300% 与下限 60%',
+  eq('广州条载上限 300% 与下限 60%',
      /300%/.test((ruleOf('gz').rawQuotes || []).join('')) &&
      /60%/.test((ruleOf('gz').rawQuotes || []).join('')), true);
-  eq('第九十五批·东莞条载东府〔2023〕60号第十四条',
+  eq('东莞条载东府〔2023〕60号第十四条',
      /东府〔2023〕60号/.test((ruleOf('dg').rawQuotes || []).join('')), true);
-  eq('第九十五批·珠海条载 2022 全省 8807 与第二类片区含珠海 7577',
+  eq('珠海条载 2022 全省 8807 与第二类片区含珠海 7577',
      /8807/.test((ruleOf('zh').rawQuotes || []).join('')) &&
      /7577/.test((ruleOf('zh').rawQuotes || []).join('')), true);
-  eq('第九十五批·省统计局条载「非省统计局业务」答复',
+  eq('省统计局条载「非省统计局业务」答复',
      /非省统计局业务/.test((ruleOf('gd_stats').rawQuotes || []).join('')), true);
 
   // 三、F2.json 两城口径订正：路径 A/B + 新字段
-  eq('第九十五批·两城 candidateBasis 载路径A 延续跟省养老',
+  eq('两城 candidateBasis 载路径A 延续跟省养老',
      ['zh','dg'].every(k => /路径A/.test(cOf95(k).candidateBasis || '') &&
                              /延续跟省养老/.test(cOf95(k).candidateBasis || '')), true);
-  eq('第九十五批·两城 candidateBasis 载路径B 按本市全口径',
+  eq('两城 candidateBasis 载路径B 按本市全口径',
      ['zh','dg'].every(k => /路径B/.test(cOf95(k).candidateBasis || '') &&
                              /本市/.test(cOf95(k).candidateBasis || '')), true);
-  eq('第九十五批·两城 candidateBasis 载「本批不作数字推定」',
+  eq('两城 candidateBasis 载「本批不作数字推定」',
      ['zh','dg'].every(k => /不作数字推定/.test(cOf95(k).candidateBasis || '')), true);
-  eq('第九十五批·两城 candidateRule2027 存在且载法定口径',
+  eq('两城 candidateRule2027 存在且载法定口径',
      ['zh','dg'].every(k => /300%/.test(cOf95(k).candidateRule2027 || '') &&
                              /60%/.test(cOf95(k).candidateRule2027 || '')), true);
-  eq('第九十五批·两城 candidateAlt 存在（路径B 订正说明）',
+  eq('两城 candidateAlt 存在（路径B 订正说明）',
      ['zh','dg'].every(k => typeof cOf95(k).candidateAlt === 'string' && cOf95(k).candidateAlt.length > 0), true);
-  eq('第九十五批·两城 candidateConfidence.min 载路径A 5521 中高',
+  eq('两城 candidateConfidence.min 载路径A 5521 中高',
      ['zh','dg'].every(k => /路径A 5521 中高/.test((cOf95(k).candidateConfidence || {}).min || '')), true);
-  eq('第九十五批·两城 candidateConfidence.third 载 7974 低',
+  eq('两城 candidateConfidence.third 载 7974 低',
      ['zh','dg'].every(k => /7974 低/.test((cOf95(k).candidateConfidence || {}).third || '')), true);
-  eq('第九十五批·两城 lastCheck 已推进至 2026-11-01',
+  eq('两城 lastCheck 已推进至 2026-11-01',
      ['zh','dg'].every(k => cOf95(k).lastCheck === '2026-11-01'), true);
-  eq('第九十五批·两城 urls 各 10 条（第九十五批各 +4）',
+  eq('两城 urls 各 10 条（各 +4）',
      ['zh','dg'].map(k => cOf95(k).urls.length).join('/'), '10/10');
-  eq('第九十五批·两城 rawNotes 载第九十五批口径订正',
+  eq('两城 rawNotes 载口径订正',
      ['zh','dg'].every(k => /第九十五批/.test(cOf95(k).rawNotes || '')), true);
-  eq('第九十五批·F2 顶层 note 载第九十五批增量',
+  eq('F2 顶层 note 载增量',
      /第九十五批/.test(F2.note || ''), true);
-  eq('第九十五批·F2 省级说明载本市口径与 9183/9201 无逐字印数',
+  eq('F2 省级说明载本市口径与 9183/9201 无逐字印数',
      /本市口径而非全省口径/.test(F2.provinces[0].provinceWideNote || '') &&
      /无逐字印数/.test(F2.provinces[0].provinceWideNote || ''), true);
 
-  // 四、界面 note 与数值零改动
-  eq('第九十五批·界面珠海 note 载第九十五批口径再校正',
+  // 四、界面 note 与数值不变
+  eq('界面珠海 note 载口径再校正',
      A.CITIES.zh.note.indexOf('第九十五批') >= 0, true);
-  eq('第九十五批·界面东莞 note 载第九十五批口径再校正',
+  eq('界面东莞 note 载口径再校正',
      A.CITIES.dg.note.indexOf('第九十五批') >= 0, true);
-  eq('第九十五批·珠海职工医保基数仍 4775~27549',
+  eq('珠海职工医保基数仍 4775~27549',
      [A.CITIES.zh.med.min, A.CITIES.zh.med.max].join('~'), '4775~27549');
-  eq('第九十五批·东莞职工医保基数仍 4775~27549',
+  eq('东莞职工医保基数仍 4775~27549',
      [A.CITIES.dg.med.min, A.CITIES.dg.med.max].join('~'), '4775~27549');
-  eq('第九十五批·两城候选上限仍 27603',
+  eq('两城候选上限仍 27603',
      [cOf95('zh').candidateMax, cOf95('dg').candidateMax].join('/'), '27603/27603');
-  eq('第九十五批·两城候选下限仍 5521（东莞保留 4785 弱分支）',
+  eq('两城候选下限仍 5521（东莞保留 4785 弱分支）',
      [cOf95('zh').candidateMin.join('/'), cOf95('dg').candidateMin.join('/')].join('/'), '5521/5521/4785');
-  eq('第九十五批·两城第三支仍 7974',
+  eq('两城第三支仍 7974',
      [cOf95('zh').candidateThird, cOf95('dg').candidateThird].join('/'), '7974/7974');
-  eq('第九十五批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
   // 五、来源库整体链接数与来源档数
   const srcFiles = fs.readdirSync(SRC95).filter(f => /^[A-Z]\d+[a-z]?\.json$/.test(f));
-  eq('第九十五批·来源档 106 个（新增 F3.json）', srcFiles.length, 106);
+  eq('来源档 106 个（新增 F3.json）', srcFiles.length, 106);
   const allUrls95 = srcFiles.reduce((t, f) => {
     const j = JSON.parse(fs.readFileSync(path.join(SRC95, f), 'utf8'));
     return t + (j.provinces || []).reduce((u, p) => u + (p.cities || []).reduce((v, c) => v + ((c.urls || []).length), 0), 0);
   }, 0);
-  eq('第九十五批·全库 urls 总数 2851（F3 provinces 为空不贡献）', allUrls95, 2851);
+  eq('全库 urls 总数 2851（F3 provinces 为空不贡献）', allUrls95, 2851);
 
-  emit('  广东职工医保法定口径档（F3.json）7 条逐字 + 珠海/东莞两支口径订正已锁定（数值零改动）✓');
+  emit(' 广东职工医保法定口径档（F3.json）7 条逐字 + 珠海/东莞两支口径订正已锁定（数值不变）✓');
 })();
 
 /* =========================================================
@@ -5315,59 +5315,59 @@ section('35. 广东职工医保法定口径档 F3.json 与珠海/东莞 2027 候
         （无趋势图标题），页 2 = 完整趋势图卡（标题 + 图例 + 图表），相邻页首尾 40 行
         像素零重复。
    ========================================================= */
-section('36. 导出 PDF 过页重复修复 + 趋势图强制落在第二页（第一百零七批）');
+section('36. 导出 PDF 过页重复修复 + 趋势图强制落在第二页');
 (function gdPdf107(){
   var M107_SCRIPT = html.slice(html.indexOf('<script>'));
 
   // 一、根因修复：每页单独裁剪本段内容再放置
-  ok('第一百零七批·每页裁剪本段内容后单独放置（不再整图偏移）',
+  ok('每页裁剪本段内容后单独放置（不再整图偏移）',
      /var cut=document\.createElement\("canvas"\);/.test(M107_SCRIPT) &&
      /cx2\.drawImage\(canvas,0,y0,canvas\.width,y1-y0,0,0,canvas\.width,y1-y0\);/.test(M107_SCRIPT) &&
      /pdf\.addImage\(cut\.toDataURL\("image\/png"\),"PNG",P\.mx,P\.my,imgW,hMm\);/.test(M107_SCRIPT), true);
-  ok('第一百零七批·旧的整图偏移放置写法已删除',
+  ok('旧的整图偏移放置写法已删除',
      /P\.my-segs\[si\]\[0\]\*rowMm/.test(M107_SCRIPT), false);
-  ok('第一百零七批·页内高度按本段内容高并受页容量约束',
+  ok('页内高度按本段内容高并受页容量约束',
      /var hMm=Math\.min\(ch,\(y1-y0\)\*rowMm\);/.test(M107_SCRIPT), true);
 
   // 二、趋势图卡强制整块从新页开始
-  ok('第一百零七批·分页切点计算抽成纯函数 planSegments',
+  ok('分页切点计算抽成纯函数 planSegments',
      /function planSegments\(totalPx,pageCapPx,trendTopPx,cards,rows\)/.test(M107_SCRIPT), true);
-  ok('第一百零七批·切点不得越过趋势图卡顶边',
+  ok('切点不得越过趋势图卡顶边',
      /if\(trendTopPx>0&&segStart<trendTopPx&&segEnd>trendTopPx\)segEnd=trendTopPx;/.test(M107_SCRIPT), true);
-  ok('第一百零七批·克隆文档里量测趋势图卡顶边',
+  ok('克隆文档里量测趋势图卡顶边',
      /if\(trendTop<0&&cs\[i\]\.querySelector&&cs\[i\]\.querySelector\("#chart"\)\)trendTop=c1\.top;/.test(M107_SCRIPT), true);
-  ok('第一百零七批·排除 .exp 模式下高度为 0 的无效卡片',
+  ok('排除 .exp 模式下高度为 0 的无效卡片',
      /if\(c1\.h<=0\|\|c1\.top<0\)continue;/.test(M107_SCRIPT), true);
 
   // 三、planSegments 行为单测（深圳 12 个月实测几何：总高 2488、页容量 1553、趋势卡顶 1478）
   var TOTAL = 2488, CAP = 1553, TREND = 1478, TREND_H = 1010;
   var segs = A.planSegments(TOTAL, CAP, TREND, [{ top: TREND, h: TREND_H }], []);
-  eq('第一百零七批·趋势图卡顶边处切分：第 1 段止于趋势图顶边',
+  eq('趋势图卡顶边处切分：第 1 段止于趋势图顶边',
      segs[0][0] + '/' + segs[0][1], '0/' + TREND);
-  eq('第一百零七批·趋势图卡整块从第 2 段开始',
+  eq('趋势图卡整块从第 2 段开始',
      segs.length >= 2 && segs[1][0] === TREND, true);
-  eq('第一百零七批·趋势图卡未被任何一段从中间切开',
+  eq('趋势图卡未被任何一段从中间切开',
      segs.every(function(s){ return !(s[0] < TREND && s[1] > TREND); }), true);
-  eq('第一百零七批·各段首尾相接、不重叠',
+  eq('各段首尾相接、不重叠',
      segs.every(function(s, i){ return i === 0 || s[0] === segs[i - 1][1]; }), true);
-  eq('第一百零七批·首段从 0 开始、末段到画布底',
+  eq('首段从 0 开始、末段到画布底',
      segs[0][0] + '/' + segs[segs.length - 1][1], '0/' + TOTAL);
-  eq('第一百零七批·每段不超过一页容量',
+  eq('每段不超过一页容量',
      segs.every(function(s){ return s[1] - s[0] <= CAP; }), true);
-  eq('第一百零七批·总页数为 2（趋势图独占第 2 页）', segs.length, 2);
+  eq('总页数为 2（趋势图独占第 2 页）', segs.length, 2);
   var segsNoTrend = A.planSegments(TOTAL, CAP, -1, [], []);
-  eq('第一百零七批·不指定趋势图时按页容量常规切分',
+  eq('不指定趋势图时按页容量常规切分',
      segsNoTrend.length + '/' + segsNoTrend[0][1] + '/' + segsNoTrend[segsNoTrend.length - 1][1],
      '2/' + CAP + '/' + TOTAL);
   var segsRow = A.planSegments(2000, 1000, -1, [], [{ top: 900, b: 1100 }]);
-  eq('第一百零七批·切点落在表格行内部时提前到该行顶边',
+  eq('切点落在表格行内部时提前到该行顶边',
      segsRow[0][1], 900);
 
-  // 四、数值零改动
-  eq('第一百零七批·深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
-  eq('第一百零七批·城市总数仍 337', Object.keys(A.CITIES).length, 337);
+  // 四、数值不变
+  eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);
+  eq('城市总数仍 337', Object.keys(A.CITIES).length, 337);
 
-  emit('  导出 PDF 过页重复已修复：趋势图整块落在第 2 页，页与页零重叠（数值零改动）✓');
+  emit(' 导出 PDF 过页重复已修复：趋势图整块落在第 2 页，页与页零重叠（数值不变）✓');
 })();
 
 /* =========================================================

@@ -19,7 +19,7 @@
 ## 仓库约定与红线
 
 - 数值唯一真源是 `skills/city-salary/assets/calculator.html` 的 `CITIES`；文档参数经 `node tools/gen-city-params.js --extract` 从 `CITIES` 落到 `skills/city-salary/data/cities.json`（`docRate`/`docNote` 人工措辞按城市名保留），再由 `--write` 生成到 `skills/city-salary/references/city-parameters.md` 的 generated 区（`<!-- generated:begin -->` 至 `<!-- generated:end -->`，勿手改），`AGENTS.md` 不再复制参数表。
-- 改数值必须同步跑 `node tools/sync.js`、`node tools/test-calc.js`、`node tools/check-golden.js`、`node tools/check-dom.js`、`node tools/check-sync.js`、`node tools/test-export.js`；黄金快照禁止用 `--update` 造绿。
+- 改数值必须同步跑 `node tools/sync.js`、`node tools/test-calc.js`、`node tools/check-golden.js`、`node tools/check-dom.js`、`node tools/check-sync.js`、`node tools/data-quality.js`、`node tools/test-export.js`、`node tools/e2e-smoke.js`、`node tools/check-jsdoc.js`；黄金快照禁止用 `--update` 造绿。
 - 新增或修改城市参数：只改 `CITIES` → `node tools/gen-city-params.js --extract` 重建 JSON → `node tools/gen-city-params.js --write` 重写 references 生成区 → 跑 `check-sync` 的 B 项（生成物 diff + JSON 是否等于 CITIES 提取结果 + docRate/docNote 措辞能否回溯到数值）。漏跑 `--extract` 会报「请运行 node tools/gen-city-params.js --extract 重建 JSON」。
 - 文档里的断言数、机制规模数字由 `check-sync` 的 C/D 项守卫，不要手写旧数字。
 - 维护流程见 `CONTRIBUTING.md`，年度节奏见 `docs/maintenance-calendar.md`，安装说明见 `docs/INSTALL-*.md`。

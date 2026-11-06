@@ -4,6 +4,24 @@
 
 ## [未发布]
 
+### 变更
+
+- **Node 支持范围收紧为 `>=20 <25`**：Node 18 已 EOL，`engines` 由 `>=18` 改为 `>=20 <25`，
+  CI 矩阵改为 20 / 22 / 24（`tools/ci-selfcheck.js` 同时校验上下界）。
+  对使用者的影响：npm 默认 `engine-strict=false`，Node < 20 时只给 `EBADENGINE` **warning**
+  （安装不中断、脚本仍可跑，但不再保证兼容）；把 `engine-strict` 设为 `true`
+  （或 `npm install --engine-strict`）才会硬失败。
+- **关键计算函数补 JSDoc（零依赖，不引入 TypeScript）**：`cl` / `cl0` / `calcContrib` /
+  `calcDeductions` / `calcTax` / `planSegments` 补齐 `@param` / `@returns`；
+  新增 `tools/check-jsdoc.js`，校验"`@param` 数 = 实际形参数"且必须有 `@returns`，
+  已接入 `npm test` 与 CI。内联脚本**刻意不加** `// @ts-check`：仓库没有 tsc 门禁（零依赖红线），
+  开了只会给其余未标注代码刷编辑器诊断，噪声大于收益。
+- **`test-calc.js` 断言名去掉批次号**：858 条带"第X批"的断言名改为只描述行为，
+  "数值零改动"改为"数值不变"；批次信息只留在本文件。断言数仍为 9299、期望值未改。
+- **新增最小离线 E2E** `tools/e2e-smoke.js`：用 `tools/calc-harness.js` 的 DOM 桩加载
+  `site/index.html` 的真实内联脚本，断言"初始城市遮罩可见 → 选城后出数值 → `window.print` 兜底"
+  三段路径；不下载浏览器、不联网，已接入 `npm test` 与 CI。
+
 ### 新增
 
 - **`tools/data-quality.js` + `docs/sources/_quality-baseline.json` —— 数据质量进 CI 门禁（纯离线）**：

@@ -26,17 +26,20 @@ node tools/sync.js        # 源 → 镜像
 ## 二、改完要跑什么
 
 ```bash
-npm test                    # 一次跑完下面五项（零依赖，无需 npm install）
+npm test                    # 一次跑完下面八项（零依赖，无需 npm install）
 node tools/test-calc.js     # 9299 项断言
 node tools/check-golden.js  # 黄金用例：16 用例 × 4 面板逐字节比对
 node tools/check-dom.js     # 单文件 HTML 静态结构 + 计算/渲染函数的全局裸引用守卫
 node tools/check-sync.js    # 漂移检查 A–I
+node tools/data-quality.js  # 数据质量门禁：docs/sources 指标 vs 基线 + _summary.json 同步（离线）
 node tools/test-export.js   # 导出 PDF 降级链
+node tools/e2e-smoke.js     # 最小离线 E2E：site/index.html 脚本 → 选城出值 → print 兜底
+node tools/check-jsdoc.js   # JSDoc 结构检查：关键计算函数的注解 vs 实际签名（零依赖，不跑 tsc）
 node tools/ci-selfcheck.js  # 零依赖红线自检
 node tools/sync.js          # 同步镜像（改完 skills/ 之后）
 ```
 
-典型顺序：`改源文件` → `sync.js` → `test-calc.js` → `check-golden.js` → `check-dom.js` → `check-sync.js` → `test-export.js`。
+典型顺序：`改源文件` → `sync.js` → `test-calc.js` → `check-golden.js` → `check-dom.js` → `check-sync.js` → `data-quality.js` → `test-export.js` → `e2e-smoke.js` → `check-jsdoc.js`。
 
 ---
 
@@ -205,6 +208,6 @@ CI 里**不执行 `npm install`**。若某个改动需要引入依赖，那不�
 
 ## 八、CI
 
-`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 三个版本跑完整守卫链。本地跑通不代表 CI 会绿（少数差异来自换行符与路径），所以推送后请确认 CI 状态。
+`.github/workflows/ci.yml` 在 push / PR 时按 Node 20/22/24 三个版本跑完整守卫链。本地跑通不代表 CI 会绿（少数差异来自换行符与路径），所以推送后请确认 CI 状态。
 
 仓库用 `.gitattributes` 统一换行符为 LF（本机 `core.autocrlf=true` 会把检出改成 CRLF，与 Linux CI 不一致，会让比对类守卫的输入不可复现）。

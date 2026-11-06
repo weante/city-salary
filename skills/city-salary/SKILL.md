@@ -304,17 +304,20 @@ version: 1.1.0
 改完参数或计算逻辑后，跑仓库自带的检查（均为零依赖 Node 脚本，无需 `npm install`）：
 
 ```bash
-npm test                    # ★ 一次跑完下面五项
+npm test                    # ★ 一次跑完下面八项
 node tools/test-calc.js     # 9299 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归/年度口径/起始月边界（北京 158 / 上海 144 / 深圳 209 / 成都 3 + 跨城市 337 + 抽查 295 + 租金档位 47 + 年度口径 40 + 起始月边界 9 + 年终奖计税对比 23）
 node tools/check-golden.js  # 黄金用例：16 用例 × 4 面板（res/bonus/hist/sum）逐字节比对
 node tools/check-dom.js     # 静态结构：重复 id、悬空 $() 引用、未定义事件处理器、CITIES 重复 key/城市名
 node tools/check-sync.js    # 漂移检查：A 镜像同步 / B 生成物 diff（JSON↔CITIES 提取结果 + docRate/docNote 措辞回溯） / C 陈旧表述 / D 断言数 / E 省份年度口径 / F 数据状态表年度
+node tools/data-quality.js  # 数据质量门禁：docs/sources 指标 vs 基线 + _summary.json 同步（离线）
 node tools/test-export.js   # 导出 PDF 的降级链（4 条路径，含兜底等待）
+node tools/e2e-smoke.js     # 最小离线 E2E：site/index.html 脚本 → 选城出值 → print 兜底
+node tools/check-jsdoc.js   # JSDoc 结构检查：关键计算函数的注解 vs 实际签名（零依赖，不跑 tsc）
 node tools/ci-selfcheck.js  # 零依赖红线自检（禁止声明依赖、禁止 scripts 调包管理器）
 node tools/sync.js          # 改完 skills/ 后同步到 site/index.html 与根级 SKILL.md
 ```
 
-`.github/workflows/ci.yml` 在 push / PR 时按 Node 18/20/22 跑完整守卫链。CI 里**不跑 `sync.js`**——它会把镜像"修好"，掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查逐字节比对。
+`.github/workflows/ci.yml` 在 push / PR 时按 Node 20/22/24 跑完整守卫链。CI 里**不跑 `sync.js`**——它会把镜像"修好"，掩盖"改了源文件忘了同步"的漂移；镜像一致性由 `check-sync` 的 A 检查逐字节比对。
 
 - 对照当地人社局/医保局/公积金中心官网核实基数上下限与费率，优先取官方文件名与文号
 - 年终奖六个临界值的"多1元少拿"金额必须精确验证（`test-calc.js` 已含独立复算）
