@@ -4877,7 +4877,7 @@ section('30. 收入构成占比条与历史明细移动端适配');
   ok('手机端图表可横向滚动',
      /\.chart-box\{overflow-x:auto\}/.test(M102_780), true);
   ok('滑动提示文案已写进页面',
-     /左右滑动查看全部 15 列/.test(M102_MARKUP), true);
+     /左右滑动查看全部/.test(M102_MARKUP), true);
 
   // 四、数值不变
   eq('深圳公积金上限仍 48471', A.CITIES.sz.hf.max, 48471);

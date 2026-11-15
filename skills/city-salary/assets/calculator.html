@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>城市工资计算器 · 社保公积金个税（337 城 · 全国 28 省区市全覆盖）</title>
 <style>:root{
-  --bg:#f4f6f3;--surface:#fff;--surface-soft:#f8faf8;--ink:#172b28;--muted:#6c7b78;
+  --bg:#f4f6f3;--surface:#fff;--surface-soft:#f8faf8;--ink:#172b28;--muted:#5f6f6c;
   --line:#e2e8e4;--primary:#176b5b;--primary-dark:#123f38;--primary-soft:#e8f3ef;
   --lime:#d9f99d;--amber:#a86216;--amber-soft:#fff6e7;--danger:#b94b54;
   --shadow:0 1px 2px rgba(18,63,56,.03),0 10px 30px rgba(18,63,56,.045);
@@ -114,18 +114,18 @@ h1{font-size:30px;line-height:1.25;letter-spacing:-.035em;margin:0 0 8px;font-we
   border-bottom:1px dashed #e7ece8}
 .r:last-child{border-bottom:0}
 .r label{font-size:13px;color:var(--muted);flex:1;min-width:0}
-.r .h{font-size:11px;color:#9aa8a5;margin-left:6px}
+.r .h{font-size:11px;color:#65736f;margin-left:6px}
 .r .u{font-size:11px;color:var(--muted);min-width:16px;margin-left:6px;white-space:nowrap}
 .r .vwarn{font-size:11px;color:var(--danger);margin-left:6px;white-space:nowrap}
 .r input[type=number]{width:108px;padding:7px 10px;text-align:right;border:1px solid #d8e1dc;border-radius:10px;
   font-size:13px;outline:none;background:#fff;font-variant-numeric:tabular-nums;transition:border-color .18s,box-shadow .18s}
 .r input[type=number]:hover{border-color:#b6c9c1}
 .r input[type=number]:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(23,107,91,.1)}
-.r input[type=number]:disabled{background:var(--surface-soft);color:#a9b6b3;border-color:var(--line)}
+.r input[type=number]:disabled{background:var(--surface-soft);color:var(--muted);border-color:var(--line)}
 .v{font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap}
 .v.b{font-weight:700}
 .ind{padding-left:22px}
-.ind label{font-size:12px;color:#8d9b98}
+.ind label{font-size:12px;color:var(--muted)}
 .sp{border-top:1px dashed var(--line);margin:12px 0}
 .ss{border-top:1px solid var(--line);margin:12px 0}
 .nt{font-size:11px;color:var(--muted);line-height:1.75;margin-top:9px}
@@ -192,7 +192,7 @@ h1{font-size:30px;line-height:1.25;letter-spacing:-.035em;margin:0 0 8px;font-we
 .tg{display:flex;gap:3px;align-items:center;background:#f0f4f1;border-radius:10px;padding:3px}
 .tg button{padding:5px 10px;font-size:11px;border-radius:7px;border:0;background:transparent;color:var(--muted);font-weight:600}
 .tg button.a{background:#fff;color:var(--primary);box-shadow:0 1px 4px rgba(18,63,56,.08)}
-.tg .or{font-size:10px;color:#b6c2bf;margin:0 1px}
+.tg .or{font-size:10px;color:#65736f;margin:0 1px}
 .chk{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:13px;color:var(--muted);cursor:pointer}
 .chk input{width:16px;height:16px;accent-color:var(--primary)}
 .sld{display:flex;align-items:center;gap:12px;padding:7px 0}
@@ -237,9 +237,9 @@ h1{font-size:30px;line-height:1.25;letter-spacing:-.035em;margin:0 0 8px;font-we
 .ded input[type=number]{width:92px;padding:6px 9px;text-align:right;border:1px solid #d8e1dc;border-radius:9px;
   font-size:13px;outline:none;background:#fff;font-variant-numeric:tabular-nums}
 .ded input[type=number]:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(23,107,91,.1)}
-.ded input[type=number]:disabled{background:var(--surface-soft);color:#a9b6b3}
+.ded input[type=number]:disabled{background:var(--surface-soft);color:var(--muted)}
 .ded .u{font-size:11px;color:var(--muted);white-space:nowrap}
-.ded.off .dn,.ded.off .dh{color:#b6c2bf}
+.ded.off .dn,.ded.off .dh{color:var(--muted)}
 
 /* ================= 险种明细表 ================= */
 .grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;font-size:11px;color:var(--muted);font-weight:650;
@@ -328,7 +328,7 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
   display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
 .modal{width:min(680px,calc(100vw - 32px));max-height:min(760px,calc(100vh - 40px));background:var(--surface);
   border-radius:22px;box-shadow:0 28px 80px rgba(10,31,27,.28);overflow:hidden;display:flex;flex-direction:column}
-.modal-head{padding:24px 26px 12px}
+.modal-head{padding:24px 26px 12px;position:relative;padding-right:64px}
 .modal-head h2{font-size:20px;margin:0 0 4px;font-weight:750;letter-spacing:-.02em}
 .overlay .os{color:var(--muted);font-size:12px;margin:0}
 .city-search{margin:0 26px 14px;position:relative}
@@ -350,6 +350,41 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
 .city-card .cd{font-size:10px;color:var(--muted);margin-top:3px}
 .city-card.warn{border-color:#efd8b4;background:#fffdf8}
 .city-card.warn .cd{color:var(--amber)}
+/* 城市弹层：关闭按钮 + 键盘焦点环（第一百零八批 · UI-03） */
+.modal-close{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:11px;border:1px solid var(--line);
+  background:var(--surface);color:var(--muted);display:grid;place-items:center;font-size:15px;line-height:1;transition:.15s}
+.modal-close:hover{background:var(--surface-soft);color:var(--ink)}
+.modal-close svg{width:18px;height:18px}
+.city-grid .tree-city:focus-visible,.prov-tab:focus-visible{outline:3px solid rgba(23,107,91,.35);outline-offset:2px}
+
+/* 结果卡数据状态徽标（第一百零八批 · UI-05）：不只靠颜色，始终带文字说明 */
+.hero .dstat{position:relative;display:inline-flex;align-items:center;gap:7px;margin-top:14px;padding:6px 12px;
+  border-radius:999px;font-size:11.5px;font-weight:650;line-height:1.4;border:1px solid transparent}
+.hero .dstat .dot{width:7px;height:7px;border-radius:50%;flex:none}
+.hero .dstat .dstat-tip{font-weight:400;opacity:.82;margin-left:2px}
+.hero .dstat.st-ok{background:rgba(217,249,157,.14);color:var(--lime);border-color:rgba(217,249,157,.35)}
+.hero .dstat.st-ok .dot{background:var(--lime)}
+.hero .dstat.st-partial{background:rgba(253,186,116,.16);color:#fdba74;border-color:rgba(253,186,116,.4)}
+.hero .dstat.st-partial .dot{background:#fdba74}
+.hero .dstat.st-stale{background:rgba(255,255,255,.1);color:rgba(255,255,255,.78);border-color:rgba(255,255,255,.28)}
+.hero .dstat.st-stale .dot{background:rgba(255,255,255,.7)}
+
+/* 分组2「逐项调整缴费基数」高级折叠（第一百零八批 · UI-06） */
+.adv{margin-top:12px;border-top:1px dashed var(--line)}
+.adv>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;padding:11px 2px;font-size:13px;
+  font-weight:650;color:var(--ink)}
+.adv>summary::-webkit-details-marker{display:none}
+.adv>summary .chev{margin-left:auto;width:16px;height:16px;color:var(--muted);transition:transform .18s}
+.adv[open]>summary .chev{transform:rotate(180deg)}
+.adv[open]>summary{border-bottom:1px dashed var(--line);margin-bottom:2px}
+.base-summary{font-size:12px;line-height:1.7;color:var(--muted);margin:0 0 10px;padding:8px 11px;
+  background:var(--surface-soft);border:1px dashed var(--line);border-radius:10px}
+.base-summary b{color:var(--ink);font-weight:650}
+
+/* UI-02：历史明细页整页横向裁切兜底——表格只在 .tbl-wrap 内部横滑，页面/卡片不撑破视口 */
+#page1,.history-view,.history-view>.c,.chart-box{min-width:0;max-width:100%}
+#page1{overflow-x:clip}
+.history-view>.c{min-width:0}
 
 /* ================= 旧内联色 → 新色板映射（不改 JS 渲染逻辑） ================= */
 [style*="#6b7280"]{color:var(--muted)!important}
@@ -429,8 +464,12 @@ svg .pt.hl{transform:scale(2.1);opacity:1}
   .hero .bg{font-size:32px}
   .hero .pc{font-size:16px}
   .hero .cd{gap:8px;margin-top:18px;padding-top:14px}
-  .city-grid{grid-template-columns:repeat(2,1fr)}
-  .modal{width:calc(100vw - 20px);max-height:calc(100vh - 20px);border-radius:18px}
+  /* UI-01：小屏城市选择改为单列 + 近全屏底部抽屉，避免省份块被压成半宽 */
+  .overlay{align-items:flex-end;padding:0}
+  .modal{width:100%;max-height:92vh;border-radius:18px 18px 0 0}
+  .city-content{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+  .city-search{margin-bottom:12px}
+  .modal-head{padding-right:62px}
   .r input[type=number],.base-row input[type=number]{width:96px}
   .policy-pop{right:auto;left:0;width:min(360px,calc(100vw - 32px))}
 }
@@ -544,8 +583,8 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
       <span><span class="brand-name">城薪</span><span class="brand-en">CITY SALARY</span></span>
     </a>
     <nav class="main-nav" aria-label="主导航">
-      <button class="tab a" id="tab0" onclick="switchTab(0)">工资计算</button>
-      <button class="tab" id="tab1" onclick="switchTab(1)">年度明细</button>
+      <button class="tab a" id="tab0" role="tab" aria-selected="true" aria-controls="page0" onclick="switchTab(0)">工资计算</button>
+      <button class="tab" id="tab1" role="tab" aria-selected="false" aria-controls="page1" onclick="switchTab(1)">年度明细</button>
     </nav>
     <div class="header-actions">
       <details class="policy-menu">
@@ -577,7 +616,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
     </div>
     <div class="head-tools">
       <span class="policy-badge">2025–2026 政策</span>
-      <button class="city-picker" onclick="showOverlay()" aria-haspopup="dialog">
+      <button class="city-picker" onclick="showOverlay()" id="cityPicker" aria-haspopup="dialog" aria-expanded="false" aria-controls="cityOverlay" aria-label="选择工作城市">
         <svg class="icon"><use href="#i-pin"/></svg>
         <span><small>工作城市</small><strong class="city-tag" id="cityTag">深圳</strong></span>
         <svg class="icon chevron"><use href="#i-chevron"/></svg>
@@ -630,25 +669,29 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
           </summary>
           <div class="panel-body">
             <div class="qkrow"><span class="qt">快捷设置：</span><button class="qk" onclick="setAllBase('min')">全部最低</button><button class="qk" onclick="setAllBase('salary')">全部按工资</button></div>
-            <div class="base-row"><span class="bl">养老保险<span class="rng" id="rngP"></span></span><div style="display:flex;align-items:center"><input type="number" id="pBase" value="5521" min="0" step="100"><span class="u">元</span></div></div>
-            <div class="base-row"><span class="bl">医疗保险<span class="rng" id="rngM"></span></span><div style="display:flex;align-items:center"><input type="number" id="mBase" value="6727" min="0" step="100"><span class="u">元</span></div></div>
-            <div class="base-row"><span class="bl">失业保险<span class="rng" id="rngU"></span></span><div style="display:flex;align-items:center"><input type="number" id="uBase" value="2040" min="0" step="100"><span class="u">元</span></div></div>
-            <div class="base-row" id="mtRow"><span class="bl">生育保险<span class="rng" id="rngMT"></span></span><div style="display:flex;align-items:center"><input type="number" id="mtBase" value="6727" min="0" step="100"><span class="u">元</span></div></div>
-            <div class="base-row"><span class="bl">工伤保险<span class="rng" id="rngIJ"></span></span><div style="display:flex;align-items:center"><input type="number" id="ijBase" value="5521" min="0" step="100"><span class="u">元</span></div></div>
-            <div class="rng-hint" id="ijSpecialHint"></div>
-            <div class="base-row"><span class="bl">住房公积金<span class="rng" id="rngHF"></span></span><div style="display:flex;align-items:center"><input type="number" id="hfBase" value="2520" min="0" step="100"><span class="u">元</span></div></div>
-            <div class="sld"><label>公积金比例（个人）<span class="h" id="hfRateHint">0 或 5~12%</span></label><input type="range" id="hfRate" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateV">5%</span></div>
-            <div class="sld"><label>公积金比例（单位）<span class="h" id="hfRateCompHint">默认与个人相同</span></label><input type="range" id="hfRateComp" min="0" max="12" step="1" value="5" oninput="calc()"><span class="sv" id="hfRateCompV">5%</span></div>
+            <div class="base-summary" id="baseSummary"></div>
+            <div class="sld"><label for="hfRate">公积金比例（个人）<span class="h" id="hfRateHint">0 或 5~12%</span></label><input type="range" id="hfRate" min="0" max="12" step="1" value="5" oninput="calc()" aria-label="公积金个人缴存比例"><span class="sv" id="hfRateV">5%</span></div>
+            <div class="sld"><label for="hfRateComp">公积金比例（单位）<span class="h" id="hfRateCompHint">默认与个人相同</span></label><input type="range" id="hfRateComp" min="0" max="12" step="1" value="5" oninput="calc()" aria-label="公积金单位缴存比例"><span class="sv" id="hfRateCompV">5%</span></div>
             <div class="rng-hint" id="hfTransitionHint" style="display:none"></div>
-            <div id="ltcWrap"><label class="chk"><input type="checkbox" id="ltcOn" onchange="calc()">长期护理险（第六险）<span class="h" id="ltcRate"></span></label></div>
+            <div id="ltcWrap"><label class="chk"><input type="checkbox" id="ltcOn" onchange="calc()" aria-label="是否缴纳长期护理险">长期护理险（第六险）<span class="h" id="ltcRate"></span></label></div>
+            <details class="adv">
+              <summary>逐项调整缴费基数（高级）<svg class="icon chev"><use href="#i-chevron"/></svg></summary>
+              <div class="base-row"><span class="bl">养老保险<span class="rng" id="rngP"></span></span><div style="display:flex;align-items:center"><input type="number" id="pBase" value="5521" min="0" step="100" aria-label="养老保险缴费基数（元）"><span class="u">元</span></div></div>
+              <div class="base-row"><span class="bl">医疗保险<span class="rng" id="rngM"></span></span><div style="display:flex;align-items:center"><input type="number" id="mBase" value="6727" min="0" step="100" aria-label="医疗保险缴费基数（元）"><span class="u">元</span></div></div>
+              <div class="base-row"><span class="bl">失业保险<span class="rng" id="rngU"></span></span><div style="display:flex;align-items:center"><input type="number" id="uBase" value="2040" min="0" step="100" aria-label="失业保险缴费基数（元）"><span class="u">元</span></div></div>
+              <div class="base-row" id="mtRow"><span class="bl">生育保险<span class="rng" id="rngMT"></span></span><div style="display:flex;align-items:center"><input type="number" id="mtBase" value="6727" min="0" step="100" aria-label="生育保险缴费基数（元）"><span class="u">元</span></div></div>
+              <div class="base-row"><span class="bl">工伤保险<span class="rng" id="rngIJ"></span></span><div style="display:flex;align-items:center"><input type="number" id="ijBase" value="5521" min="0" step="100" aria-label="工伤保险缴费基数（元）"><span class="u">元</span></div></div>
+              <div class="rng-hint" id="ijSpecialHint"></div>
+              <div class="base-row"><span class="bl">住房公积金<span class="rng" id="rngHF"></span></span><div style="display:flex;align-items:center"><input type="number" id="hfBase" value="2520" min="0" step="100" aria-label="住房公积金缴费基数（元）"><span class="u">元</span></div></div>
+            </details>
             <div class="nt" id="baseNote"></div>
           </div>
         </details>
 
-        <details class="panel" open>
+        <details class="panel">
           <summary class="panel-summary">
             <span class="step">3</span>
-            <span class="summary-copy"><strong>专项附加扣除</strong><small>子女教育、住房、赡养老人等每月扣除</small></span>
+            <span class="summary-copy"><strong>专项附加扣除</strong><small>子女教育、住房、赡养老人等每月扣除（按需展开）</small></span>
             <svg class="icon chev"><use href="#i-chevron"/></svg>
           </summary>
           <div class="panel-body">
@@ -721,7 +764,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
         <button class="reset-btn" onclick="resetAll()"><svg class="icon"><use href="#i-reset"/></svg>恢复默认设置</button>
       </div>
 
-      <section class="results" id="calcResults" aria-label="计算结果">
+      <section class="results" id="calcResults" aria-label="计算结果" aria-live="polite" aria-atomic="false">
         <div id="res"></div>
         <div class="c">
           <div class="st vi">年终奖 · 临界值陷阱速查</div>
@@ -737,7 +780,7 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
       <div class="c">
         <div class="tbl-title"><span class="st bl" style="margin:0;border:none;padding:0">逐月工资与五险一金（<span id="histCity"></span>）</span><span class="tt" id="rangeLabel"></span></div>
         <div class="nt" style="margin-bottom:8px">每月工资、五险基数、公积金基数、公积金比例均可独立调整（默认继承第一页数值；已修改的月份在切换页面或调整默认值后保留）。<b>专项附加扣除取自第 1 页、各月相同</b>。个税按累计预扣预缴从首月起累计，当前月之后为预测月份（蓝色）。<b>本页累计个税为月度预扣口径</b>，不含仅年度汇算可扣的大病医疗（对比见第一页「年度预估」）。生育/工伤基数仅影响单位侧缴费，不参与「到手现金」计算，列出仅为完整性。</div>
-        <div class="tbl-hint">← 左右滑动查看全部 15 列 →</div>
+        <div class="tbl-hint" id="tblHint">← 左右滑动查看全部列 →</div>
         <div class="tbl-wrap">
           <table class="hist" id="histTable"></table>
         </div>
@@ -766,10 +809,11 @@ details.panel[open]>summary .chev{transform:rotate(180deg)}
 
 <!-- 城市选择弹层 -->
 <div class="overlay" id="cityOverlay">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cityModalTitle" aria-describedby="cityModalDesc">
     <div class="modal-head">
-      <h2>选择工作城市</h2>
-      <p class="os">先选省份，再选城市（默认广东；标注「数据待确认」的城市部分参数待官方确认，仅供参考）</p>
+      <h2 id="cityModalTitle">选择工作城市</h2>
+      <p class="os" id="cityModalDesc">先选省份，再选城市（默认广东；标注「数据待确认」的城市部分参数待官方确认，仅供参考）</p>
+      <button class="modal-close" id="cityClose" onclick="hideOverlay()" aria-label="关闭城市选择"><svg class="icon"><use href="#i-close"/></svg></button>
     </div>
     <div class="city-search">
       <svg class="icon"><use href="#i-search"/></svg>
@@ -4311,7 +4355,7 @@ function buildProvTabs(){
   var h="";
   for(var i=0;i<PROV_TREE.length;i++){
     var p=PROV_TREE[i];
-    h+='<button class="prov-tab'+(prov===p.n?' a':'')+'" data-prov="'+p.n+'" onclick="setProv(\''+p.n+'\')">'+p.n+'<span class="pv">'+p.s+'</span></button>';
+    h+='<button class="prov-tab'+(prov===p.n?' a':'')+'" data-prov="'+p.n+'" onclick="setProv(\''+p.n+'\')">'+p.n+'<span class="pv">'+p.c.length+' 城</span></button>';
   }
   $("provTabs").innerHTML=h;
 }
@@ -4326,7 +4370,7 @@ function buildCityGrid(){
   for(var i=0;i<list.length;i++){
     var p=list[i];
     var cs=p.c.slice().sort(function(a,b){return a.d.localeCompare(b.d,"zh-Hans-CN");});
-    h+='<details class="tree-prov" id="tp'+i+'" data-prov="'+p.n+'"'+(p.n===prov?' open':'')+'><summary class="tree-sum"><b>'+p.n+'</b><span class="tree-meta">'+p.s+' 画 · '+cs.length+' 城</span></summary><div class="tree-cities">';
+    h+='<details class="tree-prov" id="tp'+i+'" data-prov="'+p.n+'"'+(p.n===prov?' open':'')+'><summary class="tree-sum"><b>'+p.n+'</b><span class="tree-meta">'+cs.length+' 城</span></summary><div class="tree-cities">';
     for(var j=0;j<cs.length;j++){
       var c=cs[j],cw=CITIES[c.k]||{};
       var areas=c.a?c.a.split(","):[];
@@ -4342,7 +4386,54 @@ function buildCityGrid(){
 }
 function setProv(r){prov=r||"广东";citySearchMode=false;var s=$("citySearch");if(s)s.value="";buildProvTabs();buildCityGrid();}
 buildProvTabs();buildCityGrid();
-function showOverlay(){if(CITY&&curCityKey)prov=provOfCity(curCityKey)||"广东";citySearchMode=false;var s=$("citySearch");if(s)s.value="";buildProvTabs();buildCityGrid();$("cityOverlay").style.display="flex"}
+/* 为无显式 label 的输入补齐可访问名称（第一百零八批 · UI-03） */
+(function(){
+  var L={childOn:"子女教育或婴幼儿照护扣除",childAmt:"子女教育或婴幼儿照护每月扣除额",
+    eduOn:"继续教育扣除",eduAmt:"继续教育每月扣除额",
+    houseOn:"住房贷款利息或住房租金扣除",houseAmt:"住房贷款利息或住房租金每月扣除额",
+    elderlyOn:"赡养老人扣除",elderlyAmt:"赡养老人每月扣除额",
+    medicalOn:"大病医疗扣除",medicalAmt:"大病医疗每月扣除额",
+    bonus:"全年一次性奖金",healthIns:"税优健康险每月金额",persPen:"个人养老金每月金额",
+    annuity:"企业年金个人缴费比例",incLabor:"劳务报酬年度金额",incRoyal:"稿酬年度金额",
+    incLic:"特许权使用费年度金额",reliefPct:"减免税减征比例",month:"当前月份",startMonth:"本年开始就业月份",salary:"税前月薪"};
+  for(var k in L){var el=$(k);if(el&&el.getAttribute&&!el.getAttribute("aria-label")&&el.setAttribute)el.setAttribute("aria-label",L[k]);}
+})();
+/* 城市弹层焦点管理：打开聚焦搜索框、Tab 收口、Escape 关闭、关闭后焦点回到触发按钮（第一百零八批 · UI-03） */
+var overlayReturnFocus=null;
+function ovFocusable(){
+  var ov=$("cityOverlay");
+  if(!ov||!ov.querySelectorAll)return [];
+  var list=[].slice.call(ov.querySelectorAll('button,input,[href],summary,[tabindex]:not([tabindex="-1"])'));
+  return list.filter(function(el){return !el.disabled&&el.offsetParent!==null;});
+}
+function ovTrap(e){
+  if(!e)return;
+  if(e.key==="Escape"){e.preventDefault();hideOverlay();return;}
+  if(e.key!=="Tab")return;
+  var f=ovFocusable();if(!f.length)return;
+  var first=f[0],last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();if(last.focus)last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();if(first.focus)first.focus();}
+}
+function hideOverlay(){
+  var ov=$("cityOverlay");
+  if(ov){ov.style.display="none";if(ov.setAttribute)ov.setAttribute("aria-hidden","true");}
+  var picker=$("cityPicker");if(picker&&picker.setAttribute)picker.setAttribute("aria-expanded","false");
+  if(overlayReturnFocus&&overlayReturnFocus.focus)overlayReturnFocus.focus();
+  else if(picker&&picker.focus)picker.focus();
+}
+function showOverlay(){
+  if(CITY&&curCityKey)prov=provOfCity(curCityKey)||"广东";
+  citySearchMode=false;
+  var s=$("citySearch");if(s)s.value="";
+  buildProvTabs();buildCityGrid();
+  var ov=$("cityOverlay");
+  if(ov){ov.style.display="flex";if(ov.setAttribute)ov.setAttribute("aria-hidden","false");}
+  var picker=$("cityPicker");
+  if(picker){overlayReturnFocus=picker;if(picker.setAttribute)picker.setAttribute("aria-expanded","true");}
+  var search=$("citySearch");if(search&&search.focus)search.focus();
+  if(ov&&ov.addEventListener&&!ov._ovTrapped){ov._ovTrapped=true;ov.addEventListener("keydown",ovTrap);}
+}
 /* ===== 底部「数据依据与核查说明」结构化渲染（第九十七批） =====
    既有约束：footNote.innerHTML 必须以「数据依据：<城市> <年度>」开头（第九十一批断言），
    故首行保留裸文本摘要行，其后为结构化块：口径速览卡 + 官方依据条目 + 核查清单。
@@ -4410,7 +4501,7 @@ function selectCity(k){
   var city=CITY;
   curCityKey=k;
   prov=provOfCity(k)||prov;
-  $("cityOverlay").style.display="none";
+  hideOverlay();
   $("cityTag").textContent=city.name;
   $("histCity").textContent=city.name;
   $("hkRow").style.display=city.hukou?"":"none";
@@ -4760,6 +4851,16 @@ function mixBarHtml(net,siE,hfE,curT,sal,suppCash){
   h+='</div>';
   return h;
 }
+/* 结果区数据状态徽标（第一百零八批 · UI-05）：始终以文字表达，颜色仅辅助 */
+function heroDataStatus(city){
+  city=city||CITY;
+  var warn=!!city.warn;
+  var stale=!warn&&!!city.dataNext;
+  var cls=warn?"st-partial":(stale?"st-stale":"st-ok");
+  var txt=warn?"部分参数待确认":(stale?"年度待更新":"已核实");
+  var tip=warn?"该城市部分参数待官方确认，结果仅供参考":(stale?"下一缴费年度参数尚未发布，当前按现行标准测算":"参数与官方公开口径一致");
+  return '<div class="dstat '+cls+'"><span class="dot"></span><span class="dstat-txt">数据状态：'+txt+'</span><span class="dstat-tip">'+tip+'</span></div>';
+}
 function renderResult(I,C,D,T,ctx){
   var city=ctx.city;
   var P=I.P,M=I.M,U=I.U,MT=I.MT,IJ=I.IJ,HF=I.HF,mo=I.mo,mW=I.mW,aM=I.aM,startM=I.startM,hfR=I.hfR,hfRComp=I.hfRComp,hB=I.hB;
@@ -4767,11 +4868,12 @@ function renderResult(I,C,D,T,ctx){
   var pE=C.pE,mE=C.mE,uE=C.uE,ltcE=C.ltcE,siE=C.siE,siC=C.siC,pComp=C.pComp,hfE=C.hfE,hfC=C.hfC;
   var curT=T.curT,net=T.net,ratio=T.ratio,totD=T.totD,sal=I.sal;
   $("baseNote").innerHTML="养老 "+fm(P.min)+"~"+fm(P.max)+" · "+ml+" "+fm(M.min)+"~"+fm(M.max)+" · 失业 "+fm(U.min)+"~"+fm(U.max)+"<br>公积金 "+fm(HF.min)+"~"+fm(HF.max)+" · 基数每年7月15日调整";
+  if($("baseSummary"))$("baseSummary").innerHTML="当前缴费基数：养老 "+fm(pB)+" · 医疗 "+fm(mB)+" · 失业 "+fm(uB)+" · 公积金 "+fm(hB)+" 元（公积金个人 "+hfR+"% / 单位 "+hfRComp+"%）";
   var h="";
   h+='<div class="hero"><div class="tp"><div><div class="lb">税后实发（'+city.name+' · '+mo+'月）</div><div class="bg"><span id="resNet">'+fm(net)+'</span><span>元</span></div></div><div style="text-align:right"><div class="lb">实发比例</div><div class="pc">'+ratio.toFixed(1)+'%</div></div></div>';
   h+=mixBarHtml(net,siE,hfE,curT,sal,D.suppCash);
   h+='<div class="cd"><div class="mn"><div class="ml">五险一金(个人)</div><div class="mv">'+fm(siE+hfE)+'</div></div><div class="mn"><div class="ml">个人所得税</div><div class="mv">'+fm(curT)+'</div></div><div class="mn"><div class="ml">扣除合计</div><div class="mv">'+fm(totD)+'</div></div></div>';
-  h+='<div class="ex">本年度已就业 '+mW+' 个月（'+startM+'月入职）</div></div>';
+  h+='<div class="ex">本年度已就业 '+mW+' 个月（'+startM+'月入职）</div>';h+=heroDataStatus(city);h+='</div>';
   h+='<div class="c"><div class="st gr">社保缴费明细（'+city.name+(city.hukou?(ctx.hk===1?' · 深户':' · 非深户'):'')+'）</div>';
   h+='<div class="grid4"><span>险种</span><span style="text-align:right">基数</span><span style="text-align:right">个人%</span><span style="text-align:right">个人金额</span></div>';
   var medLabel=medFix>0?ml+"(含"+medFix+"元互助)":ml;
@@ -4923,6 +5025,7 @@ var SERIES=[
 function switchTab(t){
   $("tab0").className=t===0?"tab a":"tab";
   $("tab1").className=t===1?"tab a":"tab";
+  if($("tab0").setAttribute){$("tab0").setAttribute("aria-selected",t===0?"true":"false");$("tab1").setAttribute("aria-selected",t===1?"true":"false");}
   $("page0").style.display=t===0?"":"none";
   $("page1").style.display=t===1?"":"none";
   if(t===1)buildHistory();
@@ -4978,6 +5081,7 @@ function renderHistTable(city){
     h+='</tr>';
   });
   $("histTable").innerHTML=h;
+ if($("tblHint"))$("tblHint").textContent="← 左右滑动查看全部 "+(14+(mtCol?1:0))+" 列 →";
   $("histTable").querySelectorAll("input[type=number]").forEach(function(el){
     el.addEventListener("input",function(){
       var i=parseInt(el.dataset.i),f=el.dataset.f;
