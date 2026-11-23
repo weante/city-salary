@@ -770,7 +770,7 @@ eq('曲靖·上限算式自校验 8631×3', 8631 * 3, A.CITIES.quj.hf.max);
 eq('曲靖·月缴存额下限算式自校验 2020×5%×2', 2020 * 0.05 * 2, 202);
 eq('曲靖·5县下限1870向上进位算式自校验（仅旁证，不参与计算）', 1870 * 0.05, 93.5);
 eq('大理·公积金下限2120（州中心2026-08-31件，云人社发〔2026〕9号二类）', A.CITIES.dali.hf.min, 2120);
-eq('大理·公积金上限26454仍为2025年度值（2026年度上限件未取得）', A.CITIES.dali.hf.max, 26454);
+eq('大理·公积金上限26904（2026-07-01~2027-06-30 官方件）', A.CITIES.dali.hf.max, 26904);
 eq('大理·warn 仍为 true（上限件未取得）', A.CITIES.dali.warn, true);
 eq('朔州·公积金下限2150（朔城区/平鲁区，朔州市公积金中心2026-07-13件）', A.CITIES.shuoz.hf.min, 2150);
 eq('朔州·公积金上限25044（上一年度职工月平均工资×3）', A.CITIES.shuoz.hf.max, 25044);
@@ -811,7 +811,7 @@ eq('徐州·公积金上限32917(徐公积金委〔2026〕1号)', A.CITIES.xz.hf
 eq('淮安·公积金下限2430(淮房委〔2026〕3号)', A.CITIES.ha.hf.min, 2430);
 eq('淮安·公积金上限30900(淮房委〔2026〕3号)', A.CITIES.ha.hf.max, 30900);
 eq('南通·公积金下限2660(通人社发〔2026〕1号市区一类)', A.CITIES.nt.hf.min, 2660);
-eq('南通·公积金上限34000(通金管〔2025〕50号)', A.CITIES.nt.hf.max, 34000);
+eq('南通·公积金上限35000(2026年通金管通知)', A.CITIES.nt.hf.max, 35000);
 eq('无锡·公积金下限2490仍为旧口径未被误改', A.CITIES.wx.hf.min, 2490);
 eq('宿迁·公积金下限2010', A.CITIES.sq.hf.min, 2010);
 eq('浙江·五险下限(浙人社发〔2026〕52号)', A.CITIES.hangz.pension.min, 5122);
@@ -823,7 +823,7 @@ eq('宁波·医保单位8.5%(含大病0.5%+生育0.5%)', A.CITIES.nb.med.comp, 0
 eq('绍兴·医保个人1%(其他单位口径)', A.CITIES.sx.med.emp, 0.01);
 eq('台州·医保个人1%', A.CITIES.taiz.med.emp, 0.01);
 eq('衢州·公积金上限37530', A.CITIES.qz.hf.max, 37530);
-eq('丽水·公积金上限暂用2025年度36405', A.CITIES.lish.hf.max, 36405);
+eq('丽水·公积金上限37485（2026年度）', A.CITIES.lish.hf.max, 37485);
 eq('天津/江苏/浙江·生育并入医保(mat.comp=0)', A.CITIES.tj.mat.comp + A.CITIES.nanj.mat.comp + A.CITIES.hangz.mat.comp, 0);
 
 /* ---- 2026-10-14 · 浙江 2026 年度缴费基数落地（改值 11 市）----
@@ -1048,7 +1048,7 @@ eq('江苏·南通·医保单位9%（通政规〔2025〕7号）', A.CITIES.nt.me
 eq('江苏·南通·医保个人2%', A.CITIES.nt.med.emp, 0.02);
 eq('江苏·南通·大病固定额10元/月（该固定额官方件未取到）', A.CITIES.nt.medFixEmp, 10);
 eq('江苏·南通·公积金下限2660', A.CITIES.nt.hf.min, 2660);
-eq('江苏·南通·公积金上限34000', A.CITIES.nt.hf.max, 34000);
+eq('江苏·南通·公积金上限35000', A.CITIES.nt.hf.max, 35000);
 eq('江苏·南通·note含通政规〔2025〕7号', A.CITIES.nt.note.indexOf('通政规〔2025〕7号') >= 0, true);
 eq('江苏·泰州·医保单位8.5%（泰医保规〔2020〕2号）', A.CITIES.tz.med.comp, 0.085);
 eq('江苏·泰州·医保个人2%', A.CITIES.tz.med.emp, 0.02);
@@ -1076,7 +1076,7 @@ eq('浙江·宁波·单位费率与企业口径一致（非机关事业9%）', A
 eq('浙江·丽水·医保单位8%（暂算，官方件未取到）', A.CITIES.lish.med.comp, 0.08);
 eq('浙江·丽水·医保个人2%', A.CITIES.lish.med.emp, 0.02);
 eq('浙江·丽水·公积金下限2180', A.CITIES.lish.hf.min, 2180);
-eq('浙江·丽水·公积金上限36405（2025年度暂用）', A.CITIES.lish.hf.max, 36405);
+eq('浙江·丽水·公积金上限37485（2026年度）', A.CITIES.lish.hf.max, 37485);
 eq('浙江·丽水·note含丽政办发〔2021〕61号', A.CITIES.lish.note.indexOf('丽政办发〔2021〕61号') >= 0, true);
 eq('南通仍warn（2026基数未公布+大病固定额无件）', A.CITIES.nt.warn, true);
 eq('泰州仍warn（公积金下限冲突）', A.CITIES.tz.warn, true);
@@ -1101,18 +1101,18 @@ eq('安庆·公积金上限24609（宜公积金〔2026〕6号，98437÷12×3）'
 eq('六安·公积金下限2170（六市金管〔2025〕26号，市区口径）', A.CITIES.la.hf.min, 2170);
 eq('池州·公积金上限25488（池房金管〔2026〕7号）', A.CITIES.chizh.hf.max, 25488);
 eq('宣城·公积金下限2170（宣城公积金中心2025-12-08）', A.CITIES.xuanc.hf.min, 2170);
-eq('福建·养老基数下限(闽人社文〔2025〕45号)', A.CITIES.fz.pension.min, 4043);
-eq('福建·养老基数上限', A.CITIES.fz.pension.max, 22607);
+eq('福建·养老基数下限4579(2026年度省人社核定)', A.CITIES.fz.pension.min, 4579);
+eq('福建·养老基数上限', A.CITIES.fz.pension.max, 22893);
 eq('福建·医保基数下限(闽医保函〔2026〕65号)', A.CITIES.fz.med.min, 4579);
 eq('福建·医保基数上限', A.CITIES.fz.med.max, 22893);
-eq('福建·失业基数上限22164', A.CITIES.fz.unemp.max, 22164);
+eq('福建·失业基数上限22893', A.CITIES.fz.unemp.max, 22893);
 eq('福州·医保单位8%', A.CITIES.fz.med.comp, 0.08);
 eq('福州·公积金上限(榕公积金管委〔2026〕2号)', A.CITIES.fz.hf.max, 32430);
 eq('厦门·大病7元/月', A.CITIES.xm.medFixEmp, 7);
 eq('厦门·房租扣除1500', A.CITIES.xm.rent, 1500);
 eq('龙岩·医保单位8.7%(含生育0.7%)', A.CITIES.longy.med.comp, 0.087);
-eq('江西·基数下限(赣人社字〔2025〕150号)', A.CITIES.nanch.pension.min, 3915);
-eq('江西·基数上限', A.CITIES.nanch.pension.max, 19575);
+eq('江西·基数下限3990(2026-10-09 赣人社厅通知)', A.CITIES.nanch.pension.min, 3990);
+eq('江西·基数上限', A.CITIES.nanch.pension.max, 19947);
 eq('江西·失业单位0.5%', A.CITIES.nanch.unemp.comp, 0.005);
 eq('南昌·医保单位6.8%(含生育0.8%)', A.CITIES.nanch.med.comp, 0.068);
 eq('南昌·公积金上限30165', A.CITIES.nanch.hf.max, 30165);
@@ -1297,7 +1297,7 @@ eq('普洱·3337×2=6674（官网月缴存额上限）', Math.round(27805 * 0.12
 eq('普洱·下限2020=灵活就业下限下限值', 2020, A.CITIES.pe.hf.min);
 /* 玉溪 玉溪市公积金中心 2026-08-31 通知 https://www.yuxi.gov.cn/yxs/sjbmwj2608/20260831/1677478.html
    官网原文「2026年度玉溪市住房公积金月缴存基数上限确定为28064元，对应最高月缴存额6736元。原暂定缴存基数上限标准同步废止」 */
-eq('玉溪·公积金下限1920（本批未获件支撑，warn 保留）', A.CITIES.yux.hf.min, 1920);
+eq('玉溪·公积金下限2020（2026-08-31 市公积金中心通知）', A.CITIES.yux.hf.min, 2020);
 eq('玉溪·公积金上限28064（2026-08-31 市中心通知）', A.CITIES.yux.hf.max, 28064);
 eq('玉溪·28064×12%=3367.68四舍五入=3368', Math.round(28064 * 0.12), 3368);
 eq('玉溪·3368×2=6736（官网最高月缴存额）', Math.round(28064 * 0.12) * 2, 6736);
@@ -1401,7 +1401,7 @@ eq('遵义·上限自校验 round(24405x12%)x2=5858', Math.round(24405 * 0.12) *
 eq('遵义·下限自校验 round(2130x5%)x2=214', Math.round(2130 * 0.05) * 2, 214);
 eq('遵义·warn → true（医保基数为过渡执行值、2026年度件未取到）', A.CITIES.zuny.warn, true);
 eq('铜仁·公积金下限2130', A.CITIES.trn.hf.min, 2130);
-eq('铜仁·公积金上限19544', A.CITIES.trn.hf.max, 19544);
+eq('铜仁·公积金上限20650', A.CITIES.trn.hf.max, 20650);
 eq('铜仁·上限自校验 round(19544x12%)x2=4690', Math.round(19544 * 0.12) * 2, 4690);
 eq('铜仁·下限一档 round(2130x5%)x2=214', Math.round(2130 * 0.05) * 2, 214);
 eq('铜仁·下限三档 round(1890x5%)x2=190', Math.round(1890 * 0.05) * 2, 190);
@@ -1621,32 +1621,32 @@ eq('黔东南·note 含291件穷举', A.CITIES.qdn.note.indexOf('291件') >= 0, 
 eq('黔东南·下限与其社保基数下限同值（均7376.75×60%）', A.CITIES.qdn.med.min === A.CITIES.qdn.pension.min, true);
 eq('贵阳·医保基数下限5901.40（80%）保持不变', A.CITIES.guiy.med.min, 5901.4);
 eq('黔南·医保基数下限5901.40（80%）保持不变', A.CITIES.qn.med.min, 5901.4);
-eq('遵义·医保基数下限5901.40 保持不变（无市级件）→改4563.70（遵义市60%过渡值）', A.CITIES.zuny.med.min, 4563.70);
+eq('遵义·医保基数下限4394.70（改按贵州省2026年度全口径基数执行）', A.CITIES.zuny.med.min, 4394.7);
 eq('安顺·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.ansh.med.min, 5901.4);
 eq('毕节·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.bij.med.min, 5901.4);
 eq('六盘水·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.lps.med.min, 5901.4);
-eq('黔西南·医保基数下限5901.40 保持不变（无市级件）', A.CITIES.qxn.med.min, 5901.4);
-eq('贵州9市州上限一律22130.25 →遵义例外（市级锚22818.51）', ['guiy','lps','ansh','bij','trn','qxn','qdn','qn'].filter(function(k){return A.CITIES[k].med.max!==22130.25;}).length, 0);
+eq('黔西南·医保基数下限4394.70（2026年度省级全口径）', A.CITIES.qxn.med.min, 4394.7);
+eq('贵州9市州上限22130.25，例外为遵义与黔西南（21973.5）', ['guiy','lps','ansh','bij','trn','qxn','qdn','qn','zuny'].filter(function(k){return A.CITIES[k].med.max!==22130.25;}).length, 2);
 eq('铜仁下限严格小于贵阳下限', A.CITIES.trn.med.min < A.CITIES.guiy.med.min, true);
 eq('黔东南下限严格小于铜仁下限', A.CITIES.qdn.med.min < A.CITIES.trn.med.min, true);
 eq('铜仁warn 保留', A.CITIES.trn.warn, true);
 eq('黔东南warn 保留', A.CITIES.qdn.warn, true);
 /* ===== 2026-10-14 · 贵州 5 市州医保基数下限比例与锚点逐市核实（改值 1 城）===== */
-eq('遵义·医保基数下限4563.70（市级锚60%，非全省80%）', A.CITIES.zuny.med.min, 4563.70);
-eq('遵义·医保基数上限22818.51（市级锚300%，唯一非22130.25的贵州城）', A.CITIES.zuny.med.max, 22818.51);
-eq('遵义·算式自校验 7606.17×60%=4563.70', Math.round(7606.17*0.6*100)/100, A.CITIES.zuny.med.min);
-eq('遵义·算式自校验 7606.17×300%=22818.51', Math.round(7606.17*3*100)/100, A.CITIES.zuny.med.max);
+eq('遵义·医保基数下限4394.70（省级全口径口径）', A.CITIES.zuny.med.min, 4394.7);
+eq('遵义·医保基数上限21973.50（省级全口径口径）', A.CITIES.zuny.med.max, 21973.5);
+eq('遵义·医保基数下限与黔西南省级锚一致 4394.70', A.CITIES.zuny.med.min, A.CITIES.qxn.med.min);
+eq('遵义·医保基数上限与黔西南省级锚一致 21973.50', A.CITIES.zuny.med.max, A.CITIES.qxn.med.max);
 eq('遵义·单位费率6.5%未动（基本6.0%+生育0.5%）', A.CITIES.zuny.med.comp, .065);
 eq('遵义·个人2%未动', A.CITIES.zuny.med.emp, .02);
 eq('遵义·大额个人10元/月未动', A.CITIES.zuny.medFixEmp, 10);
 eq('遵义·社保基数4426.05~22130.25未动（养老口径与医保口径不同源）', A.CITIES.zuny.med.min !== A.CITIES.zuny.pension.min, true);
 eq('遵义·warn 新增 true（过渡执行值、2026年度件未取到）', A.CITIES.zuny.warn, true);
-eq('遵义·note 明写过渡执行值', A.CITIES.zuny.note.indexOf('过渡执行值') >= 0, true);
+eq('遵义·note 明写2026年度省级全口径基数区间', A.CITIES.zuny.note.indexOf('4394.70~21973.50') >= 0, true);
 eq('遵义·note 含官方件标题《关于做好2025年度职工基本医疗（生育）保险参保缴费工作的通知》', A.CITIES.zuny.note.indexOf('参保缴费工作的通知') >= 0, true);
 eq('遵义·note 含「2024年社平工资发布后」这一过渡条款', A.CITIES.zuny.note.indexOf('2024年社平工资发布后') >= 0, true);
 eq('遵义·note 含单位1%划入大额（比例型、不可建模）', A.CITIES.zuny.note.indexOf('按基本医疗单位缴费总额的1%划入') >= 0, true);
-eq('遵义上限高于其余贵州8市州（市级锚 vs 省级锚）', A.CITIES.zuny.med.max > A.CITIES.guiy.med.max, true);
-eq('黔东南(60%省级) < 遵义(60%市级) < 铜仁(70%) < 贵阳黔南(80%)', [A.CITIES.qdn.med.min, A.CITIES.zuny.med.min, A.CITIES.trn.med.min, A.CITIES.guiy.med.min].join(','), '4426.05,4563.7,5163.73,5901.4');
+eq('遵义医保基数上限与省级锚一致（不高于其余贵州城）', A.CITIES.zuny.med.max === A.CITIES.qxn.med.max, true);
+eq('黔东南(60%省级) < 遵义(省级全口径) < 铜仁(70%) < 贵阳黔南(80%)', [A.CITIES.qdn.med.min, A.CITIES.zuny.med.min, A.CITIES.trn.med.min, A.CITIES.guiy.med.min].join(','), '4426.05,4394.7,5163.73,5901.4');
 eq('安顺·值不改（安府办发〔2016〕31号口径过旧）', A.CITIES.ansh.med.min, 5901.4);
 eq('安顺·note 记入安府办发〔2016〕31号', A.CITIES.ansh.note.indexOf('安府办发〔2016〕31号') >= 0, true);
 eq('安顺·note 点明旧统计口径「在岗职工月平均工资」已停用', A.CITIES.ansh.note.indexOf('在岗职工月平均工资') >= 0, true);
@@ -1658,10 +1658,10 @@ eq('毕节·note 点明生育0.8%单列后与基本医疗费率相加（建模�
 eq('毕节·warn 保留', A.CITIES.bij.warn, true);
 eq('六盘水·值不改', A.CITIES.lps.med.min, 5901.4);
 eq('六盘水·note 记入穷举件数（医保局28+64、人社231、市政府10）', A.CITIES.lps.note.indexOf('231件') >= 0, true);
-eq('黔西南·值不改', A.CITIES.qxn.med.min, 5901.4);
+eq('黔西南·医保基数下限4394.70（2026年度省级全口径）', A.CITIES.qxn.med.min, 4394.7);
 eq('黔西南·note 标注大额30.5元/月所引黔府办发〔2021〕4号未取到原文', A.CITIES.qxn.note.indexOf('黔府办发〔2021〕4号') >= 0, true);
 eq('黔西南·note 标注州医保局6个子栏穷举', A.CITIES.qxn.note.indexOf('6个子栏') >= 0, true);
-eq('黔西南·comp 是 0.065 而非 0.65（subagent 误读已否证）', A.CITIES.qxn.med.comp, .065);
+eq('黔西南·comp 是 0.06（州府办发〔2021〕4号 单位费率6%）', A.CITIES.qxn.med.comp, .06);
 eq('贵州6市州无一 med.comp 超过 0.1（排除百分号笔误）', ['guiy','zuny','ansh','bij','lps','trn','qxn','qdn','qn'].filter(function(k){return A.CITIES[k].med.comp>0.1;}).length, 0);
 
 /* ===== 2026-10-14 · 山西 11 市：公积金下限分档与下限时效性核实（零改值 + 晋城新增 warn）===== */
@@ -1693,8 +1693,8 @@ eq('忻州·note 明写栏目 20 篇正文均为空', A.CITIES.xinz.note.indexOf
 eq('忻州·note 未写入无法证实的文号', A.CITIES.xinz.note.indexOf('忻住金归')>=0, false);
 eq('忻州·warn 保留（数值来源仍未证实）', A.CITIES.xinz.warn, true);
 // 吕梁：标注 2025 年度 + 29 号提示
-eq('吕梁·值不改 2150~23793', [A.CITIES.ll.hf.min,A.CITIES.ll.hf.max].join('~'), '2150~23793');
-eq('吕梁·note 标注本轮未取到 2026 年度件', A.CITIES.ll.note.indexOf('本轮未取到 2026 年度件')>=0, true);
+eq('吕梁·公积金2150~24733（2026年度上限）', [A.CITIES.ll.hf.min,A.CITIES.ll.hf.max].join('~'), '2150~24733');
+eq('吕梁·note 标注2026年度上限依据（晋人社厅发〔2026〕27号）', A.CITIES.ll.note.indexOf('晋人社厅发〔2026〕27号')>=0, true);
 eq('吕梁·note 补入 晋政办发〔2026〕29号 时效提示', A.CITIES.ll.note.indexOf('晋政办发〔2026〕29号')>=0, true);
 // 太原：本轮补下限口径
 eq('太原·值不改 2150~29100', [A.CITIES.ty.hf.min,A.CITIES.ty.hf.max].join('~'), '2150~29100');
@@ -1735,8 +1735,8 @@ eq('兴安盟·note 记医保局无独立域名', A.CITIES.xam.note.indexOf('无
 eq('锡林郭勒·note 记部门文件栏仅4条', A.CITIES.xlgl.note.indexOf('ybj.xlgl.gov.cn') >= 0, true);
 eq('阿拉善·note 记机构自挂未更新说明', A.CITIES.alsm.note.indexOf('未更新情况说明') >= 0, true);
 eq('保山·医保单位费率未找到仍保留', A.CITIES.baosh.note.indexOf('医保单位费率未找到') >= 0, true);
-eq('临沧·医保单位费率未找到仍保留', A.CITIES.linc.note.indexOf('医保单位费率未找到') >= 0, true);
-eq('德宏·医保单位费率未找到仍保留', A.CITIES.deh.note.indexOf('医保单位费率未找到') >= 0, true);
+eq('临沧·医保单位费率6%已坐实', A.CITIES.linc.note.indexOf('医保单位费率 6%') >= 0, true);
+eq('德宏·医保单位费率7.5%已坐实', A.CITIES.deh.note.indexOf('医保单位费率 7.5%') >= 0, true);
 eq('昆明·医保单位7.9%仍保留', A.CITIES.km.note.indexOf('医保单位7.9%') >= 0, true);
 // ---------- 湖北 / 河南：省级域名修正 + 市级公积金件补齐 ----------
 const _HUB = A.CITIES.wuha, _XYF = A.CITIES.xf, _KF = A.CITIES.kf, _SMX = A.CITIES.smx, _SQIU = A.CITIES.sqiu;
@@ -1822,7 +1822,7 @@ eq('黔东南·warn 保留（医保单位费率之外的缺口见）', A.CITIES.
 eq('铜仁·医保单位费率6.5%官方坐实（含生育0.5%）', A.CITIES.trn.med.comp, .065);
 eq('铜仁·note 第十四条', A.CITIES.trn.note.indexOf('第十四条') >= 0, true);
 eq('铜仁·note 大额单位0.3%+个人48元', A.CITIES.trn.note.indexOf('个人48元/年') >= 0, true);
-eq('铜仁·公积金19544 未改', A.CITIES.trn.hf.max, 19544);
+eq('铜仁·公积金20650（2026年度）', A.CITIES.trn.hf.max, 20650);
 eq('三明·公积金下限1895（明住房〔2026〕2号）', A.CITIES.sm.hf.min, 1895);
 eq('三明·公积金上限26810', A.CITIES.sm.hf.max, 26810);
 eq('三明·自校验 上限月缴存额 round(26810x12%)x2=6434', Math.round(26810 * 0.12) * 2, 6434);
@@ -2035,7 +2035,7 @@ eq('甘南·算式自校验 124499/12 进位', Math.round(124499 / 12), 10375);
 eq('酒泉·大额5元/月（固定额）', A.CITIES.jiuq.medFixEmp, 5);
 eq('甘南·医保单位8.5%', A.CITIES.gn.med.comp, 0.085);
 eq('临夏·公积金数值通知未取得，保留 warn', A.CITIES.lx.warn, true);
-eq('嘉峪关·公积金上限估算值28422.24', A.CITIES.jyg.hf.max, 28422.24);
+eq('嘉峪关·公积金上限28026（2026年度）', A.CITIES.jyg.hf.max, 28026);
 eq('邵阳·公积金下限1800（2026年度缴存基数通知，2026-07-17）', A.CITIES.shaoy.hf.min, 1800);
 eq('邵阳·公积金上限22333（2026年度缴存基数通知，2026-07-17）', A.CITIES.shaoy.hf.max, 22333);
 eq('邵阳·2026年度缴存基数件已取得，warn 已解除', !A.CITIES.shaoy.warn, true);
@@ -2118,8 +2118,8 @@ eq('大兴安岭·warn 保留（2026年度公积金基数件未找到）', A.CIT
 eq('锡林郭勒盟·公积金下限2380', A.CITIES.xlgl.hf.min, 2380);
 eq('锡林郭勒盟·公积金上限30498（与呼和浩特同值，疑似串值待核实）', A.CITIES.xlgl.hf.max, 30498);
 eq('锡林郭勒盟·warn=true', A.CITIES.xlgl.warn, true);
-eq('阿拉善盟·公积金下限1980', A.CITIES.alsm.hf.min, 1980);
-eq('阿拉善盟·公积金上限26508（2024年度，无件支撑）', A.CITIES.alsm.hf.max, 26508);
+eq('阿拉善盟·公积金下限2380', A.CITIES.alsm.hf.min, 2380);
+eq('阿拉善盟·公积金上限28479（2026年度转载件值，官方件仍待取）', A.CITIES.alsm.hf.max, 28479);
 eq('阿拉善盟·warn=true', A.CITIES.alsm.warn, true);
 eq('新疆·基数下限', A.CITIES.wlmq.pension.min, 5246);
 eq('新疆·基数上限', A.CITIES.wlmq.pension.max, 26231);
@@ -2171,7 +2171,7 @@ eq('伊犁·上限÷3=2025 年月均工资8728', 26184 / 3, 8728);
 /* 医保费率仍是死路：14 地州逐地州自定（6.5%~9.8%，含生育 0.5%~1%），自治区医保局无统件 */
 eq('新疆·后 8 城 warn（阿勒泰取到在职口径已撤，新增乌鲁木齐/克拉玛依/昌吉/阿克苏/克孜勒苏/喀什）', XJ.filter(k => A.CITIES[k].warn).map(k => A.CITIES[k].name).join(','), '乌鲁木齐,克拉玛依,昌吉,阿克苏,克孜勒苏,喀什,伊犁,塔城');
 eq('新疆·warn 恰好 8 城', XJ.filter(k => A.CITIES[k].warn).length, 8);
-eq('伊犁·医保单位费率仍为估算 9.5%', A.CITIES.ylz.med.comp, 0.095);
+eq('伊犁·医保单位费率8.5%（含生育，已坐实）', A.CITIES.ylz.med.comp, 0.085);
 eq('阿勒泰·医保单位费率 9.5%（由退休/灵活就业口径误判改正）', A.CITIES.alt.med.comp, 0.095);
 eq('新疆·乌鲁木齐租金1500', A.CITIES.wlmq.rent, 1500);
 eq('新疆·其余 13 地州租金统一 800', XJ.filter(k => A.CITIES[k].rent === 800).length, 13);
@@ -2190,7 +2190,7 @@ eq('黄南·warn（2026年度公积金基数未取得官方件）', A.CITIES.hnz
 eq('海南州·warn（2026年度公积金基数未取得官方件）', A.CITIES.hnan.warn, true);
 eq('果洛·warn（2026年度公积金基数未取得官方件）', A.CITIES.glz.warn, true);
 eq('玉树·warn（缴存基数仅2020年度数值）', A.CITIES.ysz.warn, true);
-eq('玉树·公积金上限24402（仅2020年度）', A.CITIES.ysz.hf.max, 24402);
+eq('玉树·公积金上限35283（2025年度缴存基数公告转载值，2026年度待公布）', A.CITIES.ysz.hf.max, 35283);
 eq('海南·基数下限(琼人社发〔2026〕71号)', A.CITIES.haik.pension.min, 4952.4);
 eq('海南·基数上限', A.CITIES.haik.pension.max, 24762);
 eq('海南·下限/60% 与上限/300% 精确相等（同件自校验）', 4952.4 / 0.6 === 24762 / 3, true);
@@ -2534,8 +2534,8 @@ ok('海西note引用2026年度市级件', A.CITIES.hxz.note.indexOf('2026年度�
 ok('海西note引用青政2025 11号', A.CITIES.hxz.note.indexOf('青政〔2025〕11号') >= 0, true);
 ok('海西note声明关卡3算式校验未做', A.CITIES.hxz.note.indexOf('不作关卡3算式校验') >= 0, true);
 ok('海西note不再出现2024年度33836作为现值', A.CITIES.hxz.note.indexOf('2024年度33836') > 0, true);
-eq('海北下限仍为1700（不得由省级件推市级）', A.CITIES.hbz.hf.min, 1700);
-ok('海北note写明1700已被11号取代', A.CITIES.hbz.note.indexOf('已被青政〔2025〕11号取代') >= 0, true);
+eq('海北下限2080（随青海全省统一最低工资，2025年度州政府通知）', A.CITIES.hbz.hf.min, 2080);
+ok('海北note写明下限2080来源与年度', A.CITIES.hbz.note.indexOf('下限2080') >= 0, true);
 eq('海北warn 保留', A.CITIES.hbz.warn, true);
 ok('黄南note补记省直取整口径2024年已变更', A.CITIES.hnz.note.indexOf('以元为单位四舍五入后再合计') >= 0, true);
 ok('青海7市州除海西外全部无2025/2026年度件', ['haid','hbz','hnz','hnan','glz','ysz'].every(function(k){ return A.CITIES[k].warn === true; }), true);
@@ -2684,15 +2684,15 @@ eq('甘肃·天水 2025 年度件取整自校验 85715÷12→7143、7143×3=2142
 eq('甘肃·庆阳 现值 1910~27275 就是已届满的 2025 年度值 → 新增 warn', A.CITIES.qingy.warn === true && A.CITIES.qingy.hf.min === 1910 && A.CITIES.qingy.hf.max === 27275, true);
 eq('甘肃·庆阳 note 含真域 zgqingyang.gov.cn', A.CITIES.qingy.note.indexOf('zgqingyang.gov.cn') >= 0, true);
 eq('甘肃·庆阳 2025 年度件取整自校验 109102÷12→9091、9091×3=27273≠27275 故不作自校验', Math.round(109102 / 12) * 3 !== 27275, true);
-eq('甘肃·临夏 2025 年度值来自官方年度报告 → warn 保留', A.CITIES.lx.warn === true && A.CITIES.lx.hf.min === 1910 && A.CITIES.lx.hf.max === 22788, true);
+eq('甘肃·临夏 2026 年度公积金 2130~23112（2026-07-01 起执行） → warn 保留', A.CITIES.lx.warn === true && A.CITIES.lx.hf.min === 2130 && A.CITIES.lx.hf.max === 23112, true);
 eq('甘肃·临夏 note 含年度报告域名 linxia.gov.cn', A.CITIES.lx.note.indexOf('linxia.gov.cn') >= 0, true);
-eq('甘肃·临夏 note 记 22788÷3 属反推不作自校验', A.CITIES.lx.note.indexOf('反推') >= 0, true);
+eq('甘肃·临夏 note 记 2026-07-01 起执行与下限分档', A.CITIES.lx.note.indexOf('2026-07-01 起执行') >= 0, true);
 eq('甘肃·金昌 无任何缴存基数件 → warn 保留', A.CITIES.jc.warn === true && A.CITIES.jc.hf.min === 2020 && A.CITIES.jc.hf.max === 26166, true);
 eq('甘肃·金昌 note 含真域 jcs.gov.cn 与已失效的 jzgjj.gov.cn', A.CITIES.jc.note.indexOf('jcs.gov.cn') >= 0 && A.CITIES.jc.note.indexOf('jzgjj.gov.cn') >= 0, true);
 eq('甘肃·金昌 note 记三个管理办法均为征求意见稿故排除', A.CITIES.jc.note.indexOf('征求意见稿') >= 0, true);
-eq('甘肃·酒泉 无 2026 年度件 → 新增 warn', A.CITIES.jiuq.warn === true && A.CITIES.jiuq.hf.min === 2020 && A.CITIES.jiuq.hf.max === 26246.49, true);
+eq('甘肃·酒泉 下限2200（一类地区最低工资）/上限26246.49 → warn 保留', A.CITIES.jiuq.warn === true && A.CITIES.jiuq.hf.min === 2200 && A.CITIES.jiuq.hf.max === 26246.49, true);
 eq('甘肃·酒泉 note 含真子域 jiuquan.gov.cn', A.CITIES.jiuq.note.indexOf('gjj.jiuquan.gov.cn') >= 0, true);
-eq('甘肃·金昌/酒泉 下限 2020 与庆阳 1910、天水 2130 分属甘政发〔2023〕83号（已取代）与甘政办发〔2025〕71号两套口径', A.CITIES.jc.hf.min === 2020 && A.CITIES.jiuq.hf.min === 2020 && A.CITIES.qingy.hf.min === 1910 && A.CITIES.tshui.hf.min === 2130 && A.CITIES.by.hf.min === 2200 && A.CITIES.ln.hf.min === 2130, true);
+eq('甘肃·金昌2020/酒泉2200/庆阳1910/天水2130 分属甘政发〔2023〕83号（已取代）与甘政办发〔2025〕71号两套口径', A.CITIES.jc.hf.min === 2020 && A.CITIES.jiuq.hf.min === 2200 && A.CITIES.qingy.hf.min === 1910 && A.CITIES.tshui.hf.min === 2130 && A.CITIES.by.hf.min === 2200 && A.CITIES.ln.hf.min === 2130, true);
 eq('甘肃·白银与陇南无 warn（已取到 2026 年度一手件）', A.CITIES.by.warn === undefined && A.CITIES.ln.warn === undefined, true);
 eq('甘肃·五城 warn 全部落地', A.CITIES.tshui.warn === true && A.CITIES.qingy.warn === true && A.CITIES.jiuq.warn === true && A.CITIES.lx.warn === true && A.CITIES.jc.warn === true, true);
 
@@ -2754,7 +2754,7 @@ eq('青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hx
   eq('伊犁 warn 保留（现行明确值仍未取到）', A.CITIES.ylz.warn, true);
   eq('塔城 warn 保留（现行明确值仍未取到）', A.CITIES.tc.warn, true);
   ok('新疆 14 地州社保基数仍统一 5246~26231', ['wlmq','klmy','tlf','hami','cjz','boz','bygl','aks','kzls','kashi','ht','ylz','tc','alt'].every(k => A.CITIES[k].pension.min === 5246 && A.CITIES[k].pension.max === 26231), true);
-  ok('阿勒泰 medComp 与昌吉、博州、伊犁同为 9.5%', A.CITIES.alt.med.comp === A.CITIES.cjz.med.comp && A.CITIES.alt.med.comp === A.CITIES.boz.med.comp && A.CITIES.alt.med.comp === A.CITIES.ylz.med.comp, true);
+  ok('阿勒泰 medComp 与昌吉、博州同为 9.5%', A.CITIES.alt.med.comp === A.CITIES.cjz.med.comp && A.CITIES.alt.med.comp === A.CITIES.boz.med.comp, true);
 
   /* ===== 2026-10-15 · 辽宁 6 城医保费率渠道穷举 + 朝阳医保基数现行性坐实 ===== */
   ok('辽宁 6 城 medComp 全部保持 8%（生育 1% 有文号但基本医疗逐市不同，四关第①关不过）', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].med.comp === 0.08), true);
@@ -4389,8 +4389,8 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
     else injOther.push(k);
   });
   eq('inj 非 0/0 的城共 316 个（广东 21 市走工资总额制，其余走统一基数制）', injNZ, 316);
-  eq('inj 区间与 med 相同的城 279 个', injMed, 279);
-  eq('inj 区间与 unemp 相同的城 37 个', injUnemp, 37);
+  eq('inj 区间与 med 相同的城 272 个', injMed, 272);
+  eq('inj 区间与 unemp 相同的城 44 个', injUnemp, 44);
   eq('inj 区间与 med/unemp 均不同的城 0 个', injOther.length, 0);
 
   // 三、injSpecial 只覆盖广东 21 市且取值唯一
