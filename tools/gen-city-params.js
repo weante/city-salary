@@ -39,7 +39,6 @@ const readJson = () => JSON.parse(fs.readFileSync(abs(JSON_PATH), 'utf8'));
  */
 const DOC_RATE_WHITELIST = [
   { key: 'quanz', name: '泉州', comp: 8, emp: 2, docComp: 7.5, docEmp: 2, why: 'docRate 引 2022 件 7.5%/2%，CITIES 取 8%/2%，口径待核' },
-  { key: 'nd', name: '宁德', comp: 8, emp: 2, docComp: 8.5, docEmp: 2, why: 'docRate 记含生育合计 8.5%/2%，CITIES 取 8%/2%' },
   { key: 'yanan', name: '延安', comp: 6.9, emp: 2, docComp: 7, docEmp: 2, why: 'docRate 记 7%/2%（暂算待核实），CITIES 取 6.9%/2%' },
   { key: 'shangl', name: '商洛', comp: 6.6, emp: 2, docComp: 7, docEmp: 2, why: 'docRate 记 7%/2%（暂算待核实），CITIES 取 6.6%/2%' },
   { key: 'yuln', name: '玉林', comp: 6.5, emp: 2, docComp: 6, docEmp: 2, why: 'docRate 记 2025-07-01 起 6%/2%，CITIES 取 6.5%/2%' },

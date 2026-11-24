@@ -1106,7 +1106,7 @@ eq('福建·养老基数上限', A.CITIES.fz.pension.max, 22893);
 eq('福建·医保基数下限(闽医保函〔2026〕65号)', A.CITIES.fz.med.min, 4579);
 eq('福建·医保基数上限', A.CITIES.fz.med.max, 22893);
 eq('福建·失业基数上限22893', A.CITIES.fz.unemp.max, 22893);
-eq('福州·医保单位8%', A.CITIES.fz.med.comp, 0.08);
+eq('福州·医保单位8.7%（8%+生育0.7%）', A.CITIES.fz.med.comp, 0.087);
 eq('福州·公积金上限(榕公积金管委〔2026〕2号)', A.CITIES.fz.hf.max, 32430);
 eq('厦门·大病7元/月', A.CITIES.xm.medFixEmp, 7);
 eq('厦门·房租扣除1500', A.CITIES.xm.rent, 1500);
@@ -2802,13 +2802,17 @@ eq('青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hx
   ok('南平 note 已声明指南为 2024 年 1—6 月版、更新版未取到', A.CITIES.np.note.indexOf('2024年1—6月版') >= 0, true);
   ok('南平 note 已声明大额为比例型、固定额字段无法表达', A.CITIES.np.note.indexOf('比例型、固定额字段无法表达') >= 0, true);
   ok('南平 medFixEmp 仍为 0（大额是比例型，未设固定额）', A.CITIES.np.medFixEmp === 0, true);
-  ok('福建块头已写明 medComp 口径＝基本医疗＋生育且只有泉州南平已坐实', /medComp 口径＝基本医疗单位费率＋生育单位费率（企业口径）/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')) && /其余7城费率是单险还是合计尚未取证/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
-  ok('福建其余 7 城 medComp 暂不变（福州.08 厦门.075 莆田.08 三明.085 漳州.075 龙岩.087 宁德.08）', [['fz',0.08],['xm',0.075],['pt',0.08],['sm',0.085],['zhangz',0.075],['longy',0.087],['nd',0.08]].every(([k,v]) => A.CITIES[k].med.comp === v), true);
-  eq('龙岩 medComp 暂仍为 0.087', A.CITIES.longy.med.comp, 0.087);
-  eq('三明 medComp 暂仍为 0.085', A.CITIES.sm.med.comp, 0.085);
-  eq('厦门 medComp 暂仍为 0.075', A.CITIES.xm.med.comp, 0.075);
+  ok('福建块头已写明 medComp 口径＝基本医疗＋生育且 9 市全部坐实', /medComp 口径＝基本医疗单位费率＋生育单位费率（企业口径）/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')) && /9 市已全部坐实/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
+  ok('福建 8 城 medComp 已坐实（福州.087 厦门.082 莆田.08 三明.085 漳州.075 龙岩.087 宁德.085）', [['fz',0.087],['xm',0.082],['pt',0.08],['sm',0.085],['zhangz',0.075],['longy',0.087],['nd',0.085]].every(([k,v]) => A.CITIES[k].med.comp === v), true);
+  eq('龙岩 medComp 仍为 0.087', A.CITIES.longy.med.comp, 0.087);
+  eq('三明 medComp 仍为 0.085', A.CITIES.sm.med.comp, 0.085);
+  eq('厦门 medComp 已由 0.075 改为 0.082（7.5%+0.7%）', A.CITIES.xm.med.comp, 0.082);
   eq('厦门 medFixEmp 仍为 7 元/月', A.CITIES.xm.medFixEmp, 7);
-  ok('福建 8 市 warn 保留（泉州已清除）', ['fz','xm','pt','sm','zhangz','np','longy','nd'].every(k => A.CITIES[k].warn === true), true);
+  ok('福建 8 市 warn 已全部清除', ['fz','xm','pt','sm','zhangz','np','longy','nd'].every(k => A.CITIES[k].warn !== true), true);
+  ok('福州 note 逐字写入基本医疗 8% 与生育 0.7%', A.CITIES.fz.note.indexOf('用人单位按其职工月工资总额的8%缴纳基本医疗保险费') >= 0 && A.CITIES.fz.note.indexOf('0.7%按月缴纳') >= 0, true);
+  ok('厦门 note 逐字写入 7.5% 与生育 0.7%', A.CITIES.xm.note.indexOf('7.5%和2%按月共同缴纳') >= 0 && A.CITIES.xm.note.indexOf('用人单位生育保险缴费率为0.7%') >= 0, true);
+  ok('宁德 note 逐字写入 8% 与生育企业 0.5%', A.CITIES.nd.note.indexOf('用人单位按8%、个人按2%缴纳') >= 0 && A.CITIES.nd.note.indexOf('企业及其他用人单位按职工工资总额的0.5%缴交') >= 0, true);
+  ok('漳州 note 注明 7.5% 本身即含生育、不再另加', A.CITIES.zhangz.note.indexOf('该费率本身即含生育') >= 0, true);
   /* ===== 2026-10-15 · 三门峡大额为合计口径 + 南阳 note 纠错（数值不变） ===== */
   eq('三门峡 medFixEmp 仍为 18.33 元/月（220÷12，暂不改）', A.CITIES.smx.medFixEmp, 18.33);
   eq('三门峡 220÷12 = 18.33', Math.round(220 / 12 * 100) / 100, 18.33);
@@ -3035,7 +3039,7 @@ section('12. 省份年度口径与页脚文案');
     ['hangz', '杭州', '2026', null], ['zzheng', '郑州', '2026', null],
     ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2025', '2026'],
     ['haik', '海口', '2026', null],
-    ['cc', '长春', '2025-2026', null], ['fz', '福州', '2025-2026', null],
+    ['cc', '长春', '2025-2026', null], ['fz', '福州', '2026', null],
   ];
   for (const [key, name, y, next] of CASES) {
     eq(`${name} dataYear=${y}`, A.CITIES[key].dataYear, y);
@@ -4423,11 +4427,11 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 200 个', warnC.length, 200);
+  eq('warn 城 192 个', warnC.length, 192);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
-  eq('dataYear 分布 2025-2026:39 / 2026:274 / 2025:24',
-     dy['2025-2026'] === 39 && dy['2026'] === 274 && dy['2025'] === 24, true);
+  eq('dataYear 分布 2025-2026:30 / 2026:283 / 2025:24',
+     dy['2025-2026'] === 30 && dy['2026'] === 283 && dy['2025'] === 24, true);
 
   // 六、广东 21 市 med 取值分布
   const gdK = K.filter(k => A.CITIES[k].region === '广东');

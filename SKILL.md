@@ -305,7 +305,7 @@ version: 1.1.0
 
 ```bash
 npm test                    # ★ 一次跑完下面八项
-node tools/test-calc.js     # 9299 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归/年度口径/起始月边界（北京 158 / 上海 144 / 深圳 209 / 成都 3 + 跨城市 337 + 抽查 295 + 租金档位 47 + 年度口径 40 + 起始月边界 9 + 年终奖计税对比 23）
+node tools/test-calc.js     # 9303 项断言：税率表/年终奖陷阱/端到端算例/基数夹取/D1D2回归/年度口径/起始月边界（北京 158 / 上海 144 / 深圳 209 / 成都 3 + 跨城市 337 + 抽查 295 + 租金档位 47 + 年度口径 40 + 起始月边界 9 + 年终奖计税对比 23）
 node tools/check-golden.js  # 黄金用例：16 用例 × 4 面板（res/bonus/hist/sum）逐字节比对
 node tools/check-dom.js     # 静态结构：重复 id、悬空 $() 引用、未定义事件处理器、CITIES 重复 key/城市名
 node tools/check-sync.js    # 漂移检查：A 镜像同步 / B 生成物 diff（JSON↔CITIES 提取结果 + docRate/docNote 措辞回溯） / C 陈旧表述 / D 断言数 / E 省份年度口径 / F 数据状态表年度
