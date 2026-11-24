@@ -1719,13 +1719,13 @@ _IM.forEach(([nm,k,rate]) => {
   eq('内蒙古·'+nm+'·医保基数下限6744', c.med.min, 6744);
   eq('内蒙古·'+nm+'·医保基数上限25290', c.med.max, 25290);
   eq('内蒙古·'+nm+'·医保单位费率未变', c.med.comp, rate);
-  eq('内蒙古·'+nm+'·warn 已置位', Boolean(c.warn), true);
-  eq('内蒙古·'+nm+'·note 含「医保单位费率未找到」', c.note.indexOf('医保单位费率未找到') >= 0, true);
+  eq('内蒙古·'+nm+'·warn 已置位', Boolean(c.warn), k === 'hhht' ? false : true);
+  eq('内蒙古·'+nm+'·'+(k === 'hhht' ? 'note 已改引官方费率件' : 'note 含「医保单位费率未找到」'), (k === 'hhht' ? c.note.indexOf('用人单位缴费比例为缴费基数的6.7%') >= 0 : c.note.indexOf('医保单位费率未找到') >= 0), true);
 });
-eq('呼和浩特·生育保险单位费率0.7%已写入note', A.CITIES.hhht.note.indexOf('0.7%') >= 0, true);
-eq('呼和浩特·note 引内医保办发〔2025〕22号', A.CITIES.hhht.note.indexOf('内医保办发〔2025〕22号') >= 0, true);
-eq('呼和浩特·note 声明基本医保6.0%无官方来源', A.CITIES.hhht.note.indexOf('基本医保6.0%无任何官方来源') >= 0, true);
-eq('呼和浩特·6.7%=6.0%+0.7% 自校验', Math.round((0.060+0.007)*1000)/1000, 0.067);
+eq('呼和浩特·note 引医保局官方费率件', A.CITIES.hhht.note.indexOf('ybj.huhhot.gov.cn') >= 0, true);
+eq('呼和浩特·note 说明生育已并入职工医保', A.CITIES.hhht.note.indexOf('生育保险自2019年起并入职工基本医疗保险') >= 0, true);
+eq('呼和浩特·note 已删除分解估算说法', A.CITIES.hhht.note.indexOf('基本医保6.0%无任何官方来源') < 0, true);
+eq('呼和浩特·官方6.7%与medComp一致', A.CITIES.hhht.med.comp, 0.067);
 eq('巴彦淖尔·note 引官方现行有效规范性文件目录', A.CITIES.byne.note.indexOf('现行有效规范性文件目录') >= 0, true);
 eq('巴彦淖尔·note 记录11号不在目录中', A.CITIES.byne.note.indexOf('11号不在其中') >= 0, true);
 eq('巴彦淖尔·note 仍保留文号以便追溯', A.CITIES.byne.note.indexOf('巴政办发〔2020〕11号') >= 0, true);
@@ -4423,7 +4423,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 202 个', warnC.length, 202);
+  eq('warn 城 201 个', warnC.length, 201);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:39 / 2026:274 / 2025:24',
