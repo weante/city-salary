@@ -2786,7 +2786,7 @@ eq('青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hx
   eq('泉州 medComp 7.5% 改 8.0%（基本医疗7.5%＋生育企业0.5%）', A.CITIES.quanz.med.comp, 0.08);
   eq('泉州 med.comp 子对象同步为 0.08', A.CITIES.quanz.med.comp, 0.08);
   ok('泉州 7.5+0.5=8.0 同源相加自校验', Math.round((0.075 + 0.005) * 10000) / 10000 === 0.08, true);
-  ok('泉州 warn 保留（养老 2026 年度基数仍缺）', A.CITIES.quanz.warn === true, true);
+  ok('泉州 warn 已清除（2026 养老·失业基数由 闽人社文〔2026〕13号 坐实）', A.CITIES.quanz.warn !== true, true);
   ok('泉州 note 写明合计口径与两个分项', A.CITIES.quanz.note.indexOf('单位合计8.0%') >= 0 && A.CITIES.quanz.note.indexOf('基本医疗7.5%') >= 0 && A.CITIES.quanz.note.indexOf('生育0.5%') >= 0, true);
   ok('泉州 note 记生育机关事业口径 0.35%（防止与机关口径混用）', A.CITIES.quanz.note.indexOf('机关事业0.35%') >= 0, true);
   ok('泉州 note 保留大额个人不另缴的旧结论', A.CITIES.quanz.note.indexOf('大病由医保统筹基金支付') >= 0, true);
@@ -2808,7 +2808,7 @@ eq('青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hx
   eq('三明 medComp 暂仍为 0.085', A.CITIES.sm.med.comp, 0.085);
   eq('厦门 medComp 暂仍为 0.075', A.CITIES.xm.med.comp, 0.075);
   eq('厦门 medFixEmp 仍为 7 元/月', A.CITIES.xm.medFixEmp, 7);
-  ok('福建 9 市 warn 全部保留', ['fz','xm','pt','sm','quanz','zhangz','np','longy','nd'].every(k => A.CITIES[k].warn === true), true);
+  ok('福建 8 市 warn 保留（泉州已清除）', ['fz','xm','pt','sm','zhangz','np','longy','nd'].every(k => A.CITIES[k].warn === true), true);
   /* ===== 2026-10-15 · 三门峡大额为合计口径 + 南阳 note 纠错（数值不变） ===== */
   eq('三门峡 medFixEmp 仍为 18.33 元/月（220÷12，暂不改）', A.CITIES.smx.medFixEmp, 18.33);
   eq('三门峡 220÷12 = 18.33', Math.round(220 / 12 * 100) / 100, 18.33);
@@ -4423,7 +4423,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 201 个', warnC.length, 201);
+  eq('warn 城 200 个', warnC.length, 200);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:39 / 2026:274 / 2025:24',
