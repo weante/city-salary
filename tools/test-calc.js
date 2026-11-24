@@ -4437,8 +4437,8 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
   const gv = Object.keys(gm).map(k => gm[k]);
   eq('广东 21 市 med 取值 20 种（19 个独用 + 东莞/珠海 4775~27549）',
      Object.keys(gm).length === 20 && gv.filter(x => x === 1).length === 19 && gm['4775~27549'] === 2, true);
-  eq('广东 21 市失业上限与公积金上限的差异仍登记在案（321 城存在差异）',
-     K.filter(k => A.CITIES[k].hf && A.CITIES[k].unemp && A.CITIES[k].hf.max !== A.CITIES[k].unemp.max).length, 321);
+  eq('广东 21 市失业上限与公积金上限的差异仍登记在案（322 城存在差异；广元公积金改回 24501 后与社保上限 23493 分离，较上批 +1）',
+     K.filter(k => A.CITIES[k].hf && A.CITIES[k].unemp && A.CITIES[k].hf.max !== A.CITIES[k].unemp.max).length, 322);
 
   // 七、P8 巡检工具契约
   const toolPath = path.join(__dirname, '..', 'tools', 'p8-check.js');
