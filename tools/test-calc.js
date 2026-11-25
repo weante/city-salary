@@ -812,7 +812,7 @@ eq('淮安·公积金下限2430(淮房委〔2026〕3号)', A.CITIES.ha.hf.min, 2
 eq('淮安·公积金上限30900(淮房委〔2026〕3号)', A.CITIES.ha.hf.max, 30900);
 eq('南通·公积金下限2660(通人社发〔2026〕1号市区一类)', A.CITIES.nt.hf.min, 2660);
 eq('南通·公积金上限35000(2026年通金管通知)', A.CITIES.nt.hf.max, 35000);
-eq('无锡·公积金下限2490仍为旧口径未被误改', A.CITIES.wx.hf.min, 2490);
+eq('无锡·公积金下限2660（锡房金规〔2026〕2号联动最低工资）', A.CITIES.wx.hf.min, 2660);
 eq('宿迁·公积金下限2010', A.CITIES.sq.hf.min, 2010);
 eq('浙江·五险下限(浙人社发〔2026〕52号)', A.CITIES.hangz.pension.min, 5122);
 eq('浙江·五险上限', A.CITIES.hangz.pension.max, 25611);
@@ -873,13 +873,14 @@ ok('浙江·丽水医保单位费率仍标注未找到市级值', A.CITIES.lish.
     if (c.pension.min !== 5025 || c.pension.max !== 25127) { bad++; emit('  ✗ ' + k + ' 基数未落地'); }
     if (c.med.min !== 5025 || c.med.max !== 25127) { bad++; emit('  ✗ ' + k + ' 医保基数未同步'); }
     if (c.dataYear !== '2026' || (c.dataNext || null) !== null) { badYr++; emit('  ✗ ' + k + ' 年度口径未改'); }
-    if (c.warn !== true) { badWarn++; emit('  ✗ ' + k + ' warn 被误清'); }
+    const shouldWarn = ['nanj', 'su', 'wx', 'xz', 'lyg', 'yz', 'sq'].indexOf(k) >= 0;
+    if (shouldWarn ? c.warn !== true : !!c.warn) { badWarn++; emit('  ✗ ' + k + (shouldWarn ? ' warn 被误清' : ' warn 应清未清')); }
     if ((c.note || '').indexOf('24762') >= 0 || (c.note || '').indexOf('4952；') >= 0) { badNote++; emit('  ✗ ' + k + ' note 残留旧值'); }
   }
   eq('江苏·13 城五险基数全部落地 5025~25127', bad, 0);
   eq('江苏·13 城医保基数与养老同口径', bad, 0);
   eq('江苏·13 城 dataYear=2026 / dataNext=null', badYr, 0);
-  eq('江苏·13 城 warn 全部保留（各省市医保费率多无市级一手件）', badWarn, 0);
+  eq('江苏·13 城 warn 处置正确（6 城逐字坐实清 warn，7 城保留）', badWarn, 0);
   eq('江苏·13 城 note 无旧值残留', badNote, 0);
   eq('江苏·note 逐城引用苏人社发〔2026〕30号', JS13.filter(k => (A.CITIES[k].note || '').indexOf('苏人社发〔2026〕30号') >= 0).length, 13);
   eq('江苏·note 已删除从未证实的「苏税发」文号', JS13.filter(k => (A.CITIES[k].note || '').indexOf('苏税发') >= 0).length, 0);
@@ -1055,9 +1056,13 @@ eq('江苏·泰州·医保个人2%', A.CITIES.tz.med.emp, 0.02);
 eq('江苏·泰州·公积金上限30258', A.CITIES.tz.hf.max, 30258);
 eq('江苏·泰州·note含泰医保规〔2020〕2号', A.CITIES.tz.note.indexOf('泰医保规〔2020〕2号') >= 0, true);
 eq('江苏·泰州·note记录官方「下限不做调整」冲突', A.CITIES.tz.note.indexOf('下限不做调整') >= 0, true);
+eq('江苏·常州·医保单位8%（常医保待遇〔2023〕25号+常政办发〔2019〕111号）', A.CITIES.czh.med.comp, 0.08);
+eq('江苏·常州·note记录8%已含生育、旧8.8%系重复叠加', A.CITIES.czh.note.indexOf('重复叠加') >= 0, true);
+eq('江苏·常州·公积金2660~34080', A.CITIES.czh.hf.min + '~' + A.CITIES.czh.hf.max, '2660~34080');
+eq('江苏·常州·已清warn', A.CITIES.czh.warn !== true, true);
 eq('江苏·无锡·医保单位8%（7+大额0.2%+生育0.8%）', A.CITIES.wx.med.comp, 0.08);
 eq('江苏·无锡·医保个人2%', A.CITIES.wx.med.emp, 0.02);
-eq('江苏·无锡·公积金下限2490', A.CITIES.wx.hf.min, 2490);
+eq('江苏·无锡·公积金下限2660', A.CITIES.wx.hf.min, 2660);
 eq('江苏·无锡·公积金上限36800（锡房金规〔2026〕2号）', A.CITIES.wx.hf.max, 36800);
 eq('江苏·无锡·note含锡医保服务〔2023〕23号', A.CITIES.wx.note.indexOf('锡医保服务〔2023〕23号') >= 0, true);
 eq('江苏·无锡·note标明7%不含生育', A.CITIES.wx.note.indexOf('不含生育') >= 0, true);
@@ -1078,9 +1083,10 @@ eq('浙江·丽水·医保个人2%', A.CITIES.lish.med.emp, 0.02);
 eq('浙江·丽水·公积金下限2180', A.CITIES.lish.hf.min, 2180);
 eq('浙江·丽水·公积金上限37485（2026年度）', A.CITIES.lish.hf.max, 37485);
 eq('浙江·丽水·note含丽政办发〔2021〕61号', A.CITIES.lish.note.indexOf('丽政办发〔2021〕61号') >= 0, true);
-eq('南通仍warn（2026基数未公布+大病固定额无件）', A.CITIES.nt.warn, true);
-eq('泰州仍warn（公积金下限冲突）', A.CITIES.tz.warn, true);
+eq('南通已清warn（通政规〔2025〕7号与通金管〔2026〕77号均逐字坐实）', A.CITIES.nt.warn !== true, true);
+eq('泰州已清warn（2026-01-22补充通知坐实下限2660）', A.CITIES.tz.warn !== true, true);
 eq('无锡仍warn（生育费率无件）', A.CITIES.wx.warn, true);
+['czh','nt','ha','ych','tz','zjh'].forEach(k => eq('江苏·' + k + ' 已清warn', A.CITIES[k].warn !== true, true));
 eq('金华仍warn（公积金上限无官方文本）', A.CITIES.jh.warn, true);
 eq('宁波已清warn（医保8.5%与公积金2026年度件均已坐实）', A.CITIES.nb.warn !== true, true);
 eq('丽水仍warn（医保单位费率not-found）', A.CITIES.lish.warn, true);
@@ -4427,7 +4433,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 183 个', warnC.length, 183);
+  eq('warn 城 177 个', warnC.length, 177);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:30 / 2026:283 / 2025:24',
