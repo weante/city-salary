@@ -818,7 +818,7 @@ eq('浙江·五险下限(浙人社发〔2026〕52号)', A.CITIES.hangz.pension.m
 eq('浙江·五险上限', A.CITIES.hangz.pension.max, 25611);
 eq('杭州·医保单位9.5%(含生育0.6%)', A.CITIES.hangz.med.comp, 0.095);
 eq('杭州·公积金上限42151', A.CITIES.hangz.hf.max, 42151);
-eq('宁波·公积金上限38947', A.CITIES.nb.hf.max, 38947);
+eq('宁波·公积金上限38907（2026年度暂按2025年度上限）', A.CITIES.nb.hf.max, 38907);
 eq('宁波·医保单位8.5%(含大病0.5%+生育0.5%)', A.CITIES.nb.med.comp, 0.085);
 eq('绍兴·医保个人1%(其他单位口径)', A.CITIES.sx.med.emp, 0.01);
 eq('台州·医保个人1%', A.CITIES.taiz.med.emp, 0.01);
@@ -848,7 +848,7 @@ for (const k of ZJ11) {
   ok('浙江·' + k + ' dataNext 已清空', c.dataNext, null);
   ok('浙江·' + k + ' note 引用 52 号', c.note.indexOf('浙人社发〔2026〕52号') >= 0, true);
   ok('浙江·' + k + ' note 不再写「新基数未找到」', c.note.indexOf('新基数未找到') < 0, true);
-  ok('浙江·' + k + ' 保留 warn（医保费率/大病固定额多无市级一手件）', c.warn, true);
+  ok('浙江·' + k + ' warn 状态（9 城已清，金华·丽水保留）', ('jh' === k || 'lish' === k) ? c.warn === true : !c.warn, true);
 }
 ok('浙江·11 市 note 均已带 52 号', ZJ11.filter(k => A.CITIES[k].note.indexOf('浙人社发〔2026〕52号') >= 0).length, 11);
 ok('浙江·旧文号 2025 版 52 号不再出现于任何 note',
@@ -1069,9 +1069,9 @@ eq('浙江·金华·note含金政发〔2021〕27号', A.CITIES.jh.note.indexOf('
 eq('浙江·宁波·医保单位8.5%（2023年度版：8.5%=7.5%+大病0.5%+生育0.5%）', A.CITIES.nb.med.comp, 0.085);
 eq('浙江·宁波·医保个人2%', A.CITIES.nb.med.emp, 0.02);
 eq('浙江·宁波·公积金下限2660', A.CITIES.nb.hf.min, 2660);
-eq('浙江·宁波·公积金上限38947', A.CITIES.nb.hf.max, 38947);
-eq('浙江·宁波·note含2023年度版', A.CITIES.nb.note.indexOf('2023年度版') >= 0, true);
-eq('浙江·宁波·note标注2020版9.7%为旧版', A.CITIES.nb.note.indexOf('9.7%') >= 0, true);
+eq('浙江·宁波·公积金上限38907（2026年度暂按2025年度上限）', A.CITIES.nb.hf.max, 38907);
+eq('浙江·宁波·note引2022年度缴费基数启用通告附表', A.CITIES.nb.note.indexOf('缴费基数启用通告') >= 0, true);
+eq('浙江·宁波·note引2022年度通告表注0.5%为生育费率', A.CITIES.nb.note.indexOf('0.5%为生育保险费率') >= 0, true);
 eq('浙江·宁波·单位费率与企业口径一致（非机关事业9%）', A.CITIES.nb.med.comp === 0.085, true);
 eq('浙江·丽水·医保单位8%（暂算，官方件未取到）', A.CITIES.lish.med.comp, 0.08);
 eq('浙江·丽水·医保个人2%', A.CITIES.lish.med.emp, 0.02);
@@ -1082,7 +1082,7 @@ eq('南通仍warn（2026基数未公布+大病固定额无件）', A.CITIES.nt.w
 eq('泰州仍warn（公积金下限冲突）', A.CITIES.tz.warn, true);
 eq('无锡仍warn（生育费率无件）', A.CITIES.wx.warn, true);
 eq('金华仍warn（公积金上限无官方文本）', A.CITIES.jh.warn, true);
-eq('宁波仍warn（社保基数无件+公积金下限无件）', A.CITIES.nb.warn, true);
+eq('宁波已清warn（医保8.5%与公积金2026年度件均已坐实）', A.CITIES.nb.warn !== true, true);
 eq('丽水仍warn（医保单位费率not-found）', A.CITIES.lish.warn, true);
 eq('安徽·基数下限(皖人社秘〔2026〕113号)', A.CITIES.hef.pension.min, 4354);
 eq('安徽·基数上限', A.CITIES.hef.pension.max, 21772);
@@ -2097,7 +2097,7 @@ eq('益阳·7677×3=23031（同件强自校验）', 7677 * 3, A.CITIES.yiy.hf.ma
 eq('益阳·23031×24%向上取整=5528（官方月缴存额上限，ceil非round）', Math.ceil(23031 * 0.24), 5528);
 eq('舟山·公积金下限2260（月最低工资）', A.CITIES.zsh.hf.min, 2260);
 eq('舟山·公积金上限34515（11505×3，同件强自校验）', 11505 * 3, A.CITIES.zsh.hf.max);
-eq('舟山·warn 保留（指向2026社保新基数未找到，非公积金）', A.CITIES.zsh.warn, true);
+eq('舟山已清warn（医保8%含生育、公积金2026年度件均已坐实）', A.CITIES.zsh.warn !== true, true);
 // 2026-10-11 · 烟台 / 七台河 / 荆州 官方件逐字核对；大庆 / 伊春 / 大兴安岭 确认无件
 eq('烟台·公积金下限2400（市直及其他区市，烟住〔2026〕26号）', A.CITIES.yt.hf.min, 2400);
 eq('烟台·公积金上限28692（烟住〔2026〕26号）', A.CITIES.yt.hf.max, 28692);
@@ -4427,7 +4427,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 192 个', warnC.length, 192);
+  eq('warn 城 183 个', warnC.length, 183);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:30 / 2026:283 / 2025:24',
