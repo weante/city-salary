@@ -406,7 +406,7 @@ settleTotal  = settleSalary + settleOther + settleRelief
 
 ```bash
 node tools/check-sync.js      # 检查 I：常量表与税率表 ↔ 实现
-node tools/test-calc.js       # `9353 项断言：公式的实际数值验证`
+node tools/test-calc.js       # `9374 项断言：公式的实际数值验证`
 ```
 
 检查 I 只保证**文档与代码一致**，不保证**代码与税法一致**——后者由 `test-calc.js` 的
