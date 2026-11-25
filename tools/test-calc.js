@@ -2455,6 +2455,37 @@ eq('柳州·柳政办〔2015〕50号查无此文→新增warn', A.CITIES.liuz.wa
 eq('柳州·note记文号查无此文', A.CITIES.liuz.note.includes('查无此文'), true);
 eq('柳州·医保单位费率8.0%保留不动', A.CITIES.liuz.med.comp, 0.08);
 
+/* ===== 广西 6 市 B 类医保费率逐字坐实（2026-11-25，第一百一十一批）=====
+ * 5 市清 warn：贵港 贵医保规〔2022〕1号、贺州 贺政发〔2010〕70号+贺政办发〔2023〕44号、
+ *   河池 河医保发〔2021〕1号、崇左 12345问答+崇医保发〔2023〕29号、百色 百政发〔2026〕13号；
+ * 百色 6.85% 为基本医保单险，生育 0.5% 另计（桂政办发〔2023〕45号第六条「之和」），合计 7.35%；
+ * 来宾 NOT_FOUND 保留 warn。 */
+eq('广西·贵港医保单位6.5%（贵医保规〔2022〕1号）', A.CITIES.gg.med.comp, 0.065);
+eq('广西·贵港note引贵医保规〔2022〕1号', A.CITIES.gg.note.includes('贵医保规〔2022〕1号'), true);
+eq('广西·贵港已清warn', !A.CITIES.gg.warn, true);
+eq('广西·百色医保单位7.35%（6.85%基本+0.5%生育）', A.CITIES.bais.med.comp, 0.0735);
+eq('广西·百色note记7.35%与之和口径', A.CITIES.bais.note.includes('7.35%') && A.CITIES.bais.note.includes('之和'), true);
+eq('广西·百色note引百政发〔2026〕13号', A.CITIES.bais.note.includes('百政发〔2026〕13号'), true);
+eq('广西·百色已清warn', !A.CITIES.bais.warn, true);
+eq('广西·贺州医保单位6.5%（贺政发〔2010〕70号+贺政办发〔2023〕44号）', A.CITIES.hezh.med.comp, 0.065);
+eq('广西·贺州note引贺政办发〔2023〕44号', A.CITIES.hezh.note.includes('贺政办发〔2023〕44号'), true);
+eq('广西·贺州已清warn', !A.CITIES.hezh.warn, true);
+eq('广西·河池医保单位6.5%（河医保发〔2021〕1号）', A.CITIES.hech.med.comp, 0.065);
+eq('广西·河池公积金文号更新为河金管[2026]42号', A.CITIES.hech.note.includes('河金管[2026]42号'), true);
+eq('广西·河池已清warn', !A.CITIES.hech.warn, true);
+eq('广西·崇左医保单位6.5%（12345问答+崇医保发〔2023〕29号）', A.CITIES.chz.med.comp, 0.065);
+eq('广西·崇左note引崇医保发〔2023〕29号', A.CITIES.chz.note.includes('崇医保发〔2023〕29号'), true);
+eq('广西·崇左已清warn', !A.CITIES.chz.warn, true);
+eq('广西·来宾医保费率无市级件→保留warn与7%估算', A.CITIES.lb.warn === true && A.CITIES.lb.med.comp === 0.07, true);
+eq('广西·来宾note引来公积金〔2026〕5号', A.CITIES.lb.note.includes('来公积金〔2026〕5号'), true);
+eq('广西·贵港公积金文号更新为贵金管字〔2026〕6号', A.CITIES.gg.note.includes('贵金管字〔2026〕6号'), true);
+eq('广西·百色公积金文号更新为百金管委〔2026〕3号', A.CITIES.bais.note.includes('百金管委〔2026〕3号'), true);
+eq('广西14市企业口径均含生育（无低于6.5%的合计值，复核）', (function () {
+  var ks = ['nn', 'liuz', 'gl', 'wuz', 'bh', 'fcg', 'qinz', 'gg', 'yuln', 'bais', 'hezh', 'hech', 'lb', 'chz'];
+  for (var i = 0; i < ks.length; i++) { if (A.CITIES[ks[i]].med.comp < 0.065) return false; }
+  return true;
+})(), true);
+
 /* ===== 河北 · 2026-10-14 =====
  * 秦皇岛 qhd 两处改值（父代理逐字自抓，四关全过）：
  *   ①医保单位费率 8%→7.3%：秦政办规〔2021〕1号 第十三条
@@ -4433,7 +4464,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 177 个', warnC.length, 177);
+  eq('warn 城 172 个', warnC.length, 172);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:30 / 2026:283 / 2025:24',
