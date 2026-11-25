@@ -2114,13 +2114,33 @@ eq('烟台·28692×24%向下取整=6886（官方灵活就业月缴存额上限�
 eq('烟台·warn 无（2026年度官方件已取得）', A.CITIES.yt.warn, undefined);
 eq('七台河·公积金上限20598（七台河公积金中心2026-07-09通知）', A.CITIES.qth.hf.max, 20598);
 eq('七台河·公积金下限2010（市区，依黑政规〔2025〕1号）', A.CITIES.qth.hf.min, 2010);
-eq('七台河·warn 保留（医保单位费率待核实，非公积金）', A.CITIES.qth.warn, true);
+eq('七台河·warn 保留（2026-11-26 复核：医保单位费率无一手件，公积金已坐实）', A.CITIES.qth.warn, true);
 eq('荆州·公积金下限2130（鄂政办发〔2025〕44号荆州区沙市区最低工资）', A.CITIES.jzh.hf.min, 2130);
 eq('荆州·公积金上限22446（2025年城镇非私营月均×3）', A.CITIES.jzh.hf.max, 22446);
 eq('荆州·warn 无（2026年度官方PDF全文已读）', A.CITIES.jzh.warn, undefined);
 eq('大庆·warn 新增（2026年度公积金基数件未找到，现值为估算）', A.CITIES.dq.warn, true);
-eq('伊春·warn 保留（公积金基数件与医保费率均未找到）', A.CITIES.yc.warn, true);
-eq('大兴安岭·warn 保留（2026年度公积金基数件未找到）', A.CITIES.dxal.warn, true);
+eq('伊春·warn 保留（2026-11-26 复核：医保8.5%已由伊政办规坐实，待后续单独清warn）', A.CITIES.yc.warn, true);
+eq('大兴安岭·已清warn（大署医保联规〔2022〕2号：单位8.5%+生育0.5%=9%）', A.CITIES.dxal.warn, undefined);
+// 2026-11-26 · 黑龙江 9 城医保单位费率逐城核证（第一百一十二批）：4 城清 warn、5 城 NOT_FOUND 保留
+eq('齐齐哈尔·医保单位8.5%（含生育0.5%，齐政办规〔2022〕7号）', A.CITIES.qqhe.med.comp, 0.085);
+eq('齐齐哈尔·个人2%', A.CITIES.qqhe.med.emp, 0.02);
+eq('齐齐哈尔·已清warn', A.CITIES.qqhe.warn, undefined);
+eq('齐齐哈尔·note 引齐政办规〔2022〕7号', A.CITIES.qqhe.note.includes('齐政办规〔2022〕7号'), true);
+eq('鸡西·医保单位8.5%（含生育0.5%，鸡政办规〔2025〕6号）', A.CITIES.jx.med.comp, 0.085);
+eq('鸡西·已清warn', A.CITIES.jx.warn, undefined);
+eq('鸡西·note 引鸡政办规〔2025〕6号', A.CITIES.jx.note.includes('鸡政办规〔2025〕6号'), true);
+eq('绥化·医保单位8.5%（含生育0.5%，绥政办规〔2025〕3号）', A.CITIES.suih.med.comp, 0.085);
+eq('绥化·已清warn', A.CITIES.suih.warn, undefined);
+eq('绥化·note 引绥政办规〔2025〕3号', A.CITIES.suih.note.includes('绥政办规〔2025〕3号'), true);
+eq('大兴安岭·医保单位9%（基本8.5%+生育0.5%）', A.CITIES.dxal.med.comp, 0.09);
+eq('大兴安岭·8.5%+0.5%=9% 自校验', 0.085 + 0.005, A.CITIES.dxal.med.comp);
+eq('大兴安岭·note 引大署医保联规〔2022〕2号', A.CITIES.dxal.note.includes('大署医保联规〔2022〕2号'), true);
+eq('鹤岗·warn 保留（医保单位费率无一手件）', A.CITIES.hg.warn, true);
+eq('双鸭山·warn 保留（医保单位费率无一手件）', A.CITIES.sys.warn, true);
+eq('牡丹江·warn 保留（医保单位费率无一手件）', A.CITIES.mdj.warn, true);
+eq('黑河·warn 保留（医保单位费率无一手件）', A.CITIES.hh.warn, true);
+eq('黑龙江 9 城·5 城仍保留 warn 且 medComp 维持 8% 估算', ['hg','sys','qth','mdj','hh'].every(k => A.CITIES[k].warn === true && A.CITIES[k].med.comp === 0.08), true);
+eq('黑龙江 9 城·4 城已清 warn', ['qqhe','jx','suih','dxal'].every(k => A.CITIES[k].warn === undefined), true);
 eq('锡林郭勒盟·公积金下限2380', A.CITIES.xlgl.hf.min, 2380);
 eq('锡林郭勒盟·公积金上限30498（与呼和浩特同值，疑似串值待核实）', A.CITIES.xlgl.hf.max, 30498);
 eq('锡林郭勒盟·warn=true', A.CITIES.xlgl.warn, true);
@@ -4464,7 +4484,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 172 个', warnC.length, 172);
+  eq('warn 城 168 个', warnC.length, 168);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:30 / 2026:283 / 2025:24',
