@@ -1190,7 +1190,7 @@ for (const k of _HN) {
   eq('海南·' + A.CITIES[k].name + ' note 公积金引省级 2026-06-26 通告（索引号 42820293-0/2026-40102）', /42820293-0\/2026-40102/.test(A.CITIES[k].note), true);
   eq('海南·' + A.CITIES[k].name + ' note 不再写「含生育0.5%」误导表述', /含生育0\.5%/.test(A.CITIES[k].note), false);
 }
-eq('海南·4 市 warn 全部保留（168 城口径不变）', _HN.filter(k => A.CITIES[k].warn === true).length, 4);
+eq('海南·4 市 warn 全部保留', _HN.filter(k => A.CITIES[k].warn === true).length, 4);
 /* 自校验：71号文同件给出上下限两个独立数字，除以 300%/60% 必须精确相等 */
 eq('海南·下限/60% = 基准月均 8254', 4952.4 / 0.6, 8254);
 eq('海南·上限/300% = 基准月均 8254', 24762 / 3, 8254);
@@ -2136,7 +2136,7 @@ eq('荆州·公积金下限2130（鄂政办发〔2025〕44号荆州区沙市区�
 eq('荆州·公积金上限22446（2025年城镇非私营月均×3）', A.CITIES.jzh.hf.max, 22446);
 eq('荆州·warn 无（2026年度官方PDF全文已读）', A.CITIES.jzh.warn, undefined);
 eq('大庆·warn 新增（2026年度公积金基数件未找到，现值为估算）', A.CITIES.dq.warn, true);
-eq('伊春·warn 保留（2026-11-26 复核：医保8.5%已由伊政办规坐实，待后续单独清warn）', A.CITIES.yc.warn, true);
+eq('伊春·warn 保留（医保8.5%已坐实，但2026年度公积金基数通知未发布、现值为2025缴存年度值）', A.CITIES.yc.warn, true);
 eq('大兴安岭·已清warn（大署医保联规〔2022〕2号：单位8.5%+生育0.5%=9%）', A.CITIES.dxal.warn, undefined);
 // 2026-11-26 · 黑龙江 9 城医保单位费率逐城核证（第一百一十二批）：4 城清 warn、5 城 NOT_FOUND 保留
 eq('齐齐哈尔·医保单位8.5%（含生育0.5%，齐政办规〔2022〕7号）', A.CITIES.qqhe.med.comp, 0.085);
@@ -2155,9 +2155,21 @@ eq('大兴安岭·note 引大署医保联规〔2022〕2号', A.CITIES.dxal.note.
 eq('鹤岗·warn 保留（医保单位费率无一手件）', A.CITIES.hg.warn, true);
 eq('双鸭山·warn 保留（医保单位费率无一手件）', A.CITIES.sys.warn, true);
 eq('牡丹江·warn 保留（医保单位费率无一手件）', A.CITIES.mdj.warn, true);
-eq('黑河·warn 保留（医保单位费率无一手件）', A.CITIES.hh.warn, true);
-eq('黑龙江 9 城·5 城仍保留 warn 且 medComp 维持 8% 估算', ['hg','sys','qth','mdj','hh'].every(k => A.CITIES[k].warn === true && A.CITIES[k].med.comp === 0.08), true);
-eq('黑龙江 9 城·4 城已清 warn', ['qqhe','jx','suih','dxal'].every(k => A.CITIES[k].warn === undefined), true);
+eq('黑河·已清warn（黑市政办规〔2021〕4号第四条：单位6.5%含生育、合并实施）', A.CITIES.hh.warn, undefined);
+eq('黑龙江 8 城复核·4 城医保费率仍无一手件且 medComp 维持 8% 估算', ['hg','sys','qth','mdj'].every(k => A.CITIES[k].warn === true && A.CITIES[k].med.comp === 0.08), true);
+eq('黑龙江 9 城·5 城已清 warn', ['qqhe','jx','suih','dxal','hh'].every(k => A.CITIES[k].warn === undefined), true);
+eq('黑河·医保单位6.5%（含生育，黑市政办规〔2021〕4号第四条）', A.CITIES.hh.med.comp, 0.065);
+eq('黑河·note 引黑市政办规〔2021〕4号', A.CITIES.hh.note.includes('黑市政办规〔2021〕4号'), true);
+eq('佳木斯·公积金下限2150（中心2026-11-20通知，自2026-12-01起执行）', A.CITIES.jms.hf.min, 2150);
+eq('佳木斯·公积金上限22660仍仅转载件承载、warn 保留', A.CITIES.jms.warn, true);
+eq('佳木斯·note 已注明上限22660 无官方来源', A.CITIES.jms.note.includes('无官方来源'), true);
+eq('伊春·医保单位8.5%已由伊政办规坐实', A.CITIES.yc.med.comp, 0.085);
+eq('伊春·公积金20721 标注为2025缴存年度值', A.CITIES.yc.note.includes('2025缴存年度'), true);
+eq('伊春·note 已注明21189 系宜春误挂并停用', A.CITIES.yc.note.includes('宜春'), true);
+eq('大庆·note 已注明32701 仅转载平台承载', A.CITIES.dq.note.includes('转载'), true);
+eq('双鸭山·note 已注明双医保发〔2023〕38号被废止', A.CITIES.sys.note.includes('废止'), true);
+eq('鹤岗·note 已引用省级备案目录反证', A.CITIES.hg.note.includes('备案目录'), true);
+eq('黑龙江 8 城复核·7 城保留 warn', ['hg','sys','qth','mdj','yc','dq','jms'].every(k => A.CITIES[k].warn === true), true);
 eq('锡林郭勒盟·公积金下限2380', A.CITIES.xlgl.hf.min, 2380);
 eq('锡林郭勒盟·公积金上限30498（与呼和浩特同值，疑似串值待核实）', A.CITIES.xlgl.hf.max, 30498);
 eq('锡林郭勒盟·warn=true', A.CITIES.xlgl.warn, true);
@@ -2937,18 +2949,18 @@ eq('临汾·warn 仍保留（晋政办发〔2026〕29号自2026-10-01起一类23
 //    设定我市2025住房公积金年度缴存基数上限为20686元；依据黑政规[2024]1号设定下限为1850元」
 // 决定：上限 22660 在中心全部公开文件（政策法规10件 + 中心动态100件）中查无对应；
 //      2026 年度（2026-07-01 起）缴存基数通知截至 2026-10-13 未发布 → 四关第 2 关不通过，不改数值，只改 note。
-eq('黑龙江·佳木斯公积金下限2010(黑政规〔2025〕1号)', A.CITIES.jms.hf.min, 2010);
+eq('黑龙江·佳木斯公积金下限2150(中心2026-11-20通知+黑政规〔2026〕2号)', A.CITIES.jms.hf.min, 2150);
 eq('黑龙江·佳木斯公积金上限22660(无官方来源·沿用估算)', A.CITIES.jms.hf.max, 22660);
 eq('黑龙江·佳木斯warn=true', A.CITIES.jms.warn, true);
 eq('黑龙江·佳木斯社保基数仍为4623~23115(黑人社函〔2025〕611号)', A.CITIES.jms.pension.min + '~' + A.CITIES.jms.pension.max, '4623~23115');
 eq('黑龙江·佳木斯note已改为如实说明2025年度上限20686', String(A.CITIES.jms.note).includes('20686'), true);
-eq('黑龙江·佳木斯note已标注年平均工资82750', String(A.CITIES.jms.note).includes('82750'), true);
+eq('黑龙江·佳木斯note已标注下限依据为2026-11-20通知', String(A.CITIES.jms.note).includes('关于调整住房公积金缴存基数下限的通知'), true);
 eq('黑龙江·佳木斯note已删掉无据表述「上限22660（2026-07-01）」', !String(A.CITIES.jms.note).includes('上限22660（2026-07-01）'), true);
-eq('黑龙江·佳木斯note已标注2026年度通知未发布', String(A.CITIES.jms.note).includes('2026年度缴存基数通知截至2026-10-13未发布'), true);
+eq('黑龙江·佳木斯note已标注2026年度基数通知在官网缺失', String(A.CITIES.jms.note).includes('2026年度基数通知'), true);
 // 算式自校验**不成立**：官方只给一个上限数字，82750/12*3=20687.5 与官方 20686 差 1.5 元
 eq('黑龙江·佳木斯82750/12*3≈20687.5 与官方20686差1.5元（自校验不成立，仅反推参考）',
    Math.abs(82750 / 12 * 3 - 20686), 1.5);
-eq('黑龙江·佳木斯2025年度下限1850已被黑政规〔2025〕1号取代为2010', 1850 !== A.CITIES.jms.hf.min, true);
+eq('黑龙江·佳木斯2025年度下限1850已被2026-11-20通知取代为2150', 1850 !== A.CITIES.jms.hf.min, true);
 // 全省社保基数未被本批改动
 eq('黑龙江·佳木斯社保与公积金区间不相等（上限口径不同）', A.CITIES.jms.pension.max !== A.CITIES.jms.hf.max, true);
 
@@ -4501,7 +4513,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 168 个', warnC.length, 168);
+  eq('warn 城 167 个', warnC.length, 167);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:30 / 2026:283 / 2025:24',
