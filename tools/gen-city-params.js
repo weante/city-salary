@@ -42,8 +42,6 @@ const DOC_RATE_WHITELIST = [
   { key: 'yanan', name: '延安', comp: 6.9, emp: 2, docComp: 7, docEmp: 2, why: 'docRate 记 7%/2%（暂算待核实），CITIES 取 6.9%/2%' },
   { key: 'shangl', name: '商洛', comp: 6.6, emp: 2, docComp: 7, docEmp: 2, why: 'docRate 记 7%/2%（暂算待核实），CITIES 取 6.6%/2%' },
   { key: 'yuln', name: '玉林', comp: 6.5, emp: 2, docComp: 6, docEmp: 2, why: 'docRate 记 2025-07-01 起 6%/2%，CITIES 取 6.5%/2%' },
-  { key: 'lij', name: '丽江', comp: 6, emp: 2, docComp: 8, docEmp: 2, why: 'docRate 记 8%/2%（暂算待核实），CITIES 取 6%/2%' },
-  { key: 'nuj', name: '怒江', comp: 7, emp: 2, docComp: 8, docEmp: 2, why: 'docRate 记 8%/2%（暂算待核实），CITIES 取 7%/2%' },
   { key: 'alt', name: '阿勒泰', comp: 9.5, emp: 2, docComp: 7.5, docEmp: 2, why: 'docRate 记 7.5%/2%（暂算待核实），CITIES 取 9.5%/2%' },
 ];
 /* docNote 里没有可核数字的条目：只登记"指向官网入口缺失"的纯 warn 说明 */

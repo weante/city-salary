@@ -1328,7 +1328,8 @@ eq('玉溪·3368×2=6736（官网最高月缴存额）', Math.round(28064 * 0.12
    官网原文「2026年住房公积金月缴存基数上限为41631元」「下限：香格里拉市、德钦县、经济开发区2020元；维西县1870元」（迪人社发〔2025〕80号） */
 eq('迪庆·公积金下限2020（香格里拉市/德钦县/经开区）', A.CITIES.diq.hf.min, 2020);
 eq('迪庆·维西县1870为三类最低工资', 1870, 1870);
-eq('迪庆·warn 保留（医保单位费率未找到）', A.CITIES.diq.warn, true);
+eq('迪庆·warn 已清（迪医保发〔2025〕22号两险合并后7.5%，其中生育1%）', A.CITIES.diq.warn, undefined);
+eq('迪庆·医保单位7.5%（原0.08高估）', A.CITIES.diq.med.comp, 0.075);
 /* 红河 红河州住房公积金管理中心 2026-08-10 通知（无文号）
    官网原文「2025年红河州城镇非私营单位在岗职工年平均工资为108064.00元，月平均工资为9005.33元。因此，2026年...缴存基数上限执行标准为27016.00元（取整）」 */
 eq('红河·公积金下限2120（云人社发〔2026〕9号 二类，2026-09-01起）', A.CITIES.hongh.hf.min, 2120);
@@ -1757,9 +1758,46 @@ eq('包头·note 记医保局站空壳', A.CITIES.baot.note.indexOf('ybj.baotou.
 eq('兴安盟·note 记医保局无独立域名', A.CITIES.xam.note.indexOf('无独立域名') >= 0, true);
 eq('锡林郭勒·note 记部门文件栏仅4条', A.CITIES.xlgl.note.indexOf('ybj.xlgl.gov.cn') >= 0, true);
 eq('阿拉善·note 记机构自挂未更新说明', A.CITIES.alsm.note.indexOf('未更新情况说明') >= 0, true);
-eq('保山·医保单位费率未找到仍保留', A.CITIES.baosh.note.indexOf('医保单位费率未找到') >= 0, true);
-eq('临沧·医保单位费率6%已坐实', A.CITIES.linc.note.indexOf('医保单位费率 6%') >= 0, true);
-eq('德宏·医保单位费率7.5%已坐实', A.CITIES.deh.note.indexOf('医保单位费率 7.5%') >= 0, true);
+// ---- 第一百一十四批（2026-11-26）· 云南 12 城逐城核证 ----
+eq('保山·医保单位8.7%（保政办发〔2019〕43号：基本7.5%+生育1.2%）', A.CITIES.baosh.med.comp, 0.087);
+eq('保山·8.7%＝0.075+0.012 自校验', Number((0.075 + 0.012).toFixed(3)), 0.087);
+eq('保山·公积金上限26817（保公积金﹝2026﹞19号，取代﹝2025﹞28号暂定26004）', A.CITIES.baosh.hf.max, 26817);
+eq('保山·公积金下限2020（隆阳区/腾冲市，施甸/龙陵/昌宁1870）', A.CITIES.baosh.hf.min, 2020);
+eq('保山·warn 已清', A.CITIES.baosh.warn, undefined);
+eq('保山·note 引 43 号文', A.CITIES.baosh.note.indexOf('保政办发〔2019〕43号') >= 0, true);
+eq('楚雄·医保单位6.8%（楚雄州医保局2023-01-03公开页）', A.CITIES.chux.med.comp, 0.068);
+eq('楚雄·公积金2120~27208.5', A.CITIES.chux.hf.min + '~' + A.CITIES.chux.hf.max, '2120~27208.5');
+eq('楚雄·warn 已清', A.CITIES.chux.warn, undefined);
+eq('楚雄·note 记 2023-01-01 由9%调整为6.8%', A.CITIES.chux.note.indexOf('由9%调整为6.8%') >= 0, true);
+eq('德宏·医保单位合计8.5%＝基本7.5%+生育企业1.0%（两险未合并、叠加口径）', A.CITIES.deh.med.comp, 0.085);
+eq('德宏·8.5%＝0.075+0.010 自校验', Number((0.075 + 0.010).toFixed(3)), 0.085);
+eq('德宏·warn 保留（合计口径系两件叠加、公积金2026年度件未取得）', A.CITIES.deh.warn, true);
+eq('德宏·note 记第五十条把生育排除在办法之外', A.CITIES.deh.note.indexOf('生育保险制度等另有规定的从其规定') >= 0, true);
+eq('临沧·医保单位基准费率6%（临医保规〔2026〕1号第四条（三））', A.CITIES.linc.med.comp, 0.06);
+eq('临沧·note 记档位按结余可支付月数浮动', A.CITIES.linc.note.indexOf('累计结余可支付月数确定次年档位') >= 0, true);
+eq('临沧·warn 保留（基准费率非当年执行值，公积金上限无官方件）', A.CITIES.linc.warn, true);
+eq('怒江·医保单位7%（怒政规〔2020〕1号第八条，未载生育费率）', A.CITIES.nuj.med.comp, 0.07);
+eq('怒江·公积金撤回无源之值→1920~32107（2025年度官方件）', A.CITIES.nuj.hf.min + '~' + A.CITIES.nuj.hf.max, '1920~32107');
+eq('怒江·warn 保留', A.CITIES.nuj.warn, true);
+eq('玉溪·note 已改引玉医保规〔2025〕1号', A.CITIES.yux.note.indexOf('玉医保规〔2025〕1号') >= 0, true);
+eq('玉溪·note 记基本医疗8%无现行件、9%属倒算推断', A.CITIES.yux.note.indexOf('倒算') >= 0, true);
+eq('玉溪·公积金上限28064（玉市金发〔2026〕20号）', A.CITIES.yux.hf.max, 28064);
+eq('玉溪·warn 保留（基本医疗8%无现行件）', A.CITIES.yux.warn, true);
+eq('昭通·医保单位5%且明载不含生育（昭医保〔2022〕123号）', A.CITIES.zhaot.med.comp, 0.05);
+eq('昭通·note 记结余低于9个月时次年单位费率上调1%', A.CITIES.zhaot.note.indexOf('上调1%') >= 0, true);
+eq('昭通·warn 保留（含生育合计无官方口径、公积金2026件未取得）', A.CITIES.zhaot.warn, true);
+eq('丽江·医保单位基准6%（丽政规〔2022〕7号第九条）', A.CITIES.lij.med.comp, 0.06);
+eq('丽江·note 记按结余浮动6/7/8%', A.CITIES.lij.note.indexOf('8%') >= 0, true);
+eq('丽江·公积金28584仍为已证伪占位值', A.CITIES.lij.hf.max, 28584);
+eq('丽江·warn 保留', A.CITIES.lij.warn, true);
+eq('文山·医保单位基本医疗8%（文政规〔2023〕4号第六条（二））', A.CITIES.wens.med.comp, 0.08);
+eq('文山·note 记2024年费率调整正式件未取得', A.CITIES.wens.note.indexOf('文政办发〔2024〕65号') >= 0, true);
+eq('文山·warn 保留（含生育合计未坐实、公积金2026件未取得）', A.CITIES.wens.warn, true);
+eq('红河·医保单位7%（2024-09-01起统一）', A.CITIES.hongh.med.comp, 0.07);
+eq('红河·warn 保留（公积金上限件正文未能复核）', A.CITIES.hongh.warn, true);
+eq('大理·warn 保留（全站403阻断）', A.CITIES.dali.warn, true);
+eq('云南·12 城 warn 处置：清 3 城（保山/楚雄/迪庆）、保留 9 城', ['baosh','chux','diq'].every(function(k){return A.CITIES[k].warn === undefined;}) && ['deh','yux','zhaot','lij','wens','hongh','linc','nuj','dali'].every(function(k){return A.CITIES[k].warn === true;}), true);
+eq('云南·16 市州 warn 由 12 降至 9', ['baosh','chux','diq','deh','yux','zhaot','lij','wens','hongh','linc','nuj','dali','km','quj','pe','xsbn'].filter(function(k){return A.CITIES[k].warn === true;}).length, 9);
 eq('昆明·医保单位7.9%仍保留', A.CITIES.km.note.indexOf('医保单位7.9%') >= 0, true);
 // ---------- 湖北 / 河南：省级域名修正 + 市级公积金件补齐 ----------
 const _HUB = A.CITIES.wuha, _XYF = A.CITIES.xf, _KF = A.CITIES.kf, _SMX = A.CITIES.smx, _SQIU = A.CITIES.sqiu;
@@ -4513,7 +4551,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 167 个', warnC.length, 167);
+  eq('warn 城 164 个', warnC.length, 164);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:30 / 2026:283 / 2025:24',
