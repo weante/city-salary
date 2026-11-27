@@ -1397,19 +1397,19 @@ eq('朝阳·附件表 9% 档 floor(21816×9%)=1963', Math.floor(A.CITIES.cy.hf.m
 // 官方只给上限，21816÷3=7272 属反推（2025 年度月均官方未写出），不得当作自校验
 // 反推值：官方件未给出 2025 年度月平均工资，21816÷3=7272 只是形态推断，不得当作算式自校验
 eq('朝阳·反推参考值 round(21816÷3)=7272（非官方数字，仅记录）', Math.round(A.CITIES.cy.hf.max/3), 7272);
-eq('朝阳·warn 保留（医保费率未核实）', A.CITIES.cy.warn, true);
+eq('朝阳·已清 warn（朝医保发〔2020〕67号 两险合并后合计 8% 逐字坐实）', A.CITIES.cy.warn, undefined);
 eq('朝阳·医保基数下限3374已按市级全口径改写（朝医保发〔2025〕36号）', A.CITIES.cy.med.min, 3374);
 eq('朝阳·医保基数上限16872已按市级全口径改写', A.CITIES.cy.med.max, 16872);
 eq('朝阳·医保基数不再等于省级社保基数', A.CITIES.cy.med.max !== A.CITIES.cy.pension.max, true);
-// ===== 抚顺：抚政办规〔2026〕3号（抚顺市医保局+税务局 2026-03-19 通告，自 2026-04-01 起单位费率 7%→8%，不含生育）=====
-eq('抚顺·医保单位费率8%（抚政办规〔2026〕3号，官方8%不含生育）', A.CITIES.fsh.med.comp, 0.08);
+// ===== 抚顺：抚政办规〔2026〕3号（市级行政规范性文件，成文 2026-03-18、此件公开发布，自 2026-04-01 起单位费率 7%→8%，不含生育）=====
+eq('抚顺·医保单位费率8.5%＝基本8%（抚政办规〔2026〕3号，明载不含生育）＋生育0.5%（抚医保发﹝2020﹞7号）', A.CITIES.fsh.med.comp, 0.085);
 eq('抚顺·医保个人费率2%', A.CITIES.fsh.med.emp, 0.02);
 eq('抚顺·医保基数下限4533（辽宁统一）', A.CITIES.fsh.med.min, 4533);
 eq('抚顺·医保基数上限22665（辽宁统一）', A.CITIES.fsh.med.max, 22665);
 eq('抚顺·公积金下限2080', A.CITIES.fsh.hf.min, 2080);
 eq('抚顺·公积金上限23016', A.CITIES.fsh.hf.max, 23016);
-eq('抚顺·warn 保留（公积金费率口径未证实）', A.CITIES.fsh.warn, true);
-// 辽宁 7 城 partial 中，本批把朝阳与抚顺升级为 confirmed，另 5 城仍 partial
+eq('抚顺·warn 保留（医保已坐实，仅 2026 年度公积金上下限件未取得）', A.CITIES.fsh.warn, true);
+// 第一百一十七批：辽宁 12 城逐市核证——医保费率清 warn 7 城（鞍山/营口/铁岭/辽阳/葫芦岛/朝阳/丹东）；保留 warn 5 城（本溪/盘锦/锦州为医保费率缺件，阜新/抚顺医保已坐实、仅公积金缺件）
 // ===== 大连：大房金发〔2026〕12号（政策法规栏 https://gjj.dl.gov.cn/art/2026/7/15/art_5552_2523410.html）=====
 // 原文：「自2026年7月1日起，全市职工住房公积金月缴存基数调整为职工2025年月平均工资额。
 // 月平均工资额低于我市2025年最低工资标准的，以我市2025年月最低工资标准作为月缴存基数。
@@ -1426,7 +1426,7 @@ eq('丹东·公积金上限22141（官方件零偏差）', A.CITIES.dl === undef
 eq('丹东·公积金下限市区2080', A.CITIES.dd.hf.min, 2080);
 eq('丹东·比例上限12%', A.CITIES.dd.hfRateMax, 12);
 eq('丹东·比例下限5%（官方件明载 5%~12%）', A.CITIES.dd.hfRateMin === undefined ? 5 : A.CITIES.dd.hfRateMin, 5);
-eq('丹东·warn 保留（医保费率待核实）', A.CITIES.dd.warn, true);
+eq('丹东·已清 warn（丹医保发〔2025〕51号 7%＋0.7%＝7.7% 逐字坐实）', A.CITIES.dd.warn, undefined);
 // 22141÷3=7380.33 非整数且官方未给月平均工资 → 自校验不成立
 eq('丹东·自校验不成立：22141÷3 非整数，官方未给月平均工资', Math.round(A.CITIES.dd.hf.max/3)*3 === A.CITIES.dd.hf.max, false);
 
@@ -1594,15 +1594,12 @@ eq('辽宁·朝阳件内5624×3=16872', 5624*3, 16872);
 eq('辽宁·朝阳件内round(5624×60%)=3374（原文取整）', Math.round(5624*0.6), 3374);
 eq('辽宁·朝阳若不取整应为3374.4（证明原文做了取整）', Math.round(3374.4*10)/10, 3374.4);
 eq('辽宁·朝阳note记录朝医保发36号', A.CITIES.cy.note.indexOf('朝医保发〔2025〕36号') >= 0, true);
-eq('辽宁·朝阳note记录件挂履职依据栏目', A.CITIES.cy.note.indexOf('履职依据') >= 0, true);
 
 eq('辽宁·丹东无独立医保区间，仍回落社保22665（5654只是下限且无上限）', A.CITIES.dd.med.max, A.CITIES.dd.pension.max);
 eq('辽宁·抚顺无独立医保区间，仍回落社保22665（5306单数不可分辨）', A.CITIES.fsh.med.max, A.CITIES.fsh.pension.max);
 eq('辽宁·铁岭无独立医保区间，仍回落社保22665（无医保局域名）', A.CITIES.tl.med.max, A.CITIES.tl.pension.max);
 eq('辽宁·丹东note记录下限5654', A.CITIES.dd.note.indexOf('5654元/月执行') >= 0, true);
-eq('辽宁·丹东note警示下限是全口径月均100%', A.CITIES.dd.note.indexOf('全口径月均的100%（不是60%）') >= 0, true);
-eq('辽宁·抚顺note记录5306单数', A.CITIES.fsh.note.indexOf('5306元执行') >= 0, true);
-eq('辽宁·抚顺note说明无法分辨上下限', A.CITIES.fsh.note.indexOf('无法分辨5306是下限还是唯一基数') >= 0, true);
+eq('辽宁·丹东note警示官方件只载下限、不载上限', A.CITIES.dd.note.indexOf('只载下限、不载上限') >= 0, true);
 eq('辽宁·铁岭note警示tl.gov.cn是铜陵', A.CITIES.tl.note.indexOf('属安徽铜陵，禁用') >= 0, true);
 eq('辽宁·阜新医保基数本批未动', A.CITIES.fx.med.min, 3563);
 eq('辽宁·阜新医保上限本批未动', A.CITIES.fx.med.max, 17817);
@@ -1614,7 +1611,7 @@ _LN35.forEach(k=>{
   if(k!=='fx') _n35++;
 });
 eq('辽宁·6市社保基数省级统一', _n35, 5);
-eq('辽宁·已单独设医保区间的城市数=3（阜新/锦州/朝阳）', ['jz','cy','fx'].filter(k=>A.CITIES[k].med!==undefined).length, 3);
+eq('辽宁·已单独设医保区间的城市数=5（鞍山/锦州/朝阳/阜新/葫芦岛，med≠pension）', ['as','jz','cy','fx','hld'].filter(k=>A.CITIES[k].med.min!==A.CITIES[k].pension.min||A.CITIES[k].med.max!==A.CITIES[k].pension.max).length, 5);
 eq('辽宁·医保下限比例逐市不同：丹东=100%对阜新=60%', 3563/5939 < .61 && 5654/5654 === 1, true);
 eq('汕头·失业保险缴费基数下限2040', A.CITIES.st.unemp.min, 2040);
 eq('汕头·失业保险缴费基数上限27699（按法定 ÷12 口径改值）', A.CITIES.st.unemp.max, 27699);
@@ -2040,10 +2037,10 @@ ok('阜新·自校验 5939x3===17817（官方同件给出全口径月均 5939）
 ok('阜新·自校验 round(5939x60%)===3563', Math.round(5939*0.6), 3563);
 eq('阜新·医保基数口径为市级全口径，与省级社保基数 4533~22665 不同', A.CITIES.fx.med.min!==A.CITIES.fx.pension.min, true);
 eq('阜新·社保基数仍为省级 4533~22665（本次不动）', A.CITIES.fx.pension.max, 22665);
-eq('阜新·医保单位费率仍 8%（辽医保规〔2025〕2号 7%~8% 区间上限，含生育 1%）', A.CITIES.fx.med.comp, .08);
+eq('阜新·医保单位费率 9%＝基本8%（阜政办〔2026〕1号，明载不含生育）＋生育1%（2025-08-29 三部门件）', A.CITIES.fx.med.comp, .09);
 eq('阜新·医保个人费率 2%', A.CITIES.fx.med.emp, .02);
-ok('阜新·生育 1% + 医疗 7% = 单位 8%（0.5% 恢复至 1% 自 2025-09-01）', (0.08-0.01).toFixed(2), '0.07');
-eq('阜新·warn 仍为 true（医保单位费率无原文 + 公积金下限无件）', A.CITIES.fx.warn, true);
+ok('阜新·单位 9% − 生育 1% = 基本医疗 8%（0.5% 恢复至 1% 自 2025-09-01）', (0.09-0.01).toFixed(2), '0.08');
+eq('阜新·warn 仍为 true（医保已坐实 9%，仅公积金下限无件）', A.CITIES.fx.warn, true);
 /* 辽宁 14 市：社保基数全省统一 4533~22665；医保基数除阜新外仍沿用社保口径 */
 const _LN_MED_FX = ['sy','dl','as','fsh','bx','dd','jk2','yk','jz','pj','fx','lyo','tl','cy','hld'];
 const _LN_REAL = _LN_MED_FX.filter(function(k){ return A.CITIES[k]; });
@@ -2052,10 +2049,10 @@ for (const k of _LN_REAL) {
   eq('辽宁·社保基数上限 22665 · '+k, A.CITIES[k].pension.max, 22665);
   eq('辽宁·社保基数下限 4533 · '+k, A.CITIES[k].pension.min, 4533);
 }
-for (const k of _LN_REAL.filter(function(k){ return ['fx','jz','cy'].indexOf(k)<0; })) {
+for (const k of _LN_REAL.filter(function(k){ return ['as','fx','jz','cy','hld'].indexOf(k)<0; })) {
   eq('辽宁·医保基数仍沿用社保口径 · '+k, A.CITIES[k].med.max, 22665);
 }
-eq('辽宁·医保基数已按市级全口径改写的城市数（阜新/锦州/朝阳）', _LN_REAL.filter(function(k){ return A.CITIES[k].med.max!==22665; }).length, 3);
+eq('辽宁·医保基数已按市级全口径改写的城市数（鞍山/锦州/朝阳/阜新/葫芦岛）', _LN_REAL.filter(function(k){ return A.CITIES[k].med.max!==22665; }).length, 5);
 const _LN = ['sy','dl','as','fsh','bx','dd','jz','yk','fx','lyo','pj','tl','cy','hld'];
 eq('辽宁·14 市全部纳入省级断言集合', _LN.length, 14);
 for (const _k of _LN) {
@@ -2065,7 +2062,7 @@ for (const _k of _LN) {
 /* 阜新医保基数是市级全口径 3563~17817，不与省级社保基数同值 */
 eq('辽宁·阜新·医保基数下限 3563（市级全口径）', A.CITIES.fx.med.min, 3563);
 eq('辽宁·阜新·医保基数上限 17817（市级全口径）', A.CITIES.fx.med.max, 17817);
-eq('辽宁·11 市医保基数仍与社保基数同值（fx/jz/cy 已市级化）', _LN.filter(function(k){ return ['fx','jz','cy'].indexOf(k)<0; }).filter(function(k){ return A.CITIES[k].med.max===A.CITIES[k].pension.max; }).length, 11);
+eq('辽宁·9 市医保基数仍与社保基数同值（as/fx/jz/cy/hld 已市级化）', _LN.filter(function(k){ return ['as','fx','jz','cy','hld'].indexOf(k)<0; }).filter(function(k){ return A.CITIES[k].med.max===A.CITIES[k].pension.max; }).length, 9);
 eq('辽宁·锦州·医保基数下限3556.8（市级全口径）', A.CITIES.jz.med.min, 3556.8);
 eq('辽宁·锦州·医保基数上限17784（市级全口径）', A.CITIES.jz.med.max, 17784);
 eq('贵州·基数下限(黔人社发〔2026〕7号)', A.CITIES.guiy.pension.min, 4426.05);
@@ -2918,31 +2915,28 @@ eq('青海 8 市州中仅西宁与海西有中心自有域名（xnzfgjj.com / hx
   ok('阿勒泰 medComp 与昌吉、博州同为 9.5%', A.CITIES.alt.med.comp === A.CITIES.cjz.med.comp && A.CITIES.alt.med.comp === A.CITIES.boz.med.comp, true);
 
   /* ===== 2026-10-15 · 辽宁 6 城医保费率渠道穷举 + 朝阳医保基数现行性坐实 ===== */
-  ok('辽宁 6 城 medComp 全部保持 8%（生育 1% 有文号但基本医疗逐市不同，四关第①关不过）', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].med.comp === 0.08), true);
-  ok('辽宁 6 城 warn 全部保留', ['fsh','dd','jz','fx','tl','cy'].every(k => A.CITIES[k].warn === true), true);
-  ok('抚顺单位合计应为 9%（基本医疗 8% + 生育 1%）但未取到市级生育件故不改值', Math.round((0.08 + 0.01) * 10000) / 10000 === 0.09, true);
-  ok('省级《辽宁省医疗保障待遇清单（2021年版）》只给 6% 至 8% 区间，8% 落在区间上沿', 0.08 >= 0.06 && 0.08 <= 0.08, true);
-  ok('阜新 note 已补生育恢复件原文 URL', A.CITIES.fx.note.indexOf('ybj.fuxin.gov.cn/content/2025/1017184.html') >= 0, true);
-  ok('阜新 note 已补 2025-09-01 生效日', A.CITIES.fx.note.indexOf('2025年9月1日') >= 0, true);
-  ok('阜新 note 已补 0.5% 恢复至 1%', A.CITIES.fx.note.indexOf('由0.5%恢复至1%') >= 0, true);
-  ok('辽医保规〔2025〕2号 准确全称已补（此前只记编号）', A.CITIES.fx.note.indexOf('关于进一步规范全省基本医疗保险参保筹资和待遇保障政策的通知') >= 0, true);
-  ok('阜新 note 已补省级 6% 至 8% 区间', A.CITIES.fx.note.indexOf('6%至8%') >= 0, true);
-  ok('辽医保发〔2019〕26号 合并实施件已记录', A.CITIES.fx.note.indexOf('辽医保发〔2019〕26号') >= 0, true);
-  ok('抚顺 note 已记合计应为 9% 的推理', A.CITIES.fsh.note.indexOf('抚顺单位合计应为9%') >= 0, true);
-  ok('丹东 note 已补生育 1% 口径', A.CITIES.dd.note.indexOf('生育保险费率企业侧自2025-09-01起为1%') >= 0, true);
-  ok('锦州 note 已补无医保局子域', A.CITIES.jz.note.indexOf('锦州市医保局无独立子域') >= 0, true);
-  ok('铁岭 note 已补省局真实域名 ybj.ln.gov.cn', A.CITIES.tl.note.indexOf('ybj.ln.gov.cn') >= 0, true);
-  ok('朝阳 note 已补朝医保发〔2026〕14号 清理结果', A.CITIES.cy.note.indexOf('朝医保发〔2026〕14号') >= 0, true);
-  ok('朝阳清理结果继续有效 98 件 / 已废止 57 件 / 已失效 104 件', A.CITIES.cy.note.indexOf('继续有效98件') >= 0 && A.CITIES.cy.note.indexOf('已废止57件') >= 0 && A.CITIES.cy.note.indexOf('已失效104件') >= 0, true);
-  ok('朝阳 36 号文为清理目录第 33 序号（现行性最硬形态）', A.CITIES.cy.note.indexOf('第33序号即本件') >= 0, true);
-  ok('朝阳合并实施件 朝医保发〔2020〕67号 为第 11 序号', A.CITIES.cy.note.indexOf('朝医保发〔2020〕67号') >= 0 && A.CITIES.cy.note.indexOf('第11序号') >= 0, true);
-  ok('朝阳 note 已声明父代理两遍 OCR 亲验', A.CITIES.cy.note.indexOf('两遍逐字OCR核对') >= 0, true);
-  eq('朝阳医保基数下限仍为 3374', A.CITIES.cy.med.min, 3374);
-  eq('朝阳医保基数上限仍为 16872', A.CITIES.cy.med.max, 16872);
-  ok('朝阳 5624×3=16872', 5624 * 3 === 16872, true);
-  ok('朝阳 round(5624×60%)=3374', Math.round(5624 * 0.6) === 3374, true);
-  ok('朝阳灵活就业 5624×4.6%×12=3104', Math.abs(5624 * 0.046 * 12 - 3104) < 1, true);
-  ok('辽宁块头已记生育 1% 口径行', /生育保险费率企业侧自2025-09-01起为1%（阜新正式件/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
+  ok('辽宁·费率已清 warn 7 城（鞍山/营口/铁岭/辽阳/葫芦岛/朝阳/丹东）', ['as','yk','tl','lyo','hld','cy','dd'].every(k => A.CITIES[k].warn === undefined), true);
+ok('辽宁·费率保留 warn 5 城（本溪/盘锦/锦州缺件；阜新/抚顺仅公积金缺件）', ['bx','pj','jz','fx','fsh'].every(k => A.CITIES[k].warn === true), true);
+ok('辽宁·7 城费率逐市不同（证明已逐市取件而非统一 8%）', ['as','yk','tl','lyo','hld','cy','dd'].map(k => A.CITIES[k].med.comp).join(',') === '0.078,0.075,0.077,0.075,0.075,0.08,0.077', true);
+eq('辽宁·鞍山 7.8%＝7%+0.8%（鞍医保发〔2024〕11号「合并征收费率为7.8%」）', A.CITIES.as.med.comp, .078);
+eq('辽宁·营口 7.5%＝7%+0.5%（营医保发〔2020〕1号）', A.CITIES.yk.med.comp, .075);
+eq('辽宁·铁岭 7.7%＝7.0%+0.7%（铁医保〔2025〕61号）', A.CITIES.tl.med.comp, .077);
+eq('辽宁·辽阳 7.5%＝7%+0.5%（辽市医保发〔2020〕39号）', A.CITIES.lyo.med.comp, .075);
+eq('辽宁·葫芦岛 7.5%（葫医保发〔2021〕31号 只给合并后合计）', A.CITIES.hld.med.comp, .075);
+eq('辽宁·朝阳 8%（朝医保发〔2020〕67号 只给合并后合计）', A.CITIES.cy.med.comp, .08);
+eq('辽宁·丹东 7.7%＝7%+0.7%（丹医保发〔2025〕51号）', A.CITIES.dd.med.comp, .077);
+eq('辽宁·鞍山医保基数用本市值 3708~18540（鞍医保发〔2025〕6号 原文直接给两数）', A.CITIES.as.med.min + ',' + A.CITIES.as.med.max, '3708,18540');
+ok('辽宁·鞍山自校验 6180×0.6=3708 / 6180×3=18540', Math.round(6180*0.6) === 3708 && 6180*3 === 18540, true);
+eq('辽宁·葫芦岛医保基数 3648~18240（葫医保发〔2025〕27号）', A.CITIES.hld.med.min + ',' + A.CITIES.hld.med.max, '3648,18240');
+ok('辽宁·丹东 note 已记下限＝全口径月均 100%（5654 元/月）', A.CITIES.dd.note.indexOf('5654') >= 0, true);
+ok('辽宁·铁岭 note 已记 60号件只给基数 6218、上下限为推算未采用', A.CITIES.tl.note.indexOf('6218') >= 0 && A.CITIES.tl.note.indexOf('推算') >= 0, true);
+ok('辽宁·辽阳 note 已记 41号件只给基数 6023、上下限为推算未采用', A.CITIES.lyo.note.indexOf('6023') >= 0 && A.CITIES.lyo.note.indexOf('推算') >= 0, true);
+ok('辽宁·抚顺 note 已记 5306 单数与上限 15918 推算说明', A.CITIES.fsh.note.indexOf('5306') >= 0 && A.CITIES.fsh.note.indexOf('15918') >= 0, true);
+ok('辽宁·营口 note 已记 5902/3541 转载线索但未采信', A.CITIES.yk.note.indexOf('5902') >= 0 && A.CITIES.yk.note.indexOf('不作取值') >= 0, true);
+ok('辽宁·锦州 note 已记 77号件存在但全文未公开发布', A.CITIES.jz.note.indexOf('锦医保〔2025〕77号') >= 0, true);
+ok('辽宁·阜新 note 已记费率件挂市政府门户（不在医保局栏目）', A.CITIES.fx.note.indexOf('阜政办〔2026〕1号') >= 0, true);
+ok('辽宁·朝阳 note 已记 67号合并实施件「两险之和」口径', A.CITIES.cy.note.indexOf('朝医保发〔2020〕67号') >= 0, true);
+ok('辽宁块头已记 辽医保规〔2025〕2号 正本 PDF 与「7%~8% 是基本医疗单险」', /7%~8% 是「基本医疗」单险/.test(fs.readFileSync(require('path').join(__dirname,'..','skills','city-salary','assets','calculator.html'),'utf8')), true);
   /* ===== 2026-10-15 · 福建泉州生育费率坐实并改值 + 南平口径坐实（数值不变） ===== */
   eq('泉州 medComp 7.5% 改 8.0%（基本医疗7.5%＋生育企业0.5%）', A.CITIES.quanz.med.comp, 0.08);
   eq('泉州 med.comp 子对象同步为 0.08', A.CITIES.quanz.med.comp, 0.08);
@@ -4554,8 +4548,8 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
     else injOther.push(k);
   });
   eq('inj 非 0/0 的城共 316 个（广东 21 市走工资总额制，其余走统一基数制）', injNZ, 316);
-  eq('inj 区间与 med 相同的城 272 个', injMed, 272);
-  eq('inj 区间与 unemp 相同的城 44 个', injUnemp, 44);
+  eq('inj 区间与 med 相同的城 270 个', injMed, 270);
+  eq('inj 区间与 unemp 相同的城 46 个', injUnemp, 46);
   eq('inj 区间与 med/unemp 均不同的城 0 个', injOther.length, 0);
 
   // 三、injSpecial 只覆盖广东 21 市且取值唯一
@@ -4588,7 +4582,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 162 个', warnC.length, 162);
+  eq('warn 城 155 个', warnC.length, 155);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:30 / 2026:294 / 2025:13（江西 11 市 2026-11-27 转 2026 年度）',
