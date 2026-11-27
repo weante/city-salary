@@ -1117,7 +1117,7 @@ eq('福州·公积金上限(榕公积金管委〔2026〕2号)', A.CITIES.fz.hf.m
 eq('厦门·大病7元/月', A.CITIES.xm.medFixEmp, 7);
 eq('厦门·房租扣除1500', A.CITIES.xm.rent, 1500);
 eq('龙岩·医保单位8.7%(含生育0.7%)', A.CITIES.longy.med.comp, 0.087);
-eq('江西·基数下限3990(2026-10-09 赣人社厅通知)', A.CITIES.nanch.pension.min, 3990);
+eq('江西·基数下限3990(2026-10-09 省人社厅+财政厅+税务局三部门联署通知，官网未标发文字号)', A.CITIES.nanch.pension.min, 3990);
 eq('江西·基数上限', A.CITIES.nanch.pension.max, 19947);
 eq('江西·失业单位0.5%', A.CITIES.nanch.unemp.comp, 0.005);
 eq('南昌·医保单位6.8%(含生育0.8%)', A.CITIES.nanch.med.comp, 0.068);
@@ -1218,14 +1218,51 @@ eq('三亚·租金800（户籍80.3万）', A.CITIES.sanya.rent, 800);
 eq('三沙·租金800（常住0.27万）', A.CITIES.ssha.rent, 800);
 eq('儋州·租金1100（户籍109.55万，不设区直筒子市争议已标注）', A.CITIES.danz.rent, 1100);
 
-/* 江西 2 城（第十二轮）：萍乡公积金 2026 年度件逐字证实；景德镇 2026 年度件官网查无，保留 warn */
+/* 江西 2 城（第十二轮）：萍乡公积金 2026 年度件逐字证实；景德镇 2026 年度件已于第一百一十六批证明确实存在 */
 eq('萍乡·公积金下限1950（市最低工资标准）', A.CITIES.px.hf.min, 1950);
 eq('萍乡·公积金上限23260', A.CITIES.px.hf.max, 23260);
 eq('萍乡·上限算式 93039/12*3 四舍五入=23260（政策解读件原文）', Math.round(93039 / 12 * 3), A.CITIES.px.hf.max);
 eq('萍乡·月缴存额上限 23260*12%*2=5582（通知件原文）', Math.round(23260 * 0.12 * 2), 5582);
-eq('景德镇·公积金下限1950（估算，2026 年度件官网未发布）', A.CITIES.jdz.hf.min, 1950);
-eq('景德镇·公积金上限23000（估算，2026 年度件官网未发布）', A.CITIES.jdz.hf.max, 23000);
-eq('景德镇·warn 保留（2026 年度缴存基数件官网查无）', A.CITIES.jdz.warn, true);
+eq('景德镇·公积金下限1950（2026 年度件直给，=2025 年最低月工资标准）', A.CITIES.jdz.hf.min, 1950);
+eq('景德镇·公积金上限23000（2026 年度件直给）', A.CITIES.jdz.hf.max, 23000);
+eq('景德镇·warn 保留（原「2026 年度件查无」的理由已推翻，现因医保基数为省级暂借口径）', A.CITIES.jdz.warn, true);
+eq('景德镇·note 已更正「2026 年度件查无」的旧结论', A.CITIES.jdz.note.includes('已推翻'), true);
+eq('景德镇·上限 23000 自洽 5520/24%≈23000', Math.round(23000 * 0.12 * 2), 5520);
+
+/* ===== 第一百一十六批（2026-11-27）· 江西 11 市：三项社保 2026 年度落地 + 11 市转 2026 + 南昌下限纠 2600 + 九江/上饶清 warn ===== */
+const JX11 = ['nanch', 'jdz', 'px', 'jj', 'xinyu', 'yingt', 'ganzh', 'jian', 'yichun', 'fuzho', 'sr'];
+eq('江西·11 市 dataYear 全部转 2026', JX11.every(function(k){return A.CITIES[k].dataYear === '2026';}), true);
+eq('江西·11 市 dataNext 全部为 null', JX11.every(function(k){return A.CITIES[k].dataNext === null;}), true);
+eq('江西·11 市医保单位费率均为 6.8%(含生育0.8%，赣府厅发〔2020〕35号 2026 年未调整)', JX11.every(function(k){return A.CITIES[k].med.comp === 0.068;}), true);
+eq('江西·11 市 note 均引赣府厅发〔2020〕35号', JX11.every(function(k){return A.CITIES[k].note.indexOf('赣府厅发〔2020〕35号') >= 0;}), true);
+eq('江西·11 市 note 均写明三项基数基准 6649', JX11.every(function(k){return A.CITIES[k].note.indexOf('6649') >= 0;}), true);
+eq('江西·11 市 note 均不再引用 2025 年度 3915~19575 作为社保基数', JX11.every(function(k){return A.CITIES[k].note.indexOf('养老/失业/工伤基数 3915~19575') < 0;}), true);
+eq('江西·南昌公积金下限纠为 2600（旧 3915 系本地宝转载误改）', A.CITIES.nanch.hf.min, 2600);
+eq('江西·南昌下限 2600 自洽 260/24%≈1083、260/10%=2600', Math.round(260 / (0.05 * 2)), 2600);
+eq('江西·九江已清 warn（医保基数+公积金均逐字坐实）', A.CITIES.jj.warn, undefined);
+eq('江西·上饶已清 warn（医保基数直给、公积金基数有原文公式）', A.CITIES.sr.warn, undefined);
+eq('江西·九江公积金下限 2090（引赣府厅字〔2025〕42号）', A.CITIES.jj.hf.min, 2090);
+eq('江西·九江月缴存额下限 210 自洽 2090×5%×2 进位', Math.round(Math.round(2090 * 0.05) * 2), 210);
+eq('江西·上饶公积金下限 1960 自洽 196/10%', A.CITIES.sr.hf.min, 1960);
+eq('江西·上饶公积金上限 23085 自洽 floor(92342/12*3)', Math.floor(92342 / 12 * 3), A.CITIES.sr.hf.max);
+eq('江西·上饶月缴存额上限 5540 自洽 23085×12%×2 取整', Math.round(23085 * 0.12 * 2), 5540);
+eq('江西·景德镇公积金 1950~23000 为 2026 年度件直给值', A.CITIES.jdz.hf.min === 1950 && A.CITIES.jdz.hf.max === 23000, true);
+eq('江西·仍保留 warn 的 9 市（5 市医保基数省级暂借 + 新余/鹰潭无原文 + 吉安/宜春公积金下限缺官方比例）',
+  ['nanch', 'jdz', 'px', 'ganzh', 'fuzho', 'xinyu', 'yingt', 'jian', 'yichun'].every(function(k){return A.CITIES[k].warn === true;}), true);
+eq('江西·11 市医保基数口径互不相同（江西特色，按各市全口径核定）',
+  new Set(JX11.map(function(k){return A.CITIES[k].med.max;})).size >= 6, true);
+eq('江西·南昌/景德镇/萍乡/赣州/抚州 5 市医保基数仍为省级暂借 3915~19575',
+  ['nanch', 'jdz', 'px', 'ganzh', 'fuzho'].every(function(k){return A.CITIES[k].med.min === 3915 && A.CITIES[k].med.max === 19575;}), true);
+eq('江西·九江医保基数 3918~19590 由全口径 6530 按 60%/300% 核定',
+  Math.round(6530 * 0.6) === 3918 && Math.round(6530 * 3) === 19590, true);
+eq('江西·吉安医保基数 3775~18876 由全口径 6292 按 60%/300% 核定',
+  Math.round(6292 * 0.6) === 3775 && Math.round(6292 * 3) === 18876, true);
+eq('江西·宜春医保基数 3518~17589 由全口径 5863 按 60%/300% 核定',
+  Math.round(5863 * 0.6) === 3518 && Math.round(5863 * 3) === 17589, true);
+eq('江西·上饶医保基数 3737~18684 由全口径 6228 按 60%/300% 核定',
+  Math.round(6228 * 0.6) === 3737 && Math.round(6228 * 3) === 18684, true);
+eq('江西·11 市 note 均不出现「赣医保字〔2024〕35号」被当作费率依据的张冠李戴',
+  JX11.every(function(k){var t = A.CITIES[k].note; var i = t.indexOf('赣医保字〔2024〕35号'); return i < 0 || t.indexOf('基数') >= 0;}), true);
 eq('三门峡·大额220元/年≈18.33元/月', A.CITIES.smx.medFixEmp, 18.33);
 eq('商丘·大额150元/年=12.5元/月', A.CITIES.sqiu.medFixEmp, 12.5);
 ok('南阳大额按0.6%总额、单位个人各50%即得19.56元/月', Math.round(6520*0.006/2*100)/100, A.CITIES.ny.medFixEmp);
@@ -3161,7 +3198,7 @@ section('12. 省份年度口径与页脚文案');
   const CASES = [
     ['heb', '哈尔滨', '2026', null], ['nanj', '南京', '2026', null],
     ['hangz', '杭州', '2026', null], ['zzheng', '郑州', '2026', null],
-    ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2025', '2026'],
+    ['wuha', '武汉', '2025', '2026'], ['nanch', '南昌', '2026', null],
     ['haik', '海口', '2026', null],
     ['cc', '长春', '2025-2026', null], ['fz', '福州', '2026', null],
   ];
@@ -4551,11 +4588,11 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 164 个', warnC.length, 164);
+  eq('warn 城 162 个', warnC.length, 162);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
-  eq('dataYear 分布 2025-2026:30 / 2026:283 / 2025:24',
-     dy['2025-2026'] === 30 && dy['2026'] === 283 && dy['2025'] === 24, true);
+  eq('dataYear 分布 2025-2026:30 / 2026:294 / 2025:13（江西 11 市 2026-11-27 转 2026 年度）',
+     dy['2025-2026'] === 30 && dy['2026'] === 294 && dy['2025'] === 13, true);
 
   // 六、广东 21 市 med 取值分布
   const gdK = K.filter(k => A.CITIES[k].region === '广东');
