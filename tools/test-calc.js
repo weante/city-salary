@@ -1987,6 +1987,28 @@ eq('四川省级·上一年度上限 7646*3=22938', 7646*3, 22938);
 eq('四川省级·两年度省平之差 7831-7646=185', 7831-7646, 185);
 eq('四川·成都公积金上限32969（成公积金委〔2026〕5号）', A.CITIES.cd.hf.max, 32969);
 eq('四川·成都公积金下限2330', A.CITIES.cd.hf.min, 2330);
+
+/* ===== 第一百一十八批（2026-11-28）· 四川 12 城医保基数核证 =====
+   川人社办发〔2026〕50号 逐字只管职工基本养老保险、失业保险、工伤保险，未列职工基本医疗保险；
+   各市职工医保基数由市医保局另行确定，4699~23493 不可套到医保上。 */
+ok('四川·绵阳医保下限7124.25（2026年度最低缴费基数85491元/年÷12，市政府门户2025-12-12答复）', A.CITIES.my.med.min, 7124.25);
+ok('四川·绵阳医保上限21372.75（绵医保规〔2026〕2号第十三条最低基数300%）', A.CITIES.my.med.max, 21372.75);
+ok('四川·绵阳医保基数与省级社保口径不同（省平60%下限4699）', A.CITIES.my.med.min !== A.CITIES.my.pension.min, true);
+ok('四川·绵阳已清warn', A.CITIES.my.warn, undefined);
+ok('四川·遂宁医保基数5735~22938（市医保局2025-11-21通知，75%~300%省平7646）', A.CITIES.sn.med.min + '~' + A.CITIES.sn.med.max, '5735~22938');
+ok('四川·遂宁已清warn', A.CITIES.sn.warn, undefined);
+ok('四川·内江医保下限6264.8（内医保发〔2026〕35号，最低基数75178元/年＝省平7831×80%）', A.CITIES.nj.med.min, 6264.8);
+ok('四川·内江已清warn', A.CITIES.nj.warn, undefined);
+ok('四川·宜宾医保基数6265~23493（市医保局2026-09-16通知，7831×80%~×300%）', A.CITIES.yb.med.min + '~' + A.CITIES.yb.med.max, '6265~23493');
+ok('四川·宜宾已清warn', A.CITIES.yb.warn, undefined);
+ok('四川·12城warn处置：清4城（绵阳/遂宁/内江/宜宾）、保留8城', ['my','sn','nj','yb'].every(function(k){ return A.CITIES[k].warn === undefined; }) && ['nc','ya','ms','bz','ziy','gy','ab','lsh'].every(function(k){ return A.CITIES[k].warn === true; }), true);
+ok('四川·阿坝费率口径已更正为单位6.5%+生育0.5%＝7.0%（原写合计9%）', A.CITIES.ab.med.comp, 0.07);
+ok('四川·阿坝note已记更正', A.CITIES.ab.note.indexOf('已按两项相加更正') >= 0, true);
+ok('四川·阿坝note不再声称合计9%', A.CITIES.ab.note.indexOf('合计9%') < 0, true);
+ok('四川·广元note说明广医保发〔2022〕27号全文未载费率数字', A.CITIES.gy.note.indexOf('全文未载费率数字') >= 0, true);
+ok('四川·广元公积金2026年度件缺、沿用2025年度官方值24501', A.CITIES.gy.hf.max, 24501);
+ok('四川·眉山医保下限4588（眉医保办发〔2025〕24号，自2026-01-01起执行）', A.CITIES.ms.med.min, 4588);
+ok('四川·凉山医保基数仍无市级数值件、warn保留', A.CITIES.lsh.warn, true);
 const _SC = ['cd','zy','pzh','lz','dy','my','gy','sn','nj','ls','nc','ms','yb','ga','dz','ya','bz','ziy','ab','ganz','lsh'];
 for (const k of _SC) {
   ok('四川·' + k + ' 五险基数上限 23493', A.CITIES[k].pension.max, 23493);
@@ -4548,8 +4570,8 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
     else injOther.push(k);
   });
   eq('inj 非 0/0 的城共 316 个（广东 21 市走工资总额制，其余走统一基数制）', injNZ, 316);
-  eq('inj 区间与 med 相同的城 270 个', injMed, 270);
-  eq('inj 区间与 unemp 相同的城 46 个', injUnemp, 46);
+  eq('inj 区间与 med 相同的城 266 个（四川 4 城医保基数市级化后脱离统一基数）', injMed, 266);
+  eq('inj 区间与 unemp 相同的城 50 个', injUnemp, 50);
   eq('inj 区间与 med/unemp 均不同的城 0 个', injOther.length, 0);
 
   // 三、injSpecial 只覆盖广东 21 市且取值唯一
@@ -4582,7 +4604,7 @@ section('23. 337 城数值自洽性审计与 P8 巡检工具契约');
 
   // 五、warn 集合与 dataYear 分布
   const warnC = K.filter(k => A.CITIES[k].warn);
-  eq('warn 城 155 个', warnC.length, 155);
+  eq('warn 城 151 个', warnC.length, 151);
   const dy = {};
   K.forEach(k => { dy[A.CITIES[k].dataYear] = (dy[A.CITIES[k].dataYear] || 0) + 1; });
   eq('dataYear 分布 2025-2026:30 / 2026:294 / 2025:13（江西 11 市 2026-11-27 转 2026 年度）',
